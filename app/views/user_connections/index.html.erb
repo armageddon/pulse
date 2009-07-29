@@ -1,0 +1,20 @@
+<h1>Your Friends</h1>
+<%= "No friends." if @accepted_connections.empty? %>
+<% @accepted_connections.each do |connection| %>
+  <div>
+    <%= image_tag connection.contact.icon.url(:thumb) %><br />
+    <%= link_to connection.contact.username, profile_path(connection.contact) %><br />
+    <%= link_to "send message", new_account_message_path(:recipient => connection.contact) %><br />
+    <%= link_to "remove contact", account_connection_path(connection.contact), :method => :delete %>
+  </div>
+<% end %>
+
+<h1>Friend Requests</h1>
+<% @requested_connections.each do |connection| %>
+  <div>
+    <%= image_tag connection.user.icon.url(:square) %><br />
+    <%= link_to connection.user.username, profile_path(connection.user) %><br />
+    <%= link_to "send message", new_account_message_path(:recipient => connection.user) %><br />
+    <%= link_to "approve contact", approve_account_connection_path(connection.user), :method => :put %>
+  </div>  
+<% end %>

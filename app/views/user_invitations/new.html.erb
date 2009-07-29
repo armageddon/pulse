@@ -1,0 +1,54 @@
+<% form_for @invitation, :url => account_invitations_path do |f| %>
+  <h4>Invite a friend</h4>
+  <div id="invitation_error" style="display: none;">This email has already been registered</div>
+  <%= text_field_tag "invitation[email]", "Email address", :class => "input_text" %>
+  <br> <br>
+  <%= submit_button 'Send invitation' %>
+  <%= submit_button 'Cancel', :id => "cancel" %>
+<% end %>
+
+<script type="text/javascript" charset="utf-8">
+  function isValidEmail(emailAddress) {
+      var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[(2([0-4]\d|5[0-5])|1?\d{1,2})(\.(2([0-4]\d|5[0-5])|1?\d{1,2})){3} \])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      return re.test(emailAddress);
+  }
+
+  $("#invitation_email").focus(function() {
+    if ($(this).val() == "Email address") {
+      $(this).val('');
+    }
+  });
+  
+  $('#invitation_email').blur(function() {
+    if ($(this).val() == '') {
+      $(this).val('Email address');
+    }
+  });
+
+  $("#cancel").click(function() {
+    $("#dialog").jqmHide();
+    return false;
+  })
+  
+  $("#new_invitation").submit(function() {
+    var email = $('#invitation_email');
+    if (!isValidEmail(email.val())) {
+      $('#invitation_error').text('Please enter a valid email address');
+      $('#invitation_error').show();
+      return false;
+    }
+    $.ajax({
+      type: "POST",
+      url: $(this).attr('action'),
+      data: $(this).serialize(),
+      success: function(p) {
+        $('#dialog').jqmHide();
+      },
+      error: function() {
+        $('#invitation_error').text('This email address has already been registered.')
+        $('#invitation_error').show();
+      }
+    })
+    return false;
+  });
+</script>

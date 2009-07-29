@@ -1,0 +1,16 @@
+<h3 class="section">Pictures</h3>
+
+<% @pictures.each do |p| %>
+<div class="grid_picture">
+  <%= link_to image_tag(p.public_filename(:thumb)), account_picture_path(p) %><br />
+  <div class="grid_actions">
+    <%= link_to "delete", account_picture_path(p), :method => :delete %> 
+    <%= ("| " + link_to("set as icon", account_picture_path(p, "picture[icon]" => true), :method => :put)) unless p.icon %>
+  </div>
+</div>
+<% end %>
+
+<div class="clear">&nbsp;</div>
+<br />
+
+<h3><%= link_to "Upload new photo", new_account_picture_path %></h3>

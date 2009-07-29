@@ -1,0 +1,140 @@
+<h4>When are you going to be at <%= @place.name %>?</h4>
+
+<% form_for @event, :url => account_events_path do |f| %>
+  <h3 id="month_name"><%= Time.current.strftime("%B") %></h3>
+  
+  <div style="display: none;">
+    <%= f.datetime_select :when_time %>
+  </div>
+  <%= f.hidden_field :place_id %>
+  <%= calendar_for(Time.now.year, Time.now.month, :hide_day_names => true, :hide_month_name => true, :next_and_previous_month => false) do |day|
+    link_to(day.day, '#', 'data-day' => day.day, 'data-month' => day.month)
+  end %>
+  Time 
+    <input maxlength="2" size="1" type="text" class="input_text" name="hour_holder" id="hour_holder"> 
+    : <input maxlength="2" size="1" type="text" class="input_text" name="minute_holder" id="minute_holder">
+    <div id="am_pm_select">
+      <div id="am_pm_selected">PM</div>
+      <div id="am_pm_dropdown" style="float: left;">
+        <a href="#">AM</a><br />
+        <a href="#">PM</a>
+      </div>
+    </div>
+    <br><br>
+    
+    <div id="how_long">
+      
+      <div class='fancy_select'>
+        <%= hidden_field_tag 'event[duration]', "" %>
+        <div class="fancy_select_target">
+          How long?
+        </div>
+        <div class="fancy_select_options">
+          <% ["popping in", "staying for a drink", "staying for a few", "there all night"].each do |option| %>
+            <p><%= option %><span class="hidden_value"><%= option %></span></p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    
+    <div class="errors">
+      <div class="error" id="select_day_error">Please select a day.</div>      
+      <div class="error" id="hour_holder_error">Please input an hour.</div>
+      <div class="error" id="minute_holder_error">Please input a minute.</div>
+    </div>
+    
+    <div class="clear">&nbsp;</div>
+    <div id="event_save">
+      <%= submit_button 'Save' %>
+      <%= submit_button 'Cancel', :id => "cancel" %>
+    </div>
+<% end %>
+
+<script type="text/javascript" charset="utf-8">
+
+  function zeroPad(num,count) {
+    var numZeropad = num + '';
+    while(numZeropad.length < count) {
+      numZeropad = "0" + numZeropad;
+    }
+    return numZeropad;
+  }
+
+  $(document).ready(function() {
+    
+    $("#cancel").click(function() {
+      $("#dialog").jqmHide();
+      return false;
+    })
+
+    $('.day a').click(function() {
+      $('#event_when_time_2i').val($(this).attr('data-month'));
+      $('#event_when_time_3i').val($(this).attr('data-day'));
+      $('.day a').removeClass('active');
+      $(this).addClass('active');
+      return false;
+    });
+    
+    $('#hour_holder, #minute_holder').blur(function() {
+      if($(this).val().match(/[^\d]/)) {
+        $(this).val('');
+      }
+    });
+    
+    $('#am_pm_select').click(function() {
+      $("#am_pm_dropdown").show();
+      return false;
+    });
+    
+    $('#am_pm_dropdown a').click(function() {
+      $('#am_pm_selected').text($(this).text());
+      $('#am_pm_dropdown').hide();
+      return false;
+    });
+    
+    $('#new_event').submit(function() {
+      $('.error').hide();
+      var error = false;
+      if ($('#hour_holder').val() == '') {
+        $('#hour_holder').addClass('invalid');
+        $('#hour_holder_error').show();    
+        error = true;
+      }
+      
+      if ($('#minute_holder').val() == '') {
+        $('#minute_holder').addClass('invalid');
+        $('#minute_holder_error').show();
+        error = true;
+      }
+      
+      if ($('.day a.active').length == 0) {
+        $('#select_day_error').show();
+        error = true;
+      }
+      
+      if (!error) {
+        if ($.trim($('#am_pm_selected').text()) == 'PM') {
+          $('#event_when_time_4i').val(Number($('#hour_holder').val()) + 12);
+        } else {
+          $('#event_when_time_4i').val(zeroPad($('#hour_holder').val(), 2));       
+        }
+        
+        $('#event_when_time_5i').val(zeroPad($('#minute_holder').val(), 2));
+        if ($.jqm.hash[1]) {
+          // We are modal
+          $.ajax({
+            type: 'POST',
+            url: '/account/events',
+            data: $(this).serialize(),
+            success: function() {
+              $('#dialog').jqmHide();
+            }
+          });
+        } else {
+          return true;
+        }
+      }
+      return false;
+    });
+  });
+</script>

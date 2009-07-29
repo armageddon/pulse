@@ -1,0 +1,5 @@
+<h1>Add New Connection</h1>
+
+<h3>Are you sure you want to add <%= @connection.contact.username %> as a contact.</h3>
+
+<%= link_to "Yes", account_connections_path(:id => @connection.contact), :method => :post %>

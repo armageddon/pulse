@@ -1,0 +1,7 @@
+<p>
+  <%= image_tag @picture.public_filename(:large) %>
+  <br /><%= link_to "delete this picture", account_picture_path(@picture), :method => :delete %>
+</p>
+
+<%= link_to "All pictures", account_pictures_path %>
+

@@ -1,0 +1,22 @@
+<% @body_id = "messages" %>
+
+<h1>Compose Message</h1>
+<div class="or"><%= link_to "back to inbox", inbox_path %></div>
+<div class="clearfix">&nbsp;</div>
+<div id="msg_viewer">
+  <% form_for @message, :url => account_messages_path do |f| %>
+    <h2>From:</h2>
+    <div class="message_element"><%= image_tag @message.sender.icon, :width => "24px", :height => "24px" %> You!</div>
+
+    <h2>To:</h2>
+    <div class="message_element"><%= f.text_field :recipient %></div>
+
+    <h2>Subject:</h2>
+    <div class="message_element"><%= f.text_field :subject %></div>
+
+    <h2>Message:</h2>
+    <div class="message_element"><%= f.text_area :body %></div>
+    
+    <p><%= f.submit "Send", :class => "submit" %></p>
+  <% end %>
+</div>

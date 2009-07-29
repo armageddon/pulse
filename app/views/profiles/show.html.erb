@@ -1,0 +1,21 @@
+<% content_for :message do %>
+    <h1>
+    Here is <%= @user.first_name %>'s profile. Check out places <%= sex_to_s @user.sex, :male => 'he', :female => 'she' %> likes 
+    and see if you have anything in common. If you like, <%= link_to "send #{sex_to_s @user} a message", account_message_path(@user) %>.
+    Or you can go <%= link_to "back to your matches", account_matches_path %>.
+    </h1>
+<% end %>
+
+<% content_for :c1 do %>
+  <h3 class="section"><%= @user.first_name %></h3>
+  <%= image_tag @user.icon.url(:profile) %>
+  <%= render :partial => "users/description", :locals => { :user => @user } %>
+  <div id="self_description">
+    <span class="fancy_quotes">&#8220;</span>
+    <%= @user.description %>
+    <span class="fancy_quotes">&#8221;</span>
+  </div>
+<% end %>
+
+<h3 class="section"><%= @user.sex == User::Sex::MALE ? 'His' : 'Her' %> places</h3>
+<%= render :partial => 'shared/object_collection', :locals => { :collection => @places } %>

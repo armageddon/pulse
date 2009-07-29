@@ -1,0 +1,7 @@
+<% content_for :message do %>
+<% end %>
+
+<h3 class="section">Your places</h3>
+<%= render :partial => "shared/object", :collection => current_user.places %>
+
+

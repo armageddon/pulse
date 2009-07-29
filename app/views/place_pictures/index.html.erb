@@ -1,0 +1,21 @@
+<% content_for :c1 do %>
+  <%= render :partial => "places/place_sidebar" %>
+<% end %>
+
+
+<h3 class="section">Place pictures</h3>
+
+<% @pictures.each do |p| %>
+<div class="grid_picture">
+  <%= link_to image_tag(p.public_filename(:thumb)), place_picture_path(@place,p) %><br />
+  <div class="grid_actions">
+    <%= link_to "delete", place_picture_path(@place, p), :method => :delete %> 
+    <%= ("| " + link_to("set as icon", place_picture_path(@place, p, "place_picture[icon]" => true), :method => :put)) unless p.icon %>
+  </div>
+</div>
+<% end %>
+
+<div class="clear">&nbsp;</div>
+<br />
+
+<h3><%= link_to "Upload new photo", new_place_picture_path %></h3>

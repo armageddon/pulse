@@ -1,0 +1,44 @@
+<div class="section_header">
+	<h3 class="section_name">Find people</h3>
+  
+  <div class="section_extra"></div>
+  <div class="clear">&nbsp;</div>
+</div>
+
+<% form_tag search_path, :method => :get, :id => "advanced_search" do %>
+  <%= hidden_field_tag "t", 'users' %>
+	<h3>Name</h3>
+	<%= text_field_tag :q, nil, :id => "search_q", :class => "input_text" %>
+	
+	<h3>Sex</h3>
+  <div class='fancy_select'>
+    <%= hidden_field_tag 's', current_user.sex_preference %>
+    <div class="fancy_select_target">
+      <% if current_user.sex_preference == User::Sex::MALE %>
+      Male
+      <% else %>
+      Female
+      <% end %>
+    </div>
+    <div class="fancy_select_options">
+      <p>Male <span class="hidden_value"><%= User::Sex::MALE %></span></p>
+      <p>Female <span class="hidden_value"><%= User::Sex::FEMALE %></span></p>
+    </div>
+  </div>
+
+	<h3>Age</h3>
+  <div class='fancy_select'>
+    <%= hidden_field_tag 'a', current_user.age_preference %>
+    <div class="fancy_select_target"><%= age_options.rassoc(current_user.age_preference)[0] %></div>
+    <div class="fancy_select_options">
+      <% age_options.each do |op| %>
+      <p><%= op[0] %> <span class="hidden_value"><%= op[1] %></span></p>
+      <% end %>
+    </div>
+  </div>
+ 
+  <div id="advanced_search_submit">
+    <%= submit_button "Search" %>    
+  </div>
+  
+<% end %>

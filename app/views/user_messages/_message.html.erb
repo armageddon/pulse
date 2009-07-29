@@ -1,0 +1,32 @@
+<div class="object">
+  <div class="icon">
+    <% if action_name == 'index' %>
+      <%= link_to image_tag(message.sender.icon, :width => '45px', :height => '45px'), account_message_path(message.sender) %> 
+    <% else %>
+      <%= image_tag(message.sender.icon.url(:thumb), :width => '45px', :height => '45px') %>
+    <% end %>
+  </div>
+  <div class="info message_body">
+    <h5>
+      <% if action_name == 'index' -%>
+        <%= link_to message.sender.first_name, account_message_path(message.sender) -%>
+      <% else -%>
+        <%= message.sender.first_name -%>
+      <% end %>
+    </h5>
+    <span class="message_sent"><%= time_ago_in_words message.created_at %> ago</span>
+    <div class="message_content">
+      <span class="fancy_quotes">&#8220;</span> <%= message.body -%> <span class="fancy_quotes">&#8221;</span>
+    </div>
+  </div>
+
+  <div class="actions">
+    <% if action_name == 'index' %>
+      <%= link_to "THREAD", account_message_path(message.sender) %> |
+      <%= link_to "REPLY", account_message_path(message.sender, :anchor => "reply") %>
+    <% end %>
+    &nbsp;
+  </div>
+  
+  <div class="clear"></div>
+</div>

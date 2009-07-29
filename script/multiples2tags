@@ -1,0 +1,7 @@
+Place.find_in_batches do |group|
+  group.each do |p|
+    ldc_info = Place.connection.select_one("select feature_names from ldc where LDC_ID = #{p.import_id}")
+    puts ldc_info["feature_names"].split(',').map {|i| i.strip }
+  end
+  exit
+end

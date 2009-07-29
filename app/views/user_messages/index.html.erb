@@ -1,0 +1,12 @@
+<% content_for :message do %>
+  Here are your recent and past messages.
+<% end %>
+
+<h3 class="section">My messages</h3>
+<div id="msg_container">
+  <% if @messages.length > 0 %>
+    <%= render :partial => "message", :collection => @messages %>
+  <% else %>
+    <h2>Your inbox is empty! :( </h2>
+  <% end %>
+</div>

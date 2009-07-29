@@ -1,0 +1,6 @@
+<%= render :partial => "shared/object", :collection => collection %>
+<% if collection.next_page %>
+  <%= link_to "See more #{pagination_name collection}", request.path + '?page=' + collection.next_page.to_s + '&type=' + collection.first.class.to_s.tableize, :class => "paginator" %>
+<% end %>
+<div id="page_loading" style="display: none;"><h4>Loading</h4></div>
+

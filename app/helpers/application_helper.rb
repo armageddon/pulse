@@ -1,0 +1,100 @@
+module ApplicationHelper
+
+  def nav_links
+    [
+      content_tag(:span, :class => nav_link_class("users")) { link_to "Home", root_path },
+      content_tag(:span, :class => nav_link_class("user_matches")) { link_to "My matches", account_matches_path },
+      content_tag(:span, :class => nav_link_class("user_messages")) { link_to "My messages#{current_user.unread_count > 0 ? " (#{current_user.unread_count})" : ""}", account_messages_path },
+      content_tag(:span, :class => nav_link_class("profile")) { link_to "My profile", profile_path(current_user) },
+      content_tag(:span, :class => "nav_link") { link_to "Logout", logout_path }
+    ].join("&nbsp;")
+
+  end
+
+  def nav_link_class(page)
+    case page
+    when "users"
+      controller_name == "users" ? "nav_link on" : "nav_link"
+    when "user_matches"
+      controller_name == "user_matches" ? "nav_link on" : "nav_link"
+    when "user_messages"
+      controller_name == "user_messages" ? "nav_link on" : "nav_link"
+    when "profile"
+      controller_name == "profiles" ? "nav_link on" : "nav_link"
+    else
+      "nav_link"
+    end
+  end
+  
+  def pagination_name(collection)
+    if collection.present?
+      case collection.first
+      when User
+        if controller_name == "matches_controller"
+          "matches"
+        else
+          "people"
+        end
+      end
+    end
+  end
+  
+  def submit_button(text, options={})
+    %Q(<button class="submit" id="#{options[:id]}">
+      <span class="submit_text">#{text}</span>
+    </button>)
+  end
+  
+  def gender_age_preference(age_preference, gender)
+    gender = case gender
+      when User::Sex::FEMALE
+        "her"
+      when User::Sex::MALE
+        "his"
+      when User::Sex::BOTH
+        "his or her"
+      end
+    
+    case age_preference
+    when User::Age::COLLEGE
+      "#{gender} college years"
+    when User::Age::EARLY_TWENTIES
+      "#{gender} early 20's"
+    when User::Age::MID_TWENTIES
+      "#{gender} mid 20's"
+    when User::Age::LATE_TWENTIES
+      "#{gender} late 20's"
+    when User::Age::EARLY_THIRTIES
+      "#{gender} early 30's"
+    when User::Age::MID_THIRTIES
+      "#{gender} mid 30's"
+    when User::Age::LATE_THIRTIES
+      "#{gender} late 30's"
+    when User::Age::EARLY_FORTIES
+      "#{gender} early 40's"
+    end
+  end
+  
+  def gender_preference(gender)
+    case gender
+    when User::Sex::FEMALE
+      "woman"
+    when User::Sex::MALE
+      "man"
+    when User::Sex::BOTH
+      "man or woman"
+    end
+  end
+  
+  def sex_to_s(gender, options={})
+    case gender
+    when User::Sex::FEMALE
+      options[:female] || "her"
+    when User::Sex::MALE
+      options[:male] || "his"
+    when User::Sex::BOTH
+      options[:both] || "his or her"
+    end
+  end
+
+end

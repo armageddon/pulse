@@ -1,0 +1,67 @@
+<h3 class="section">Map</h3>
+<div id="map_canvas" style="width: 160px; height: 320px; overflow: hidden;"></div>
+<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=<%= GOOGLE_MAPS_API_KEY %>&sensor=true" type="text/javascript"></script>  
+<script type="text/javascript" charset="utf-8">
+  var map = new GMap2(document.getElementById("map_canvas"));
+  
+  var custIcon = new GIcon(G_DEFAULT_ICON);
+  custIcon.iconSize = new GSize(8, 8);
+  custIcon.shadowSize = new GSize(0, 0);
+  custIcon.iconAnchor = new GPoint(0, 0);
+  var dotIcon = new GIcon(custIcon, '/images/map_dot.gif');
+  
+  <% if @events.blank? %>
+    <% @events = current_user.upcoming_events %>
+  <% end %>
+  
+  <% if false && @events.present? %>
+    <% @events.each_with_index do |e,i| %>
+      var marker<%= i.to_s %> = new GMarker(new GLatLng(<%= e.place.latitude %>, <%= e.place.longitude %>), { icon: dotIcon });
+      map.addOverlay(marker<%= i.to_s %>);
+    <% end %>
+    
+    <% min_lat = @events.min {|a,b| a.place.latitude <=> b.place.latitude } %>
+    <% max_lat = @events.max {|a,b| a.place.latitude <=> b.place.latitude } %>
+    <% min_lon = @events.min {|a,b| a.place.longitude <=> b.place.longitude } %>              
+    <% max_lon = @events.max {|a,b| a.place.longitude <=> b.place.longitude } %>
+    var sw = new GLatLng(<%= min_lat.place.latitude %>, <%= min_lon.place.longitude %>);
+    var ne = new GLatLng(<%= max_lat.place.latitude %>, <%= max_lon.place.longitude %>);
+    var bounds = new GLatLngBounds(sw,ne);
+    map.setCenter(bounds.getCenter(), map.getBoundsZoomLevel(bounds));
+  <% else %>
+    map.setCenter(new GLatLng(40.7141,-73.9543), 13);
+  <% end %>
+
+  var customUI = map.getDefaultUI();
+  customUI.controls.scalecontrol = false;
+  customUI.controls.menumaptypecontrol = false;
+  customUI.controls.smallzoomcontrol3d = false;
+  customUI.zoom.scrollwheel = false;
+  customUI.zoom.doubleclick = false;
+
+  map.setUI(customUI);
+  map.setMapType(G_PHYSICAL_MAP);
+  
+</script>
+
+<% if @events.present? %>
+<% @events.each do |e| %>
+<div class="calendar_entry">
+  <div class="date">
+    <div class="cmon"><%= e.when_time.strftime('%b') %></div>
+    <div class="cday"><%= e.when_time.strftime('%d') %></div>
+  </div>
+
+  <div class="ctext">
+    <%= e.user == current_user ? 'You' : e.user.first_name %> will be at
+    <%= e.place.name %> <br />
+    <%= e.when_time.strftime('%I:%M%p') %>
+  </div>
+
+  <div class="clear">&nbsp;</div>
+</div>
+
+<div class="clear">&nbsp;</div>
+
+<% end %>
+<% end %>

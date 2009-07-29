@@ -1,0 +1,12 @@
+<% content_for :c1 do %>
+  <%= render :partial => "places/place_sidebar" %>
+<% end %>
+
+<h3 class="section">New picture</h3>
+<% form_for @picture, :url => place_pictures_path, :html => {:multipart => true} do |f| %>
+  <%= error_messages_for :picture %>
+  
+  <%= f.file_field :uploaded_data %>
+  <br /><br />
+  <%= f.submit :Save %>
+<% end %>

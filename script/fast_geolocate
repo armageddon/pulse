@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'postgres'
+require 'graticule'
+
+arg = ARGV[0]
+
+if arg =~ /\|/
+  id, address = arg.strip.split('|')
+  geocoder = Graticule.service(:google).new "ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog"
+  location = geocoder.locate address
+  latitude, longitude = location.coordinates
+  conn = PGconn.new(:host => "localhost", :user => "dusty", :dbname => "pulse_development")  
+  res = conn.exec("update places set longitude='#{longitude}', latitude='#{latitude}' where id=#{id}")
+  puts res.status
+end

@@ -1,0 +1,31 @@
+<h3 class="section"><%= @activity.name %></h3>
+
+<div id="profile_image">
+  <%= image_tag @activity.icon.url(:profile) %>
+</div>
+<% if current_user.admin? %>
+   <div id="manage_pictures"><%= link_to "Manage activity pictures", activity_pictures_path(@activity) %></div>
+<% end %>
+
+<div id="manage_activity">
+ <%= link_to "REMOVE FROM MY ACTIVITIES", account_activity_path(@activity), :id => "remove_activity", :style => current_user.activities.include?(@activity) ? "" : "display: none;" %>
+ <%= link_to "ADD TO MY ACTIVITIES", new_account_activity_path(:activity_id => @activity), :class => "add_to_activity" , :style => current_user.activities.include?(@activity) ? "display: none;" : "" %>
+
+<script type="text/javascript" charset="utf-8">
+
+$(document).ready(function() {
+
+ $("#remove_activity").click(function(event) {
+   var target = $(this).attr('href');
+   $.ajax({
+     type: "POST",
+     url: target,
+     success: function() { $("#remove_activity").hide() && $("#add_activity").show() },
+     data: { "_method": "delete", },
+   });
+   return false;
+ });
+});
+</script>
+
+</div>

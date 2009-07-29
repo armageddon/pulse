@@ -1,0 +1,84 @@
+<% form_for favorite, :url => account_places_path, :html => { :style => "position: relative;"} do |f| %>
+  <h4>Place</h4>
+  <%= f.hidden_field :place_id %>
+  <%= text_field_tag :place_name, 
+    (favorite.place.present? ? favorite.place.name : nil), 
+    :class => "input_text", :disabled => favorite.place.present?,
+    :size => 50,
+    "data-prefilled" => (favorite.place.present? ? 'true' : 'false')
+  %>
+  
+  <div id="good_for">
+    <div class='fancy_select' style="width: 250px;">
+      <%= hidden_field_tag 'favorite[good_for]', "" %>
+      <div class="fancy_select_target">
+        What is this place good for?
+      </div>
+      <div class="fancy_select_options">
+        <%
+        [
+          "first dates",
+          "wild first dates",
+          "making it clear you like someone",
+          "breaking up",
+          "meeting new people",
+          "meeting random hook-ups",
+          "hanging out with friends"
+        ].each do |option|
+
+        %>
+          <p><%= option %><span class="hidden_value"><%= option %></span></p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <br >
+  
+  <h4>Tell us everything important about it in less than a text message</h4>
+  <%= f.text_area :description, :class => "input_text word_count" %>
+
+  <%= submit_button 'Save' %>
+  <%= submit_button 'Cancel', :id => "cancel" %>
+<% end %>
+
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function() {
+    if ($("#place_name").attr("data-prefilled") == "false") {
+      var ac_options = {
+        autoFill:false,
+        maxItemsToShow:10,
+        mustMatch: false,
+        onItemSelect: function(e) {
+          var extra = $(e).attr('extra');
+          if (extra.length > 0) $("#favorite_place_id").val(extra[0]);
+          else $("#favorite_place_id").val('');
+        }
+      }
+      $("#place_name").autocomplete('/places/autocomplete', ac_options);
+    }
+    
+    $('.word_count').charCounter(140, {
+      container: "<div></div>"
+    })
+    
+    $("#new_favorite").submit(function() {
+      $.ajax({
+        type: "POST",
+        url: $(this).attr('action'),
+        data: $(this).serialize(),
+        success: function(p) {
+          var id = $($(p)[0]).attr('id');
+          $('#' + id).replaceWith(p);
+          $("#dialog").jqmAddTrigger('#' + id + " .add_event");
+          $('#dialog').jqmHide();
+        }
+      })
+      return false;
+    });
+    
+    $("#cancel").click(function() {
+      $("#dialog").jqmHide();
+      return false;
+    });
+  });
+</script>

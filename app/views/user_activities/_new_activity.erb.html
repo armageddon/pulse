@@ -1,0 +1,54 @@
+<% form_for activity, :url => account_activities_path do |f| %>
+  <h4>Activity</h4>
+  <%= f.hidden_field :id %>
+  <%= text_field_tag :activity_name, (activity.present? ? activity.name : nil), :class => "input_text", :disabled => activity.id.present?, :size => 50, "data-prefilled" => (activity.id.present? ? 'true' : 'false') %>
+  <h4>Tell us everything important about it in less than a text message</h4>
+  <%= text_area_tag :description, nil, :class => "input_text word_count" %>
+  <%= submit_button 'Save' %>
+  <%= submit_button 'Cancel', :id => "cancel" %>
+<% end %>
+
+<script type="text/javascript" charset="utf-8">
+
+  $(document).ready(function() {
+    if ($("#activity_name").attr("data-prefilled") == "false") {
+      var ac_options = {
+        autoFill:false,
+        maxItemsToShow:10,
+        mustMatch: false,
+        onItemSelect: function(e) {
+               var extra = $(e).attr('extra');
+               if (extra.length > 0) {
+                $("#activity_id").val(extra[0])             
+              } else {
+                $("#activity_id").val('')             
+              }
+        },
+      }
+      $("#activity_name").autocomplete('/activities/autocomplete', ac_options);
+    }   
+    $('.word_count').charCounter(140, {
+      container: "<div></div>"
+    })
+    
+    <% if request.xhr? %>
+    $("#cancel").click(function() {
+      $("#dialog").jqmHide();
+      return false;
+    })
+    
+    $("#new_activity").submit(function() {
+      $.ajax({
+        type: "POST",
+        url: $(this).attr('action'),
+        data: $(this).serialize(),
+        success: function(p) {
+          $('#dialog').jqmHide();
+        }
+      })
+      return false;
+    });
+    <% end %>
+    
+  });
+</script>

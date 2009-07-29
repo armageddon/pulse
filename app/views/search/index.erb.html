@@ -1,0 +1,13 @@
+<div class="section_header">
+  <h3 class="section_name">Results for: <%= params[:q] %></h3>
+  
+  <div class="section_extra"></div>
+  <div class="clear">&nbsp;</div>
+</div>
+
+<div id="search_type"> SHOW:&nbsp;
+  <%= link_to_if params[:t].present? && params[:t] != 'places', "PLACES", search_path(:q => params[:q]) %> | 
+  <%= link_to_if params[:t] != "users", "PEOPLE", search_path(:q => params[:q], :t => "users") %> | 
+  <%= link_to_if params[:t] != "activities", "ACTIVITIES", search_path(:q => params[:q], :t => "activities") %>
+</div>
+<%= render :partial => 'shared/object_collection', :locals => { :collection => @results } %>

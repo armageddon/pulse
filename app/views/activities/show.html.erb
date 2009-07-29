@@ -1,0 +1,6 @@
+<% content_for :c1 do %>
+  <%= render :partial => "activity_sidebar" %>
+<% end %>
+
+<h3 class="section">People Who Hang Here</h3>
+<%= render :partial => "shared/object_collection", :locals => { :collection => @activity_users } %>

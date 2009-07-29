@@ -1,0 +1,35 @@
+<h1 style="margin-bottom: 20px; border-bottom: 1px solid #ccc; margin-top: 10px;">Feedback</h1>
+<% if !params[:thanks] %>
+
+<% form_tag "/contact" do %>
+
+  <div style="margin-bottom: 20px;">
+  <h2 style="margin-bottom: 5px;">What is the one thing you love most about Pulse?</h2>
+  <%= text_area_tag "feedback[love]", nil, :rows => 5, :cols => 50 %>
+  </div>
+  
+  <div style="margin-bottom: 20px;">
+  
+  <h2 style="margin-bottom: 5px;">If you could change one thing about Pulse, what would it be?</h2>
+  <%= text_area_tag "feedback[change]", nil, :rows => 5, :cols => 50 %>  
+  
+  </div>
+  
+  <div style="margin-bottom: 20px;">
+  
+  <h2 style="margin-bottom: 5px;">What else would you like to tell us?</h2>
+  <%= text_area_tag "feedback[other]", nil, :rows => 5, :cols => 50 %>
+  </div>
+  
+  <div style="margin-bottom: 20px;">
+  
+  <h2 style="margin-bottom: 5px;">Please enter your email address if you don't mind us <br>following up - we really care about what you have to say....
+  </h2>
+  <%= text_area_tag "feedback[email]", nil, :rows => 5, :cols => 50 %>
+  </div>
+  <br>
+  <%= submit_button "Submit feedback" %>
+<% end %>
+<% else %>
+  <p>Thanks for the feedback. 
+<% end %>

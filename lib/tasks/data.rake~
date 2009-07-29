@@ -1,0 +1,207 @@
+namespace :data do
+  namespace :load do
+
+    task :prep do
+      require 'config/environment'      
+      require 'open-uri'
+      require 'activerecord'
+      require 'place'
+      require 'nokogiri'
+      require 'open-uri'
+      require 'fastercsv'
+      require 'faker'
+      require 'action_controller'
+      require 'action_controller/test_process.rb'
+    end
+
+    task :all => ["db:drop:all", "db:create:all", "db:migrate", :prep, :attributes, :williamsburg, :create_dustym_user] do
+      puts "Loaded all datasets"
+    end
+
+    task :classifications => [:prep] do
+      "first dates
+      wild first dates
+      making it clear you like someone
+      breaking up
+      meeting new people
+      meeting random hook-ups
+      hanging out with friends".split("\n").each {|c|
+        puts "Creating classification: #{c.strip}"
+        Classification.create(:name => c.strip)
+      }
+    end
+
+    task :williamsburg => :prep do
+      csv = FasterCSV.parse(open(File.join(RAILS_ROOT, 'db/all_places.csv')), :headers => true)
+      csv.each do |line|
+        p = Place.new
+        p.name = line['name']
+        p.address = line['address']
+        p.save
+        [1,2,3,4,5].each do |i|
+          if c = Category.find_by_name(line[i])
+            p.categories << c
+          end
+        end
+      end
+    end
+
+    task :attributes => :prep do
+      csv = FasterCSV.parse(open(File.join(RAILS_ROOT, 'db/attribute_weighting.csv')), :headers => false)
+
+      csv.each do |line|
+        p = Category.new
+        p.name = line[1]
+        p.type = line[0]
+        p.weight = line[2]
+        p.points = line[3]
+        p.save
+      end
+    end
+    
+    task :create_dustym_user => :prep do
+      u = User.new
+      u.first_name = 'dusty'
+      u.username = 'dustym'
+      u.password = 'hoowah'
+      u.password_confirmation = 'hoowah'
+      u.sex_preference = 2
+      u.sex = 1
+      u.age_preference = 1
+      u.age = 1
+      u.cell = '11111'
+      u.description = 'blah'
+      u.email = 'dustym@gmail.com'
+      u.timezone = ActiveSupport::TimeZone.all.first
+      u.save
+      u.register!
+      u.activate!
+    end
+    
+    task :redo => [ :prep, :williamsburg, :attributes, :create_dustym_user]
+    
+    task :randomize_users => :prep do
+      Event.delete_all
+      Favorite.delete_all
+      User.find(:all).each do |u|
+        places = Place.find(:all, :order => "random()", :limit => 5)
+
+        activities = Activity.find(:all, :order => "random()", :limit => 2)
+        
+        u.favorites = places.map {|p|
+          f = Favorite.new
+          f.place = p
+          f.description = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque est purus, facilisis ullamcorper vulputate in, vestibulum vel tellus.'
+          f
+        }
+        u.activities = activities
+
+        u.save
+        
+        10.times do
+          e = Event.new
+          e.when_time = Time.now + rand(20).days + rand(12).hours + rand(60).minutes
+          e.user = u
+          e.place = u.places.rand
+          e.save!
+        end
+      end
+    end
+    
+    task :remove_pictures => :prep do
+      UserPicture.destroy_all
+      PlacePicture.destroy_all
+      FileUtils.rm_rf File.join(RAILS_ROOT, 'public/users')
+      FileUtils.rm_rf File.join(RAILS_ROOT, 'public/places')      
+    end
+    
+    task :generate_invites => :prep do
+      u = User.find(1)
+      10.times do
+        i = Invitation.new
+        i.email = 'someemail@superannuated.com'
+        i.user = u
+        i.save!
+        puts i.token
+      end
+    end
+    
+    task :geolocate_places => :prep do
+      Place.all.each do |p|
+        p.geolocate
+        p.save
+      end
+    end
+    
+    task :migrate_activities => :prep do
+      connection = ActiveRecord::Base.connection
+      connection.execute("select id, name, weight from categories where place_type = 'Activity'").each do |r|
+        a = Activity.new(:name => r[1], :weight => r[2])
+        a.save!
+        
+        connection.execute("select categorizable_id from categorizations where category_id = #{r[0]}").each do |c|
+          UserActivity.create(:user_id => c[0], :activity_id => a.id)
+        end
+        
+        connection.execute("delete from categorizations where category_id = #{r[0]}")
+      end
+      
+    end
+    
+    task :load_place_photos => :prep do
+      Dir['/Users/dusty/Downloads/PULSE\ IMAGES/*/*'].each do |f|
+        orig = f.dup
+        f.downcase!
+        f.gsub!(/[_-]/, ' ')
+        f.gsub!('.jpg', '')
+        f = File.basename(f)
+        i = nil
+        soundex = Place.find(:all, :conditions => ["soundex(name) = soundex(?)", f])
+        levenshtein = Place.find(:all, :conditions => ["levenshtein(name, ?) < 4", f])
+        if soundex.length != 1
+          if  levenshtein.length > 1 || soundex.length > 1
+            puts "Select match for #{f}"
+            (levenshtein && soundex).each do |p|
+              puts "#{p.id} #{p.name}"
+            end
+            i = STDIN.gets
+            if i == 'c'
+              i = false
+            elsif !(levenshtein && soundex).uniq.map(&:id).include?(i.to_i)
+              i = false
+            end
+          elsif levenshtein.length == 1
+            i = Place.find(:first, :conditions => ["levenshtein(name, ?) < 4", f]).id
+          else
+            # puts "error: #{f}"
+            next
+          end
+        else
+          i = soundex.first.id
+        end
+        
+        if i
+          p = Place.find(i)
+          next if p.pictures.count > 0
+          p.pictures.create!(:uploaded_data => ActionController::TestUploadedFile.new(orig, "image/jpeg"))
+        end
+      end
+    end
+  
+    task :load_ldc => :prep do
+      FasterCSV.foreach('/Users/dusty/Code/freelance/pulse_ldc_data/LDC_DATA_JUN09.csv', :headers => true) do |line|
+        p = Place.new
+        p.name = line['b_NameFull']
+        p.address = [line['ad_StreetNumber'] + ' ' + line['ad_Street'], line['ad_City'], line['ad_Zip']].compact().join(', ')
+        p.location_id = 2
+        p.woeid = line['LDC_ID']
+        begin
+          p.save!
+        rescue Exception => e
+          puts p.address
+        end
+      end
+    end
+  end
+end
+

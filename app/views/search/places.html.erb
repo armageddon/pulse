@@ -1,0 +1,16 @@
+<div class="section_header">
+	<h3 class="section_name">Find places</h3>
+  
+  <div class="section_extra"></div>
+  <div class="clear">&nbsp;</div>
+</div>
+
+<% form_tag search_path, :method => :get, :id => "advanced_search" do %>
+  <%= hidden_field_tag "t", 'places' %>
+  <h3>Search for a place by keyword</h3>
+  <%= text_field_tag :q, nil, :id => "search_q_keyword", :class => "input_text" %>
+
+  <div id="advanced_search_submit">
+    <%= submit_button "Search" %>    
+  </div>
+<% end %>

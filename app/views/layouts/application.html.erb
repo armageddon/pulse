@@ -1,0 +1,46 @@
+<%= render :partial => "shared/header" %>
+    <div id="header">
+      
+      <div id="navigation">
+        <%= nav_links %>
+      </div>
+      
+      <div id="search">
+        <% form_tag '/search', :method => "get" do  %>
+          Search
+          <%= text_field_tag 'q', params[:q], :class => "input_text" %>
+          <%= submit_button 'GO' %>
+        <% end %>
+      </div>
+      
+      <div class="clear">&nbsp;</div>
+    </div>
+    
+    <div id="content">
+        <div id="content_logo">
+          <%= image_tag "logo_smaller.png" %>
+        </div>
+        
+        <div id="content_message">
+          <%= yield :message %>
+        </div>
+        
+        <div class="clear">&nbsp;</div>
+
+        <div id="c1" class="column">
+          <%= render :partial => "shared/user_sidebar" %>
+        </div>
+        
+        <div id="c2" class="column">
+          <%= yield %>
+        </div>
+        
+        <div id="c3" class="column">
+          <%= render :partial => "shared/map" %>
+        </div>
+        
+        <div class="clear">&nbsp;</div>
+    </div>
+    
+    <%= render :partial => "shared/footer" %>
+

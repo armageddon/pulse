@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <%= stylesheet_link_tag %w(960 reset text) %>
+  <%= javascript_include_tag "jquery-1.3.2" %>
+  
+  <style type="text/css" media="screen">
+    * { font-family: Georgia, Serif !important;}
+    a, a:visited, a:active { color: #990000; text-decoration: none;}
+    #stock { margin-top: 90px; position: relative;}
+    #logo { position: absolute; top: 195px; left: -20px; }
+    #copy { font-size: 2em; }
+    #more { font-size: .7em; margin-top: 30px;}
+    .input_text { font-size: .8em; padding: 4px; border: none; background-color: #f1f3f6; color: #666;}
+    #go { vertical-align: middle;}
+    #hello { margin-bottom: 0px;}
+    #session_form { }
+    #errors { font-size: .5em; text-align: right;}
+    /* REQUIRED BUTTON STYLES: */		
+    button { 
+    	position: relative;
+    	border: 0; 
+    	padding: 0;
+    	cursor: pointer;
+    	overflow: visible; /* removes extra side padding in IE */
+    }
+
+    button::-moz-focus-inner {
+    	border: none;  /* overrides extra padding in Firefox */
+    }
+
+    button span { 
+    	position: relative;
+    	display: block; 
+    	white-space: nowrap;	
+    }
+
+    @media screen and (-webkit-min-device-pixel-ratio:0) {
+    	/* Safari and Google Chrome only - fix margins */
+    	button span {
+    		margin-top: -1px;
+    	}
+    }
+    
+    
+    /* OPTIONAL BUTTON STYLES for applying custom look and feel: */		
+    button.submit { 
+    	padding: 0 0 0 10px; 
+    	margin-right:5px; 
+    	font-size: 12px; 
+    	text-align: center; 
+    	background: transparent url(/images/button_20_right.gif) no-repeat right; 
+    }
+
+    button.submit span {
+    	padding: 0 10px 0 10px; 
+    	height: 20px;
+    	line-height: 20px;
+    	font-family: Arial, Helvetica, Verdana !important;
+    	background: transparent url(/images/button_20_left.gif) no-repeat left top; 
+    	color:#fff; 
+    }
+    
+  </style>
+</head>
+
+<body>
+  
+  <div id="container" class="container_16">
+    <div class="grid_16" id="stock">
+      <%= image_tag "stock.jpg" %>
+      <div id="logo">
+        <%= image_tag "logo.png" %>
+      </div>
+    </div>
+    
+    <div class="clear"></div>
+    
+    <div class="grid_13 omega prefix_3" id="copy">
+      <p id="hello"> Hello and welcome to Pulse. </p>
+        <% form_tag session_path , :id => 'session_form' do -%>
+        Have an account? Sign in:
+        <%= text_field_tag 'login', @login, :class => "input_text", :value => "Username", :size => "10" %>
+        <%= password_field_tag 'password', nil, :size => "10", :class => "input_text", :style => "display: none;" %>
+        <input type="text" class="input_text" size="10" value="Password" id="password_holder"/>
+        <%= submit_button "GO" %>
+        <% end %>
+        
+        <% form_tag redeem_path(@token) , :id => 'redeem_form', :style => "display: none;", :method => "GET" do -%>
+        Please enter your invitation code:
+        <%= text_field_tag 'token', @token, :class => "input_text", :value => "Invite Code", :size => "10" %>
+        <%= submit_button "GO" %>
+        <% end %>
+
+      <% if flash[:error] %>        
+        <p id="errors">
+          <%= flash[:error] %>
+        </p>
+      <% end %>
+        
+      <p id="more"><%= link_to "Redeem an invitation", "#", :id => "redeem" %> <%= link_to "Login in", "#", :id => "show_login", :style => "display: none;" %> or <%= link_to "find out more", '#' %></p>
+    </div>
+  </div>
+</body>
+</html>
+
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function() {
+    
+    $('#login, #token').focus(function() {
+      <%# password failure/autocomplete %>
+      <% if @login.present? %>      
+        $.data(this, 'clicked', true);
+      <% end %>
+    
+      if (!$.data(this, 'clicked')) {
+        $(this).val('');
+        $.data(this, 'clicked', true);
+      }
+    });
+    
+    $('#password_holder').focus(function() {
+      $(this).hide();
+      $('#password').show();
+      $('#password').focus();
+    });
+    
+    $('#redeem, #show_login').click(function() {
+      $('#redeem, #show_login').toggle();
+      $("#session_form, #redeem_form").toggle();
+      return false;
+    })
+    
+  });
+</script>

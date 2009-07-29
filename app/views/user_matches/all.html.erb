@@ -1,0 +1,6 @@
+<% @users.each do |u| %>
+  <p>
+    <h4><%= u.username %></h4>
+    Matches: <%= MatchSet.new(u).matches.map(&:username).join(', ') %>
+  </p>
+<% end %>

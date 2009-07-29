@@ -1,0 +1,12 @@
+Error code location on splash screen.
+Add cities table, column to user.
+Focus properties being cleared on the new screen.
+
+@other_user activity map when viewing their messages
+
+Photo management
+Smart have you considered
+Search
+Profile sidebar
+Pagination
+Match visibility

@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <%= stylesheet_link_tag %w(960 reset text signup) %>
+  <%= javascript_include_tag "jquery-1.3.2", 'jquery.autocomplete.js', 'jquery.charcounter.js', 'jquery.form.js', 'application', 'signup' %>
+  <%= javascript_tag "var AUTH_TOKEN = #{form_authenticity_token.inspect};" if protect_against_forgery? %>
+</head>
+
+<body>
+  <div id="container" class="container_16">
+    <div class="grid_4 alpha" id="logo">
+        <%= image_tag "logo.png" %>
+    </div>
+    
+    <div class="grid_12 omega" id="copy">
+      Welcome to Hello Pulse. We are using technology to build a totally new experience in online dating. Please complete the info below to get access to the site. Don’t be shy.
+    </div>
+
+    <div class="clear"></div>
+    
+
+    <div id="step_1" class="grid_4 prefix_3 alpha">
+      <div id="step_1_finished" style="display: none;">
+        Nice job! We've sent you an email with a link we need you to visit in order to confirm your account.
+        But don't worry about that right now. Instead go ahead and fill out the info to the right. Don't forget to add a photo!
+      </div>
+      
+    <% form_for @user, :url => account_path do |f| %>
+      <p>
+        <%= text_field_tag 'user[first_name]', @user.first_name || 'First name', :class => 'input_text' %><br />
+        <span class="error"></span>
+      </p>
+
+      <p>
+        <%= text_field_tag 'user[username]', @user.username || "Username", :class => 'input_text' %><br />
+        <span class="error"></span>
+      </p>
+
+      <p>
+        <%= text_field_tag 'password_holder', 'Password', :class => 'input_text' -%>
+        <%= f.password_field :password, :class => 'input_text', :style => 'display: none;' -%>
+        <span class="error"></span>
+      </p>
+
+      <p>
+        <%= text_field_tag 'password_confirmation_holder', 'Password confirmation', :class => 'input_text' -%>
+        <%= f.password_field :password_confirmation, :class => 'input_text', :style => 'display: none;' -%>
+        <span class="error"></span>
+      </p>
+
+      <p>
+        <%= text_field_tag 'user[email]', @user.email || 'Email address', :class => 'input_text' %><br />
+        <span class="error"></span>
+      </p>
+      
+      <div class='fancy_select'>
+        <%= hidden_field_tag 'user[location_id]', "" %>
+        <div class="fancy_select_target">
+          Location
+        </div>
+        <div class="fancy_select_options">
+          <% Location.find(:all).each do |l| %>
+            <p><%= l.name %><span class="hidden_value"><%= l.id %></span></p>
+          <% end %>
+        </div>
+        <div class="clear">&nbsp;</div>
+      </div>
+      
+      <div id="location_error">
+        <span class="error"></span>
+      </div>
+
+      <br>
+      
+      <div>
+        <%= image_submit_tag 'save_info.png', :height => "20px", :width => "70px" %>
+      </div>
+    <% end %>
+    </div>
+    
+
+    
+    <div id="step_2" class="grid_4" style="display: none;" >
+      
+      <div id="step_2_finished" style="display: none;">
+        Looking good. One last step. We need you to add one activity that you like to do or place you like to go. 
+        This helps us get a better understanding of the things you like and we can begin matching you with
+        to other people.
+      </div>
+      
+      <div id="step_2_container">
+        <div id="upload_container" style="display: none;">
+        <% form_tag "/account/pictures", :method => "POST", :multipart => true, :target => "image_upload", :id => "photo_upload" do %>
+        <input type="file" id="photo_uploaded_data" name="user_picture[uploaded_data]" style="position: absolute;">
+        <% end %>
+
+        </div>
+      
+        <div id="add_photo">Add photo</div>
+      
+        <% form_tag '/account', :method => "put", :id => "details_update" do %>
+        <div id="description">
+          <%= text_area_tag 'user[description]', 'Tell us about yourself', :id => "user_description", :class => "word_count" %>
+        </div>
+      
+        <div class='fancy_select'>
+          <%= hidden_field_tag 'user[sex]' %>
+          <div class="fancy_select_target">Select a gender</div>
+          <div class="fancy_select_options">
+            <p>Male <span class="hidden_value"><%= User::Sex::MALE %></span></p>
+            <p>Female <span class="hidden_value"><%= User::Sex::FEMALE %></span></p>
+          </div>
+        </div>
+      
+        <div class='fancy_select'>
+          <%= hidden_field_tag 'user[age]' %>
+          <div class="fancy_select_target">Your age</div>
+          <div class="fancy_select_options">
+            <% age_options.each do |op| %>
+            <p><%= op[0] %> <span class="hidden_value"><%= op[1] %></span></p>
+            <% end %>
+          </div>
+        </div>
+
+        <div class='fancy_select'>
+          <%= hidden_field_tag 'user[sex_preference]' %>
+          <div class="fancy_select_target">Looking for</div>
+          <div class="fancy_select_options">
+            <p>Male <span class="hidden_value"><%= User::Sex::MALE %></span></p>
+            <p>Female <span class="hidden_value"><%= User::Sex::FEMALE %></span></p>
+            <p>Both <span class="hidden_value"><%= User::Sex::BOTH %></span></p>          
+          </div>
+        </div>
+      
+        <div class='fancy_select'>
+          <%= hidden_field_tag 'user[age_preference]' %>
+          <div class="fancy_select_target">Around the age</div>
+          <div class="fancy_select_options">
+            <% age_options.each do |op| %>
+            <p><%= op[0] %> <span class="hidden_value"><%= op[1] %></span></p>
+            <% end %>
+          </div>
+        </div>
+        <div>
+
+        <div class="image_submit">
+          <%= image_submit_tag 'save_info.png', :height => "20px", :width => "70px" %>
+        </div>
+      </div>
+      </div>
+    </div>
+    
+    <% end %>
+    
+    <div id="step_3" class="grid_4 omega" style="display: none;">
+      <div id="step_3_finished" style="display: none;">
+        Awesome. You are done for now. Just check your email and confirm your account and you can <%= link_to 'login', '/' %>
+      </div>
+      
+      <div id="step_3_container">
+      <% form_tag "#", :id => "pa_select" do %>
+      <%= hidden_field_tag 'pa[id]', '' %>
+      <%= hidden_field_tag 'pa[type]', '' %>
+      <div>
+        <%= text_field_tag 'pa_name_holder', 'Add a place or activity', :class => "input_text", :id => "pa_name" %>
+      </div>
+
+      <div id="pdescription">
+        <%= text_area_tag 'pa[description]', 'Tell us everything important about it in less than a text message', :id => "pa_description", :class => "word_count" %>
+      </div>
+      
+      <div class="image_submit">
+        <%= image_submit_tag 'save_info.png', :height => "20px", :width => "70px", :id => "pa_save" %>
+      </div>
+      
+      <% end %>
+      </div>
+    </div>
+    
+    <div class="clear">&nbsp;</div>
+  </div>
+    
+</body>
+</html>
