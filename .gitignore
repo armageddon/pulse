@@ -7,3 +7,5 @@ public/users/**/*
 public/places/**/*
 db/sphinx
 public/system
+log/*.pid
+config/*.sphinx.conf
