@@ -16,6 +16,7 @@ Rails::Initializer.run do |config|
   config.gem "chronic"
   config.gem 'rubyist-aasm', :lib => 'aasm', :source => 'http://gems.github.com'
   config.gem 'faker'
+  config.gem "right_aws"
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named

@@ -9,7 +9,11 @@ class Place < ActiveRecord::Base
 
   has_attached_file :icon, 
     :styles => { :thumb => "75x75#", :profile => "160x160#" },
-    :path => ":rails_root/public/system/icons/places/:id/:id_:style.:extension"
+    :storage => :s3,
+    :s3_credentials => File.join(Rails.root, "config", "amazon_s3.yml"),
+    :path => "places/:id/:id_:style.:extension"
+    # :path => ":rails_root/public/system/icons/places/:id/:id_:style.:extension"
+
 
   belongs_to :location
   has_many :favorites
