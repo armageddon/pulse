@@ -29,7 +29,8 @@
     var bounds = new GLatLngBounds(sw,ne);
     map.setCenter(bounds.getCenter(), map.getBoundsZoomLevel(bounds));
   <% else %>
-    map.setCenter(new GLatLng(40.7141,-73.9543), 13);
+	<% @latitude ||= 40.7141; @longitude ||= -73.9543 %>
+    map.setCenter(new GLatLng(<%= @latitude %>, <%= @longitude %>), 13);
   <% end %>
 
   var customUI = map.getDefaultUI();

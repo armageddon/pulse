@@ -10,3 +10,11 @@ Search
 Profile sidebar
 Pagination
 Match visibility
+
+
+-- CORY --
+questions: Where is the lat/lng data for the places?
+
+-- for maps: use common sense -- show a dot for the first listed place on the root page, with other dots of the other places if possible
+-- maps: on generic places, just show a map of London
+
