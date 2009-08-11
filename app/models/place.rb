@@ -23,9 +23,13 @@ class Place < ActiveRecord::Base
 
   def geolocate
     geocoder = Graticule.service(:yahoo).new "nkQVDsTV34FGqxIZ1GbIFRE5uat12NCKWXQxmy_MWgwSDGpB_vo0bHbEEf86ta54vbAktQw-"
-    location = geocoder.locate address
+    location = geocoder.locate(address_for_geocoder)
     self.latitude = location.latitude
     self.longitude = location.longitude
+  end
+  
+  def address_for_geocoder
+    "#{address}, #{city} #{zip}"
   end
 
   def upcoming_events
