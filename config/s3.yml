@@ -1,7 +1,7 @@
 development:
-  bucket: com-pulse-places
-  access_key_id: 0CVE2XVHB1F3BHJ0QEG2
-  secret_access_key: fTJo0cjkPm5L2EO4vX3IyHo6w89m88f0u+gMoPjb
+  bucket: pulse-staging
+  access_key_id: AKIAITYZBDBZ4D6DHJ2A
+  secret_access_key: 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
   
 test:
   bucket_name: appname_test
@@ -9,6 +9,6 @@ test:
   secret_access_key: 
 
 production:
-  bucket_name: appname
-  access_key_id: 
-  secret_access_key: 
+  bucket: pulse-staging
+  access_key_id: AKIAITYZBDBZ4D6DHJ2A
+  secret_access_key: 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

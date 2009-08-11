@@ -12,8 +12,6 @@ class Place < ActiveRecord::Base
     :storage => :s3,
     :s3_credentials => File.join(Rails.root, "config", "s3.yml"),
     :path => "places/:id/:id_:style.:extension"
-    # :path => ":rails_root/public/system/icons/places/:id/:id_:style.:extension"
-
 
   belongs_to :location
   has_many :favorites

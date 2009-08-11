@@ -38,4 +38,9 @@ Rails::Initializer.run do |config|
   # config.i18n.default_locale = :de
 end
 
-GOOGLE_MAPS_API_KEY = 'ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog'
+if Rails.env == "production"
+  # http://67.23.21.94/
+  GOOGLE_MAPS_API_KEY = 'ABQIAAAAxWNpxzcfyhn7zYII6ArMwBTuVtZQfMdAwq5mbuzuAdL882aPpxTzrnL-bVk8wVuKyBuHCsbsgUxeJQ'
+else
+  GOOGLE_MAPS_API_KEY = 'ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog'
+end
