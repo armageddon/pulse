@@ -1,9 +1,11 @@
 <% content_for :message do %>
+  <% if !logged_in? || (logged_in? && current_user != @user) %>
     <h1>
     Here is <%= @user.first_name %>'s profile. Check out places <%= sex_to_s @user.sex, :male => 'he', :female => 'she' %> likes 
     and see if you have anything in common. If you like, <%= link_to "send #{sex_to_s @user} a message", account_message_path(@user) %>.
     Or you can go <%= link_to "back to your matches", account_matches_path %>.
     </h1>
+  <% end %>
 <% end %>
 
 <% content_for :c1 do %>

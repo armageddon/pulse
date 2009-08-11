@@ -1,5 +1,6 @@
 class PlacesController < ApplicationController
-
+  before_filter :login_required
+  
   def index
     @places = Places.find(:all)
   end

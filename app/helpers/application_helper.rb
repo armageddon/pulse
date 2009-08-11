@@ -1,6 +1,8 @@
 module ApplicationHelper
 
   def nav_links
+    return unless logged_in?
+    
     [
       content_tag(:span, :class => nav_link_class("users")) { link_to "Home", root_path },
       content_tag(:span, :class => nav_link_class("user_matches")) { link_to "My matches", account_matches_path },
@@ -8,7 +10,6 @@ module ApplicationHelper
       content_tag(:span, :class => nav_link_class("profile")) { link_to "My profile", profile_path(current_user) },
       content_tag(:span, :class => "nav_link") { link_to "Logout", logout_path }
     ].join("&nbsp;")
-
   end
 
   def nav_link_class(page)

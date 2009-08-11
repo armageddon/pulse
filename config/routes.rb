@@ -39,7 +39,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resource :session
 
-  map.root :controller => "users", :action => "show"
+  map.root :controller => "sessions", :action => "new"
 
   # Motherload, catchall.
   map.profile "/:id", :controller => 'profiles', :action => 'show'

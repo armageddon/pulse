@@ -1,6 +1,10 @@
 class SessionsController < ApplicationController
-
+  layout nil
+  
   def new
+    if logged_in?
+      return redirect_to(:controller => "users", :action => "show") 
+    end
   end
 
   def create
