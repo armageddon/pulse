@@ -1,6 +1,6 @@
 namespace :pictures do
   task :upload_to_s3 => :environment do
-    STDOUT.sync
+    STDOUT.sync = true
     
     class Net::HTTP
       alias_method :old_initialize, :initialize
@@ -10,29 +10,33 @@ namespace :pictures do
         @ssl_context.verify_mode = OpenSSL::SSL::VERIFY_NONE
       end
     end
-    base_file_paths = ["/Users/coryforsyth/Desktop/images_part1/",
-                       "/Users/coryforsyth/Desktop/images_part2/",
-                       "/Users/coryforsyth/Desktop/images_part3/"]
+    base_file_paths = ["/Users/cory/Desktop/images_part1/",
+                       "/Users/cory/Desktop/images_part2/",
+                       "/Users/cory/Desktop/images_part3/"]
     
-    Place.find_each(:conditions => {:uploaded_picture_to_s3 => false}) do |place|
+    Place.find_each(:conditions => {:attempted_s3_upload => false}) do |place|
+      place.attempted_s3_upload = true
       puts "#{place.id}"
       filepath = ""
+      found_file = false
       base_file_paths.each do |base_file_path|
         filepath = base_file_path + place.import_id + ".jpg"
-        break if File.exist?(filepath)
+        if File.exist?(filepath)
+          found_file = true
+          break
+        end
       end
-      if File.exist?(filepath)
-        file = File.open(filepath)
-        place.icon = file
-        place.uploaded_picture_to_s3 = true
-        place.save!
-        file.close
-        print "."
+      if found_file
+        File.open(filepath) do |file|
+          place.icon = file
+          place.uploaded_picture_to_s3 = true
+        end
       else
-        place.icon = nil
-        place.save!
+        place.uploaded_picture_to_s3 = false
         puts "No icon for place #{place.id} #{place.name}"
       end
+      
+      place.save!
     end
   end
 end

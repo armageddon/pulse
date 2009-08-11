@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090622045848) do
+ActiveRecord::Schema.define(:version => 20090810155908) do
 
   create_table "activities", :force => true do |t|
     t.string   "name"
@@ -60,6 +60,33 @@ ActiveRecord::Schema.define(:version => 20090622045848) do
     t.datetime "updated_at"
   end
 
+  create_table "ldc", :id => false, :force => true do |t|
+    t.string "LDC_ID",             :limit => 512
+    t.string "b_NameFull",         :limit => 512
+    t.string "ad_Building_Unit",   :limit => 512
+    t.string "ad_Building",        :limit => 512
+    t.string "ad_Building_careof", :limit => 512
+    t.string "ad_StreetNumber",    :limit => 512
+    t.string "ad_Street",          :limit => 512
+    t.string "ad_Zip",             :limit => 512
+    t.string "area_name",          :limit => 512
+    t.string "ad_City",            :limit => 512
+    t.string "ad_county",          :limit => 512
+    t.string "bus_telephone",      :limit => 512
+    t.string "website_name",       :limit => 512
+    t.string "b_multipleID",       :limit => 512
+    t.string "b_multipleName",     :limit => 512
+    t.string "cat_ID1",            :limit => 512
+    t.string "cat_Name1",          :limit => 512
+    t.string "cat_ID2",            :limit => 512
+    t.string "cat_Name2",          :limit => 512
+    t.string "transport_name",     :limit => 512
+    t.string "transport_carrier",  :limit => 512
+    t.text   "export_description"
+    t.string "feature_names",      :limit => 512
+    t.string "feature_price",      :limit => 512
+  end
+
   create_table "locations", :force => true do |t|
     t.string "name"
   end
@@ -98,6 +125,9 @@ ActiveRecord::Schema.define(:version => 20090622045848) do
     t.string   "icon_content_type"
     t.string   "icon_file_size"
     t.string   "icon_updated_at"
+    t.boolean  "uploaded_picture_to_s3", :default => false
+    t.boolean  "attempted_geocode",      :default => false
+    t.boolean  "attempted_s3_upload",    :default => false
   end
 
   create_table "user_activities", :force => true do |t|

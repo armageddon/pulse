@@ -14,7 +14,7 @@ namespace :geocode do
       else
         print "."
       end
-      sleep 0.33
+      sleep 0.34
     end
   end
 end
