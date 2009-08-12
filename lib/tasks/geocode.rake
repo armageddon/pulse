@@ -6,14 +6,11 @@ namespace :geocode do
         place.attempted_geocode = true
         place.geolocate
       rescue => e
-        puts "Error geocoding place #{place.id} #{place.name} -- #{e}"
+        puts "#{place.id} #{e}"
       end
       place.save!
-      if place.latitude.nil? || place.longitude.nil?
-        puts "Failed to geocode #{place.id} #{place.name}"
-      else
-        print "."
-      end
+
+      puts place.id
       sleep 0.34
     end
   end

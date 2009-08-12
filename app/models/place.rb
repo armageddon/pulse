@@ -22,14 +22,15 @@ class Place < ActiveRecord::Base
   # before_create :geolocate
 
   def geolocate
-    geocoder = Graticule.service(:yahoo).new "nkQVDsTV34FGqxIZ1GbIFRE5uat12NCKWXQxmy_MWgwSDGpB_vo0bHbEEf86ta54vbAktQw-"
+    # geocoder = Graticule.service(:yahoo).new "nkQVDsTV34FGqxIZ1GbIFRE5uat12NCKWXQxmy_MWgwSDGpB_vo0bHbEEf86ta54vbAktQw-"
+    geocoder = Graticule.service(:google).new "ABQIAAAAnfs7bKE82qgb3Zc2YyS-oBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxSySz_REpPq-4WZA27OwgbtyR3VcA"
     location = geocoder.locate(address_for_geocoder)
     self.latitude = location.latitude
     self.longitude = location.longitude
   end
   
   def address_for_geocoder
-    "#{address}, #{city} #{zip}"
+    "#{address}, #{city}, #{zip}, UK"
   end
 
   def upcoming_events

@@ -16,6 +16,7 @@ namespace :pictures do
     
     Place.find_each(:conditions => {:attempted_s3_upload => false}) do |place|
       place.attempted_s3_upload = true
+      place.save!
       puts "#{place.id}"
       filepath = ""
       found_file = false
@@ -27,6 +28,7 @@ namespace :pictures do
         end
       end
       if found_file
+	puts filepath
         File.open(filepath) do |file|
           place.icon = file
           place.uploaded_picture_to_s3 = true
