@@ -1,4 +1,6 @@
 class PagesController < ApplicationController
+  layout "one_column"
+  
   def about
   end
   
@@ -9,11 +11,8 @@ class PagesController < ApplicationController
       redirect_to '/contact?thanks=true'
       return
     end
-    
-    render :layout => "one_column"
   end
   
   def terms
-    render :layout => "one_column"
   end
 end
