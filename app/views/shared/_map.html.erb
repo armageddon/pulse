@@ -31,8 +31,9 @@
   <% else %>
 	<% @latitude ||= 40.7141; @longitude ||= -73.9543 %>
 	  <% if @place %>
-	    <% #@latitude = @place.latitude %>
-	    <% #@longitude = @place.longitude %>
+	    <% @latitude = @place.latitude %>
+	    <% @longitude = @place.longitude %>
+      map.addOverlay(new GMarker(new GLatLng(<%= @latitude %>, <%= @longitude %>), { icon: dotIcon }));
 	  <% end %>
 	
     map.setCenter(new GLatLng(<%= @latitude %>, <%= @longitude %>), 13);
