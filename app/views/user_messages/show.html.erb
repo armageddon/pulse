@@ -1,6 +1,3 @@
-<% content_for :message do %>
-<% end %>
-
 <h3 class="section">My messages with <%= @other_user.username %></h3>
 <% if @messages.length > 0 %>
   <%= render :partial => "message", :collection => @messages %>
