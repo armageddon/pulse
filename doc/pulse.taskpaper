@@ -1,15 +1,17 @@
 - google maps should show correct locations @done
 - image w/ listings (in progress) @done
 - "edit info" link is broken @done
-- "find places and people" doesn't seem to be working (this seems to be working now)
+- "find places and people" doesn't seem to be working (this seems to be working now) @done
 - About Us isn't on site @done
-- Font size is off in "My Messages" (made it the same size as the text at the top of the 'my matches' page)
-- calendar listing is displaying past dates with "will be at"
+- Font size is off in "My Messages" (made it the same size as the text at the top of the 'my matches' page) @done
 - image upload for users is missing @done
-- people who hang here on the place page is not populated -- the code right now has this showing you only other users who are potential matches for you (their "looking for" sex matches your sex)
+- people who hang here on the place page is not populated -- the code right now has this showing you only other users who are potential matches for you (their "looking for" sex matches your sex) @done
 - "send a message" link disabled if you are looking at your own page @done
-- when clicking links on the left the overlay appears for a second or so
 - about us text should be on a static page that doesn't require login @done
+
+- prepare beta invite code
 - add ability to work in Dusty's original matching algorithm
 - fill in missing pictures (waiting on jane/rob for data)
 - google maps should show correct locations for multiple places on a page
+- calendar listing is displaying past dates with "will be at"
+- when clicking links on the left the overlay appears for a second or so
