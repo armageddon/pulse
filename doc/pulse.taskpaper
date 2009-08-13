@@ -15,3 +15,4 @@
 - google maps should show correct locations for multiple places on a page
 - calendar listing is displaying past dates with "will be at"
 - when clicking links on the left the overlay appears for a second or so
+- fix "missing" icon for a place w/ no icon
