@@ -16,9 +16,10 @@
 - add ability to work in Dusty's original matching algorithm @done
 - calendar listing is displaying past dates with "will be at" @done
 - prepare beta invite code -- pulse12345 @done
+- fix "missing" icon for a place w/ no icon @done
+
 
 - when clicking links on the left the overlay appears for a second or so
-- fix "missing" icon for a place w/ no icon
 
 - fix email address information -- should send from the correct location
 - the activities thing is a little messed up
