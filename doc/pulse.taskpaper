@@ -22,3 +22,4 @@
 
 - fix email address information -- should send from the correct location
 - the activities thing is a little messed up
+- lightweight admin section that shows all logged in users

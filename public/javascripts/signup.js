@@ -231,8 +231,8 @@ $(document).ready(function() {
       password.nextAll('span.error').text('Your password and password confirmation do not match.');
       error = true;
     }
-
-    if (location.val() == '' || location.val() != '2') {
+    
+    if (location.val() == '' || location.val() != '1') {
       error = true;
       location.parent().addClass('invalid');
       $('#location_error span.error').text('The service is currently in beta and only serving London.');
