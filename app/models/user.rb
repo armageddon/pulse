@@ -36,7 +36,8 @@ class User < ActiveRecord::Base
 
   has_attached_file :icon, 
         :styles => { :thumb => "75x75#", :profile => "160x160#", :large => "640x480>" }, 
-        :url => "/:class/:attachment/:id/:style_:filename"
+        :url => "/:class/:attachment/:id/:style_:filename",
+        :default_url => "/images/:style/missing.png"
 
   belongs_to :location
 
