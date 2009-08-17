@@ -66,7 +66,8 @@
   </div>
 
   <div class="ctext">
-    <%= e.user == current_user ? 'You' : e.user.first_name %> will be at
+    <%= e.user == current_user ? 'You' : e.user.first_name %> 
+    <%= e.when_time <= Time.now ? "was at" : "will be at" %>
     <%= e.place.name %> <br />
     <%= e.when_time.strftime('%I:%M%p') %>
   </div>
