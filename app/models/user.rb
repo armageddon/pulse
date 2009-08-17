@@ -160,6 +160,78 @@ class User < ActiveRecord::Base
       id
     ], :include => [:favorites, :activities], :page => page, :per_page => per_page)
   end
+  
+  # This is the a second, more complex, version of the matche-selection algorithm. It can be swapped in for
+  # the simpler one if there are enough users in the system that it would yield some actual results
+  def matches_v2
+    places     = self.places.find(:all, :include => [:categories])
+    place_cats = places.map(&:categories).flatten.map(&:id).flatten
+    place_cats = place_cats.select {|i| place_cats.select {|a| a == i}.length > 2 }
+
+
+    activities = self.activities
+    # activities = self.favorites.map(&:activity).map(&:id)
+
+    if places.empty?
+      users_by_place = []
+    else
+      users_by_place = User.find_by_sql("
+        SELECT users.id as id, count(favorites.place_id) as place_count FROM users, favorites
+        WHERE favorites.place_id in (#{places.map(&:id).join(',')})
+        AND favorites.user_id = users.id
+        GROUP BY users.id
+      ")
+    end
+    
+    if activities.empty?
+      activity_users = []
+    else
+      activity_users = User.find(:all,
+        :select  => "users.id, count(categories.id) as activity_count, sum(categories.weight) as all_points",
+        :joins => :activities,
+        :conditions => ['categories.id in (?)', activities.map(&:id)],
+        :group => "users.id"
+      )
+    end
+    
+    if place_cats.empty?
+      cat_users = []
+    else
+      cat_users = User.find_by_sql(%Q(
+      SELECT users.id, categories.id AS category_id, count(categories.id), sum(categories.points) FROM "users" 
+        INNER JOIN "favorites" ON ("users"."id" = "favorites"."user_id") 
+        INNER JOIN "places" ON ("places"."id" = "favorites"."place_id") 
+        INNER JOIN "categorizations" ON ("places"."id" = "categorizations"."categorizable_id" AND "categorizations"."categorizable_type" = E'Place') 
+        INNER JOIN "categories" ON ("categories"."id" = "categorizations"."category_id")
+        WHERE categories.id in (#{place_cats.join(',')})
+        GROUP BY categories.id, users.id
+      ))
+    end
+
+    matched_user_ids = users_by_place.select {|u| u.place_count.to_i >= 2 } |
+      activity_users.select {|u| u.all_points.to_f >= 8.5 } |
+      activity_users.select {|u| u.activity_count.to_i >= 2 } |
+      cat_users.select {|u| u.count.to_i > 2 } |
+      (users_by_place.select {|u| u.place_count.to_i >= 2 } & cat_users.select {|u| u.count.to_i >= 1 } ) |
+      (activity_users.select {|u| u.activity_count.to_i >= 2 } & cat_users.select {|u| u.count.to_i >= 1 } ) |
+      (activity_users.select {|u| u.activity_count.to_i >= 1 } & users_by_place.select {|u| u.place_count.to_i >= 1 })
+
+    return [] if matched_user_ids.empty?
+
+    User.find(:all, :conditions => [
+      "sex = ? AND sex_preference = ? AND age = ? AND age_preference = ? AND id != ? AND id IN (?)",
+      self.sex_preference,
+      self.sex,
+      self.age_preference,
+      self.age,
+      self.id,
+      matched_user_ids.map(&:id)
+    ])
+  end
+  
+  def matches_v3
+    
+  end
 
   def unread_count
     @unread_count ||= messages.count(:conditions => "read_at IS NULL")
