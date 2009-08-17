@@ -15,8 +15,7 @@ class UsersController < ApplicationController
 
   def redeem
     logout_keeping_session!
-    @invitation = Invitation.find_by_token(params[:token])
-    if @invitation
+    if params[:invite_code] == "pulse12345"
       @user = User.new
       render :action => :new, :layout => false
     else

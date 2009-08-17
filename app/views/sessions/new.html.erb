@@ -88,9 +88,9 @@
         <%= submit_button "GO" %>
         <% end %>
         
-        <% form_tag redeem_path(@token) , :id => 'redeem_form', :style => "display: none;", :method => "GET" do -%>
+        <% form_tag redeem_path, :id => 'redeem_form', :style => "display: none;" do -%>
         Please enter your invitation code:
-        <%= text_field_tag 'token', @token, :class => "input_text", :value => "Invite Code", :size => "10" %>
+        <%= text_field_tag 'invite_code', params[:invite_code], :class => "input_text", :value => "Invite Code", :size => "10" %>
         <%= submit_button "GO" %>
         <% end %>
 

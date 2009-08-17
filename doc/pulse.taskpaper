@@ -14,8 +14,11 @@
 
 - google maps should show correct locations for multiple places on a page @done
 - add ability to work in Dusty's original matching algorithm @done
+- calendar listing is displaying past dates with "will be at" @done
+- prepare beta invite code -- pulse12345 @done
 
-- prepare beta invite code
-- calendar listing is displaying past dates with "will be at"
 - when clicking links on the left the overlay appears for a second or so
 - fix "missing" icon for a place w/ no icon
+
+- fix email address information -- should send from the correct location
+- the activities thing is a little messed up

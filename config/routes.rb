@@ -6,7 +6,7 @@ ActionController::Routing::Routes.draw do |map|
   map.signup '/signup', :controller => 'users', :action => 'new'
   map.signup '/activate/:activation_code', :controller => 'users', :action => 'activate'
   map.inbox '/account/inbox', :controller => 'user_messages', :action => 'index'
-  map.redeem  '/redeem/:token', :controller => "users", :action => 'redeem'
+  map.redeem  '/redeem', :controller => "users", :action => 'redeem'
   map.search '/search', :controller => "search", :action => 'index'
   map.about '/about', :controller => "pages", :action => 'about'
   map.contact '/contact', :controller => "pages", :action => 'contact'
