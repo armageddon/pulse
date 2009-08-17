@@ -29,11 +29,17 @@
     var bounds = new GLatLngBounds(sw,ne);
     map.setCenter(bounds.getCenter(), map.getBoundsZoomLevel(bounds));
   <% else %>
-	<% @latitude ||= 40.7141; @longitude ||= -73.9543 %>
+	<% @latitude ||= 51.500152; @longitude ||= -0.126236 %> 
 	  <% if @place %>
 	    <% @latitude = @place.latitude %>
 	    <% @longitude = @place.longitude %>
       map.addOverlay(new GMarker(new GLatLng(<%= @latitude %>, <%= @longitude %>), { icon: dotIcon }));
+	  <% elsif @places && !@places.empty? %>
+      <% @latitude = @places.first.latitude %>
+      <% @longitude = @places.first.longitude %>
+      <% @places.each do |place| %>
+        map.addOverlay(new GMarker(new GLatLng(<%= place.latitude %>, <%= place.longitude %>), { icon: dotIcon }));
+      <% end %>
 	  <% end %>
 	
     map.setCenter(new GLatLng(<%= @latitude %>, <%= @longitude %>), 13);

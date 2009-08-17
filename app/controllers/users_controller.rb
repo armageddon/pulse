@@ -6,8 +6,7 @@ class UsersController < ApplicationController
   before_filter :login_required, :except => [:redeem, :create]
 
   def show
-    if !logged_in?
-    end
+    @places = current_user.suggested_places
   end
 
   def new
