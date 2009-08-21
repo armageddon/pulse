@@ -12,12 +12,12 @@ namespace :pictures do
     end
     base_file_paths = ["/Users/cory/Desktop/images_part1/",
                        "/Users/cory/Desktop/images_part2/",
-                       "/Users/cory/Desktop/images_part3/"]
+                       "/Users/cory/Desktop/images_part3/",
+                       "/Users/cory/Desktop/images_part4/"]
     
     Place.find_each(:conditions => {:attempted_s3_upload => false}) do |place|
       place.attempted_s3_upload = true
       place.save!
-      puts "#{place.id}"
       filepath = ""
       found_file = false
       base_file_paths.each do |base_file_path|
@@ -28,7 +28,7 @@ namespace :pictures do
         end
       end
       if found_file
-	puts filepath
+        puts "Found file for place id #{place.id}: #{filepath}"
         File.open(filepath) do |file|
           place.icon = file
           place.uploaded_picture_to_s3 = true

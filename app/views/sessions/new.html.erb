@@ -90,7 +90,7 @@
         
         <% form_tag redeem_path, :id => 'redeem_form', :style => "display: none;" do -%>
         Please enter your invitation code:
-        <%= text_field_tag 'invite_code', params[:invite_code], :class => "input_text", :value => "Invite Code", :size => "10" %>
+        <%= text_field_tag 'invite_code', nil, :class => "input_text", :value => "Invite Code", :size => "10" %>
         <%= submit_button "GO" %>
         <% end %>
 
@@ -109,7 +109,7 @@
 <script type="text/javascript" charset="utf-8">
   $(document).ready(function() {
     
-    $('#login, #token').focus(function() {
+    $('#login, #invite_code').focus(function() {
       <%# password failure/autocomplete %>
       <% if @login.present? %>      
         $.data(this, 'clicked', true);

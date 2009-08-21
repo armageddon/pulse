@@ -53,8 +53,8 @@ $(document).ready(function() {
   $('#pa_name').focus(function() {
     if ( !$.data(this, 'initialized') ) {
       $(this).val('');
-      $("#pa_name").autocompleteArray(
-        [],
+      $("#pa_name").autocomplete(
+        "/places/autocomplete",
         {
           delay:10,
           minChars:1,
