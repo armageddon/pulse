@@ -21,7 +21,7 @@ module ApplicationHelper
     when "user_messages"
       controller_name == "user_messages" ? "nav_link on" : "nav_link"
     when "profile"
-      controller_name == "profiles" ? "nav_link on" : "nav_link"
+     (controller_name == "profiles" && current_user == @user) ? "nav_link on" : "nav_link"
     else
       "nav_link"
     end
