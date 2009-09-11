@@ -6,7 +6,7 @@ class SearchController < ApplicationController
     conditions = {}
     conditions[:sex] = params[:s] if params[:s].present?
     conditions[:age] = params[:a] if params[:a].present?
-    logger.debug(request.host)
+    logger.debug(request.url)
     case params[:t]
     when 'users'
       type = User

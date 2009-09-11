@@ -1,5 +1,7 @@
 <%= render :partial => "shared/header" %>
-    <div id="header">
+    
+   <%= hidden_field_tag "googlecode", googlecode(request.url) %>
+<div id="header">
       
       <div id="navigation">
         <%= nav_links %>
@@ -50,7 +52,7 @@
 	</script>
 	<script type="text/javascript">
 	try {
-	var pageTracker = _gat._getTracker("UA-143478-6");
+	var pageTracker = _gat._getTracker(eval($("#googlecode")[0].value));
 	pageTracker._trackPageview();
 	} catch(err) {}</script>
 

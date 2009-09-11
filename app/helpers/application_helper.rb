@@ -1,5 +1,15 @@
 module ApplicationHelper
 
+  def googlecode(url)
+    if url.include? ".co.uk"
+      "UA-143478-7"
+    else
+      "UA-143478-6"
+    end
+      
+    
+    
+  end
   def nav_links
     return unless logged_in?
     
