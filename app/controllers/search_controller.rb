@@ -6,7 +6,7 @@ class SearchController < ApplicationController
     conditions = {}
     conditions[:sex] = params[:s] if params[:s].present?
     conditions[:age] = params[:a] if params[:a].present?
-
+    logger.debug(params[:t])
     case params[:t]
     when 'users'
       type = User
@@ -19,6 +19,21 @@ class SearchController < ApplicationController
     @results = type.search(params[:q],
       :conditions => conditions,
       :page => params[:page], :per_page => 12)
+      
+      respond_to do |format|
+          format.js do
+            render :partial => 'search_index', :locals => {
+              :object => @results
+            },
+            :content_type => "text/html"
+          end
+          format.html do
+            render
+          end
+
+      end
+      
+      
   end
 
   def people
