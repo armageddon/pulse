@@ -39,49 +39,41 @@ class User < ActiveRecord::Base
         :url => "/:class/:attachment/:id/:style_:filename",
         :default_url => "/images/:style/missing.png"
 
+  
   belongs_to :location
 
   has_many :favorites
   has_many :places, :through => :favorites
   has_many :user_activities
   has_many :activities, :through => :user_activities
-
   has_many :events
-
   has_many :messages, :foreign_key => "recipient_id"
   has_many :sent_messages, :foreign_key => "sender_id", :class_name => "Message"
-
   has_many :connections
   has_many :requested_connections, :foreign_key => "contact_id", :class_name => "Connection"
-
   has_many :invitations
 
   validates_presence_of     :location_id
-
   validates_presence_of     :username
   validates_length_of       :username,    :within => 3..40
   validates_uniqueness_of   :username
   validates_format_of       :username,    :with => Authentication.login_regex, :message => Authentication.bad_login_message
-
   validates_format_of       :first_name,     :with => Authentication.name_regex,  :message => Authentication.bad_name_message, :allow_nil => true
   validates_length_of       :first_name,     :maximum => 100
-
   validates_presence_of     :email
   validates_length_of       :email,    :within => 6..100 #r@a.wk
   validates_uniqueness_of   :email
   validates_format_of       :email,    :with => Authentication.email_regex, :message => Authentication.bad_email_message
-
   validates_inclusion_of :sex_preference, :in => [Sex::MALE, Sex::FEMALE, Sex::BOTH], :allow_blank => true
   validates_inclusion_of :sex, :in => [Sex::MALE, Sex::FEMALE], :allow_blank => true
   validates_inclusion_of [:age, :age_preference], :in => [ Age::COLLEGE, Age::EARLY_TWENTIES, Age::MID_TWENTIES, Age::LATE_TWENTIES , Age::EARLY_THIRTIES, Age::MID_THIRTIES, Age::LATE_THIRTIES, Age::EARLY_FORTIES], :allow_blank => true
-
   # validates_presence_of :timezone, :description, :cell
 
 
   # HACK HACK HACK -- how to do attr_accessible from here?
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
-  attr_accessible :username, :email, :first_name, :password, :password_confirmation, :timezone, :description, :age, :age_preference, :sex, :sex_preference, :cell, :location_id, :icon
+  attr_accessible :username, :email, :first_name, :password, :password_confirmation, :timezone, :description, :age, :age_preference, :sex, :sex_preference, :cell, :location_id, :icon, :dob
   attr_accessor :login
 
 
@@ -240,6 +232,36 @@ class User < ActiveRecord::Base
 
   def read_all_messages!
     messages.update_all(["read_at = ?", Time.now], { :read_at => nil})
+  end
+
+#todo: these should be in a helper - need to move the calcs into the model by overriding the acriverecord update
+  def get_age_option_from_age(age)
+    logger.debug("age" + age.to_s())
+    if age < 20
+      User::Age::COLLEGE
+    elsif age <24
+      User::Age::EARLY_TWENTIES
+    elsif age<27
+      User::Age::MID_TWENTIES
+    elsif age<30
+      User::Age::LATE_TWENTIES
+    elsif age<34
+      User::Age::EARLY_THIRTIES
+    elsif age<37
+      User::Age::MID_THIRTIES
+    elsif age<40
+      User::Age::LATE_THIRTIES
+    else 
+      User::Age::EARLY_FORTIES
+    end
+end
+
+  def get_age_option_from_dob(dob)
+    logger.debug(dob)
+    age = (DateTime.now.year - dob.year) + ((DateTime.now.month - dob.month) + ((DateTime.now.day - dob.day) < 0 ? -1 : 0) < 0 ? -1 : 0)
+    logger.debug("age" + age.to_s())
+    get_age_option_from_age(age)
+    
   end
 
   protected

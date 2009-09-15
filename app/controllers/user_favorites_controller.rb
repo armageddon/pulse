@@ -18,6 +18,7 @@ class UserFavoritesController < ApplicationController
   end
 
   def create
+    logger.debug("in user favourites create")
     @favorite = current_user.favorites.build(params[:favorite])
     respond_to do |format|
       if @favorite.save

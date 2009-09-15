@@ -10,11 +10,16 @@ class UsersController < ApplicationController
   end
 
   def new
+    logger.debug("In Create")
     @user = User.new
+    
+    
   end
 
   def redeem
+    logger.debug("Begin redeem")
     logout_keeping_session!
+    
     if params[:invite_code] == "pulse12345"
       @user = User.new
       render :action => :new, :layout => false
@@ -25,11 +30,13 @@ class UsersController < ApplicationController
   end
 
   def create
+    logger.debug("In Create")
     logout_keeping_session!
     @user = User.new(params[:user])
     @user.register! if @user && @user.valid?
 
     success = @user && @user.valid?
+    @user.age 
     respond_to do |format|
       if success && @user.errors.empty?
         # DEBUG
@@ -37,7 +44,7 @@ class UsersController < ApplicationController
         session[:user_id] = @user.id
 
         format.html {
-          redirect_to login_path
+          redirect_to user_path
           flash[:notice] = "Thanks for signing up!  We're sending you an email with your activation code."
         }
 
@@ -59,6 +66,13 @@ class UsersController < ApplicationController
   end
 
   def update
+    params[:user][:dob] = Date.new(params[:year].to_i(),params[:month].to_i(),params[:day].to_i())
+    logger.debug(params[:user][:dob])
+    logger.debug(current_user.get_age_option_from_dob(params[:user][:dob]))
+    params[:user][:age] = current_user.get_age_option_from_dob(params[:user][:dob])
+    logger.debug(params[:user][:age])
+    logger.debug("in update")
+    logger.debug(params[:user][:dob])    
     respond_to do |format|
       if current_user.update_attributes(params[:user])
         format.js { render :nothing => true}

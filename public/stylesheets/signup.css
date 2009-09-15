@@ -1,6 +1,4 @@
-* {
-  font-family: Georgia, Serif !important;
-}
+
 
 #container {
   margin-bottom: 200px;
@@ -16,7 +14,6 @@ a, a:visited, a:active {
 }
 
 .input_text {
-  font-size: 1.3em;
   padding: 4px;
   border: 1px solid #f1f3f6;
   background-color: #f1f3f6;
