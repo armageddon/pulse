@@ -7,6 +7,7 @@ class UsersController < ApplicationController
 
   def show
     @places = current_user.suggested_places
+    @matches = current_user.matches(params[:page], 8)
   end
 
   def new

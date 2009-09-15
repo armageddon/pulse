@@ -9,5 +9,8 @@
     profile has been viewed by <%= current_user.profile_views %> <%= current_user.profile_views == 1 ? 'person' : 'people' %>.
   </h1>
 <% end %>
-<h3 class="section">Have you considered?</h3>
+<h3 class="section">Your matches</h3>
+<%= render :partial => "shared/object", :collection => @matches %>
+
+<h3 class="section">Check out these places</h3>
 <%= render :partial => "shared/object", :collection => @places %>

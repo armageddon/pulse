@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090810155908) do
+ActiveRecord::Schema.define(:version => 20090915130557) do
 
   create_table "activities", :force => true do |t|
     t.string   "name"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(:version => 20090810155908) do
     t.string   "icon_content_type"
     t.string   "icon_file_size"
     t.string   "icon_updated_at"
+    t.string   "place_id"
   end
 
   create_table "categories", :force => true do |t|
@@ -60,7 +61,7 @@ ActiveRecord::Schema.define(:version => 20090810155908) do
     t.datetime "updated_at"
   end
 
-  create_table "ldc", :id => false, :force => true do |t|
+  create_table "ldc", :force => true do |t|
     t.string "LDC_ID",             :limit => 512
     t.string "b_NameFull",         :limit => 512
     t.string "ad_Building_Unit",   :limit => 512
@@ -87,6 +88,8 @@ ActiveRecord::Schema.define(:version => 20090810155908) do
     t.string "feature_price",      :limit => 512
   end
 
+  add_index "ldc", ["id"], :name => "idx_id"
+
   create_table "locations", :force => true do |t|
     t.string "name"
   end
@@ -101,33 +104,17 @@ ActiveRecord::Schema.define(:version => 20090810155908) do
     t.datetime "updated_at"
   end
 
-  create_table "places", :force => true do |t|
-    t.string   "name"
-    t.string   "building"
-    t.string   "building_unit"
-    t.string   "address"
-    t.string   "city"
-    t.string   "state"
-    t.string   "zip"
-    t.string   "neighborhood"
-    t.string   "county"
-    t.text     "description"
+# Could not dump table "places" because of following StandardError
+#   Unknown type 'bit(1)' for column 'exclude'
+
+  create_table "user_actions", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "place_id"
+    t.integer  "activity_id"
+    t.integer  "event_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.float    "latitude"
-    t.float    "longitude"
-    t.integer  "location_id"
-    t.string   "phone"
-    t.string   "website"
-    t.string   "import_id"
-    t.string   "import_source"
-    t.string   "icon_file_name"
-    t.string   "icon_content_type"
-    t.string   "icon_file_size"
-    t.string   "icon_updated_at"
-    t.boolean  "uploaded_picture_to_s3", :default => false
-    t.boolean  "attempted_geocode",      :default => false
-    t.boolean  "attempted_s3_upload",    :default => false
+    t.integer  "type_id"
   end
 
   create_table "user_activities", :force => true do |t|
@@ -143,6 +130,14 @@ ActiveRecord::Schema.define(:version => 20090810155908) do
     t.string "picture_content_type"
     t.string "picture_file_size"
     t.string "picture_updated_at"
+  end
+
+  create_table "user_place_activities", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "place_id"
+    t.integer  "activity_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", :force => true do |t|
@@ -172,6 +167,7 @@ ActiveRecord::Schema.define(:version => 20090810155908) do
     t.string   "icon_content_type"
     t.string   "icon_file_size"
     t.string   "icon_updated_at"
+    t.datetime "dob"
   end
 
 end

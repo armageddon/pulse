@@ -4,9 +4,18 @@
   </div>
   <div class="info_container">
     <div class="info">
-      <h5><%= link_to object.name, object %></h5>
+	<span>
+      <%= link_to object.name, object %>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+	<% case object 
+      when Place
+      %>
 
+      <%= object.category %> 
+
+		<% end %>
     </div>
+</span>
     <div class="actions">
       <% case object 
       when User
@@ -15,10 +24,10 @@
 
       <% when Place %>
         <% if logged_in? && current_user.places.include?(object) %>
-          <%= link_to "ADD EVENT AT #{object.name.upcase}", '#', 'data-href' => new_account_event_path(:place_id => object), :class => "add_event" %>
+          <%= link_to "ADD EVENT", '#', 'data-href' => new_account_event_path(:place_id => object), :class => "add_event" %>
           <%= ('| ' + link_to("REMOVE", '#')) if controller_name == 'user_favorites' %>
         <% else %>
-          <%= link_to "ADD TO FAVORITES", '#', 'data-href' => new_account_place_path(:place_id => object), :class => "add_to_favorites" %>
+          <%= link_to "ADD", '#', 'data-href' => new_account_place_path(:place_id => object), :class => "add_to_favorites" %>
         <% end %>
       <% when Activity %>
         <% if logged_in? && !current_user.activities.include?(object) %>
@@ -30,7 +39,9 @@
     
     <div class="description">
       <% if controller_name == 'places' && object.is_a?(User) %>
-      <span class="fancy_quotes">&#8220;</span><%= object.favorites.find_by_place_id(@place.id).description %><span class="fancy_quotes">&#8221;</span>
+         <span class="fancy_quotes">&#8220;</span><%= object.favorites.find_by_place_id(@place.id).description %><span class="fancy_quotes">&#8221;</span>
+	  <% elsif object.is_a?(Place)%>
+	     <span><%=object.address%>  <%=object.neighborhood%>  <%=object.zip%></span>
       <% elsif object.is_a?(User) %>
       <span class="fancy_quotes">&#8220;</span><%= object.description %><span class="fancy_quotes">&#8221;</span>      
       <% end %>
