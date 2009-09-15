@@ -104,8 +104,37 @@ ActiveRecord::Schema.define(:version => 20090915130557) do
     t.datetime "updated_at"
   end
 
-# Could not dump table "places" because of following StandardError
-#   Unknown type 'bit(1)' for column 'exclude'
+  create_table "places", :force => true do |t|
+    t.string   "name"
+    t.string   "building"
+    t.string   "building_unit"
+    t.string   "address"
+    t.string   "city"
+    t.string   "state"
+    t.string   "zip"
+    t.string   "neighborhood"
+    t.string   "county"
+    t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.integer  "location_id"
+    t.string   "phone"
+    t.string   "website"
+    t.string   "import_id"
+    t.string   "import_source"
+    t.string   "icon_file_name"
+    t.string   "icon_content_type"
+    t.string   "icon_file_size"
+    t.string   "icon_updated_at"
+    t.boolean  "uploaded_picture_to_s3", :default => false
+    t.boolean  "attempted_geocode",      :default => false
+    t.boolean  "attempted_s3_upload",    :default => false
+    t.string   "category"
+  end
+
+  add_index "places", ["import_id"], :name => "idx_import_id"
 
   create_table "user_actions", :force => true do |t|
     t.integer  "user_id"
