@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090915130557) do
+ActiveRecord::Schema.define(:version => 20090916132702) do
 
   create_table "activities", :force => true do |t|
     t.string   "name"
@@ -132,6 +132,7 @@ ActiveRecord::Schema.define(:version => 20090915130557) do
     t.boolean  "attempted_geocode",      :default => false
     t.boolean  "attempted_s3_upload",    :default => false
     t.string   "category"
+    t.boolean  "exclude",                :default => false
   end
 
   add_index "places", ["import_id"], :name => "idx_import_id"
