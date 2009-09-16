@@ -1,7 +1,7 @@
 <div class="object">
   <div class="icon">
     <% if action_name == 'index' %>
-      <%= link_to image_tag(message.sender.icon, :width => '45px', :height => '45px'), account_message_path(message.sender) %> 
+      <%= link_to image_tag(message.sender.icon.url(:thumb), :width => '45px', :height => '45px'), account_message_path(message.sender) %> 
     <% else %>
       <%= image_tag(message.sender.icon.url(:thumb), :width => '45px', :height => '45px') %>
     <% end %>
