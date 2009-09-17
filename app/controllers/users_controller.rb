@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   def show
     @places = current_user.suggested_places
     @matches = current_user.matches(params[:page], 8)
-  end
+
   end
 
   def new
@@ -69,27 +69,26 @@ class UsersController < ApplicationController
 
   def update
     if params[:iframe]=="true"
-      
+       current_user.update_attributes(params[:user])
+        respond_to do |format|
+           format.js { render :text => current_user.icon.url + "js"}
+           format.html { render :text => current_user.icon.url  + "html"}
+        end
     else
        params[:user][:dob] = Date.new(params[:year].to_i(),params[:month].to_i(),params[:day].to_i())
        logger.debug(params[:user][:dob])
        logger.debug(current_user.get_age_option_from_dob(params[:user][:dob]))
        params[:user][:age] = current_user.get_age_option_from_dob(params[:user][:dob])
-    end
    
-    respond_to do |format|
-      if current_user.update_attributes(params[:user])
-        if params[:iframe] == "true"
-          format.js { render :text => "dsdsdsd"}
-          format.html { render :text => "qaaaaaaa" }
-        else
+       respond_to do |format|
+       if current_user.update_attributes(params[:user])
           format.js { render current_user.icon}
           format.html { redirect_to account_path }
-        end
-      else
-        format.js { render :nothing => true, :status => 500 }
-        format.html { render :action => :new }
-      end
+       else
+          format.js { render :nothing => true, :status => 500 }
+          format.html { render :action => :new }
+       end
+       end
     end
   end
 
