@@ -6,10 +6,18 @@ module ApplicationHelper
     else
       "UA-143478-6"
     end
-      
-    
-    
   end
+  
+  def getmapsapikey(url)
+    if Rails.env  != "production"
+      'ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog'
+    elsif url.includes? ".co.uk"
+      'ABQIAAAAxWNpxzcfyhn7zYII6ArMwBTuVtZQfMdAwq5mbuzuAdL882aPpxTzrnL-bVk8wVuKyBuHCsbsgUxeJQ'
+    else
+      'ABQIAAAArdqGwpu3b8yNbPBH_W7VcxRhKqGJz2XpjEX0yvpoqNJsCS6C3RQc357CAtK1DBmVMWVoj-V1g38HpQ'
+    end  
+  end
+  
   def nav_links
     return unless logged_in?
     

@@ -1,6 +1,6 @@
 <h3 class="section">Map</h3>
 <div id="map_canvas" style="width: 160px; height: 320px; overflow: hidden;"></div>
-<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=<%= GOOGLE_MAPS_API_KEY %>&sensor=true" type="text/javascript"></script>
+<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=<%= getmapsapikey(request.url) %>&sensor=true" type="text/javascript"></script>
 <script type="text/javascript" charset="utf-8">
   var map = new GMap2(document.getElementById("map_canvas"));
   
