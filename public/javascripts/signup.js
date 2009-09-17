@@ -15,7 +15,7 @@ $(document).ready(function() {
         (e.pageY < (box.top + $('#add_photo').height()))
         ) {
           $('#upload_container').show();
-          $('#photo_uploaded_data').css({
+          $('#user_icon').css({
             left: e.pageX -10 ,
             top: e.pageY -5,
             opacity: 0,
@@ -29,11 +29,11 @@ $(document).ready(function() {
   });
 
   // Add new image to gallery
-  $("#photo_uploaded_data").change(function(e) {
+  $("#user_icon").change(function(e) {
     $("#photo_upload").ajaxSubmit({
       iframe: true,
       extraData: { 'iframe': 'true' },
-      dataType: "html",
+      dataType: "js",
       success: function(response) {
         if (response.length > 0) {
           var img = $('<img src="' + response + '" />')

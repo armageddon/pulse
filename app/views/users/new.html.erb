@@ -98,15 +98,17 @@
       
       <div id="step_2_container">
         <div id="upload_container" style="display: none;">
-        <% form_tag "/account/pictures", :method => "POST", :multipart => true, :target => "image_upload", :id => "photo_upload" do %>
-        <input type="file" id="photo_uploaded_data" name="user_picture[uploaded_data]" style="position: absolute;">
-        <% end %>
+        <% form_tag "/account", :method => "PUT", :multipart => true, :target => "image_upload", :id => "photo_upload" do%>
+         <%= file_field(:user , :icon, :style => "position: absolute;")%>
+<!-- <input type="file" id="photo_uploaded_data" name="user_picture[uploaded_data]" style="position: absolute;"> -->
+        <!-- here user file_field just to check if its working. Accounts controller will expect an icon parameter-->
+		<% end %>
 
         </div>
       
         <div id="add_photo">Add photo</div>
       
-        <% form_tag '/account', :method => "put", :id => "details_update" do %>
+        <% form_tag '/account/update', :method => "put", :id => "details_update" do %>
         <label  style="margin-top: 5px; color:#990000;">Description</label>
         <div id="description">
           <%= text_area_tag 'user[description]', 'Tell us about yourself', :id => "user_description", :class => "word_count" %>
