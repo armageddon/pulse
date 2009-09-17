@@ -37,10 +37,14 @@ Rails::Initializer.run do |config|
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
 end
-#ABQIAAAAxWNpxzcfyhn7zYII6ArMwBTuVtZQfMdAwq5mbuzuAdL882aPpxTzrnL-bVk8wVuKyBuHCsbsgUxeJQ
+#
 if Rails.env == "production"
   # http://67.23.21.94/   
-  GOOGLE_MAPS_API_KEY = 'ABQIAAAArdqGwpu3b8yNbPBH_W7VcxRhKqGJz2XpjEX0yvpoqNJsCS6C3RQc357CAtK1DBmVMWVoj-V1g38HpQ'
+  if Rails.public_path.include? ".co.uk"
+    GOOGLE_MAPS_API_KEY = 'ABQIAAAAxWNpxzcfyhn7zYII6ArMwBTuVtZQfMdAwq5mbuzuAdL882aPpxTzrnL-bVk8wVuKyBuHCsbsgUxeJQ'
+  else
+    GOOGLE_MAPS_API_KEY = 'ABQIAAAArdqGwpu3b8yNbPBH_W7VcxRhKqGJz2XpjEX0yvpoqNJsCS6C3RQc357CAtK1DBmVMWVoj-V1g38HpQ'
+  end
 else
   GOOGLE_MAPS_API_KEY = 'ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog'
 end
