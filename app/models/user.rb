@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
     EARLY_THIRTIES = 5
     MID_THIRTIES   = 6
     LATE_THIRTIES  = 7
-    EARLY_FORTIES  = 8
+    OLDER  = 8
   end
 
   class Sex
@@ -66,7 +66,7 @@ class User < ActiveRecord::Base
   validates_format_of       :email,    :with => Authentication.email_regex, :message => Authentication.bad_email_message
   validates_inclusion_of :sex_preference, :in => [Sex::MALE, Sex::FEMALE, Sex::BOTH], :allow_blank => true
   validates_inclusion_of :sex, :in => [Sex::MALE, Sex::FEMALE], :allow_blank => true
-  validates_inclusion_of [:age, :age_preference], :in => [ Age::COLLEGE, Age::EARLY_TWENTIES, Age::MID_TWENTIES, Age::LATE_TWENTIES , Age::EARLY_THIRTIES, Age::MID_THIRTIES, Age::LATE_THIRTIES, Age::EARLY_FORTIES], :allow_blank => true
+  validates_inclusion_of [:age, :age_preference], :in => [ Age::COLLEGE, Age::EARLY_TWENTIES, Age::MID_TWENTIES, Age::LATE_TWENTIES , Age::EARLY_THIRTIES, Age::MID_THIRTIES, Age::LATE_THIRTIES, Age::OLDER], :allow_blank => true
   # validates_presence_of :timezone, :description, :cell
 
 
@@ -252,7 +252,7 @@ class User < ActiveRecord::Base
     elsif age<40
       User::Age::LATE_THIRTIES
     else 
-      User::Age::EARLY_FORTIES
+      User::Age::OLDER
     end
 end
 

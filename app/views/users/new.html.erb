@@ -163,7 +163,7 @@
 			  Year
 			</div>
 			<div class="fancy_select_options" , style="width:50px">
-		    		<% 1994.downto(1933) do|m|%>
+		    			<% (DateTime.now.year-18).downto(DateTime.now.year - 100) do|m|%>
 						<p><%=m%> <span class="hidden_value"><%= m %></span></p>
 					<% end %>
 			</div>
