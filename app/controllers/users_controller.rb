@@ -72,7 +72,7 @@ class UsersController < ApplicationController
        current_user.update_attributes(params[:user])
         respond_to do |format|
            format.js { render :text => current_user.icon.url + "js"}
-           format.html { render :text => current_user.icon.url(:thumb) }
+           format.html { render :text => current_user.icon.url(:profile) }
         end
     else
        params[:user][:dob] = Date.new(params[:year].to_i(),params[:month].to_i(),params[:day].to_i())

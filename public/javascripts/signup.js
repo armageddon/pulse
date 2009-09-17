@@ -81,7 +81,6 @@ $(document).ready(function() {
   });
 
   $("#pa_select").submit(function() {
-	alert('DDD');
     $('.invalid').removeClass('invalid');
     var error = false;
     if ($('#pa_id').val() == '') {
@@ -107,14 +106,12 @@ $(document).ready(function() {
         'activity[description]': $('#pa_description').val(),
       }
     }
-     //todo:this needs to be adding an activity place record.
-    if ($("#pa_type").val() == '') {
-	alert('adding a place');
+
+    if ($("#pa_type").val() == 'place') {
       var opts = {
-        'url' : '/account/places',
-        'favorite[place_id]': $("#pa_id").val(),
-        'favorite[good_for]': '1',
-		'favorite[description]': $('#pa_description').val(),
+        'url' : '/account/activities',
+        'activity[id]': $("#pa_id").val(),
+        'activity[description]': $('#pa_description').val(),
       }
     }
     $.ajax({
@@ -124,8 +121,6 @@ $(document).ready(function() {
       success: function() {
         $('#step_3_container').hide();
         $('#step_3_finished').fadeIn();
-		top.location.href = '/account';
-
       }
     })
     return false;
