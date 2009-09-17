@@ -82,7 +82,7 @@ class UsersController < ApplicationController
    
        respond_to do |format|
        if current_user.update_attributes(params[:user])
-          format.js { render current_user.icon}
+          format.js { render :nothing => true}
           format.html { redirect_to account_path }
        else
           format.js { render :nothing => true, :status => 500 }

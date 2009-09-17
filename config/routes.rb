@@ -11,6 +11,7 @@ ActionController::Routing::Routes.draw do |map|
   map.about '/about', :controller => "pages", :action => 'about'
   map.contact '/contact', :controller => "pages", :action => 'contact'
   map.terms '/terms', :controller => "pages", :action => 'terms'
+  map.update '/update', :controller => "users", :action => 'update'
 
   map.search_places '/search/places', :controller => 'search', :action => "places"
   map.search_people '/search/people', :controller => 'search', :action => "people"
@@ -32,6 +33,7 @@ ActionController::Routing::Routes.draw do |map|
     u.resources :invitations, :controller => "user_invitations"
     u.resources :matches, :controller => "user_matches", :collection => { :all => :get }
     u.resources :activities, :controller => "user_activities"
+    
   end
 
   map.resources :profiles, :except => :show
