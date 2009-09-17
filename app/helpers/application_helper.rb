@@ -12,7 +12,7 @@ module ApplicationHelper
     if Rails.env  != "production"
       'ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog'
     elsif url.include? ".co.uk"
-      'ABQIAAAAxWNpxzcfyhn7zYII6ArMwBTuVtZQfMdAwq5mbuzuAdL882aPpxTzrnL-bVk8wVuKyBuHCsbsgUxeJQ'
+      'ABQIAAAArdqGwpu3b8yNbPBH_W7VcxS0BVhZwctV-i2_A3PM5_4nC4nFLRQFHlODK_zRe2mIOTpRur9m4LFnyA'
     else
       'ABQIAAAArdqGwpu3b8yNbPBH_W7VcxRhKqGJz2XpjEX0yvpoqNJsCS6C3RQc357CAtK1DBmVMWVoj-V1g38HpQ'
     end  
