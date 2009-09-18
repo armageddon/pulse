@@ -23,7 +23,7 @@
 			<%= object.favorites.find_by_place_id(@place.id).description %>
 			<span class="fancy_quotes">&#8221;</span>
 	  		<% elsif object.is_a?(Place)%>
-	     	<span><%=object.address%>  <%=object.neighborhood%>  <%=object.zip%></span>
+	     	<span><%=object.neighborhood%></span>
       		<% elsif object.is_a?(User) %>
       		<span class="fancy_quotes">&#8220;</span><%= object.description %><span class="fancy_quotes">&#8221;</span>      
       		<% end %>
