@@ -1,3 +1,7 @@
+div.map_canvas div.span {
+	display:hidden;
+}
+
 * {
   font-family: Verdana, Serif;
 }
@@ -135,16 +139,21 @@ a, a:visited, a:active {
 }
 
 .object .info_container {
-  width: 511px;
+  width: 460px;
   float: left;
 }
 
+.object .category_info {
+	width:120px;
+	float:right;
+	overflow:hidden;
+}
 .object .description {
   padding: 2px 2px 5px 25px;
 }
 
 .object .info {
-  width: 410px;
+  width: 320px;
   float: left;
   padding-left: 15px;
 }
@@ -155,7 +164,7 @@ a, a:visited, a:active {
 }
 
 .object .actions {
-  width: 60px;
+  width: 40px;
   float: right;
   color: #666;
   text-align: right;

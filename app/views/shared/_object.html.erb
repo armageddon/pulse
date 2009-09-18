@@ -1,52 +1,53 @@
 <div class="object" id="<%= dom_id object %>">
-  <div class="icon">
-    <%= link_to image_tag(object.icon.url(:thumb), :width => '45px', :height => '45px'), object %>
-  </div>
-  <div class="info_container">
-    <div class="info">
-	<span>
-      <%= link_to object.name, object %>
- &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-	<% case object 
-      when Place
-      %>
-
-      <%= object.category %> 
-
-		<% end %>
-    </div>
-</span>
-    <div class="actions">
-      <% case object 
-      when User
-      %>
-          <%= link_to "Contact", account_message_path(object) %>
-
-      <% when Place %>
-        <% if logged_in? && current_user.places.include?(object) %>
-          <%= link_to "ADD EVENT", '#', 'data-href' => new_account_event_path(:place_id => object), :class => "add_event" %>
-          <%= ('| ' + link_to("REMOVE", '#')) if controller_name == 'user_favorites' %>
-        <% else %>
-          <%= link_to "ADD", '#', 'data-href' => new_account_place_path(:place_id => object), :class => "add_to_favorites" %>
-        <% end %>
-      <% when Activity %>
-        <% if logged_in? && !current_user.activities.include?(object) %>
-          <%= link_to "ADD ACTIVITY", '#', 'data-href' => new_account_activity_path(:activity_id => object), :class => "add_activity" %>
-        <% end %>      
-      <% end %>
-    </div>
+	<div class="icon">
+		<%= link_to image_tag(object.icon.url(:thumb), :width => '45px', :height => '45px'), object %>
+	</div>
+	<div class="info_container">
+		<div class="info">
+			<span>
+      		<%= link_to object.name, object %>
+			
+			</span>
+    	</div>
+		<div class="category_info">
+			<% case object 
+      		when Place
+      		%>
+      		<%= object.category %> 
+			<% end %>
+		</div>
+		<div class="clear"></div>
+		<div class="description">
+      		<% if controller_name == 'places' && object.is_a?(User) %>
+         	<span class="fancy_quotes">&#8220;</span>
+			<%= object.favorites.find_by_place_id(@place.id).description %>
+			<span class="fancy_quotes">&#8221;</span>
+	  		<% elsif object.is_a?(Place)%>
+	     	<span><%=object.address%>  <%=object.neighborhood%>  <%=object.zip%></span>
+      		<% elsif object.is_a?(User) %>
+      		<span class="fancy_quotes">&#8220;</span><%= object.description %><span class="fancy_quotes">&#8221;</span>      
+      		<% end %>
+    	</div>
+<div class="clear"></div>
+	</div>
+	<div class="actions">
+		<% case object 
+		when User
+		%>
+		<%= link_to image_tag("CheckMark.png", :width=>20), account_message_path(object) %>
+		<%  when Place %>
+		<%    if logged_in? && current_user.places.include?(object) %>
+		<%=     link_to image_tag("Home.png", :width=>20), '#', 'data-href' => new_account_event_path(:place_id => object), :class => "add_event" %>
+		<%=     (link_to(image_tag("Minus.png", :width=>20), '#')) if controller_name == 'user_favorites' %>
+		<%    else %>
+		<%=     link_to image_tag("Plus.png", :width=>20), '#', 'data-href' => new_account_place_path(:place_id => object), :class => "add_to_favorites" %>
+		<%    end %>
+		<%  when Activity %>
+		<%    if logged_in? && !current_user.activities.include?(object) %>
+		<%=     link_to image_tag("Plus.png", :width=>20), '#', 'data-href' => new_account_activity_path(:activity_id => object), :class => "add_activity" %>
+		<%    end %>      
+		<%  end %>
+	</div>
+	<div class="clear"></div>
     <div class="clear"></div>
-    
-    <div class="description">
-      <% if controller_name == 'places' && object.is_a?(User) %>
-         <span class="fancy_quotes">&#8220;</span><%= object.favorites.find_by_place_id(@place.id).description %><span class="fancy_quotes">&#8221;</span>
-	  <% elsif object.is_a?(Place)%>
-	     <span><%=object.address%>  <%=object.neighborhood%>  <%=object.zip%></span>
-      <% elsif object.is_a?(User) %>
-      <span class="fancy_quotes">&#8220;</span><%= object.description %><span class="fancy_quotes">&#8221;</span>      
-      <% end %>
-    </div>
-  </div>
-  <div class="clear"></div>
-
 </div>
