@@ -32,7 +32,7 @@ class SearchController < ApplicationController
       logger.info(@results)
       respond_to do |format|
           format.js do
-            if @results.count == 0
+            if @results.length == 0
               render :text=>"<div id='results'>No results returned</div>"
             else
             render :partial => 'search_index', :locals => {
