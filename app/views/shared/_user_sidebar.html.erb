@@ -13,9 +13,9 @@
     <span class="fancy_quotes">&#8221;</span>
   </div>
   <ul id="do_things">
-    <li><%= link_to "FIND PEOPLE", search_people_path %></li>
-    <li><%= link_to "FIND PLACES", search_places_path %></li>
-    <li><%= link_to "FIND ACTIVITIES", search_activities_path %></li>
+    <li><%= link_to "FIND PEOPLE", :controller=>'search', :id=>'find_people_link' , :t => "people" %></li>
+    <li><%= link_to "FIND PLACES", :controller=>'search', :id=>'find_places_link' , :t => "places" %></li>
+    <li><%= link_to "FIND ACTIVITIES", :controller=>'search', :id=>'find_activities_link' , :t => "activities" %></li>
     <li><%= link_to "EDIT MY INFO", edit_account_path %></li>
 
     <!-- <li><%= link_to "MANAGE PICTURES", account_pictures_path %></li> -->

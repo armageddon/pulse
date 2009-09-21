@@ -1,16 +1,36 @@
 <div class="section_header">
-	<h3 class="section_name">Find places</h3>
-  
+	<div style="float:left;width:54px">
+	<h3 class="section_name">Find: </h3>
+</div>
+  	<div id="search_type" style="float:left;"> 
+	  <%= link_to_if params[:t].present? && params[:t] != 'places', "PLACES", search_path(:q => params[:q]) %> | 
+	  <%= link_to_if params[:t] != "users", "PEOPLE", search_path(:q => params[:q], :t => "users") %> | 
+	  <%= link_to_if params[:t] != "activities", "ACTIVITIES", search_path(:q => params[:q], :t => "activities") %>
+	</div>
   <div class="section_extra"></div>
   <div class="clear">&nbsp;</div>
 </div>
 
 <% form_tag search_path, :method => :get, :id => "advanced_search" do %>
   <%= hidden_field_tag "t", 'places' %>
+
+<div style="float:left;">
   <h3>Search for a place by keyword</h3>
   <%= text_field_tag :q, nil, :id => "search_q_keyword", :class => "input_text" %>
-
-  <div id="advanced_search_submit">
+</div>
+<div class="clear">&nbsp;</div>
+  <div id="advanced_search_submit" style="float:left;">
     <%= submit_button "Search" %>    
   </div>
+  <div class="clear">&nbsp;</div>
+	<div id="search_type" style="float:left;"> 
+	  <%= link_to_if params[:t].present? && params[:t] != 'places', "PLACES", search_path(:q => params[:q]) %> | 
+	  <%= link_to_if params[:t] != "users", "PEOPLE", search_path(:q => params[:q], :t => "users") %> | 
+	  <%= link_to_if params[:t] != "activities", "ACTIVITIES", search_path(:q => params[:q], :t => "activities") %>
+	</div>
+  <div class="clear">&nbsp;</div>
+<div id="results" style="float:left;">
+Enter some search criteria above
+</div>
+
 <% end %>

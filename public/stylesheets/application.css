@@ -1,3 +1,7 @@
+#search_criteria {
+	height:150px;
+}
+
 div.map_canvas div.span {
 	display:hidden;
 }
@@ -464,11 +468,9 @@ table.calendar td a.active {
 }
 
 #search_type {
-  margin-top: -8px;
   color: #666;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 2px;
-  margin-bottom: 10px;
+
+
 }
 
 #search {
@@ -592,7 +594,7 @@ button.submit span {
 }
 
 #advanced_search {
-  width: 300px;
+ 
   margin-right: 15px;
 }
 

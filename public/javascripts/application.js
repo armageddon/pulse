@@ -18,6 +18,8 @@ $(document).ready(function() {
     var link = $(this);
     link.hide();
     $('#page_loading').show();
+//need to set type her
+
     $.get(link.attr('href'),{}, function(data) {
       $('#page_loading').hide();
       link.replaceWith(data);

@@ -1,13 +1,132 @@
+<% form_tag search_path, :method => :get, :id => "advanced_search" do %>
+<%= hidden_field_tag "t", 'places' %>
 <div class="section_header">
-  <h3 class="section_name">Results for: <%= params[:q] %></h3>
-  
-  <div class="section_extra"></div>
-  <div class="clear">&nbsp;</div>
+	<div style="float:left;width:54px">
+		<h3 class="section_name">Find: </h3>
+	</div>
+	<div id="search_type" style="float:left;"> 
+		<%= link_to  "PLACES", search_path,:q => params[:q], :id=>"places_link", :style=>params[:t] == "places" ? "color:#000000" : "color:#990000"%> | 
+		<%= link_to  "PEOPLE", search_path,:q => params[:q], :id=>"people_link", :style=>params[:t] == "people" ? "color:#000000" : "color:#990000" %> | 
+		<%= link_to  "ACTIVITIES", search_path,:q => params[:q], :id=>"activities_link", :style=>params[:t] == "activities" ? "color:#000000" : "color:#990000" %>
+	</div>
+	<div class="section_extra"></div>
+	<div class="clear">&nbsp;</div>
+</div>
+<div id="search_criteria" style="float:left;">
+	<%= render :partial=>params[:t] %>
 </div>
 
-<div id="search_type"> SHOW:&nbsp;
-  <%= link_to_if params[:t].present? && params[:t] != 'places', "PLACES", search_path(:q => params[:q]) %> | 
-  <%= link_to_if params[:t] != "users", "PEOPLE", search_path(:q => params[:q], :t => "users") %> | 
-  <%= link_to_if params[:t] != "activities", "ACTIVITIES", search_path(:q => params[:q], :t => "activities") %>
+
+<div class="clear">&nbsp;</div>
+<div class="clear">&nbsp;</div>
+<div id="advanced_search_submit" style="float:left;">
+	<%= submit_button ("Search", :id=> "search_button") %>    
 </div>
-<%= render :partial => 'shared/object_collection', :locals => { :collection => @results } %>
+<div class="clear">&nbsp;</div>
+
+<div class="section_header" style="padding-top:20px;">
+	<div style="float:left;width:200px">
+		<h3 style="width:100px;" class="section_name">Results </h3>
+	</div>
+	<div class="clear">&nbsp;</div>
+</div>
+<div id="results" style="float:left;">
+	Enter some search criteria above
+</div>
+<% end %>
+
+<script type="text/javascript" charset="utf-8">
+//todo: clean up this javascript
+$("#search_button").click(function() {
+  $.ajax({
+    type: "GET",
+    url: $(this).attr('action'),
+    data: $('#advanced_search').serialize(), //advanced_search,
+    success: function(p) {
+	 $('#results').replaceWith(p);
+    }
+  })
+  return false;
+});
+
+$("#people_link").click(function() {
+	$('#t')[0].value = 'people';
+  $.ajax({
+    type: "GET",
+    url: "/search/people",
+    data: $('#advanced_search').serialize(),
+    success: function(p) {
+      $('#search_criteria').replaceWith(p);
+      toggle('people');
+	$.ajax({
+    type: "GET",
+    url: $(this).attr('action'),
+    data: $('#advanced_search').serialize(),
+    success: function(p) {
+	 $('#results').replaceWith(p);
+    }
+  });
+
+    }
+  });
+	
+  return false;
+});
+
+$("#places_link").click(function() {
+	$('#t')[0].value = 'places';
+  $.ajax({
+    type: "GET",
+    url: "/search/places",
+     data: $('#advanced_search').serialize(),
+    success: function(p) {
+      $('#search_criteria').replaceWith(p);
+      toggle('places');
+	  $.ajax({
+		type: "GET",
+		url: $(this).attr('action'),
+		data: $('#advanced_search').serialize(),
+		success: function(p) {
+		$('#results').replaceWith(p);
+		}
+	   });
+    }
+  });
+
+  return false;
+});
+
+$("#activities_link").click(function() {
+	$('#t')[0].value = 'activities';
+  $.ajax({
+    type: "GET",
+    url: "/search/activities",
+    data: $('#advanced_search').serialize(),
+    success: function(p) {
+      $('#search_criteria').replaceWith(p);
+      toggle('activities');
+	$.ajax({
+	    type: "GET",
+	    url: $(this).attr('action'),
+	   data:  $('#advanced_search').serialize(),
+	    success: function(p) {
+		 $('#results').replaceWith(p);
+	    }
+	  });
+
+
+    }
+  });
+
+  return false;
+});
+
+function toggle(t) {
+	$('#places_link').css("color", "#990000");
+	$('#people_link').css("color", "#990000");
+	$('#activities_link').css("color", "#990000");
+	$('#'+t+'_link').css("color", "#000000");
+	
+}
+
+</script>

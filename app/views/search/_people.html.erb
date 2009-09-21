@@ -1,14 +1,6 @@
-<div class="section_header">
-	<h3 class="section_name">Find people</h3>
-  
-  <div class="section_extra"></div>
-  <div class="clear">&nbsp;</div>
-</div>
-
-<% form_tag search_path, :method => :get, :id => "advanced_search" do %>
-  <%= hidden_field_tag "t", 'users' %>
+<div id="search_criteria">
 	<h3>Name</h3>
-	<%= text_field_tag "q", :q, :class => "input_text" %>
+	<%= text_field_tag :q, nil, :id => "search_q", :class => "input_text" %>
 	
 	<h3>Sex</h3>
   <div class='fancy_select'>
@@ -36,9 +28,4 @@
       <% end %>
     </div>
   </div>
- 
-  <div id="advanced_search_submit">
-    <%= submit_button "Search" %>    
-  </div>
-  
-<% end %>
+ </div>
