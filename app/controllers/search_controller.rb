@@ -29,7 +29,7 @@ class SearchController < ApplicationController
     @results = type.search(params[:q],
       :conditions => conditions,
       :page => params[:page], :per_page => 12)
-      logger.debug(@results.count)
+      logger.info(@results.count)
       respond_to do |format|
           format.js do
             if @results.count == 0
