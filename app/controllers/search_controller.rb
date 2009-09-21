@@ -25,11 +25,11 @@ class SearchController < ApplicationController
       type = Place
       params[:t] = 'places'
     end
-  
+   logger.info(@params)
     @results = type.search(params[:q],
       :conditions => conditions,
       :page => params[:page], :per_page => 12)
-      logger.info(@results.count)
+      logger.info(@results)
       respond_to do |format|
           format.js do
             if @results.count == 0
