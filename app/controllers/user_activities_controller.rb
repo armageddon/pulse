@@ -40,13 +40,13 @@ class UserActivitiesController < ApplicationController
     
     respond_to do |format|
       if @user_activity.save
-        format.js {render :text => "#" +current_user.user_activities.count.to_s() +"You like to <span style='margin-top: 5px; color: rgb(153, 0, 0);'>" + @activity.name + "</span> at <span style='margin-top: 5px; color: rgb(153, 0, 0);'>" + @place.name  + "</span><br \>"   }
+        format.js {render :text => "#" +current_user.user_activities.count.to_s() +" You like to <span style='margin-top: 5px; color: rgb(153, 0, 0);'>" + @activity.name + "</span> at <span style='margin-top: 5px; color: rgb(153, 0, 0);'>" + @place.name  + "</span><br \>"   }
         format.html do
           flash[:notice] = "You have added a user activity"
           redirect_to account_places_path
         end
       else
-        format.js { render :nothing => true, :status => 500 }
+        format.js { render :text => @user_activity.errors.full_messages, :status => 500 }
         format.html { render :action => :new }
       end
     end

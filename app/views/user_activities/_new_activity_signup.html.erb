@@ -71,27 +71,6 @@
 
 <script type="text/javascript" charset="utf-8">
 
-  $(document).ready(function() {
-    if ($("#place_name").attr("data-prefilled") == "false") {
-      var ac_options = {
-        autoFill:false,
-        maxItemsToShow:10,
-        mustMatch: false,
-        onItemSelect: function(e) {
-               var extra = $(e).attr('extra');
-               if (extra.length > 0) {
-                $("#place_id").val(extra[0])             
-              } else {
-                $("#place_id").val('')             
-              }
-        },
-      }
-      $("#place_name").autocomplete('/places/autocomplete', ac_options);
-    }   
-
-
-
-
   //***************PARENT**************
 	$('.fancy_select_parent').live('click',function() {
     $('.fancy_select_options_parent').hide();

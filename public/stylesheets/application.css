@@ -14,7 +14,9 @@ div#content_logo img {
 	width: 100px;	
 }
 
-
+.show {
+ display:block !important; 	
+}
 
 th, td {
   border: 0;
@@ -553,13 +555,9 @@ table.calendar td a.active {
 }
 
 .ac_results iframe {
-  display: non
-
-e;
+  display: none;
   /*sorry for IE5*/
-	di
-
-splay/**/: 
+	display/**/: 
 
 block;
   /*sorry for IE5*/

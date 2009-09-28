@@ -50,10 +50,10 @@ $(document).ready(function() {
     container: "<div></div>"
   })
 
-  $('#pa_name').focus(function() {
+  $('#place_name').focus(function() {
     if ( !$.data(this, 'initialized') ) {
       $(this).val('');
-      $("#pa_name").autocomplete(
+      $("#place_name").autocomplete(
         "/places/autocomplete",
         {
           delay:10,
@@ -65,11 +65,9 @@ $(document).ready(function() {
           onItemSelect: function(e) {
             var extra = $(e).attr('extra');
             if (extra.length > 0) {
-              $("#pa_id").val(extra[0])
-              $("#pa_type").val(extra[1])
+              $("#place_id").val(extra[0])
             } else {
-              $("#pa_id").val('')
-              $("#pa_type").val('')
+              $("#place_id").val('')
             }
           },
         }
@@ -86,11 +84,13 @@ $(document).ready(function() {
 	});
 
   $("#pa_select").submit(function() {
-
+    
     $('.invalid').removeClass('invalid');
     var error = false;
-    if ($('#pa_id').val() == '') {
-      $('#pa_name').addClass('invalid');
+    $('#activity_error').removeClass("show");
+$('#activity_error').removeClass("hidden_value");
+    if ($('#place_id').val() == '') {
+      $('#place_name').addClass('invalid');
       error = true;
     }
 
@@ -114,51 +114,17 @@ $(document).ready(function() {
 				$('#user_activities').html('');
 			}
 			$('#user_activities').append(p);
-	/*
-		    $.ajax({
-		        type: "POST",
-				dataType: "html",
-		        url: '/account/user_activity_list',
-		        data: $(this).serialize(),
-		        success: function(q) {
-					$('#user_activities').replaceWith("<div id='user_activities'>"+q+"</div>");
-				}
-			});
-			*/
-        }
+        },
+		error: function(p)
+		{
+			$('#activity_error').addClass('show');
+				$('#activity_error').addClass('invalid');
+			$('#activity_error').val(p.responseText);
+		
+			
+		}
       })
       return false;
-
-/*
-    if ($("#pa_type").val() == 'activity') {
-      var opts = {
-        'url' : '/account/activities',
-        'activity[id]': $("#pa_id").val(),
-        'activity[description]': $('#pa_description').val(),
-      }
-    }
-     //todo:this needs to be adding an activity place record.
-    if ($("#pa_type").val() == '') {
-      var opts = {
-        'url' : '/account/places',
-        'favorite[place_id]': $("#pa_id").val(),
-        'favorite[good_for]': '1',
-		'favorite[description]': $('#pa_description').val(),
-      }
-    }
-    $.ajax({
-      url: opts['url'],
-      type: "POST",
-      data: opts,
-      success: function() {
-        $('#step_3_container').hide();
-        $('#step_3_finished').fadeIn();
-		top.location.href = '/account';
-
-      }
-    })
-    return false;
-*/
   })
 
   $('#pa_name').focus(function() {

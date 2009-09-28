@@ -191,14 +191,20 @@
 			<% form_tag('/account/activities', :id => "pa_select") do    %>
 			<%= render :partial => "user_activities/new_activity_signup" , :locals => {:user_activity => UserActivity.new} %>
   			<div class="clear"></div>   
+			<%= text_field_tag "activity_error","",:style => "display:none; width:250px" %>
+  			<div class="clear"></div>   
 			<div class="image_submit" style="float:left">
-          		<%= image_submit_tag 'save_info.png', :height => "20px", :width => "70px" %>
-				<%= image_submit_tag 'go.png', :id => 'finished',:height => "20px", :width => "70px" %>
-        	</div>
+				<div  style="float:left;">
+					<%= submit_button ("Add activity") %>    
+				</div>
+				<div style="float:left;">
+					<%= submit_button ("Finish", :id=> "finished") %>    
+				</div>
+			</div>
 			<div class="clear"></div>
     			<div id="activities_container" style="float:left; margin-top:10px;">
 				<div class="clear"></div>
-    			<strong> Your activities </strong> 
+    			<strong> Your activities </strong> <br \>
     				<div id="user_activities" style="float:left; margin-top:5px">
 	  					Please add some activities
     				</div>
