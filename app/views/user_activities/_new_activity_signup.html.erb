@@ -120,11 +120,9 @@
 	}).live('mouseout',function() {
 		$(this).removeClass('hover');
 	}).live('click',function() {
-		alert($(this).find('.hidden_value_child').text());
 		$(this).parent().prevAll('input').val($(this).find('.hidden_value_child').text());
 	$(this).parent().prev().html($(this).html());
 	$(this).parent().hide();
-	alert($(this).find('.hidden_value_child').val());
 	$('#user_activity[activity_id]').val($(this).find('.hidden_value_child').val());
 	return false;
 	});

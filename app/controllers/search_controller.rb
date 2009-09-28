@@ -32,6 +32,7 @@ class SearchController < ApplicationController
       :page => params[:page], :per_page => 12)
       respond_to do |format|
           format.js do
+            logger.info(@results)
             if @results.length == 0
               render :text=>"<div id='results'>No results returned</div>"
             else
