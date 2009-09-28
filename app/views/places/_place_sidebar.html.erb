@@ -21,8 +21,8 @@
 
 
 <div id="manage_place">
- <%= link_to "REMOVE FROM MY PLACES", account_place_path(@place), :id => "remove_place", :style => current_user.places.include?(@place) ? "" : "display: none;" %>
- <%= link_to "ADD TO MY PLACES", '#', 'data-href' => new_account_place_path(:place_id => @place), :class => "add_to_favorites" , :style => current_user.places.include?(@place) ? "display: none;" : "" %>
+ <%= link_to "REMOVE FROM MY PLACES", new_account_activity_path(@place), :id => "remove_place", :style => current_user.places.include?(@place) ? "" : "display: none;" %>
+ <%= link_to "ADD TO MY PLACES", '#', 'data-href' => new_account_activity_path(:place_id => @place), :class => "add_to_favorites" , :style => current_user.places.include?(@place) ? "display: none;" : "" %>
 
 <script type="text/javascript" charset="utf-8">
 

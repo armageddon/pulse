@@ -1,4 +1,9 @@
 
+#signup_logo
+{
+width:180px;	
+	
+}
 
 #container {
   margin-bottom: 200px;
@@ -11,6 +16,16 @@ a, a:visited, a:active {
 
 #copy {
   font-size: 2em;
+}
+
+.input_text_box {
+  padding: 4px;
+  border: 1px solid #f1f3f6;
+  background-color: #f1f3f6;
+  color: #666;
+  width: 260px;	
+  font-size: 0.9em;
+	
 }
 
 .input_text {
@@ -32,7 +47,7 @@ a, a:visited, a:active {
 }
 
 #container {
-  padding-top: 30px;
+  padding-top: 10px;
 }
 
 #add_photo {

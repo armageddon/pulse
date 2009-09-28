@@ -20,6 +20,9 @@ class User < ActiveRecord::Base
     EARLY_THIRTIES = 5
     MID_THIRTIES   = 6
     LATE_THIRTIES  = 7
+    EARLY_FORTIES = 8
+    MID_FORTIES = 9
+    LATE_FORTIES = 10
     OLDER  = 8
   end
 
@@ -41,11 +44,11 @@ class User < ActiveRecord::Base
 
   
   belongs_to :location
-
-  has_many :favorites
-  has_many :places, :through => :favorites
   has_many :user_activities
   has_many :activities, :through => :user_activities
+  has_many :places, :through => :user_activities
+  
+
   has_many :events
   has_many :messages, :foreign_key => "recipient_id"
   has_many :sent_messages, :foreign_key => "sender_id", :class_name => "Message"
@@ -66,7 +69,7 @@ class User < ActiveRecord::Base
   validates_format_of       :email,    :with => Authentication.email_regex, :message => Authentication.bad_email_message
   validates_inclusion_of :sex_preference, :in => [Sex::MALE, Sex::FEMALE, Sex::BOTH], :allow_blank => true
   validates_inclusion_of :sex, :in => [Sex::MALE, Sex::FEMALE], :allow_blank => true
-  validates_inclusion_of [:age, :age_preference], :in => [ Age::COLLEGE, Age::EARLY_TWENTIES, Age::MID_TWENTIES, Age::LATE_TWENTIES , Age::EARLY_THIRTIES, Age::MID_THIRTIES, Age::LATE_THIRTIES, Age::OLDER], :allow_blank => true
+  validates_inclusion_of [:age, :age_preference], :in => [ Age::COLLEGE, Age::EARLY_TWENTIES, Age::MID_TWENTIES, Age::LATE_TWENTIES , Age::EARLY_THIRTIES, Age::MID_THIRTIES, Age::LATE_THIRTIES,Age::EARLY_FORTIES, Age::MID_FORTIES, Age::LATE_FORTIES, Age::OLDER], :allow_blank => true
   # validates_presence_of :timezone, :description, :cell
 
 
@@ -151,7 +154,7 @@ class User < ActiveRecord::Base
       [age_preference - 1, age_preference, age_preference + 1],
       [age - 1, age, age + 1],
       id
-    ], :include => [:favorites, :activities], :page => page, :per_page => per_page)
+    ], :include => [:places, :activities], :page => page, :per_page => per_page)
   end
   
   # This is the a second, more complex, version of the matche-selection algorithm. It can be swapped in for
@@ -251,7 +254,13 @@ class User < ActiveRecord::Base
       User::Age::MID_THIRTIES
     elsif age<40
       User::Age::LATE_THIRTIES
-    else 
+    elsif age<44
+      User::Age::EARLY_FORTIES
+    elsif age<47
+      User::Age::MID_FORTIES
+    elsif age<50
+      User::Age::LATE_FORTIES  
+    else
       User::Age::OLDER
     end
 end
@@ -260,7 +269,9 @@ end
     logger.debug(dob)
     age = (DateTime.now.year - dob.year) + ((DateTime.now.month - dob.month) + ((DateTime.now.day - dob.day) < 0 ? -1 : 0) < 0 ? -1 : 0)
     logger.debug("age" + age.to_s())
-    get_age_option_from_age(age)
+    ageopt = get_age_option_from_age(age)
+    logger.debug(ageopt)
+    ageopt
     
   end
 

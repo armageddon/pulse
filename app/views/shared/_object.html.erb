@@ -20,7 +20,7 @@
 		<div class="description">
       		<% if controller_name == 'places' && object.is_a?(User) %>
          	<span class="fancy_quotes">&#8220;</span>
-			<%= object.favorites.find_by_place_id(@place.id).description %>
+			<%= object.user_activities.find_by_place_id(@place.id).user.description %>
 			<span class="fancy_quotes">&#8221;</span>
 	  		<% elsif object.is_a?(Place)%>
 	     	<span><%=object.neighborhood%> </span>
@@ -34,17 +34,20 @@
 		<% case object 
 		when User
 		%>
-		<%= link_to image_tag("CheckMark.png", :width=>20), account_message_path(object) %>
+		<%= link_to image_tag("HPThumbUp.png", :width=>20), account_message_path(object) %>
 		<%  when Place %>
 		<%    if logged_in? && current_user.places.include?(object) %>
-		<%=     link_to image_tag("Home.png", :width=>20), '#', 'data-href' => new_account_event_path(:place_id => object), :class => "add_event" %>
-		<%=     (link_to(image_tag("Minus.png", :width=>20), '#')) if controller_name == 'user_favorites' %>
+		<%=     link_to image_tag("HPThumbUp.png", :width=>20), '#', 'data-href' => new_account_event_path(:place_id => object), :class => "add_event" %>
+		<%=     (link_to(image_tag("HPThumbDown.png", :width=>20), '#')) if controller_name == 'user_favorites' %>
 		<%    else %>
-		<%=     link_to image_tag("Plus.png", :width=>20), '#', 'data-href' => new_account_place_path(:place_id => object), :class => "add_to_favorites" %>
+		<%=     link_to image_tag("HPThumbUp.png", :width=>20), '#', 'data-href' => new_account_activity_path(:place_id => object), :class => "add_to_favorites" %>
 		<%    end %>
 		<%  when Activity %>
 		<%    if logged_in? && !current_user.activities.include?(object) %>
-		<%=     link_to image_tag("Plus.png", :width=>20), '#', 'data-href' => new_account_activity_path(:activity_id => object), :class => "add_activity" %>
+		<%=     link_to image_tag("HPThumbUp.png", :width=>20), '#', 'data-href' => new_account_activity_path(:activity_id => object), :class => "add_activity" %>
+		<%elsif  logged_in?    %>
+		<%= link_to image_tag("HPThumbDown.png", :width=>20), '#', 'data-href' => new_account_activity_path(:activity_id => object), :class => "add_activity" %>
+	
 		<%    end %>      
 		<%  end %>
 	</div>

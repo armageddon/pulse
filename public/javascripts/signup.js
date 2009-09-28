@@ -80,7 +80,13 @@ $(document).ready(function() {
     }
   });
 
+	$("#finished").click(function() {
+		window.location="/account";
+		return false;
+	});
+
   $("#pa_select").submit(function() {
+
     $('.invalid').removeClass('invalid');
     var error = false;
     if ($('#pa_id').val() == '') {
@@ -98,7 +104,32 @@ $(document).ready(function() {
     if (error) {
       return false;
     }
+	$.ajax({
+        type: "POST",
+        url: '/account/activities',
+        data: $(this).serialize(),
+        success: function(p) {
+ 			if($('#user_activities').html().indexOf("Please add some activities") >= 0)
+			{
+				$('#user_activities').html('');
+			}
+			$('#user_activities').append(p);
+	/*
+		    $.ajax({
+		        type: "POST",
+				dataType: "html",
+		        url: '/account/user_activity_list',
+		        data: $(this).serialize(),
+		        success: function(q) {
+					$('#user_activities').replaceWith("<div id='user_activities'>"+q+"</div>");
+				}
+			});
+			*/
+        }
+      })
+      return false;
 
+/*
     if ($("#pa_type").val() == 'activity') {
       var opts = {
         'url' : '/account/activities',
@@ -127,6 +158,7 @@ $(document).ready(function() {
       }
     })
     return false;
+*/
   })
 
   $('#pa_name').focus(function() {
@@ -251,9 +283,10 @@ $(document).ready(function() {
         url: $(this).attr('action'),
         data: $(this).serialize(),
         success: function(msg) {
-          $('#new_user').fadeOut();
-          $('#step_1_finished').fadeIn();
-          $('#step_2').fadeIn();
+			$('#step_1').fadeOut();
+	        $('#step_2').fadeIn();
+			$('#step_1_text').fadeOut();
+			$('#step_2_text').fadeIn();   
         },
         error: function(xhr) {
           var errors = $.httpData(xhr, 'json');
@@ -333,9 +366,10 @@ $(document).ready(function() {
         url: $(this).attr('action'),
         data: $(this).serialize(),
         success: function() {
-          $('#step_2_container').fadeOut();
-          $('#step_2_finished').fadeIn();
-          $('#step_3').fadeIn();
+		  	$('#step_2').fadeOut();
+	        $('#step_3').fadeIn();
+			$('#step_2_text').fadeOut();
+			$('#step_3_text').fadeIn();
       },
       });
       return false;

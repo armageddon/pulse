@@ -14,8 +14,8 @@ class Place < ActiveRecord::Base
     :path => "places/:id/:id_:style.:extension"
 
   belongs_to :location
-  has_many :favorites
-  has_many :users, :through => :favorites
+  has_many :user_activities
+  has_many :users, :through => :user_activities
   has_and_belongs_to_many :categories
   has_many :events
 

@@ -5,6 +5,21 @@ class UsersController < ApplicationController
   before_filter :find_user, :only => [:suspend, :unsuspend, :destroy, :purge]
   before_filter :login_required, :except => [:redeem, :create]
 
+
+  def user_places
+    @places = current_user.places;
+    respond_to do |format|
+       format.js { render :partial => "shared/object_collection", :locals => {:collection => @places}}
+    end
+  end
+
+  def user_activities
+    @activities = current_user.activities;
+    respond_to do |format|
+       format.js { render :partial => "shared/object_collection", :locals => {:collection => @activities}}
+    end
+  end
+  
   def show
     @places = current_user.suggested_places
     @matches = current_user.matches(params[:page], 8)
@@ -14,12 +29,12 @@ class UsersController < ApplicationController
   def new
     logger.debug("In Create")
     @user = User.new
-    
-    
+    @user_activity = UserActivity.new
   end
 
   def redeem
     logger.debug("Begin redeem")
+       @user_activity = UserActivity.new
     logout_keeping_session!
     
     if params[:invite_code] == "pulse12345"
@@ -68,6 +83,7 @@ class UsersController < ApplicationController
   end
 
   def update
+        @user_activity = UserActivity.new
     if params[:iframe]=="true"
        current_user.update_attributes(params[:user])
         respond_to do |format|
@@ -85,6 +101,7 @@ class UsersController < ApplicationController
           format.js { render :nothing => true}
           format.html { redirect_to account_path }
        else
+         logger.debug("in no change")
           format.js { render :nothing => true, :status => 500 }
           format.html { render :action => :new }
        end

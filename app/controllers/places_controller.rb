@@ -9,15 +9,13 @@ class PlacesController < ApplicationController
     @place = Place.find(params[:id])
 
     if logged_in?
-      @place_people = User.paginate(:all, :conditions => {
-        "favorites.place_id" => @place.id,
-        "users.sex_preference" => current_user.sex
-        }, :limit => 5, :include => "favorites", :page => params[:page], :per_page => 12)
+      @place_people = @place.users.paginate(:all, :limit => 5, :page => params[:page], :per_page => 12)
     end
 
-    @favorites = Favorite.find(:all, :conditions => {
-      "favorites.place_id" => @place.id
+    @user_activities = UserActivity.find(:all, :conditions => {
+      "user_activities.place_id" => @place.id
     }, :include => :user, :limit => 5)
+    
   end
 
   def autocomplete

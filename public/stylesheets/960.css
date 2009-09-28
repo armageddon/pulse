@@ -18,6 +18,36 @@
 /* `Grid >> Global
 ----------------------------------------------------------------------------------------------------*/
 
+.step_text
+{
+	float:left;
+	display:inline;
+	width:200px;
+	position:relative;
+	margin-left: 230px;
+	margin-right: 10px;
+}
+
+.step_desc
+{
+	float:left;
+	display:inline;
+	width:200px;
+	position:relative;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.step
+{
+	float:left;
+	display:inline;
+	width:400px;
+	position:relative;
+	margin-left: 10px;
+	margin-right: 10px;	
+}
+
 .grid_1,
 .grid_2,
 .grid_3,

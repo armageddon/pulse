@@ -1,5 +1,5 @@
 <% form_tag search_path, :method => :get, :id => "advanced_search" do %>
-<%= hidden_field_tag "t", 'places' %>
+<%= hidden_field_tag "t", params[:t] %>
 <div class="section_header">
 	<div style="float:left;width:54px">
 		<h3 class="section_name">Find: </h3>
@@ -37,7 +37,8 @@
 
 <script type="text/javascript" charset="utf-8">
 //todo: clean up this javascript
-$("#search_button").click(function() {
+$("#advanced_search").submit(function() {
+	alert($(this).serialize());
   $.ajax({
     type: "GET",
     url: $(this).attr('action'),
@@ -50,7 +51,7 @@ $("#search_button").click(function() {
 });
 
 $("#people_link").click(function() {
-	$('#t')[0].value = 'people';
+	$('#t').val('people');
   $.ajax({
     type: "GET",
     url: "/search/people",
@@ -74,7 +75,7 @@ $("#people_link").click(function() {
 });
 
 $("#places_link").click(function() {
-	$('#t')[0].value = 'places';
+	$('#t').val('places');
   $.ajax({
     type: "GET",
     url: "/search/places",
@@ -97,7 +98,7 @@ $("#places_link").click(function() {
 });
 
 $("#activities_link").click(function() {
-	$('#t')[0].value = 'activities';
+	$('#t').val('activities');
   $.ajax({
     type: "GET",
     url: "/search/activities",

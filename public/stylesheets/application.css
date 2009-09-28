@@ -392,6 +392,29 @@ table.calendar td a.active {
   margin: 0;
 }
 
+.fancy_select_parent {
+  width: 180px;
+  height: 20px;
+  padding: 2px 5px 2px 5px;
+  color: #666;
+  border: 1px solid #eaecf1;
+  margin-top: 10px;
+  cursor: pointer;
+  background: #f7f8fa url(/images/fancy_select_handle.gif) right top no-repeat;
+  position: relative;
+}
+.fancy_select_child {
+  width: 180px;
+  height: 20px;
+  padding: 2px 5px 2px 5px;
+  color: #666;
+  border: 1px solid #eaecf1;
+  margin-top: 10px;
+  cursor: pointer;
+  background: #f7f8fa url(/images/fancy_select_handle.gif) right top no-repeat;
+  position: relative;
+}
+
 .fancy_select {
   width: 180px;
   height: 20px;
@@ -415,16 +438,53 @@ table.calendar td a.active {
   display: none;
   z-index: 9000;
 }
-
+.fancy_select_options_parent {
+  background-color: white;
+  width: 180px;
+  position: absolute;
+  top: 20px;
+  left: 0px;
+  border: 1px solid #ccc;
+  padding: 2px 4px 2px 4px;
+  display: none;
+  z-index: 9000;
+}
+.fancy_select_options_child {
+  background-color: white;
+  width: 180px;
+  position: absolute;
+  top: 20px;
+  left: 0px;
+  border: 1px solid #ccc;
+  padding: 2px 4px 2px 4px;
+  display: none;
+  z-index: 9000;
+}
 .fancy_select_options p {
   margin: 1px;
 }
-
+.fancy_select_options_parent p {
+  margin: 1px;
+}
+.fancy_select_options_child p {
+  margin: 1px;
+}
 .fancy_select_options p.hover {
   background-color: #f7f8fa;
 }
-
+.fancy_select_options_parent p.hover {
+  background-color: #f7f8fa;
+}
+.fancy_select_options_child p.hover {
+  background-color: #f7f8fa;
+}
 .hidden_value {
+  display: none;
+}
+.hidden_value_child {
+  display: none;
+}
+.hidden_value_parent {
   display: none;
 }
 

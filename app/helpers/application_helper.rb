@@ -89,6 +89,12 @@ module ApplicationHelper
       "#{gender} mid 30's"
     when User::Age::LATE_THIRTIES
       "#{gender} late 30's"
+    when User::Age::EARLY_FORTIES
+      "#{gender} early 40's"
+    when User::Age::MID_FORTIES
+      "#{gender} mid 40's"
+    when User::Age::LATE_FORTIES
+      "#{gender} late 40's"
     when User::Age::OLDER
       "#{gender} 40's or older"
     end

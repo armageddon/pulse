@@ -4,9 +4,10 @@ class Activity < ActiveRecord::Base
     indexes name
   end
 
-  has_attached_file :icon, :styles => { :thumb => "75x75#", :thumb => "160x160#" }
+  has_attached_file :icon, :styles => { :thumb => "75x75#", :thumb => "160x160#" }, :default_url => "/images/question.png"
 
   has_many :user_activities
   has_many :users, :through => :user_activities
+  has_many :places, :through => :user_activities
 
 end

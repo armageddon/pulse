@@ -12,18 +12,20 @@ ActionController::Routing::Routes.draw do |map|
   map.contact '/contact', :controller => "pages", :action => 'contact'
   map.terms '/terms', :controller => "pages", :action => 'terms'
   map.update '/update', :controller => "users", :action => 'update'
-
   map.search_places '/search/places', :controller => 'search', :action => "places"
   map.search_people '/search/people', :controller => 'search', :action => "people"
   map.search_activities '/search/activities', :controller => "search", :action => "activities"
-
+  map.activity_list '/search/activity_list', :controller => 'search', :action => "activity_list" #todo - url doesnt look good
+  map.user_activity_list '/account/user_activities', :controller =>'users', :action => "user_places"
   map.resources :places, :collection => { :autocomplete => :get } do |p|
     p.resources :pictures, :controller => "place_pictures"
   end
-
+#todo what the hell does the below line mean
   map.resources :activities, :collection => { :autocomplete => :get } do |a|
     a.resources :pictures, :controller => "activity_pictures"
   end
+
+
 
   map.resource :account, :controller => "users" do |u|
     u.resources :places, :controller => "user_favorites"
