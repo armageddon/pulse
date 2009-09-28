@@ -44,6 +44,7 @@ $("#advanced_search").submit(function() {
     data: $('#advanced_search').serialize(), //advanced_search,
     success: function(p) {
 	 $('#results').replaceWith(p);
+	$("#dialog").jqmAddTrigger('.add_to_favorites, .add_event, .add_activity');
     }
   })
   return false;
@@ -64,6 +65,7 @@ $("#people_link").click(function() {
     data: $('#advanced_search').serialize(),
     success: function(p) {
 	 $('#results').replaceWith(p);
+	$("#dialog").jqmAddTrigger('.add_to_favorites, .add_event, .add_activity');
     }
   });
 
@@ -88,6 +90,7 @@ $("#places_link").click(function() {
 		data: $('#advanced_search').serialize(),
 		success: function(p) {
 		$('#results').replaceWith(p);
+		$("#dialog").jqmAddTrigger('.add_to_favorites, .add_event, .add_activity');
 		}
 	   });
     }
@@ -111,6 +114,7 @@ $("#activities_link").click(function() {
 	   data:  $('#advanced_search').serialize(),
 	    success: function(p) {
 		 $('#results').replaceWith(p);
+		$("#dialog").jqmAddTrigger('.add_to_favorites, .add_event, .add_activity');
 	    }
 	  });
 

@@ -37,7 +37,7 @@
 		<%= link_to image_tag("HPThumbUp.png", :width=>20), account_message_path(object) %>
 		<%  when Place %>
 		<%    if logged_in? && current_user.places.include?(object) %>
-		<%=     link_to image_tag("HPThumbUp.png", :width=>20), '#', 'data-href' => new_account_event_path(:place_id => object), :class => "add_event" %>
+		<%=     link_to image_tag("HPEvent.png", :width=>20), '#', 'data-href' => new_account_event_path(:place_id => object), :class => "add_event" %>
 		<%=     (link_to(image_tag("HPThumbDown.png", :width=>20), '#')) if controller_name == 'user_favorites' %>
 		<%    else %>
 		<%=     link_to image_tag("HPThumbUp.png", :width=>20), '#', 'data-href' => new_account_activity_path(:place_id => object), :class => "add_to_favorites" %>

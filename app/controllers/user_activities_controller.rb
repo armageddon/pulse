@@ -18,8 +18,9 @@ class UserActivitiesController < ApplicationController
       @place = Place.find(params[:place_id])
     end
     @user_activity = UserActivity.new(:place_id => params[:place_id], :activity_id => params[:activity_id])
+    logger.debug("Just before format - UA new")
     respond_to do |format|
-      format.js { render :partial => "new_activity", :locals => { :activity => @activity, :user_activity => @user_activity, :place => @place } }
+      format.js { render :partial => "new_activity.html.erb", :locals => { :activity => @activity, :user_activity => @user_activity, :place => @place } }
       format.html { render }
     end
   end
