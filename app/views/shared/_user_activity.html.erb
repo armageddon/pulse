@@ -14,7 +14,7 @@
 		
    	</div>
 	<div class="clear"></div>
-	&nbsp;&nbsp;&nbsp;<%= UserActivity.all(:conditions => {"place_id" => object.place.id, "activity_id" => object.activity.id}).count %>&nbsp;people do this here:
+	&nbsp;&nbsp;&nbsp;<%= UserActivity.all(:conditions => {"place_id" => object.place.id, "activity_id" => object.activity.id}).length %>&nbsp;people do this here:
     <div class="clear"></div>
 </div>
 <div class="actions">
