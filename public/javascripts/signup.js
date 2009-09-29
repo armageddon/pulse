@@ -157,7 +157,7 @@ $('#activity_error').removeClass("hidden_value");
     return false;
   });
 
-  $('#user_email, #user_first_name, #user_username').focus(function() {
+  $('#user_email,#user_postcode, #user_first_name, #user_username').focus(function() {
     $(this).val('');
     return false;
   });
@@ -165,6 +165,11 @@ $('#activity_error').removeClass("hidden_value");
   $('#user_email').blur(function() {
     if ($(this).val() == '')
       $(this).val('Email address');
+  })
+
+  $('#postcode').blur(function() {
+    if ($(this).val() == '')
+      $(this).val('Post code');
   })
 
   $('#user_first_name').blur(function() {
@@ -233,11 +238,14 @@ $('#activity_error').removeClass("hidden_value");
       error = true;
     }
     
-    if (location.val() == '' || location.val() != '1') {
-      error = true;
-      location.parent().addClass('invalid');
-      $('#location_error span.error').text('The service is currently in beta and only serving London.');
-    }
+    var postcode = $('#user_postcode');
+	regexString = /^([A-PR-UWYZ0-9][A-HK-Y0-9][AEHMNPRTVXY0-9]?[ABEHMNPRVWXY0-9]? {1,2}[0-9][ABD-HJLN-UW-Z]{2}|GIR 0AA)$/
+	if (postcode.val() == '' || postcode.val() == 'Post code' || regexString.test(postcode.val().toUpperCase()) != true) {
+		
+		postcode.addClass('invalid');
+	    postcode.nextAll('span.error').text('Please enter a valid post code.');
+	    error = true;
+	};
 
     if (error) {
       return false;

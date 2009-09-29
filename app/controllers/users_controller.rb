@@ -21,6 +21,7 @@ class UsersController < ApplicationController
   end
   
   def show
+    logger.debug(current_user.errors.full_messages)
     @places = current_user.suggested_places
     @matches = current_user.matches(params[:page], 8)
 
@@ -49,7 +50,10 @@ class UsersController < ApplicationController
   def create
     logger.debug("In Create")
     logout_keeping_session!
+    
     @user = User.new(params[:user])
+    @user.location_id = 1;
+    @user.postcode = @user.postcode.upcase
     @user.register! if @user && @user.valid?
 
     success = @user && @user.valid?
@@ -79,6 +83,7 @@ class UsersController < ApplicationController
   end
 
   def edit
+     logger.debug(current_user.errors.full_messages)
     @user = current_user
   end
 
@@ -97,13 +102,15 @@ class UsersController < ApplicationController
        params[:user][:age] = current_user.get_age_option_from_dob(params[:user][:dob])
    
        respond_to do |format|
+         logger.debug(params[:user]);
        if current_user.update_attributes(params[:user])
           format.js { render :nothing => true}
           format.html { redirect_to account_path }
        else
+         logger.debug(current_user.errors.full_messages);
          logger.debug("in no change")
           format.js { render :nothing => true, :status => 500 }
-          format.html { render :action => :new }
+          format.html { render :action => "edit"}
        end
        end
     end

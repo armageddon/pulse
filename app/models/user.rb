@@ -70,13 +70,14 @@ class User < ActiveRecord::Base
   validates_inclusion_of :sex_preference, :in => [Sex::MALE, Sex::FEMALE, Sex::BOTH], :allow_blank => true
   validates_inclusion_of :sex, :in => [Sex::MALE, Sex::FEMALE], :allow_blank => true
   validates_inclusion_of [:age, :age_preference], :in => [ Age::COLLEGE, Age::EARLY_TWENTIES, Age::MID_TWENTIES, Age::LATE_TWENTIES , Age::EARLY_THIRTIES, Age::MID_THIRTIES, Age::LATE_THIRTIES,Age::EARLY_FORTIES, Age::MID_FORTIES, Age::LATE_FORTIES, Age::OLDER], :allow_blank => true
+  validates_format_of       :postcode, :with => /^([A-PR-UWYZ0-9][A-HK-Y0-9][AEHMNPRTVXY0-9]?[ABEHMNPRVWXY0-9]? {1,2}[0-9][ABD-HJLN-UW-Z]{2}|GIR 0AA)$/
   # validates_presence_of :timezone, :description, :cell
 
 
   # HACK HACK HACK -- how to do attr_accessible from here?
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
-  attr_accessible :username, :email, :first_name, :password, :password_confirmation, :timezone, :description, :age, :age_preference, :sex, :sex_preference, :cell, :location_id, :icon, :dob
+  attr_accessible  :username, :email, :first_name, :password, :password_confirmation, :timezone, :description, :age, :age_preference, :sex, :sex_preference, :cell, :location_id, :icon, :dob, :postcode
   attr_accessor :login
 
 

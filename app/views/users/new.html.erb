@@ -70,6 +70,7 @@
 				 <%= text_field_tag 'user[email]', @user.email || 'Email address', :class => 'input_text' %><br />
 				 <span class="error"></span>
 				</p>
+				<!--
 				<label  style="margin-top: 5px; color:#990000;">Location</label>
 				<div class="clear"></div>
 			    <div class='fancy_select'>
@@ -87,6 +88,13 @@
 			    <div id="location_error">
 			      <span class="error"></span>
 			    </div>
+				-->
+				<label  style="margin-top: 5px; color:#990000;">Post Code</label>
+				<div class="clear"></div>
+				<p>
+				 <%= text_field_tag 'user[postcode]', @user.postcode || 'Post code', :class => 'input_text' %><br />
+				 <span class="error"></span>
+				</p>
 			  	<div>
       			<%= image_submit_tag 'save_info.png', :height => "20px", :width => "70px", :style => "margin-top:5px" %>
     			</div>

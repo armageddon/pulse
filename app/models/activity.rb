@@ -11,3 +11,4 @@ class Activity < ActiveRecord::Base
   has_many :places, :through => :user_activities
 
 end
+

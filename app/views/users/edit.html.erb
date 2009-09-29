@@ -15,18 +15,8 @@
     <%= text_area_tag 'user[description]', current_user.description, :id => "user_description", :class => "word_count" %>
   </div>
 
-  <label style="margin-top: 5px;">Your location</label>
-  <div class='fancy_select'>
-    <%= hidden_field_tag 'user[sex]', current_user.location_id %>
-    <div class="fancy_select_target">
-      <%= current_user.location.name %>
-    </div>
-    <div class="fancy_select_options">
-      <% Location.find(:all).each do |l| %>
-        <p><%= l.name %><span class="hidden_value"><%= l.id %></span></p>
-      <% end %>
-    </div>
-  </div>
+	<label>Post code</label>
+  	<%= text_field_tag 'user[postcode]', current_user.postcode || 'Post code', :class => 'input_text' %><br />
 
   <label style="margin-top: 5px;">Your gender</label>
   <div class='fancy_select'>
@@ -64,7 +54,7 @@
 	</div>
 <label style="margin-top: 5px;">Age preference</label>
      <div class='fancy_select'>
-    		<%= hidden_field_tag 'user[age_preference]' %>
+    		<%= hidden_field_tag 'user[age_preference]' , current_user.age_preference%>
     		<div class="fancy_select_target">
 			<%= age_options[current_user.age_preference-1][0] %>
 	

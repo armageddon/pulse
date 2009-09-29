@@ -19,17 +19,27 @@ class SearchController < ApplicationController
       type = User
     when 'activities'
       logger.debug('activities')
-      type = Activity
+      type = UserActivity
     else
       logger.debug('else def to places')
       type = Place
       params[:t] = 'places'
     end
+    
+    if type = UserActivity
+      logger.debug('activity')
+      @results =  type.paginate(:select => "DISTINCT activity_id, place_id", :include => [:place, :activity],:page => params[:page], :per_page => 12)
+      
+    else
+      @results =  type.search(params[:q],
+        :conditions => conditions,
+        :page => params[:page], :per_page => 12)
+    end
+    
+    
    logger.info(@params)
    logger.info("params: " +  params.to_s())
-    @results =  type.search(params[:q],
-      :conditions => conditions,
-      :page => params[:page], :per_page => 12)
+    
       respond_to do |format|
           format.js do
             logger.info(@results)

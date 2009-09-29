@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090922131125) do
+ActiveRecord::Schema.define(:version => 20090929104209) do
 
   create_table "activities", :force => true do |t|
     t.string   "name"
@@ -136,6 +136,7 @@ ActiveRecord::Schema.define(:version => 20090922131125) do
     t.boolean  "attempted_s3_upload",    :default => false
     t.string   "category"
     t.boolean  "exclude",                :default => false
+    t.string   "postcode"
   end
 
   add_index "places", ["import_id"], :name => "idx_import_id"
@@ -202,6 +203,7 @@ ActiveRecord::Schema.define(:version => 20090922131125) do
     t.string   "icon_file_size"
     t.string   "icon_updated_at"
     t.datetime "dob"
+    t.string   "postcode"
   end
 
 end
