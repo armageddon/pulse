@@ -6,7 +6,7 @@ class ProfilesController < ApplicationController
     @user = User.find_by_username(params[:id])
     @places = @user.places.paginate(:page => params[:page], :per_page => 5)
     @events = @user.events.find(:all, :include => [:place, :user])
-
+    @activities =  @user.activities.paginate(:select => "DISTINCT activities.*", :page => params[:page], :per_page => 5)
     # poor man's stats
     if @user != current_user
       @user.increment!(:profile_views, 1)

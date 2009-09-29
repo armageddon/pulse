@@ -100,6 +100,9 @@ module UsersHelper
       ["Early thirties", User::Age::EARLY_THIRTIES],
       ["Mid thirties", User::Age::MID_THIRTIES],
       ["Late thirties", User::Age::LATE_THIRTIES],
+      ["Early forties", User::Age::EARLY_FORTIES],
+      ["Mid forties", User::Age::MID_FORTIES],
+      ["Late forties", User::Age::LATE_FORTIES],
       ["Older", User::Age::OLDER]
     ]
   end

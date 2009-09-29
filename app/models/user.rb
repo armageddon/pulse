@@ -23,7 +23,7 @@ class User < ActiveRecord::Base
     EARLY_FORTIES = 8
     MID_FORTIES = 9
     LATE_FORTIES = 10
-    OLDER  = 8
+    OLDER  = 11
   end
 
   class Sex

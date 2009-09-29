@@ -18,6 +18,7 @@ class Place < ActiveRecord::Base
   has_many :users, :through => :user_activities
   has_and_belongs_to_many :categories
   has_many :events
+  has_many :activities, :through => :user_activities 
 
   # before_create :geolocate
 

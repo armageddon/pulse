@@ -96,7 +96,7 @@ module ApplicationHelper
     when User::Age::LATE_FORTIES
       "#{gender} late 40's"
     when User::Age::OLDER
-      "#{gender} 40's or older"
+      "#{gender} 50's or older"
     end
   end
   
