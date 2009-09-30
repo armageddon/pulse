@@ -106,9 +106,7 @@
       	<div id="upload_container" style="display: none;">
       	<% form_tag "/update", :multipart => true, :target => "image_upload", :id => "photo_upload" do%>
        		<%= file_field(:user , :icon, :style => "position: absolute;")%>
-				<!-- <input type="file" id="photo_uploaded_data" name="user_picture[uploaded_data]" style="position: absolute;"> -->
-      		<!-- here user file_field just to check if its working. Accounts controller will expect an icon parameter-->
-				<% end %>
+		<% end %>
       	</div>
       	<div id="add_photo">Add photo</div>
     	<% form_tag '/account/', :method => "put", :id => "details_update" do %>

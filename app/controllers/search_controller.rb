@@ -26,7 +26,7 @@ class SearchController < ApplicationController
       params[:t] = 'places'
     end
     
-    if type = UserActivity
+    if type == UserActivity
       logger.debug('activity')
       @results =  type.paginate(:select => "DISTINCT activity_id, place_id", :include => [:place, :activity],:page => params[:page], :per_page => 12)
       

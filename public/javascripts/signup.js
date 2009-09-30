@@ -16,10 +16,11 @@ $(document).ready(function() {
         ) {
           $('#upload_container').show();
           $('#user_icon').css({
-            left: e.pageX -10 ,
-            top: e.pageY -5,
-            opacity: 0,
+            left: e.pageX -770 ,
+            top: e.pageY -220,
             cursor: 'pointer',
+			opacity: 0,
+			
           })
 
     } else {
@@ -84,23 +85,20 @@ $(document).ready(function() {
 	});
 
   $("#pa_select").submit(function() {
-    
     $('.invalid').removeClass('invalid');
     var error = false;
     $('#activity_error').removeClass("show");
-$('#activity_error').removeClass("hidden_value");
+    $('#activity_error').removeClass("hidden_value");
     if ($('#place_id').val() == '') {
       $('#place_name').addClass('invalid');
       error = true;
     }
-
     if($('#pa_description').val() == 'Tell us everything important about it in less than a text message' ||
       $('#pa_description').val() == ''
     ) {
       $('#pa_description').addClass('invalid');
       error = true
     }
-
     if (error) {
       return false;
     }
@@ -119,9 +117,7 @@ $('#activity_error').removeClass("hidden_value");
 		{
 			$('#activity_error').addClass('show');
 				$('#activity_error').addClass('invalid');
-			$('#activity_error').val(p.responseText);
-		
-			
+			$('#activity_error').val(p.responseText);			
 		}
       })
       return false;
