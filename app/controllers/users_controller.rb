@@ -104,10 +104,12 @@ include Graticule
        logger.debug(params[:user][:postcode])
        location = geocoder.locate ('london ' + params[:user][:postcode])
        latitude, longitude = location.coordinates
-       current_user.lat = latitude
-       current_user.long = longitude
-       params[:user][:lat] = latitude
-       params[:user][:long] = longitude
+       if latitude != nill && longiture != nill
+         current_user.lat = latitude
+         current_user.long = longitude
+         params[:user][:lat] = latitude
+         params[:user][:long] = longitude
+      end
        respond_to do |format|
          logger.debug(params[:user]);
        if current_user.update_attributes(params[:user])
