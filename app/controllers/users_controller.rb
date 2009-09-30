@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-
+include Graticule
   # Protect these actions behind an admin login
   # before_filter :admin_required, :only => [:suspend, :unsuspend, :destroy, :purge]
   before_filter :find_user, :only => [:suspend, :unsuspend, :destroy, :purge]
@@ -100,7 +100,14 @@ class UsersController < ApplicationController
        logger.debug(params[:user][:dob])
        logger.debug(current_user.get_age_option_from_dob(params[:user][:dob]))
        params[:user][:age] = current_user.get_age_option_from_dob(params[:user][:dob])
-   
+       geocoder = Graticule.service(:google).new "ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog"
+       logger.debug(params[:user][:postcode])
+       location = geocoder.locate ('london ' + params[:user][:postcode])
+       latitude, longitude = location.coordinates
+       current_user.lat = latitude
+       current_user.long = longitude
+       params[:user][:lat] = latitude
+       params[:user][:long] = longitude
        respond_to do |format|
          logger.debug(params[:user]);
        if current_user.update_attributes(params[:user])
