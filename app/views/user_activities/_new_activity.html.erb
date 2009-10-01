@@ -1,5 +1,5 @@
 <% form_for user_activity, :url => account_activities_path do |f| %>
-  <% if type = "add_activity" %>
+  <% if type == "add_activity" %>
   <h4>Add an activity</h4>
 	<%= hidden_field_tag 'user_activity[activity_id]', activity.id, :id => 'user_activity[activity_id]' %>
 	<%= image_tag(activity.icon.url(:thumb), :width => '30px', :height => '30px') %>
