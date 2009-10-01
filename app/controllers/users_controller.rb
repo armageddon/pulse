@@ -50,8 +50,19 @@ include Graticule
   def create
     logger.debug("In Create")
     logout_keeping_session!
-    
-    @user = User.new(params[:user])
+     @user = User.new(params[:user])
+    if   params[:user][:postcode] != nil 
+       geocoder = Graticule.service(:google).new "ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog"
+       location = geocoder.locate ('london ' + params[:user][:postcode])
+       latitude, longitude = location.coordinates
+       if latitude != nil && longitude != nil
+        @user.lat = latitude
+        @user.long = longitude
+        params[:user][:lat] = latitude
+        params[:user][:long] = longitude
+       end
+     end
+   
     @user.location_id = 1;
     @user.postcode = @user.postcode.upcase
     @user.register! if @user && @user.valid?
@@ -102,14 +113,16 @@ include Graticule
        params[:user][:age] = current_user.get_age_option_from_dob(params[:user][:dob])
        geocoder = Graticule.service(:google).new "ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog"
        logger.debug(params[:user][:postcode])
-       location = geocoder.locate ('london ' + params[:user][:postcode])
-       latitude, longitude = location.coordinates
-       if latitude != nill && longiture != nill
-         current_user.lat = latitude
-         current_user.long = longitude
-         params[:user][:lat] = latitude
-         params[:user][:long] = longitude
-      end
+       if   params[:user][:postcode] != null 
+         location = geocoder.locate ('london ' + params[:user][:postcode])
+         latitude, longitude = location.coordinates
+         if latitude != nill && longiture != nill
+          current_user.lat = latitude
+          current_user.long = longitude
+          params[:user][:lat] = latitude
+          params[:user][:long] = longitude
+         end
+       end
        respond_to do |format|
          logger.debug(params[:user]);
        if current_user.update_attributes(params[:user])
