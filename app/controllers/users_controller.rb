@@ -113,10 +113,10 @@ include Graticule
        params[:user][:age] = current_user.get_age_option_from_dob(params[:user][:dob])
        geocoder = Graticule.service(:google).new "ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog"
        logger.debug(params[:user][:postcode])
-       if   params[:user][:postcode] != null 
+       if   params[:user][:postcode] != nil
          location = geocoder.locate ('london ' + params[:user][:postcode])
          latitude, longitude = location.coordinates
-         if latitude != nill && longiture != nill
+         if latitude != nil && longitude != nil
           current_user.lat = latitude
           current_user.long = longitude
           params[:user][:lat] = latitude
