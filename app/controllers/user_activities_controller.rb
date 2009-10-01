@@ -9,15 +9,20 @@ class UserActivitiesController < ApplicationController
     logger.debug('in new')
     logger.debug(params)
     if params[:activity_id].present?
-      @actvitiy = Activity.find(params[:activity_id])
-    else
-      @activity = Activity.new
+      logger.debug(params[:activity_id])
+      @activity = Activity.find(params[:activity_id])
+      logger.debug(@activity.id)
+      logger.debug(@activity)
+      #logger.debug("found activity: name=> " + @activity.name)
     end
-    
     if params[:place_id].present?
       @place = Place.find(params[:place_id])
+      logger.debug("found place: name=> " + @place.name)
     end
+    #todo error checking here
+    #how is this adding the userid?
     @user_activity = UserActivity.new(:place_id => params[:place_id], :activity_id => params[:activity_id])
+    @type = params[:type]
     logger.debug("Just before format - UA new")
     respond_to do |format|
       format.js { render :partial => "new_activity.html.erb", :locals => { :activity => @activity, :user_activity => @user_activity, :place => @place } }
@@ -33,10 +38,15 @@ class UserActivitiesController < ApplicationController
 
   def create
     logger.debug("in user activities create")
+    logger.debug(params[:user_activity][:place_id])
+    logger.debug(params[:place_id])
     @user_activity = current_user.user_activities.build(params[:user_activity])
     @activity = Activity.find(params[:user_activity][:activity_id])
     @place = Place.find(params[:place_id])
     @user_activity.place = @place
+    logger.debug("place id before param " + @user_activity.place.id.to_s)
+    @user_activity.place = @place
+    logger.debug("place id after param " + @user_activity.place.id.to_s)
     @user_activity.activity = @activity
     
     respond_to do |format|
@@ -48,7 +58,7 @@ class UserActivitiesController < ApplicationController
         end
       else
         format.js { render :text => @user_activity.errors.full_messages, :status => 500 }
-        format.html { render :action => :new }
+        format.html { render :action => :new}
       end
     end
   end

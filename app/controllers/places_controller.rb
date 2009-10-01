@@ -16,7 +16,7 @@ class PlacesController < ApplicationController
   end
 
   def autocomplete
-    @places = Place.find(:all, :conditions => ["name like ? ", "#{params[:q]}%"], :limit => 10)
+    @places = Place.find(:all,:order => "name", :conditions => ["name like ? ", "#{params[:q]}%"], :limit => 50)
     results = @places.map {|p| "#{p.name}|#{p.id}"}.join("\n")
     render :text => results
   end

@@ -1,44 +1,66 @@
 <% form_for user_activity, :url => account_activities_path do |f| %>
+  <% if type = "add_activity" %>
+  <h4>Add an activity</h4>
+	<%= hidden_field_tag 'user_activity[activity_id]', activity.id, :id => 'user_activity[activity_id]' %>
+	<%= image_tag(activity.icon.url(:thumb), :width => '30px', :height => '30px') %>
+	<%= activity.name %> <span style="font-size: .7em;"><%= activity.category %></span>
+	<div class="clear"></div>
+	<label  style="margin-top: 5px; color:#990000; float:left">Where do you like doing this?</label>
+	<%= hidden_field_tag 'place_id', place.id, :id => 'place_id' %>
+	<%= text_field_tag :place_name, 
+	    (user_activity.place.present? ? user_activity.place.name : nil), 
+	    :class => "input_text", :disabled => false,
+	    :size => 50,
+	    "data-prefilled" => (user_activity.place.present? ? 'true' : 'false')
+	  %>
+
+	<div class="clear"></div>
+	
+  <% else %>
   <h4>Add this place to your favorites</h4>
-<%= image_tag(place.icon.url(:thumb), :width => '30px', :height => '30px') %>
-<%= place.name %> <span style="font-size: .7em;"><%= place.neighborhood %></span>
-  <%= f.hidden_field :id %>
- <%= hidden_field_tag 'place_id', place.id, :id => 'place_id' %>
-  <div id="good_for" style="margin-top:10px">
-	<label  style="margin-top: 5px; color:#990000;">What do you do here?</label>	
-    <div class='fancy_select_parent' style="width: 330px;" id="activity_category_div">
-      <%= hidden_field_tag 'category', "parent_value" %>
-	<div class="fancy_select_target_parent" id="activity_category_target" style="width:300px">
-        <%= Activity.all(:select => "DISTINCT category").first.category %>
-      </div>
-      <div class="fancy_select_options_parent" id="activity_category_options" style="width: 300px;">
-        <% Activity.all(:select => "DISTINCT category").each do |l| %>
-            <p><%= l.category %><span class="hidden_value_parent"><%= l.category %></span></p>
-          <% end %> 
-      </div>
-    </div>
+	<%= image_tag(place.icon.url(:thumb), :width => '30px', :height => '30px') %>
+  	<%= place.name %> <span style="font-size: .7em;"><%= place.neighborhood %></span>
+	<%= f.hidden_field :id %>
+	  <%= hidden_field_tag 'place_id', place.id, :id => 'place_id' %>
+	  <div id="activity_category_select" style="margin-top:10px">
+		<label  style="margin-top: 5px; color:#990000;">What do you do here?</label>	
+	    <div class='fancy_select_parent' style="width: 330px;" id="activity_category_div">
+	      <%= hidden_field_tag 'category', "parent_value" %>
+		  <div class="fancy_select_target_parent" id="activity_category_target" style="width:300px">
+	        <%= Activity.all(:select => "DISTINCT category").first.category %>
+	      </div>
+	      <div class="fancy_select_options_parent" id="activity_category_options" style="width: 300px;">
+	        <% Activity.all(:select => "DISTINCT category").each do |l| %>
+	            <p><%= l.category %><span class="hidden_value_parent"><%= l.category %></span></p>
+	          <% end %> 
+	      </div>
+	    </div>
+	  </div>
+	  <div id="activity_select" style="margin-left:10px;">	
+		<% first_activity_id = Activity.all(:conditions => "category='"+ (Activity.all(:select => "DISTINCT category").first.category)+"'").first.id %>
+	    <div class='fancy_select_child' style="width: 250px;">
+	      <%= hidden_field_tag 'user_activity[activity_id]', first_activity_id, :id => 'user_activity[activity_id]' %>
+		  <div class="fancy_select_target_child" id="activity_target">
+	        <%= Activity.all(:conditions => "category='"+ (Activity.all(:select => "DISTINCT category").first.category)+"'").first.name %>
+	      </div>
+	      <div class="fancy_select_options_child" id="activity_options">
+	        <% Activity.all(:conditions => "category = '"+ (Activity.all(:select => "DISTINCT category").first.category)+"'"
+			).each do |l| %>
+	            <p><%= l.name %><span class="hidden_value_child"><%= l.id %></span></p>
+	        <%end%>
+	      </div>
+	    </div>
+	  </div>
+  <% end %>
+  
+  
+
+  </br>
+  <div style="margin-top:10px">
+    <h4>Tell us everything important about it in less than a text message</h4>
+    <%= f.text_area :description, :rows => 10, :class => "input_text word_count" %>
   </div>
-  <div id="good_for2" style="margin-left:10px;">	
-	<% first_activity_id = Activity.all(:conditions => "category='"+ (Activity.all(:select => "DISTINCT category").first.category)+"'").first.id %>
-    <div class='fancy_select_child' style="width: 250px;">
-      <%= hidden_field_tag 'user_activity[activity_id]', first_activity_id, :id => 'user_activity[activity_id]' %>
-	  <div class="fancy_select_target_child" id="activity_target">
-        <%= Activity.all(:conditions => "category='"+ (Activity.all(:select => "DISTINCT category").first.category)+"'").first.name %>
-      </div>
-      <div class="fancy_select_options_child" id="activity_options">
-        <% Activity.all(:conditions => "category = '"+ (Activity.all(:select => "DISTINCT category").first.category)+"'"
-		).each do |l| %>
-            <p><%= l.name %><span class="hidden_value_child"><%= l.id %></span></p>
-        <%end%>
-      </div>
-    </div>
-  </div>
-</br>
-<div style="margin-top:10px">
- <h4>Tell us everything important about it in less than a text message</h4>
-  <%= f.text_area :description, :rows => 10, :class => "input_text word_count" %>
-</div>
-  <%= submit_button 'Save' %>
+  <%= submit_button 'Save', :id => "new_activity"%>
   <%= submit_button 'Cancel', :id => "cancel" %>
 <% end %>
 
@@ -61,19 +83,50 @@
     if ($("#activity_name").attr("data-prefilled") == "false") {
       var ac_options = {
         autoFill:false,
-        maxItemsToShow:10,
+        maxItemsToShow:30,
         mustMatch: false,
         onItemSelect: function(e) {
                var extra = $(e).attr('extra');
                if (extra.length > 0) {
-                $("#activity_id").val(extra[0])             
+                $("#user_activity[activity_id]").val(extra[0])             
               } else {
-                $("#activity_id").val('')             
+                $("#user_activity[activity_id]").val('')             
               }
         },
       }
       $("#activity_name").autocomplete('/activities/autocomplete', ac_options);
     }   
+
+	$('#place_name').focus(function() {
+	    if ( !$.data(this, 'initialized') ) {
+		  
+	      $(this).val('');
+	      $("#place_name").autocomplete(
+	        "/places/autocomplete",
+	        {
+	          delay:15,
+	          minChars:2,
+	          matchSubset:2,
+	          autoFill:true,
+	          maxItemsToShow:30,
+	          mustMatch: true,
+	          onItemSelect: function(e) {
+	            var extra = $(e).attr('extra');
+				alert(extra);
+	            if (extra.length > 0) {
+	              $("#place_id").val(extra[0])
+	            } else {
+	              $("#place_id").val('')
+	            }
+	          },
+	        }
+	      );
+	      $.data(this, 'initialized', true);
+	      $(this).blur();
+	      $(this).focus();
+		}
+	  });
+
 
     $('.word_count').charCounter(140, {
       container: "<div></div>"
@@ -85,14 +138,17 @@
       return false;
     })
     
-    $("#new_activity").submit(function() {
+    $("#new_user_activity").submit(function() {
       $.ajax({
         type: "POST",
         url: $(this).attr('action'),
         data: $(this).serialize(),
         success: function(p) {
           $('#dialog').jqmHide();
-        }
+        },
+        error: function(p) {
+		  //todo: here display error message
+		},
       })
       return false;
     });

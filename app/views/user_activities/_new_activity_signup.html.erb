@@ -55,27 +55,12 @@
 </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <script type="text/javascript" charset="utf-8">
 
   //***************PARENT**************
 	$('.fancy_select_parent').live('click',function() {
-    $('.fancy_select_options_parent').hide();
-    $(this).children('.fancy_select_options_parent').show();
-
+      $('.fancy_select_options_parent').hide();
+      $(this).children('.fancy_select_options_parent').show();
     })
 
 	$('.fancy_select_parent p').live('mouseover',function() {
@@ -101,9 +86,6 @@
 		}
 		optslist = optslist+'</div>';
 		$('#activity_options').replaceWith(optslist);
-
-	
-	
       }
     })
 	return false;
