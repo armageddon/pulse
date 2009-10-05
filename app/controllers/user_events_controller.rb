@@ -6,6 +6,7 @@ class UserEventsController < ApplicationController
   end
 
   def new
+    logger.debug("in new")
     @place = Place.find(params[:place_id])
     @event = current_user.events.new
     @event.place = @place

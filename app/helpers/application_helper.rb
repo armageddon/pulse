@@ -25,6 +25,7 @@ module ApplicationHelper
       content_tag(:span, :class => nav_link_class("users")) { link_to "Home", root_path },
       content_tag(:span, :class => nav_link_class("user_matches")) { link_to "My matches", account_matches_path },
       content_tag(:span, :class => nav_link_class("user_messages")) { link_to "My messages#{current_user.unread_count > 0 ? " (#{current_user.unread_count})" : ""}", account_messages_path },
+      content_tag(:span, :class => nav_link_class("user_favorites")) { link_to "My favorites", account_favorites_path },
       content_tag(:span, :class => nav_link_class("profile")) { link_to "My profile", profile_path(current_user) },
       content_tag(:span, :class => "nav_link") { link_to "Logout", logout_path }
     ].join("&nbsp;")

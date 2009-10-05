@@ -28,8 +28,26 @@ class SearchController < ApplicationController
     
     if type == UserActivity
       logger.debug('activity')
-      @results =  type.paginate(:select => "DISTINCT activity_id, place_id", :include => [:place, :activity],:page => params[:page], :per_page => 12)
-      
+      @distance = params[:distance]
+      @postcode = params[:postcode]
+      geocoder = Graticule.service(:google).new "ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog"
+      logger.debug(params[:postcode])
+      if   params[:postcode] != nil && params[:distance] != nil
+        location = geocoder.locate ('london ' + params[:postcode])
+        latitude, longitude = location.coordinates
+        if latitude != nil && longitude != nil
+          lat_range = params[:distance].to_i / ((6076.00 / 5280.00) * 60.00)
+          long_range = params[:distance].to_i / (((Math.cos(latitude * 3.141592653589 / 180.00) * 6076.00) / 5280.00) * 60.00)
+          low_lat = latitude - lat_range
+          high_lat = latitude + lat_range
+          low_long = longitude - long_range
+          high_long = longitude + long_range
+          logger.debug("before search")
+          @place_ids =  Place.all(:conditions => ["latitude <= ? and latitude >= ? and longitude >= ? and longitude <= ?",high_lat,low_lat,low_long,high_long])
+          @results = UserActivity.paginate(:select => "DISTINCT place_id, activity_id ",:conditions => {:place_id => @place_ids, :activity_id => params[:activity_id]}, :include => [:place, :activity],:page => params[:page], :per_page => 12)
+        end
+      end
+
     else
       @results =  type.search(params[:q],
         :conditions => conditions,

@@ -35,18 +35,25 @@
 	<div class="actions">
 		<% case object 
 			when User%>
-		<%= link_to image_tag("HPMail.png", :width=>20, :class => " tooltip", :title => "Send a mail"), account_message_path(object),'data-href' => account_message_path(object)  %>
+				<%= link_to image_tag("HPMail.png", :width=>20, :class => " tooltip", :title => "Send a mail"), account_message_path(object),'data-href' => account_message_path(object)  %>
+				<%= (link_to image_tag("HPThumbUp.png", :width=>20, :class => " tooltip", :title => "Add to favorites"), "#",'data-href' => account_favorites_path, :class => "people_favorite", :friend_id => object.id) if !current_user.has_friend?(object.id)  %>
+			    <%= (link_to image_tag("HPThumbDown.png", :width=>20, :class => " tooltip", :title => "Add to favorites"), "#",'data-href' => account_favorites_path, :class => "people_unfavorite", :friend_id => object.id) if current_user.has_friend?(object.id) %>
+				
 		<%  when Place %>
-		<%    if logged_in? && current_user.places.include?(object) %>
-		<%=     link_to image_tag("HPEvent.png", :width=>20, :class => "add_event tooltip", :title => "Add an event"), '#', 'data-href' => new_account_event_path(:place_id => object) %>
-		<%=     (link_to(image_tag("HPThumbDown.png", :width=>20,:class => " tooltip", :title => "Remove from favorites"), '#')) if controller_name == 'user_favorites' %>
-		<%    else %>
-		<%=     link_to image_tag("HPThumbUp.png", :width=>20,:class => " tooltip ", :title => "Add to favorites"), '#', 'data-href' => new_account_activity_path(:place_id => object), :class => "add_to_favorites" %>
-		<%    end %>
-	    
-		<%  end %>
+		<%    	if logged_in? && current_user.places.include?(object) %>
+		<%=     link_to image_tag("HPEvent.png", :width=>20,:class => " tooltip ", :title => "Add to favorites"), '#', 'data-href' => new_account_event_path(:place_id => object.id), :class => "add_event" %>
+		<%=     	link_to(image_tag("HPThumbDown.png", :width=>20,:class => " tooltip", :title => "Remove from favorites"), '#',:place_id => object.id, :class => "remove_place")  %>
+		<%    	else %>
+		<%=     	link_to image_tag("HPThumbUp.png", :width=>20,:class => " tooltip ", :title => "Add to favorites"), '#', 'data-href' => new_account_activity_path(:place_id => object), :class => "add_to_favorites" %>
+		<%    	end %>
+		<% end %>
 	</div>
 	<div class="clear"></div>
     <% end %>
   <div class="clear"></div>
 </div>
+
+<script type="text/javascript" charset="utf-8">
+
+
+</script>

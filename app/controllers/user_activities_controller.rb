@@ -31,9 +31,17 @@ class UserActivitiesController < ApplicationController
   end
 
   def destroy
-    activity = current_user.activities.find(params[:id])
-    current_user.activities.delete(activity)
-    redirect_to account_activities_path
+    #depending on type - if place remove 
+    @user_acts = current_user.user_activities.all(:conditions => ["place_id = ?", params[:place_id]])
+    logger.debug(@user_acts.length)
+    @user_acts.each do |ua|
+      ua.delete
+    end
+    respond_to do |format|
+      format.js { render :text => "deleted places" }
+      format.html { render :text => "deleted places"}
+    end
+    
   end
 
   def create

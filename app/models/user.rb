@@ -55,7 +55,10 @@ class User < ActiveRecord::Base
   has_many :connections
   has_many :requested_connections, :foreign_key => "contact_id", :class_name => "Connection"
   has_many :invitations
+  has_many :user_favorites
+  has_many :friends, :through => :user_favorites, :source => :user
 
+  
   validates_presence_of     :location_id
   validates_presence_of     :username
   validates_length_of       :username,    :within => 3..40
@@ -95,6 +98,22 @@ class User < ActiveRecord::Base
     end
     u && u.authenticated?(password) ? u : nil
   end
+
+  def has_friend?(friend_id)
+    exists = false
+    logger.debug("current_user_id:" + id.to_s)
+    user_favorites.each do |f|
+      logger.debug(f.friend_id.to_s + " " +friend_id.to_s )
+      if f.friend_id == friend_id
+        logger.debug("exists")
+        exists = true
+      end
+    end
+    logger.debug('x')
+    logger.debug(exists)
+    exists 
+  end
+    
 
   def username=(value)
     write_attribute :username, (value ? value.downcase : nil)
