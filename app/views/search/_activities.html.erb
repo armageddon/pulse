@@ -75,7 +75,7 @@
 	$.ajax({
       type: "GET",
 		dataType: "json",
-      url: "search/activity_list",
+      url: "/search/activity_list",
       data: { "category" : $(this).find('.hidden_value_parent').text() },
       success: function(p) {
        $('#activity_target').replaceWith('<div id="activity_target" class="fancy_select_target_child">' + p[0].activity.name+'</div>');
