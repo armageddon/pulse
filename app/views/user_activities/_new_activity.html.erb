@@ -1,7 +1,7 @@
 <% form_for user_activity, :url => account_activities_path do |f| %>
-  <% if type == "add_activity" %>
-  <h4>Add an activity</h4>
-	<%= hidden_field_tag 'user_activity[activity_id]', activity.id, :id => 'user_activity[activity_id]' %>
+  <% if view == "add_activity" %>
+    <h4>Add an activity</h4>
+	<%= hidden_field_tag 'activity_id', activity.id, :id => 'user_activity[activity_id]' %>
 	<%= image_tag(activity.icon.url(:thumb), :width => '30px', :height => '30px') %>
 	<%= activity.name %> <span style="font-size: .7em;"><%= activity.category %></span>
 	<div class="clear"></div>
@@ -41,18 +41,6 @@
 <% end %>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 <script type="text/javascript" charset="utf-8">
 
   $(document).ready(function() {
@@ -75,16 +63,15 @@
 
 	$('#place_name').focus(function() {
 	    if ( !$.data(this, 'initialized') ) {
-		  
 	      $(this).val('');
 	      $("#place_name").autocomplete(
 	        "/places/autocomplete",
 	        {
-	          delay:15,
+	          delay:10,
 	          minChars:2,
-	          matchSubset:2,
-	          autoFill:true,
-	          maxItemsToShow:30,
+	          matchSubset:1,
+	          autoFill:false,
+	          maxItemsToShow:20,
 	          mustMatch: true,
 	          onItemSelect: function(e) {
 	            var extra = $(e).attr('extra');
@@ -99,9 +86,8 @@
 	      $.data(this, 'initialized', true);
 	      $(this).blur();
 	      $(this).focus();
-		}
+	    }
 	  });
-
 
     $('.word_count').charCounter(140, {
       container: "<div></div>"

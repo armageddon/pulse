@@ -8,12 +8,11 @@ class UserActivitiesController < ApplicationController
   def new
     logger.debug('in new')
     logger.debug(params)
+    @view = params[:view]
+    logger.debug("view" + @view)
     if params[:activity_id].present?
       logger.debug(params[:activity_id])
       @activity = Activity.find(params[:activity_id])
-      logger.debug(@activity.id)
-      logger.debug(@activity)
-      #logger.debug("found activity: name=> " + @activity.name)
     end
     if params[:place_id].present?
       @place = Place.find(params[:place_id])
@@ -25,7 +24,7 @@ class UserActivitiesController < ApplicationController
     @type = params[:type]
     logger.debug("Just before format - UA new")
     respond_to do |format|
-      format.js { render :partial => "new_activity.html.erb", :locals => { :activity => @activity, :user_activity => @user_activity, :place => @place } }
+      format.js { render :partial => "new_activity.html.erb", :locals => { :activity => @activity, :user_activity => @user_activity, :place => @place, :view => @view } }
       format.html { render }
     end
   end

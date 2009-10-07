@@ -6,6 +6,7 @@ class UserFavoritesController < ApplicationController
     current_user.user_favorites.each do |uf|
       @favorites << User.find(uf.friend_id)
     end
+    @user_activities = current_user.user_activities
     logger.debug("length " + @favorites.length.to_s)
     respond_to do |format|
       format.js do

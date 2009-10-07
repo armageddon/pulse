@@ -1,9 +1,13 @@
 <% content_for :message do %>
 <% end %>
 
-<h3 class="section">Your places</h3>
-<%= render :partial => "shared/object", :collection => current_user.places %>
+
 
 <h3 class="section">Your favorite people</h3>
 <%= render :partial => "shared/object", :collection => @favorites %>
 
+<h3 class="section">Your favorite activities</h3>
+<%= render :partial => "shared/object", :collection => @user_activities %>
+
+<h3 class="section">Your favorite places</h3>
+<%= render :partial => "shared/object", :collection => current_user.places %>

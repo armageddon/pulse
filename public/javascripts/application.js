@@ -15,12 +15,18 @@ $(document).ready(function() {
   });
 
   $(".people_unfavorite").live('click',function() {
+	var link = $(this);
     $.ajax({
       type: "DELETE",
       url: "/account/favorites/delete",
 	  data: {"friend_id" : $(this).attr("friend_id")},
       success: function(p) {
-        alert('deleted friend');
+	    link.parent().parent().removeClass('object');
+	    link.parent().parent().html('');
+		link.removeClass("people_unfavorite");
+		link.addClass("people_favorite");
+	    link.html('<img class=" tooltip" width="20" title="Remove from favorites" src="/images/HPThumbUp.png" alt="Hpthumbup"/>');
+		
       },
       error: function(p) {
 		alert("error");
@@ -30,12 +36,15 @@ $(document).ready(function() {
   })
 
   $(".people_favorite").live('click',function() {
+	var link = $(this);
     $.ajax({
       type: "POST",
       url: "/account/favorites",
  	  data: {"friend_id" : $(this).attr("friend_id")},
       success: function(p) {
-        alert('added friend');
+		link.removeClass("people_favorite");
+		link.addClass("people_unfavorite");
+ 		link.html('<img class=" tooltip" width="20" title="Add to favorites" src="/images/HPThumbDown.png" alt="Hpthumbup"/>');
       },
       error: function(p) {
 	    alert("error");
@@ -45,12 +54,16 @@ $(document).ready(function() {
   })
 
   $(".remove_place").live('click',function() {
+	 var link = $(this);
      $.ajax({
        type: "DELETE",
        url: "/account/activities/delete",
 	   data: {"place_id" : $(this).attr("place_id")},
        success: function(p) {
-         alert('deleted place');
+	    link.parent().parent().removeClass('object');
+	    link.parent().parent().html('');
+		link.removeClass("remove_place");
+ 		link.html('<img class=" tooltip" width="20" title="Add to favorites" src="/images/HPThumbUp.png" alt="Hpthumbup"/>');
        },
        error: function(p) {
 		 alert("error");
@@ -88,7 +101,7 @@ $(document).ready(function() {
     return false;
   });
 
-
+  
 
 });
 
