@@ -1,5 +1,11 @@
 <%= render :partial => "shared/object", :collection => collection %>
 <% if collection.next_page %>
-  <%= link_to "See more #{pagination_name collection}", request.path + '?page=' + collection.next_page.to_s + '&t=' + collection.first.class.to_s.tableize+ '&type=' + collection.first.class.to_s.tableize, :class => "paginator" %>
+	<% qstring = "" %>
+	<% params.each do |p| %>
+	    <% if p[0] != "page" %>
+		   <% qstring += "&" + p[0] + '=' + p[1] %>
+		<% end %> 
+  	<% end %>
+  	<%= link_to "See more #{pagination_name collection}", request.path + '?page=' + collection.next_page.to_s + qstring, :class => "paginator" %>
 <% end %>
 <div id="page_loading" style="display: none;"><h4>Loading</h4></div>

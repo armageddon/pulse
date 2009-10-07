@@ -2,11 +2,11 @@ $(document).ready(function() {
 
   // misc rails specific stuff
   $.ajaxSetup({ 'beforeSend': function(xhr) {xhr.setRequestHeader("Accept", "text/javascript")} });
-
-
-
-
-
+  
+  if ($.jqm) {
+    $("#dialog").jqm({ajax: '@data-href', modal: true});
+    $("#dialog").jqmAddTrigger('.add_to_favorites, .add_event, .add_activity, .invite_a_friend');
+  }
 
   $(document).ajaxSend(function(event, request, settings) {
     if (typeof(AUTH_TOKEN) == "undefined") return;
@@ -14,67 +14,56 @@ $(document).ready(function() {
     settings.data += (settings.data ? "&" : "") + "authenticity_token=" + encodeURIComponent(AUTH_TOKEN);
   });
 
-  if ($.jqm) {
-    $("#dialog").jqm({ajax: '@data-href', modal: true});
-    $("#dialog").jqmAddTrigger('.add_to_favorites, .add_event, .add_activity, .invite_a_friend');
-  }
-
-$(".people_unfavorite").live('click',function() {
-	alert('delete:' + $(this).attr("friend_id"));
-   $.ajax({
-     type: "DELETE",
-     url: "/account/favorites/delete",
-	 data: {"friend_id" : $(this).attr("friend_id")},
-     success: function(p) {
-       alert('deleted friend');
-     },
-     error: function(p) {
-		  alert("error");
-		},
+  $(".people_unfavorite").live('click',function() {
+    $.ajax({
+      type: "DELETE",
+      url: "/account/favorites/delete",
+	  data: {"friend_id" : $(this).attr("friend_id")},
+      success: function(p) {
+        alert('deleted friend');
+      },
+      error: function(p) {
+		alert("error");
+	  },
    })
    return false;
- })
+  })
 
+  $(".people_favorite").live('click',function() {
+    $.ajax({
+      type: "POST",
+      url: "/account/favorites",
+ 	  data: {"friend_id" : $(this).attr("friend_id")},
+      success: function(p) {
+        alert('added friend');
+      },
+      error: function(p) {
+	    alert("error");
+	  },
+  	})
+    return false;
+  })
 
-    $(".people_favorite").live('click',function() {
-	  alert($(this).attr("friend_id"));
-      $.ajax({
-         type: "POST",
-    	 url: "/account/favorites",
- 	     data: {"friend_id" : $(this).attr("friend_id")},
-    	   success: function(p) {
-             alert('added friend');
-    	   },
-    	   error: function(p) {
-	         alert("error");
-	       },
-  	  })
-      return false;
- })
-
-$(".remove_place").live('click',function() {
-	alert('delete:' + $(this).attr("place_id"));
-   $.ajax({
-     type: "DELETE",
-     url: "/account/activities/delete",
-	 data: {"place_id" : $(this).attr("place_id")},
-     success: function(p) {
-       alert('deleted place');
-     },
-     error: function(p) {
-		  alert("error");
-		},
-   })
+  $(".remove_place").live('click',function() {
+     $.ajax({
+       type: "DELETE",
+       url: "/account/activities/delete",
+	   data: {"place_id" : $(this).attr("place_id")},
+       success: function(p) {
+         alert('deleted place');
+       },
+       error: function(p) {
+		 alert("error");
+	   },
+     })
    return false;
- })
-
+  })
 
   $('.paginator').live('click', function() {
     var link = $(this);
     link.hide();
     $('#page_loading').show();
-//need to set type her
-
+    //todo: need to set type here
     $.get(link.attr('href'),{}, function(data) {
       $('#page_loading').hide();
       link.replaceWith(data);
@@ -98,6 +87,8 @@ $(".remove_place").live('click',function() {
     $(this).parent().hide();
     return false;
   });
+
+
 
 });
 

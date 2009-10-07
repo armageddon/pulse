@@ -46,10 +46,10 @@ class UserActivitiesController < ApplicationController
 
   def create
     logger.debug("in user activities create")
-    logger.debug(params[:user_activity][:place_id])
+    logger.debug(params[:place_id])
     logger.debug(params[:place_id])
     @user_activity = current_user.user_activities.build(params[:user_activity])
-    @activity = Activity.find(params[:user_activity][:activity_id])
+    @activity = Activity.find(params[:activity_id])
     @place = Place.find(params[:place_id])
     @user_activity.place = @place
     logger.debug("place id before param " + @user_activity.place.id.to_s)

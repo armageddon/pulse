@@ -1,113 +1,26 @@
-
-  
 <div style="float:left;">
-	<div id="good_for" style="margin-top:10px">
-	  <label  style="margin-top: 5px; color:#990000;">What do you like doing?</label>	
-	  <div class='fancy_select_parent' style="width: 330px;" id="activity_category_div">
-	      <%= hidden_field_tag 'category', "parent_value" %>
-	    <div class="fancy_select_target_parent" id="activity_category_target" style="width:300px">
-	        <%= Activity.all(:select => "DISTINCT category").first.category %>
-	    </div>
-	    <div class="fancy_select_options_parent" id="activity_category_options" style="width: 300px;">
-	      <% Activity.all(:select => "DISTINCT category").each do |l| %>
-	         <p><%= l.category %><span class="hidden_value_parent"><%= l.category %></span></p>
-	      <% end %> 
-	    </div>
-	  </div>
-	</div>
-	<div id="good_for2" style="margin-left:10px;">	
-	  <% first_activity_id = Activity.all(:conditions => "category='"+ (Activity.all(:select => "DISTINCT category").first.category)+"'").first.id %>
-	  <div class='fancy_select_child' style="width: 250px;">
-	     <%= hidden_field_tag 'user_activity[activity_id]', first_activity_id, :id => 'user_activity[activity_id]' %>
-	    <div class="fancy_select_target_child" id="activity_target">
-	       <%= Activity.all(:conditions => "category='"+ (Activity.all(:select => "DISTINCT category").first.category)+"'").first.name %>
-	    </div>
-	    <div class="fancy_select_options_child" id="activity_options">
-	       <% Activity.all(:conditions => "category = '"+ (Activity.all(:select => "DISTINCT category").first.category)+"'"
-		).each do |l| %>
-	           <p><%= l.name %><span class="hidden_value_child"><%= l.id %></span></p>
-	       <%end%>
-	    </div>
-	  </div>
-	</div>
+	<%= render :partial => "shared/activity_select" %>
 </div>
 </br>
 </br>
 <div class="clear"></div>
-
 <div style="float:left; margin-top:15px">
-<label  style="margin-top: 5px; color:#990000;">Where do you like doing it?</label>
-<div class="clear"></div>
+	<label  style="margin-top: 5px; color:#990000;">Where do you like doing it?</label>
+	<div class="clear"></div>
 
-<%= hidden_field_tag 'place_id', "", :id => 'place_id' %>
-<%= text_field_tag :place_name, 
+	<%= hidden_field_tag 'place_id', "", :id => 'place_id' %>
+	<%= text_field_tag :place_name, 
     (user_activity.place.present? ? user_activity.place.name : nil), 
     :class => "input_text", :disabled => user_activity.place.present?,
     :size => 50,
     "data-prefilled" => (user_activity.place.present? ? 'true' : 'false')
-  %>
+  	%>
  
-<div class="clear"></div>
-<div style="margin-top:10px; float:left; margin-top:15px">
- <label  style="margin-top: 5px; color:#990000;">Why do you like this place?</label>
- <div class="clear"></div>
-  <%= text_area_tag('description','', :rows => 3, :class => "input_text_box word_count") %>
+	<div class="clear"></div>
+	<div style="margin-top:10px; float:left; margin-top:15px">
+ 		<label  style="margin-top: 5px; color:#990000;">Why do you like this place?</label>
+ 		<div class="clear"></div>
+  		<%= text_area_tag('description','', :rows => 3, :class => "input_text_box word_count") %>
+	</div>
+
 </div>
-
-
-<script type="text/javascript" charset="utf-8">
-
-  //***************PARENT**************
-	$('.fancy_select_parent').live('click',function() {
-      $('.fancy_select_options_parent').hide();
-      $(this).children('.fancy_select_options_parent').show();
-    })
-
-	$('.fancy_select_parent p').live('mouseover',function() {
-		$(this).addClass('hover');
-	}).live('mouseout',function() {
-		$(this).removeClass('hover');
-	}).live('click',function() {
-		$(this).parent().prevAll('input').val($(this).find('.hidden_value_parent').text());
-	$(this).parent().prev().html($(this).html());
-	$(this).parent().hide();
-	$.ajax({
-      type: "GET",
-		dataType: "json",
-      url: "search/activity_list",
-      data: { "category" : $(this).find('.hidden_value_parent').text() },
-      success: function(p) {
-       $('#activity_target').replaceWith('<div id="activity_target" class="fancy_select_target_child">' + p[0].activity.name+'</div>');
-		var i=0;
-		var optslist = '<div class="fancy_select_options_child" id="activity_options">';
-		for(i=0;i<p.length;i++)
-		{
-		   optslist = optslist+'<p>'+ p[i].activity.name +'<span class="hidden_value_child">'+ p[i].activity.id +'</span></p>'
-		}
-		optslist = optslist+'</div>';
-		$('#activity_options').replaceWith(optslist);
-      }
-    })
-	return false;
-	})
-	
-  //***************CHILD**************
-	$('.fancy_select_child').live('click',function() {
-	    $('.fancy_select_options_child').hide();
-	    $(this).children('.fancy_select_options_child').show();
-	  });
-
-	$('.fancy_select_options_child p').live('mouseover',function() {
-		$(this).addClass('hover');
-	}).live('mouseout',function() {
-		$(this).removeClass('hover');
-	}).live('click',function() {
-		$(this).parent().prevAll('input').val($(this).find('.hidden_value_child').text());
-	$(this).parent().prev().html($(this).html());
-	$(this).parent().hide();
-	$('#user_activity[activity_id]').val($(this).find('.hidden_value_child').val());
-	return false;
-	});
-
-
-</script>

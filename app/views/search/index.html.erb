@@ -38,15 +38,29 @@
 <script type="text/javascript" charset="utf-8">
 //todo: clean up this javascript
 $("#advanced_search").submit(function() {
-  $.ajax({
-    type: "GET",
-    url: $(this).attr('action'),
-    data: $('#advanced_search').serialize(), //advanced_search,
-    success: function(p) {
-	 $('#results').replaceWith(p);
-	$("#dialog").jqmAddTrigger('.add_to_favorites, .add_event, .add_activity');
+	error = false;
+	if($(this).attr('t')=="user_activity")
+	{
+	  var postcode = $('#postcode');
+	  postcode.removeClass('invalid');
+   	  regexString = /^([A-PR-UWYZ0-9][A-HK-Y0-9][AEHMNPRTVXY0-9]?[ABEHMNPRVWXY0-9]? {1,2}[0-9][ABD-HJLN-UW-Z]{2}|GIR 0AA)$/
+	  if ($('#distance').val() != 0 && (postcode.val() == '' || postcode.val() == 'Post code' || regexString.test(postcode.val().toUpperCase()) != true)) {
+		postcode.addClass('invalid');
+	    postcode.nextAll('span.error').text('Please enter a valid post code.');
+	    error = true;
+	  }
     }
-  })
+    if(!error) {
+	  $.ajax({
+	    type: "GET",
+	    url: $(this).attr('action'),
+	    data: $('#advanced_search').serialize(), //advanced_search,
+	    success: function(p) {
+		 $('#results').replaceWith(p);
+		$("#dialog").jqmAddTrigger('.add_to_favorites, .add_event, .add_activity');
+	    }
+	 });
+  }
   return false;
 });
 

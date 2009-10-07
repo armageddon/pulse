@@ -3,6 +3,12 @@ $(document).ready(function() {
   var over = false;
   var box  = false;
 
+  $(".word_count").charCounter(140, {
+    container: "<div></div>"
+  });
+
+
+
   $('#add_photo').mouseover(function(e) {
     over = true;
   });
@@ -29,7 +35,6 @@ $(document).ready(function() {
     }
   });
 
-  // Add new image to gallery
   $("#user_icon").change(function(e) {
     $("#photo_upload").ajaxSubmit({
       iframe: true,
@@ -47,10 +52,6 @@ $(document).ready(function() {
     })
   });
   
-  $('.word_count').charCounter(140, {
-    container: "<div></div>"
-  })
-
   $('#place_name').focus(function() {
     if ( !$.data(this, 'initialized') ) {
       $(this).val('');
@@ -79,10 +80,10 @@ $(document).ready(function() {
     }
   });
 
-	$("#finished").click(function() {
-		window.location="/account";
-		return false;
-	});
+  $("#finished").click(function() {
+    window.location="/account";
+	return false;
+  });
 
   $("#pa_select").submit(function() {
     $('.invalid').removeClass('invalid');
@@ -145,7 +146,6 @@ $(document).ready(function() {
     }
   });
 
-
   $('#password_holder, #password_confirmation_holder').focus(function() {
     $(this).hide();
     $(this).next('input').show();
@@ -191,7 +191,6 @@ $(document).ready(function() {
       $('#password_confirmation_holder').show();
     }
   })
-
 
   $('#new_user').submit(function() {
     var first_name = $('#user_first_name');
