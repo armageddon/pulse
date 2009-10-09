@@ -9,6 +9,7 @@ class UserActivitiesController < ApplicationController
     logger.debug('in new')
     logger.debug(params)
     @view = params[:view]
+    @view ||= ""
     logger.debug("view" + @view)
     if params[:activity_id].present?
       logger.debug(params[:activity_id])

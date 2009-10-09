@@ -22,11 +22,13 @@
   	<%= place.name %> <span style="font-size: .7em;"><%= place.neighborhood %></span>
 	<%= f.hidden_field :id %>
 	  <%= hidden_field_tag 'place_id', place.id, :id => 'place_id' %>
-	  
+	  <div class="clear"></div>
 	<div id="activity_category_select" style="margin-top:10px">
-		<label  style="margin-top: 5px; color:#990000;">What do you do here?</label>	
+		<label  style="margin-top: 5px; color:#990000;">What do you do here?</label>
+				<div class="clear"></div>
 	    <%= render :partial => "shared/activity_select" %>
 	  </div>
+	<div class="clear"></div>
   <% end %>
   
   
