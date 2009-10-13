@@ -1,13 +1,15 @@
-<% content_for :message do %>
+<% form_tag search_path, :method => :get, :id => "favorites" do %>
+  <% content_for :message do %>
+  <% end %>
+
+
+
+  <h3 class="section">Your favorite people</h3>
+  <%= render :partial => "shared/object", :collection => @favorites %>
+
+  <h3 class="section">Your favorite activities</h3>
+  <%= render :partial => "shared/object", :collection => current_user.user_activities, :locals => {:view => params[:view]} %>
+
+  <h3 class="section">Your favorite places</h3>
+  <%= render :partial => "shared/object", :collection => current_user.places %>
 <% end %>
-
-
-
-<h3 class="section">Your favorite people</h3>
-<%= render :partial => "shared/object", :collection => @favorites %>
-
-<h3 class="section">Your favorite activities</h3>
-<%= render :partial => "shared/object", :collection => @user_activities %>
-
-<h3 class="section">Your favorite places</h3>
-<%= render :partial => "shared/object", :collection => current_user.places %>

@@ -180,6 +180,9 @@ jQuery.autocomplete = function(input, options) {
 		input.lastSelected = v;
 		prev = v;
 		$results.html("");
+		if (options.formatResult) {
+		  v = options.formatResult(v);
+		}
 		$input.val(v);
 		hideResultsNow();
 		if (options.onItemSelect) setTimeout(function() { options.onItemSelect(li) }, 1);

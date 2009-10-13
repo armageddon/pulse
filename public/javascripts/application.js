@@ -5,7 +5,7 @@ $(document).ready(function() {
   
   if ($.jqm) {
     $("#dialog").jqm({ajax: '@data-href', modal: true});
-    $("#dialog").jqmAddTrigger('.add_to_favorites, .add_event, .add_activity, .invite_a_friend');
+    $("#dialog").jqmAddTrigger('.add_to_favorites, .add_place, .add_event, .add_activity, .invite_a_friend');
   }
 
   $(document).ajaxSend(function(event, request, settings) {
@@ -13,6 +13,7 @@ $(document).ready(function() {
     settings.data = settings.data || "";
     settings.data += (settings.data ? "&" : "") + "authenticity_token=" + encodeURIComponent(AUTH_TOKEN);
   });
+
 
   $(".people_unfavorite").live('click',function() {
 	var link = $(this);
@@ -55,15 +56,50 @@ $(document).ready(function() {
 
   $(".remove_place").live('click',function() {
 	 var link = $(this);
+	 var frm = $(this).parents("form:first")[0];
+     $.ajax({
+       type: "DELETE",
+       url: "/account/places/delete",
+	   data: {"place_id" : $(this).attr("place_id")},
+       success: function(p) {
+	    //need to determinw which page this comes from and remove if favorites
+	    if((frm=='undefined')||(frm.id=='favorites'))
+     	{
+	      link.parent().parent().removeClass('object');
+	      link.parent().parent().html('');
+	    }
+	    else
+	    {
+	      link.removeClass("remove_place");
+ 	  	  link.html('<img class=" tooltip" width="20" title="Add to favorites" src="/images/HPThumbUp.png" alt="Hpthumbup"/>');
+        }
+       },
+       error: function(p) {
+		 alert("error");
+	   },
+     })
+   return false;
+  })
+
+  $(".remove_activity").live('click',function() {
+	 var link = $(this);
+	 var frm = $(this).parents("form:first")[0];
      $.ajax({
        type: "DELETE",
        url: "/account/activities/delete",
-	   data: {"place_id" : $(this).attr("place_id")},
+	   data: {"activity_id" : $(this).attr("activity_id")},
        success: function(p) {
-	    link.parent().parent().removeClass('object');
-	    link.parent().parent().html('');
-		link.removeClass("remove_place");
- 		link.html('<img class=" tooltip" width="20" title="Add to favorites" src="/images/HPThumbUp.png" alt="Hpthumbup"/>');
+	    //need to determinw which page this comes from and remove if favorites
+	    if((frm=='undefined')||(frm.id=='favorites'))
+     	{
+	      link.parent().parent().removeClass('object');
+	      link.parent().parent().html('');
+	    }
+	    else
+	    {
+	      link.removeClass("remove_place");
+ 	  	  link.html('<img class=" tooltip" width="20" title="Add to favorites" src="/images/HPThumbUp.png" alt="Hpthumbup"/>');
+        }
        },
        error: function(p) {
 		 alert("error");

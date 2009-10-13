@@ -1,6 +1,8 @@
 <div class="object" id="<%= dom_id object %>">
-	<% if object.is_a?(UserActivity) %>
-		<%= render :partial => "shared/user_activity", :object => object %>
+	<% if object.is_a?(UserPlaceActivity) %>
+	  <%= render :partial => "shared/user_place_activity", :object => object %> 
+	<% elsif object.is_a?(UserActivity) %>
+	  <%= render :partial => "shared/user_activity", :object => object, :locals => {:view => params[:view]} %> 
 	<% else %>
 	<div class="icon">
 		<%= link_to image_tag(object.icon.url(:thumb), :width => '45px', :height => '45px'), object %>
@@ -21,13 +23,13 @@
 		<div class="clear"></div>
 		<div class="description">
 	     		<% if controller_name == 'places' && object.is_a?(User) %>
-	        	<span class="fancy_quotes">&#8220;</span>
-			<%= object.user_activities.find_by_place_id(@place.id).user.description %>
-			<span class="fancy_quotes">&#8221;</span>
-	  		<% elsif object.is_a?(Place)%>
-	     	<span><%=object.neighborhood%> </span>
+	        	  <span class="fancy_quotes">&#8220;</span>
+			      <%= object.description %>
+			      <span class="fancy_quotes">&#8221;</span>
+	  		    <% elsif object.is_a?(Place)%>
+	     	      <span><%=object.neighborhood%> </span>
 	     		<% elsif object.is_a?(User) %>
-	     		<span class="fancy_quotes">&#8220;</span><%= object.description %><span class="fancy_quotes">&#8221;</span>      
+	     		  <span class="fancy_quotes">&#8220;</span><%= object.description %><span class="fancy_quotes">&#8221;</span>      
 	     		<% end %>
 	   	</div>
 	    <div class="clear"></div>
@@ -41,10 +43,10 @@
 				
 		<%  when Place %>
 		<%    	if logged_in? && current_user.places.include?(object) %>
-		<%=     link_to image_tag("HPEvent.png", :width=>20,:class => " tooltip ", :title => "Add to favorites"), '#', 'data-href' => new_account_event_path(:place_id => object.id), :class => "add_event" %>
+		<%=     link_to image_tag("HPEvent.png", :width=>20,:class => " tooltip ", :title => "Add to favorites"), '#', 'data-href' => new_account_event_path(:place_id => object.id), :place_id => object.id, :class => "add_event" %>
 		<%=     	link_to(image_tag("HPThumbDown.png", :width=>20,:class => " tooltip", :title => "Remove from favorites"), '#',:place_id => object.id, :class => "remove_place")  %>
 		<%    	else %>
-		<%=     	link_to image_tag("HPThumbUp.png", :width=>20,:class => " tooltip ", :title => "Add to favorites"), '#', 'data-href' => new_account_activity_path(:place_id => object), :class => "add_to_favorites" %>
+		<%=     	link_to image_tag("HPThumbUp.png", :width=>20,:class => " tooltip ", :title => "Add to favorites"), '#', 'data-href' => new_account_place_activity_path(:place_id => object), :place_id => object.id, :class => "add_place" %>
 		<%    	end %>
 		<% end %>
 	</div>
@@ -53,7 +55,3 @@
   <div class="clear"></div>
 </div>
 
-<script type="text/javascript" charset="utf-8">
-
-
-</script>

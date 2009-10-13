@@ -2,5 +2,7 @@
   <%= render :partial => "activity_sidebar" %>
 <% end %>
 
-<h3 class="section">People Who Hang Here</h3>
+<h3 class="section">People Who Do This</h3>
 <%= render :partial => "shared/object_collection", :locals => { :collection => @activity_users } %>
+<h3 class="section">Places Where This Happens</h3>
+<%= render :partial => "shared/object_collection", :locals => { :collection => @activity_places } %>

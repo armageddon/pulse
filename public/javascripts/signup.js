@@ -8,7 +8,10 @@ $(document).ready(function() {
   });
 
 
-
+  function formatResult(row) {
+    return row.replace("<span style='font-size:9px'>","").replace("</span>","");
+  }
+	
   $('#add_photo').mouseover(function(e) {
     over = true;
   });
@@ -58,12 +61,15 @@ $(document).ready(function() {
       $("#place_name").autocomplete(
         "/places/autocomplete",
         {
-          delay:10,
-          minChars:1,
-          matchSubset:1,
-          autoFill:true,
-          maxItemsToShow:10,
-          mustMatch: true,
+			minChars: 2,
+			cacheLength: 1,
+	        delay: 10,
+         	autoFill:false,
+	        maxItemsToShow: 20,
+			formatResult: formatResult,
+	        mustMatch: false,
+			scroll: true,
+			scrollHeight: 20,
           onItemSelect: function(e) {
             var extra = $(e).attr('extra');
             if (extra.length > 0) {
@@ -75,8 +81,8 @@ $(document).ready(function() {
         }
       );
       $.data(this, 'initialized', true);
-      $(this).blur();
-      $(this).focus();
+     $(this).blur();
+     $(this).focus();
     }
   });
 
@@ -90,10 +96,10 @@ $(document).ready(function() {
     var error = false;
     $('#activity_error').removeClass("show");
     $('#activity_error').removeClass("hidden_value");
-    if ($('#place_id').val() == '') {
-      $('#place_name').addClass('invalid');
-      error = true;
-    }
+   // if ($('#place_id').val() == '') {
+    //  $('#place_name').addClass('invalid');
+    //  error = true;
+    //}
     if($('#pa_description').val() == 'Tell us everything important about it in less than a text message' ||
       $('#pa_description').val() == ''
     ) {
@@ -105,14 +111,14 @@ $(document).ready(function() {
     }
 	$.ajax({
         type: "POST",
-        url: '/account/activities',
+        url: '/account/place_activities',
         data: $(this).serialize(),
         success: function(p) {
- 			if($('#user_activities').html().indexOf("Please add some activities") >= 0)
+ 			if($('#user_place_activities').html().indexOf("Please add some activities") >= 0)
 			{
-				$('#user_activities').html('');
+				$('#user_place_activities').html('');
 			}
-			$('#user_activities').append(p);
+			$('#user_place_activities').append(p);
         },
 		error: function(p)
 		{

@@ -6,8 +6,12 @@ class UserFavoritesController < ApplicationController
     current_user.user_favorites.each do |uf|
       @favorites << User.find(uf.friend_id)
     end
+    #this displays user_pace_activities on favoritespage
     @user_activities = current_user.user_activities
-    logger.debug("length " + @favorites.length.to_s)
+    logger.debug("length upa " + @user_activities.length.to_s)
+    logger.debug("length fav " + @favorites.length.to_s)
+    logger.debug("user " + current_user.id.to_s)
+    @view = "user_favorites"
     respond_to do |format|
       format.js do
       end

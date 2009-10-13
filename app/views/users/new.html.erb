@@ -195,7 +195,7 @@
     <div id="step_3" class="step" style="display: none;">
   		<div id="step_3_container">
 			<% form_tag('/account/activities', :id => "pa_select") do    %>
-			<%= render :partial => "user_activities/new_activity_signup" , :locals => {:user_activity => UserActivity.new} %>
+			<%= render :partial => "user_place_activities/new_user_place_activity_signup" , :locals => {:user_place_activity => UserPlaceActivity.new} %>
   			<div class="clear"></div>   
 			<%= text_field_tag "activity_error","",:style => "display:none; width:250px" %>
   			<div class="clear"></div>   
@@ -211,7 +211,7 @@
     			<div id="activities_container" style="float:left; margin-top:10px;">
 				<div class="clear"></div>
     			<strong> Your activities </strong> <br \>
-    				<div id="user_activities" style="float:left; margin-top:5px">
+    				<div id="user_place_activities" style="float:left; margin-top:5px">
 	  					Please add some activities
     				</div>
 				</div>

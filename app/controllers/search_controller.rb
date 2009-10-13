@@ -17,19 +17,15 @@ class SearchController < ApplicationController
     when  'users'
       logger.debug('when users people')
       type = User
-    when 'activities'
-      logger.debug('activities')
-      type = UserActivity
-    when 'user_activities'
-        logger.debug('activities')
-        type = UserActivity
+    when 'activities'||'user_place_activities'
+      
     else
       logger.debug('else def to places')
       type = Place
       params[:t] = 'places'
     end
     
-    if type == UserActivity 
+    if params[:t] == 'activities' ||  params[:t] == 'user_place_activities'  
       logger.debug('activity')
       @distance = params[:distance]
       logger.info('distance: ' + params[:distance].to_s)
@@ -51,9 +47,9 @@ class SearchController < ApplicationController
             logger.info("before search")
             if params[:activity_id] == "0"
               logger.info("activity id = 0")
-              @results = UserActivity.paginate(:select => "DISTINCT user_activities.place_id, user_activities.activity_id ", :joins => "inner join places on user_activities.place_id = places.id", :conditions => ["latitude <= " +high_lat.to_s  + " and latitude >= " +low_lat.to_s  + " and longitude >= " +low_long.to_s  + " and longitude <= " +high_long.to_s],:page => params[:page], :per_page => 12)  
+              @results = UserPlaceActivity.paginate(:select => "DISTINCT user_place_activities.place_id, user_place_activities.activity_id ", :joins => "inner join places on user_place_activities.place_id = places.id", :conditions => ["latitude <= " +high_lat.to_s  + " and latitude >= " +low_lat.to_s  + " and longitude >= " +low_long.to_s  + " and longitude <= " +high_long.to_s],:page => params[:page], :per_page => 12)  
             else 
-              @results = UserActivity.paginate(:select => "DISTINCT user_activities.place_id, user_activities.activity_id ", :joins => "inner join places on user_activities.place_id = places.id", :conditions => ["user_activities.activity_id = ? and latitude <= " +high_lat.to_s  + " and latitude >= " +low_lat.to_s  + " and longitude >= " +low_long.to_s  + " and longitude <= " +high_long.to_s,params[:activity_id]],:page => params[:page], :per_page => 12) 
+              @results = UserPlaceActivity.paginate(:select => "DISTINCT user_place_activities.place_id, user_place_activities.activity_id ", :joins => "inner join places on user_place_activities.place_id = places.id", :conditions => ["user_place_activities.activity_id = ? and latitude <= " +high_lat.to_s  + " and latitude >= " +low_lat.to_s  + " and longitude >= " +low_long.to_s  + " and longitude <= " +high_long.to_s,params[:activity_id]],:page => params[:page], :per_page => 12) 
             end
           end
         end
@@ -61,11 +57,12 @@ class SearchController < ApplicationController
         logger.info("No distance - selecting all user activities by activity id")
         if params[:activity_id] != "0"
           logger.info("activity id = 0")
-          @results = UserActivity.paginate(:select => "DISTINCT activity_id, place_id",:conditions => ["user_activities.activity_id = ?",params[:activity_id]],:page => params[:page], :per_page => 12)
+          @results = UserActivity.paginate(:select => "DISTINCT activity_id",:conditions => ["user_activities.activity_id = ?",params[:activity_id]],:page => params[:page], :per_page => 12)
         else
-          @results = UserActivity.paginate(:select => "DISTINCT activity_id, place_id",:page => params[:page], :per_page => 12)
+          @results = UserActivity.paginate(:select => "DISTINCT activity_id",:page => params[:page], :per_page => 12)
         end
       end    
+    
     else
       logger.info(params[:page])
       @results =  type.search(params[:q],

@@ -22,8 +22,8 @@
 
   <div class="actions">
     <% if action_name == 'index' %>
-      <%= link_to "THREAD", account_message_path(message.sender) %> |
-      <%= link_to "REPLY", account_message_path(message.sender, :anchor => "reply") %>
+      <%= link_to image_tag("HPMailOpen.png", :width=>20,:class => " tooltip ", :title => "View Thread"), account_message_path(message.sender) %> 
+      &nbsp;<%= link_to image_tag("HPMail.png", :width=>20,:class => " tooltip ", :title => "Reply"), account_message_path(message.sender, :anchor => "reply") %>
     <% end %>
     &nbsp;
   </div>

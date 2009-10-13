@@ -1,5 +1,5 @@
 <div style="float:left;">
-	<%= render :partial => "shared/activity_select" %>
+	<%= render :partial => "shared/activity_select", :locals => {:allow_any_activity => "1"} %>
 </div>
 </br>
 </br>
@@ -10,10 +10,10 @@
 
 	<%= hidden_field_tag 'place_id', "", :id => 'place_id' %>
 	<%= text_field_tag :place_name, 
-    (user_activity.place.present? ? user_activity.place.name : nil), 
-    :class => "input_text", :disabled => user_activity.place.present?,
+    (user_place_activity.place.present? ? user_place_activity.place.name : nil), 
+    :class => "input_text", :disabled => user_place_activity.place.present?,
     :size => 50,
-    "data-prefilled" => (user_activity.place.present? ? 'true' : 'false')
+    "data-prefilled" => (user_place_activity.place.present? ? 'true' : 'false')
   	%>
  
 	<div class="clear"></div>

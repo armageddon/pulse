@@ -12,8 +12,8 @@ include Graticule
        format.js { render :partial => "shared/object_collection", :locals => {:collection => @places}}
     end
   end
-
-  def user_activities
+  #todo: where is this called
+  def user_place_activities
     @activities = current_user.activities;
     respond_to do |format|
        format.js { render :partial => "shared/object_collection", :locals => {:collection => @activities}}
@@ -30,12 +30,12 @@ include Graticule
   def new
     logger.debug("In Create")
     @user = User.new
-    @user_activity = UserActivity.new
+    @user_place_activity = UserPlaceActivity.new
   end
 
   def redeem
     logger.debug("Begin redeem")
-       @user_activity = UserActivity.new
+       @user_place_activity = UserPlaceActivity.new
     logout_keeping_session!
     
     if params[:invite_code] == "pulse12345"
@@ -48,25 +48,22 @@ include Graticule
   end
 
   def create
-    logger.debug("In Create")
     logout_keeping_session!
-     @user = User.new(params[:user])
-    if   params[:user][:postcode] != nil 
-       geocoder = Graticule.service(:google).new "ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog"
-       location = geocoder.locate ('london ' + params[:user][:postcode])
-       latitude, longitude = location.coordinates
-       if latitude != nil && longitude != nil
+    @user = User.new(params[:user])
+    if params[:user][:postcode] != nil 
+      geocoder = Graticule.service(:google).new "ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog"
+      location = geocoder.locate ('london ' + params[:user][:postcode])
+      latitude, longitude = location.coordinates
+      if latitude != nil && longitude != nil
         @user.lat = latitude
         @user.long = longitude
         params[:user][:lat] = latitude
         params[:user][:long] = longitude
-       end
-     end
-   
+      end
+    end
     @user.location_id = 1;
     @user.postcode = @user.postcode.upcase
     @user.register! if @user && @user.valid?
-
     success = @user && @user.valid?
     @user.age 
     respond_to do |format|
@@ -74,12 +71,10 @@ include Graticule
         # DEBUG
         @user.activate!
         session[:user_id] = @user.id
-
         format.html {
           redirect_to user_path
           flash[:notice] = "Thanks for signing up!  We're sending you an email with your activation code."
         }
-
         format.js {
           session[:user_id] = @user.id
           render :nothing => true
@@ -99,7 +94,7 @@ include Graticule
   end
 
   def update
-        @user_activity = UserActivity.new
+        @user_place_activity = UserPlaceActivity.new
     if params[:iframe]=="true"
        current_user.update_attributes(params[:user])
         respond_to do |format|

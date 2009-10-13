@@ -1,17 +1,21 @@
-<% form_for user_activity, :url => account_activities_path do |f| %>
+<% form_for user_place_activity, :url => account_place_activities_path do |f| %>
   <% if view == "add_activity" %>
     <h4>Add an activity</h4>
-	<%= hidden_field_tag 'activity_id', activity.id, :id => 'user_activity[activity_id]' %>
+	<%= hidden_field_tag 'activity_id', activity.id, :id => 'user_place_activity[activity_id]' %>
 	<%= image_tag(activity.icon.url(:thumb), :width => '30px', :height => '30px') %>
 	<%= activity.name %> <span style="font-size: .7em;"><%= activity.category %></span>
 	<div class="clear"></div>
 	<label  style="margin-top: 5px; color:#990000; float:left">Where do you like doing this?</label>
-	<%= hidden_field_tag 'place_id', place.id, :id => 'place_id' %>
+	<% if place != nil %>
+	  <%= hidden_field_tag 'place_id', place.id, :id => 'place_id' %>
+	<% else %>
+	  <%= hidden_field_tag 'place_id', "",:id => 'place_id' %>
+	<% end %>
 	<%= text_field_tag :place_name, 
-	    (user_activity.place.present? ? user_activity.place.name : nil), 
+	    (user_place_activity.place.present? ? user_place_activity.place.name : nil), 
 	    :class => "input_text", :disabled => false,
 	    :size => 50,
-	    "data-prefilled" => (user_activity.place.present? ? 'true' : 'false')
+	    "data-prefilled" => (user_place_activity.place.present? ? 'true' : 'false')
 	  %>
 
 	<div class="clear"></div>
@@ -26,7 +30,7 @@
 	<div id="activity_category_select" style="margin-top:10px">
 		<label  style="margin-top: 5px; color:#990000;">What do you do here?</label>
 				<div class="clear"></div>
-	    <%= render :partial => "shared/activity_select" %>
+	    <%= render :partial => "shared/activity_select",  :locals => {:allow_any_activity => "1"} %>
 	  </div>
 	<div class="clear"></div>
   <% end %>
@@ -38,7 +42,7 @@
     <h4>Tell us everything important about it in less than a text message</h4>
     <%= f.text_area :description, :rows => 10, :class => "input_text word_count" %>
   </div>
-  <%= submit_button 'Save', :id => "new_activity"%>
+  <%= submit_button 'Save', :id => "new_activity", :plc_id => "34"%>
   <%= submit_button 'Cancel', :id => "cancel" %>
 <% end %>
 
@@ -54,14 +58,19 @@
         onItemSelect: function(e) {
                var extra = $(e).attr('extra');
                if (extra.length > 0) {
-                $("#user_activity[activity_id]").val(extra[0])             
+                $("#user_place_activity[activity_id]").val(extra[0])             
               } else {
-                $("#user_activity[activity_id]").val('')             
+                $("#user_place_activity[activity_id]").val('')             
               }
         },
       }
       $("#activity_name").autocomplete('/activities/autocomplete', ac_options);
     }   
+
+
+	 function formatResult(row) {
+	    return row.replace("<span style='font-size:9px'>","").replace("</span>","");
+	}
 
 	$('#place_name').focus(function() {
 	    if ( !$.data(this, 'initialized') ) {
@@ -69,12 +78,15 @@
 	      $("#place_name").autocomplete(
 	        "/places/autocomplete",
 	        {
-	          delay:10,
-	          minChars:2,
-	          matchSubset:1,
-	          autoFill:false,
-	          maxItemsToShow:20,
-	          mustMatch: true,
+				minChars: 2,
+				cacheLength: 1,
+		        delay: 10,
+	         	autoFill:false,
+		        maxItemsToShow: 20,
+				formatResult: formatResult,
+		        mustMatch: false,
+				scroll: true,
+				scrollHeight: 20,
 	          onItemSelect: function(e) {
 	            var extra = $(e).attr('extra');
 	            if (extra.length > 0) {
@@ -86,8 +98,8 @@
 	        }
 	      );
 	      $.data(this, 'initialized', true);
-	      $(this).blur();
-	      $(this).focus();
+	     $(this).blur();
+	     $(this).focus();
 	    }
 	  });
 
@@ -101,7 +113,9 @@
       return false;
     })
     
-    $("#new_user_activity").submit(function() {
+    $("#new_user_place_activity").submit(function() {
+	var place_id = $("#place_id").val();
+
       $.ajax({
         type: "POST",
         url: $(this).attr('action'),
@@ -113,6 +127,12 @@
 		  //todo: here display error message
 		},
       })
+
+	  var place_div = $("#place_"+place_id);
+	  var a = place_div.children(".actions").children("a");
+	  a.removeClass('add_place');
+	  a.addClass('remove_place');
+	  a.html('<img class=" tooltip " width="20" title="Remove from favorites" src="/images/HPThumbDown.png" alt="HpthumbDown"/>');
       return false;
     });
     <% end %>

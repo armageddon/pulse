@@ -42,13 +42,12 @@ class User < ActiveRecord::Base
         :url => "/:class/:attachment/:id/:style_:filename",
         :default_url => "/images/:style/missing.png"
 
-  
   belongs_to :location
+  has_many :user_place_activities
   has_many :user_activities
+  has_many :user_places
   has_many :activities, :through => :user_activities
-  has_many :places, :through => :user_activities
-  
-
+  has_many :places, :through => :user_places
   has_many :events
   has_many :messages, :foreign_key => "recipient_id"
   has_many :sent_messages, :foreign_key => "sender_id", :class_name => "Message"
@@ -58,24 +57,22 @@ class User < ActiveRecord::Base
   has_many :user_favorites
   has_many :friends, :through => :user_favorites, :source => :user
 
-  
   validates_presence_of     :location_id
   validates_presence_of     :username
   validates_length_of       :username,    :within => 3..40
   validates_uniqueness_of   :username
   validates_format_of       :username,    :with => Authentication.login_regex, :message => Authentication.bad_login_message
-  validates_format_of       :first_name,     :with => Authentication.name_regex,  :message => Authentication.bad_name_message, :allow_nil => true
-  validates_length_of       :first_name,     :maximum => 100
+  validates_format_of       :first_name,  :with => Authentication.name_regex,  :message => Authentication.bad_name_message, :allow_nil => true
+  validates_length_of       :first_name,  :maximum => 100
   validates_presence_of     :email
-  validates_length_of       :email,    :within => 6..100 #r@a.wk
+  validates_length_of       :email,       :within => 6..100 #r@a.wk
   validates_uniqueness_of   :email
-  validates_format_of       :email,    :with => Authentication.email_regex, :message => Authentication.bad_email_message
-  validates_inclusion_of :sex_preference, :in => [Sex::MALE, Sex::FEMALE, Sex::BOTH], :allow_blank => true
-  validates_inclusion_of :sex, :in => [Sex::MALE, Sex::FEMALE], :allow_blank => true
-  validates_inclusion_of [:age, :age_preference], :in => [ Age::COLLEGE, Age::EARLY_TWENTIES, Age::MID_TWENTIES, Age::LATE_TWENTIES , Age::EARLY_THIRTIES, Age::MID_THIRTIES, Age::LATE_THIRTIES,Age::EARLY_FORTIES, Age::MID_FORTIES, Age::LATE_FORTIES, Age::OLDER], :allow_blank => true
+  validates_format_of       :email,       :with => Authentication.email_regex, :message => Authentication.bad_email_message
+  validates_inclusion_of    :sex_preference, :in => [Sex::MALE, Sex::FEMALE, Sex::BOTH], :allow_blank => true
+  validates_inclusion_of    :sex, :in => [Sex::MALE, Sex::FEMALE], :allow_blank => true
+  validates_inclusion_of  [:age, :age_preference], :in => [ Age::COLLEGE, Age::EARLY_TWENTIES, Age::MID_TWENTIES, Age::LATE_TWENTIES , Age::EARLY_THIRTIES, Age::MID_THIRTIES, Age::LATE_THIRTIES,Age::EARLY_FORTIES, Age::MID_FORTIES, Age::LATE_FORTIES, Age::OLDER], :allow_blank => true
   validates_format_of       :postcode, :with => /^([A-PR-UWYZ0-9][A-HK-Y0-9][AEHMNPRTVXY0-9]?[ABEHMNPRVWXY0-9]? {1,2}[0-9][ABD-HJLN-UW-Z]{2}|GIR 0AA)$/
   # validates_presence_of :timezone, :description, :cell
-
 
   # HACK HACK HACK -- how to do attr_accessible from here?
   # prevents a user from submitting a crafted form that bypasses activation
@@ -83,13 +80,10 @@ class User < ActiveRecord::Base
   attr_accessible  :username, :email, :first_name, :password, :password_confirmation, :timezone, :description, :age, :age_preference, :sex, :sex_preference, :cell, :location_id, :icon, :dob, :postcode, :lat, :long
   attr_accessor :login
 
-
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
-  #
   # uff.  this is really an authorization, not authentication routine.
   # We really need a Dispatch Chain here or something.
   # This will also let us return a human error message.
-  #
   def self.authenticate(login, password)
     return nil if login.blank? || password.blank?
     u = find_in_state :first, :active, :conditions => ["username = ? OR email = ?", login.downcase, login.downcase] # need to get the salt
@@ -114,7 +108,6 @@ class User < ActiveRecord::Base
     exists 
   end
     
-
   def username=(value)
     write_attribute :username, (value ? value.downcase : nil)
   end
@@ -183,7 +176,6 @@ class User < ActiveRecord::Base
     places     = self.places.find(:all, :include => [:categories])
     place_cats = places.map(&:categories).flatten.map(&:id).flatten
     place_cats = place_cats.select {|i| place_cats.select {|a| a == i}.length > 2 }
-
 
     activities = self.activities
     # activities = self.favorites.map(&:activity).map(&:id)
@@ -257,7 +249,7 @@ class User < ActiveRecord::Base
     messages.update_all(["read_at = ?", Time.now], { :read_at => nil})
   end
 
-#todo: these should be in a helper - need to move the calcs into the model by overriding the acriverecord update
+  #todo: these should be in a helper - need to move the calcs into the model by overriding the acriverecord update
   def get_age_option_from_age(age)
     logger.debug("age" + age.to_s())
     if age < 20
@@ -283,7 +275,7 @@ class User < ActiveRecord::Base
     else
       User::Age::OLDER
     end
-end
+  end
 
   def get_age_option_from_dob(dob)
     logger.debug(dob)
@@ -296,11 +288,9 @@ end
   end
 
   protected
-
-    def make_activation_code
+  def make_activation_code
         self.deleted_at = nil
         self.activation_code = self.class.make_token
     end
-
 
 end

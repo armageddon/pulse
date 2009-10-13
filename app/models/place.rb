@@ -14,11 +14,13 @@ class Place < ActiveRecord::Base
     :path => "places/:id/:id_:style.:extension"
 
   belongs_to :location
-  has_many :user_activities
-  has_many :users, :through => :user_activities
+  has_many :user_place_activities
+  has_many :activities, :through => :user_place_activities
+  has_many :user_places
+  has_many :users, :through => :user_places
   has_and_belongs_to_many :categories
   has_many :events
-  has_many :activities, :through => :user_activities 
+
 
   # before_create :geolocate
 

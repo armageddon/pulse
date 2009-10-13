@@ -1,4 +1,5 @@
 <%= render :partial => "shared/object", :collection => collection %>
+
 <% if collection.next_page %>
 	<% qstring = "" %>
 	<% params.each do |p| %>
@@ -6,6 +7,25 @@
 		   <% qstring += "&" + p[0] + '=' + p[1] %>
 		<% end %> 
   	<% end %>
+	<% qstring += "&type="+collection.first.class.to_s.tableize %>
+    <% if controller_name == "search" %>
+		<% reqpath = request.path %>
+	<% else %>
+	    <!-- todo: add logic to decide which collection to get. at present there are no ajax calls for these -->
+	    <% reqpath = request.path %>
+	<% end %>	
   	<%= link_to "See more #{pagination_name collection}", request.path + '?page=' + collection.next_page.to_s + qstring, :class => "paginator" %>
 <% end %>
 <div id="page_loading" style="display: none;"><h4>Loading</h4></div>
+
+<script type="text/javascript" charset="utf-8">
+
+  $(document).ready(function() {
+	
+	  if ($.jqm) {
+	    $("#dialog").jqm({ajax: '@data-href', modal: true});
+	    $("#dialog").jqmAddTrigger('.add_to_favorites, .add_place, .add_event, .add_activity, .invite_a_friend');
+	  }
+	
+	  });
+</script>
