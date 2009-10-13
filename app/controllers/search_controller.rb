@@ -25,34 +25,35 @@ class SearchController < ApplicationController
       params[:t] = 'places'
     end
     
-    if params[:t] == 'activities' ||  params[:t] == 'user_place_activities'  
-      logger.debug('activity')
-      @distance = params[:distance]
-      logger.info('distance: ' + params[:distance].to_s)
-      if params[:distance].to_s != "0" && params[:distance] != nil
-        logger.info("in dist <> 0")
-        @postcode = params[:postcode]
-        geocoder = Graticule.service(:google).new "ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog"
-        logger.debug(params[:postcode])
-        if   params[:postcode] != nil && params[:distance] != nil
-          location = geocoder.locate ('london ' + params[:postcode])
-          latitude, longitude = location.coordinates
-          if latitude != nil && longitude != nil
-            lat_range = params[:distance].to_i / ((6076.00 / 5280.00) * 60.00)
-            long_range = params[:distance].to_i / (((Math.cos(latitude * 3.141592653589 / 180.00) * 6076.00) / 5280.00) * 60.00)
-            low_lat = latitude - lat_range
-            high_lat = latitude + lat_range
-            low_long = longitude - long_range
-            high_long = longitude + long_range
-            logger.info("before search")
-            if params[:activity_id] == "0"
-              logger.info("activity id = 0")
-              @results = UserPlaceActivity.paginate(:select => "DISTINCT user_place_activities.place_id, user_place_activities.activity_id ", :joins => "inner join places on user_place_activities.place_id = places.id", :conditions => ["latitude <= " +high_lat.to_s  + " and latitude >= " +low_lat.to_s  + " and longitude >= " +low_long.to_s  + " and longitude <= " +high_long.to_s],:page => params[:page], :per_page => 12)  
-            else 
-              @results = UserPlaceActivity.paginate(:select => "DISTINCT user_place_activities.place_id, user_place_activities.activity_id ", :joins => "inner join places on user_place_activities.place_id = places.id", :conditions => ["user_place_activities.activity_id = ? and latitude <= " +high_lat.to_s  + " and latitude >= " +low_lat.to_s  + " and longitude >= " +low_long.to_s  + " and longitude <= " +high_long.to_s,params[:activity_id]],:page => params[:page], :per_page => 12) 
-            end
-          end
+    @distance = params[:distance]
+    if params[:distance].to_s != "0" && params[:distance] != nil
+      logger.info("in dist <> 0")
+      @postcode = params[:postcode]
+      geocoder = Graticule.service(:google).new "ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog"
+      logger.debug(params[:postcode])
+      if   params[:postcode] != nil && params[:distance] != nil
+        location = geocoder.locate ('london ' + params[:postcode])
+        latitude, longitude = location.coordinates
+        if latitude != nil && longitude != nil
+          lat_range = params[:distance].to_i / ((6076.00 / 5280.00) * 60.00)
+          long_range = params[:distance].to_i / (((Math.cos(latitude * 3.141592653589 / 180.00) * 6076.00) / 5280.00) * 60.00)
+          low_lat = latitude - lat_range
+          high_lat = latitude + lat_range
+          low_long = longitude - long_range
+          high_long = longitude + long_range
+          location_search = true;
         end
+      end
+    end
+    
+    if params[:t] == 'activities' ||  params[:t] == 'user_place_activities'  
+      if location_search
+        if params[:activity_id] == "0"
+          logger.info("activity id = 0")
+            @results = UserPlaceActivity.paginate(:select => "DISTINCT user_place_activities.place_id, user_place_activities.activity_id ", :joins => "inner join places on user_place_activities.place_id = places.id", :conditions => ["latitude <= " +high_lat.to_s  + " and latitude >= " +low_lat.to_s  + " and longitude >= " +low_long.to_s  + " and longitude <= " +high_long.to_s],:page => params[:page], :per_page => 12)  
+          else 
+            @results = UserPlaceActivity.paginate(:select => "DISTINCT user_place_activities.place_id, user_place_activities.activity_id ", :joins => "inner join places on user_place_activities.place_id = places.id", :conditions => ["user_place_activities.activity_id = ? and latitude <= " +high_lat.to_s  + " and latitude >= " +low_lat.to_s  + " and longitude >= " +low_long.to_s  + " and longitude <= " +high_long.to_s,params[:activity_id]],:page => params[:page], :per_page => 12) 
+          end
       else
         logger.info("No distance - selecting all user activities by activity id")
         if params[:activity_id] != "0"
@@ -62,7 +63,15 @@ class SearchController < ApplicationController
           @results = UserActivity.paginate(:select => "DISTINCT activity_id",:page => params[:page], :per_page => 12)
         end
       end    
-    
+    elsif params[:t] == 'places' 
+      if location_search
+      @results =  type.search(params[:q],
+        :conditions => ["latitude <= " +high_lat.to_s  + " and latitude >= " +low_lat.to_s  + " and longitude >= " +low_long.to_s  + " and longitude <= " +high_long.to_s],
+        :page => params[:page], :per_page => 12)
+      else
+        @results =  type.search(params[:q],
+          :page => params[:page], :per_page => 12)
+      end
     else
       logger.info(params[:page])
       @results =  type.search(params[:q],
