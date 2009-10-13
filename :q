@@ -1,0 +1,23 @@
+Changed case of question.png
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	modified:   app/models/activity.rb
+#
+diff --git a/app/models/activity.rb b/app/models/activity.rb
+index c57063d..e7b4695 100644
+--- a/app/models/activity.rb
++++ b/app/models/activity.rb
+@@ -3,7 +3,7 @@ class Activity < ActiveRecord::Base
+   define_index do
+     indexes name
+   end
+-  has_attached_file :icon, :styles => { :thumb => "75x75#", :thumb => "160x160#" }, :default_url => "/images/question.png"
++  has_attached_file :icon, :styles => { :thumb => "75x75#", :thumb => "160x160#" }, :default_url => "/images/Question.png"
+   has_many :user_activities
+   has_many :user_place_activities
+   has_many :users, :through => :user_activities
