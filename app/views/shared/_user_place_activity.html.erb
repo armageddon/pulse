@@ -19,9 +19,9 @@
 </div>
 <div class="actions">
 	<% if logged_in? && !current_user.user_place_activities.include?(object) %>
-	<%=  link_to image_tag("HPThumbUp.png", :width=>20), '#', 'data-href' => new_account_activity_path(:activity_id => object.activity, :place_id => object.place, :view => "add_activity"), :class => "add_activity" %>
+	<%=  link_to image_tag("HPThumbUp.png", :width=>20,:class => " tooltip ", :title => "Add to favorites"), '#', 'data-href' => new_account_activity_path(:activity_id => object.activity, :place_id => object.place, :view => "add_activity"), :class => "add_activity" %>
 	<% elsif  logged_in?    %>
-<!--	<%=  link_to image_tag("HPThumbDown.png", :width=>20), '#', 'data-href' => new_account_activity_path(:activity_id => object.activity, :place_id => object.place), :class => "add_activity" %> -->
+<!--	<%=  link_to image_tag("HPThumbDown.png", :width=>20,:class => " tooltip ", :title => "Remove from favorites"), '#', 'data-href' => new_account_activity_path(:activity_id => object.activity, :place_id => object.place), :class => "add_activity" %> -->
 	<% end %>     
 </div>
 <div class="clear"></div>
