@@ -5,9 +5,10 @@ class PagesController < ApplicationController
   end
   
   def contact
-    
+    logger.info('in feedback');
     if request.post?
-      AdminMailer.deliver_contact(params[:contact])
+      AdminMailer.deliver_contact("hellopulse@googlemail.com","hellopulse@googlemail.com","sdsdd")
+      logger.info('after send contact');
       redirect_to '/contact?thanks=true'
       return
     end
