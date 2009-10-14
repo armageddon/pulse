@@ -8,7 +8,7 @@ class PagesController < ApplicationController
     logger.info('in feedback')
     
     if request.post?
-      AdminMailer.deliver_contact("hellopulse@googlemail.com","hellopulse@googlemail.com","sdsdd",)
+      AdminMailer.deliver_contact("hellopulse@googlemail.com","hellopulse@googlemail.com","sdsdd")
       logger.info('after send contact');
       redirect_to '/contact?thanks=true'
       return
