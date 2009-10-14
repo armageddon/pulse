@@ -40,59 +40,39 @@
 				<p>
 				<label  style="margin-top: 5px; color:#990000;">First name</label>
 				<div class="clear"></div>
-				<%= text_field_tag 'user[first_name]', @user.first_name || 'First name', :class => 'input_text' %><br />
+				<%= text_field_tag 'user[first_name]', @user.first_name || 'First name', :class => 'input_text' %>
 				<span class="error"></span>
 				</p>
 				<p>
 				<label  style="margin-top: 5px; color:#990000;">Username</label>
 				<div class="clear"></div>
-				 <%= text_field_tag 'user[username]', @user.username || "Username", :class => 'input_text' %><br />
+				 <%= text_field_tag 'user[username]', @user.username || "Username", :class => 'input_text' %>
 				 <span class="error"></span>
 				</p>
 				<p>
 				<label  style="margin-top: 5px; color:#990000;">Password</label>
 				<div class="clear"></div>
-				 <%= text_field_tag 'password_holder', 'Password', :class => 'input_text' -%>
-				 <%= f.password_field :password, :class => 'input_text', :style => 'display: none;' -%>
+				 <%= text_field_tag 'password_holder', 'Password', :class => 'input_text' %>
+				 <%= f.password_field :password, :class => 'input_text', :style => 'display: none;' %>
 				 <span class="error"></span>
 				</p>
-				<div class="clear"></div>
+				<p>
 				<label  style="margin-top: 5px; color:#990000;">Password confirmation</label>
 				<div class="clear"></div>
-				<p>
-				 <%= text_field_tag 'password_confirmation_holder', 'Password confirmation', :class => 'input_text' -%>
-				 <%= f.password_field :password_confirmation, :class => 'input_text', :style => 'display: none;' -%>
+				 <%= text_field_tag 'password_confirmation_holder', 'Password confirmation', :class => 'input_text' %>
+				 <%= f.password_field :password_confirmation, :class => 'input_text', :style => 'display: none;' %>
 				 <span class="error"></span>
 				</p>
+				<p>
 				<label  style="margin-top: 5px; color:#990000;">Email address</label>
 				<div class="clear"></div>
-				<p>
-				 <%= text_field_tag 'user[email]', @user.email || 'Email address', :class => 'input_text' %><br />
+				 <%= text_field_tag 'user[email]', @user.email || 'Email address', :class => 'input_text' %>
 				 <span class="error"></span>
 				</p>
-				<!--
-				<label  style="margin-top: 5px; color:#990000;">Location</label>
-				<div class="clear"></div>
-			    <div class='fancy_select'>
-			        <%= hidden_field_tag 'user[location_id]', "" %>
-			        <div class="fancy_select_target">
-			          Location
-			        </div>
-			        <div class="fancy_select_options">
-			          <% Location.find(:all).each do |l| %>
-			            <p><%= l.name %><span class="hidden_value"><%= l.id %></span></p>
-			          <% end %>
-			        </div>
-			        <div class="clear">&nbsp;</div>
-			    </div>
-			    <div id="location_error">
-			      <span class="error"></span>
-			    </div>
-				-->
+				<p>
 				<label  style="margin-top: 5px; color:#990000;">Post Code</label>
 				<div class="clear"></div>
-				<p>
-				 <%= text_field_tag 'user[postcode]', @user.postcode || 'Post code', :class => 'input_text' %><br />
+				 <%= text_field_tag 'user[postcode]', @user.postcode || 'Post code', :class => 'input_text' %>
 				 <span class="error"></span>
 				</p>
 			  	<div>

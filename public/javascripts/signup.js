@@ -207,35 +207,43 @@ $(document).ready(function() {
     var location = $('#user_location_id');
     var error = false;
 
+    $('.invalid').removeClass('invalid');
+	$('span.error').text('');
+
     if (email.val() == '' || email.val() == 'Email address') {
       email.addClass('invalid');
-      email.nextAll('span.error').text('Please enter a valid email address.');
+
+      email.next().text('Please enter a valid email address.');
       error = true;
     };
 
     if (username.val() == '' || username.val() == 'Username') {
       username.addClass('invalid');
-      username.nextAll('span.error').text('Please enter a valid user name')
+      username.next().text('Please enter a valid user name')
       error = true;
     }
 
     if (first_name.val() == '' || first_name.val() == 'First name') {
       first_name.addClass('invalid');
-      first_name.nextAll('span.error').text('Please enter your first name');
+      first_name.next().text('Please enter your first name');
       error = true;
     }
 
-    if ((password.val() == '' || password_confirm.val() == '') || password.val() == 'Password' || password_confirm.val() == 'Password confirmation') {
-      $('#password_holder, #password_confirmation_holder').addClass('invalid');
-      password.addClass('invalid');
+    if ((password.val() == '' || password.val() == 'Password' )) {
+	  $('#password_holder').addClass('invalid');
+	  password.addClass('invalid');
+	  password.next().text('Please enter a valid password');
+	  error = true;
+	} else if ((password_confirm.val() == '') || (password_confirm.val() == 'Password confirmation')) {
+      $('#password_confirmation_holder').addClass('invalid');
       password_confirm.addClass('invalid');
-      password.nextAll('span.error').text('Please enter a valid password');
+      password_confirm.next().text('Please enter a password confirmation');
       error = true;
     } else if ((password.val() != password_confirm.val())) {
       $('#password_holder, #password_confirmation_holder').addClass('invalid');
       password.addClass('invalid');
       password_confirm.addClass('invalid');
-      password.nextAll('span.error').text('Your password and password confirmation do not match.');
+      password.next().text('Your password and password confirmation do not match.');
       error = true;
     }
     
@@ -244,7 +252,7 @@ $(document).ready(function() {
 	if (postcode.val() == '' || postcode.val() == 'Post code' || regexString.test(postcode.val().toUpperCase()) != true) {
 		
 		postcode.addClass('invalid');
-	    postcode.nextAll('span.error').text('Please enter a valid post code.');
+	    postcode.next().text('Please enter a valid post code.');
 	    error = true;
 	};
 
@@ -268,26 +276,30 @@ $(document).ready(function() {
           $.each(errors, function(i,error) {
             var field = error[0]
             var message = error[1];
+			var username_error = false; 
             switch (field) {
               case 'email':
                 $('#user_email').addClass('invalid');
-                $('#user_email').nextAll('span.error').text("Email address " + message);
+                $('#user_email').next().text("Email address " + message);
                 break;
 
               case 'first_name':
                 $('#user_first_name').addClass('invalid');
-                $('#user_first_name').nextAll('span.error').text("First name " + message);
+                $('#user_first_name').next().text("First name " + message);
                 break;
 
               case 'password':
               case 'password_confirmation':
                 $('#user_password, #user_password_confirmation').addClass('invalid');
-                $('#user_password').nextAll('span.error').text("Password " + message);
+                $('#user_password').next().text("Password " + message);
                 break;
 
               case 'username':
-                $('#user_username').addClass('invalid');
-                $('#user_username').nextAll('span.error').text("Username " + message);
+				if (!username_error) {
+                  $('#user_username').addClass('invalid');
+                  $('#user_username').next().text("Username " + message);
+				  username_error = true;
+				}
                 break;
             }
           })

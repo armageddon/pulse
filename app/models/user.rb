@@ -58,10 +58,12 @@ class User < ActiveRecord::Base
   has_many :friends, :through => :user_favorites, :source => :user
 
   validates_presence_of     :location_id
-  validates_presence_of     :username
-  validates_length_of       :username,    :within => 3..40
+  
   validates_uniqueness_of   :username
-  validates_format_of       :username,    :with => Authentication.login_regex, :message => Authentication.bad_login_message
+  validates_presence_of     :username
+  validates_length_of       :username,    :within => 3..40, :allow_blank => true;
+  validates_format_of       :username,    :with => Authentication.login_regex, :message => Authentication.bad_login_message, :allow_blank => true;
+  
   validates_format_of       :first_name,  :with => Authentication.name_regex,  :message => Authentication.bad_name_message, :allow_nil => true
   validates_length_of       :first_name,  :maximum => 100
   validates_presence_of     :email
