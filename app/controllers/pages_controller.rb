@@ -5,7 +5,7 @@ class PagesController < ApplicationController
   end
   
   def contact
-    logger.info('in feedback');
+    logger.info('in feedback')
     
     if request.post?
       AdminMailer.deliver_contact("hellopulse@googlemail.com","hellopulse@googlemail.com","sdsdd",)
