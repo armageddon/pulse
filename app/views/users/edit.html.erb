@@ -1,22 +1,47 @@
+
 <h3 class="section">Edit info</h3>
 <% form_for current_user, :url => account_path, :html => { :multipart => true } do |f| %>
   <p>
     <label>First name</label>
     <%= text_field_tag 'user[first_name]', current_user.first_name || 'First name', :class => 'input_text' %>
+    <% if current_user.errors.length != 0 && current_user.errors.on(:first_name)!=nil%>
+      <span class='error'><%= 'First Name ' + current_user.errors.on(:first_name) %></span>
+    <% end %>
   </p>
 
   <p>
     <label>Email</label>
-    <%= text_field_tag 'user[email]', current_user.email || 'Email address', :class => 'input_text' %><br />
+    <%= text_field_tag 'user[email]', current_user.email || 'Email address', :class => 'input_text' %>
+    <% if current_user.errors.length != 0 && current_user.errors.on(:email)!=nil%>
+	  <% if current_user.errors.on(:email).length == 1 %>
+        <span class='error'><%= 'Email ' + current_user.errors.on(:email) %></span>
+	  <% else %>
+		<span class='error'><%= 'Email ' + current_user.errors.on(:email) %></span>
+	  <% end %>
+    <% end %>    
   </p>
   
   <label>Description</label>
   <div id="description">
     <%= text_area_tag 'user[description]', current_user.description, :id => "user_description", :class => "word_count" %>
+	<% if current_user.errors.length != 0 && current_user.errors.on(:description)!=nil%>
+	  <% if current_user.errors.on(:description).length == 1 %>
+        <span class='error'><%= 'Description ' + current_user.errors.on(:description) %></span>
+	  <% else %>
+		<span class='error'><%= 'Description ' + current_user.errors.on(:description) %></span>
+	  <% end %>
+    <% end %>
   </div>
 
 	<label>Post code</label>
-  	<%= text_field_tag 'user[postcode]', current_user.postcode || 'Post code', :class => 'input_text' %><br />
+  	<%= text_field_tag 'user[postcode]', current_user.postcode || 'Post code', :class => 'input_text' %>
+	<% if current_user.errors.length != 0 && current_user.errors.on(:postcode)!=nil%>
+	  <% if current_user.errors.on(:postcode).length == 1 %>
+        <span class='error'><%= 'Postcode ' + current_user.errors.on(:postcode) %></span>
+	  <% else %>
+		<span class='error'><%= 'Postcode ' + current_user.errors.on(:postcode) %></span>
+	  <% end %>
+    <% end %>
 
   <label style="margin-top: 5px;">Your gender</label>
   <div class='fancy_select'>

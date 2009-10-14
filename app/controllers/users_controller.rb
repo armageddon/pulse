@@ -94,6 +94,7 @@ include Graticule
   end
 
   def update
+    
         @user_place_activity = UserPlaceActivity.new
     if params[:iframe]=="true"
        current_user.update_attributes(params[:user])

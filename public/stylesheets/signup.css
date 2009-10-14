@@ -36,11 +36,7 @@ a, a:visited, a:active {
   width: 180px;
 }
 
-.error {
-  color: #990000;
-  font-family: Helvetica !important;
-  font-size: .8em;
-}
+
 
 #copy {
   padding-top: 50px;

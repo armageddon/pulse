@@ -64,12 +64,18 @@ class User < ActiveRecord::Base
   validates_length_of       :username,    :within => 3..40, :allow_blank => true;
   validates_format_of       :username,    :with => Authentication.login_regex, :message => Authentication.bad_login_message, :allow_blank => true;
   
+  validates_presence_of     :first_name
   validates_format_of       :first_name,  :with => Authentication.name_regex,  :message => Authentication.bad_name_message, :allow_nil => true
   validates_length_of       :first_name,  :maximum => 100
+  
+  validates_uniqueness_of   :email
   validates_presence_of     :email
   validates_length_of       :email,       :within => 6..100 #r@a.wk
-  validates_uniqueness_of   :email
   validates_format_of       :email,       :with => Authentication.email_regex, :message => Authentication.bad_email_message
+  
+  validates_presence_of     :description
+  validates_length_of       :description,  :maximum => 250
+  
   validates_inclusion_of    :sex_preference, :in => [Sex::MALE, Sex::FEMALE, Sex::BOTH], :allow_blank => true
   validates_inclusion_of    :sex, :in => [Sex::MALE, Sex::FEMALE], :allow_blank => true
   validates_inclusion_of  [:age, :age_preference], :in => [ Age::COLLEGE, Age::EARLY_TWENTIES, Age::MID_TWENTIES, Age::LATE_TWENTIES , Age::EARLY_THIRTIES, Age::MID_THIRTIES, Age::LATE_THIRTIES,Age::EARLY_FORTIES, Age::MID_FORTIES, Age::LATE_FORTIES, Age::OLDER], :allow_blank => true
