@@ -63,14 +63,24 @@ class SearchController < ApplicationController
           @results = UserActivity.paginate(:select => "DISTINCT activity_id",:page => params[:page], :per_page => 12)
         end
       end    
+      
     elsif params[:t] == 'places' 
       if location_search
-      @results =  type.search(params[:q],
-        :conditions => ["latitude <= " +high_lat.to_s  + " and latitude >= " +low_lat.to_s  + " and longitude >= " +low_long.to_s  + " and longitude <= " +high_long.to_s],
-        :page => params[:page], :per_page => 12)
+        if params[:q] != nil and params[:q] != ''
+          @sphinx_places = type.search(params[:q],  :page => params[1], :per_page => 100)
+          id_array = Array.new
+          @sphinx_places.each do |s|
+            id_array << s.id
+          end
+          id_array = id_array.inspect
+          id_array["["] = "("
+          id_array["]"] = ")"
+          @results =Place.paginate( :conditions => ["latitude <= " +high_lat.to_s  + " and latitude >= " +low_lat.to_s  + " and longitude >= " +low_long.to_s  + " and longitude <= " +high_long.to_s + " and id in " + id_array],:page => params[:page], :per_page => 12 )
+        else
+          @results =Place.paginate( :conditions => ["latitude <= " +high_lat.to_s  + " and latitude >= " +low_lat.to_s  + " and longitude >= " +low_long.to_s  + " and longitude <= " +high_long.to_s],:page => params[:page], :per_page => 12 )
+        end
       else
-        @results =  type.search(params[:q],
-          :page => params[:page], :per_page => 12)
+        @results =  type.search(params[:q], :page => params[:page], :per_page => 12)
       end
     else
       logger.info(params[:page])

@@ -24,5 +24,17 @@
 	</div>
 </div>
 </div>
+<script type="text/javascript" charset="utf-8">
+
+$('#postcode').focus(function() {
+  if ($(this).val() == 'Post code') {
+    $(this).val('');
+  }
+});
+$('#postcode').blur(function() {
+    if ($(this).val() == '')
+      $(this).val('Post code');
+  });
+</script>
 
 
