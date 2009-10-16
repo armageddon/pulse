@@ -1,15 +1,14 @@
 <div class="icon">
-	<%= link_to image_tag(object.place.icon.url(:thumb), :width => '30px', :height => '30px'), object.place %>
+	<%= link_to image_tag(object.activity.icon.url(:thumb), :width => '30px', :height => '30px'), object.activity %>
 </div>
 <div class="info_container">
 	<div class="info">
 		<span>
      		<%= link_to (object.activity.name), object.activity %>
-			&nbsp;at&nbsp;
-			<%= link_to (object.place.name), object.place %>
-
-			&nbsp;&nbsp;&nbsp;&nbsp; 
-			<%=  object.place.neighborhood %> 
+		</span>
+		<br />
+		<span>
+			happens at <%= object.places_count.to_s%> places
 		</span>
 		
    	</div>
@@ -19,9 +18,9 @@
 </div>
 <div class="actions">
 	<% if logged_in? && !current_user.user_place_activities.include?(object) %>
-	<%=  link_to image_tag("HPThumbUp.png", :width=>20,:class => " tooltip ", :title => "Add to favorites"), '#', 'data-href' => new_account_activity_path(:activity_id => object.activity, :place_id => object.place, :view => "add_activity"), :class => "add_activity" %>
+	<%=  link_to image_tag("HPThumbUp.png", :width=>20,:class => " tooltip ", :title => "Add to favorites"), '#', 'data-href' => new_account_activity_path(:activity_id => object.activity, :view => "add_activity"), :class => "add_activity" %>
 	<% elsif  logged_in?    %>
-<!--	<%=  link_to image_tag("HPThumbDown.png", :width=>20,:class => " tooltip ", :title => "Remove from favorites"), '#', 'data-href' => new_account_activity_path(:activity_id => object.activity, :place_id => object.place), :class => "add_activity" %> -->
+    <%=  link_to image_tag("HPThumbDown.png", :width=>20,:class => " tooltip ", :title => "Remove from favorites"), '#', 'data-href' => new_account_activity_path(:activity_id => object.activity), :class => "remove_activity" %> -->
 	<% end %>     
 </div>
 <div class="clear"></div>

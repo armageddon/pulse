@@ -11,7 +11,8 @@ class Place < ActiveRecord::Base
     :styles => { :thumb => "75x75#", :profile => "160x160#" },
     :storage => :s3,
     :s3_credentials => File.join(Rails.root, "config", "s3.yml"),
-    :path => "places/:id/:id_:style.:extension"
+    :path => "places/:id/:id_:style.:extension",
+    :default_url => "/images/Question.png"
 
   belongs_to :location
   has_many :user_place_activities

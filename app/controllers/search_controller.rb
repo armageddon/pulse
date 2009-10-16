@@ -50,9 +50,9 @@ class SearchController < ApplicationController
       if location_search
         if params[:activity_id] == "0"
           logger.info("activity id = 0")
-            @results = UserPlaceActivity.paginate(:select => "DISTINCT user_place_activities.place_id, user_place_activities.activity_id ", :joins => "inner join places on user_place_activities.place_id = places.id", :conditions => ["latitude <= " +high_lat.to_s  + " and latitude >= " +low_lat.to_s  + " and longitude >= " +low_long.to_s  + " and longitude <= " +high_long.to_s],:page => params[:page], :per_page => 12)  
+            @results = UserPlaceActivity.paginate(:select => "user_place_activities.activity_id, count(place_id) as place_count", :joins => "inner join places on user_place_activities.place_id = places.id", :conditions => ["latitude <= " +high_lat.to_s  + " and latitude >= " +low_lat.to_s  + " and longitude >= " +low_long.to_s  + " and longitude <= " +high_long.to_s],:page => params[:page], :per_page => 12)  
           else 
-            @results = UserPlaceActivity.paginate(:select => "DISTINCT user_place_activities.place_id, user_place_activities.activity_id ", :joins => "inner join places on user_place_activities.place_id = places.id", :conditions => ["user_place_activities.activity_id = ? and latitude <= " +high_lat.to_s  + " and latitude >= " +low_lat.to_s  + " and longitude >= " +low_long.to_s  + " and longitude <= " +high_long.to_s,params[:activity_id]],:page => params[:page], :per_page => 12) 
+            @results = UserPlaceActivity.paginate(:select => "user_place_activities.activity_id, count(place_id) as place_count ", :joins => "inner join places on user_place_activities.place_id = places.id", :conditions => ["user_place_activities.activity_id = ? and latitude <= " +high_lat.to_s  + " and latitude >= " +low_lat.to_s  + " and longitude >= " +low_long.to_s  + " and longitude <= " +high_long.to_s,params[:activity_id]],:page => params[:page], :per_page => 12) 
           end
       else
         logger.info("No distance - selecting all user activities by activity id")
@@ -63,7 +63,10 @@ class SearchController < ApplicationController
           @results = UserActivity.paginate(:select => "DISTINCT activity_id",:page => params[:page], :per_page => 12)
         end
       end    
-      
+      if @results[0].activity_id == nil
+        @results = {}
+        logger.info(@results.length)
+      end
     elsif params[:t] == 'places' 
       if location_search
         if params[:q] != nil and params[:q] != ''
@@ -95,7 +98,7 @@ class SearchController < ApplicationController
     
       respond_to do |format|
           format.js do
-            logger.info(@results)
+            logger.info('results' + @results.to_s)
             if @results.length == 0
               render :text=>"<div id='results'>No results returned</div>"
             else
