@@ -58,15 +58,17 @@ class SearchController < ApplicationController
         logger.info("No distance - selecting all user activities by activity id")
         if params[:activity_id] != "0"
           logger.info("activity id = 0")
-          @results = UserActivity.paginate(:select => "DISTINCT activity_id",:conditions => ["user_activities.activity_id = ?",params[:activity_id]],:page => params[:page], :per_page => 12)
+          @results = UserActivity.paginate(:select => "activity_id, 0 as user_id",:group=>"activity_id",:conditions => ["user_activities.activity_id = ?",params[:activity_id]],:page => params[:page], :per_page => 12)
         else
-          @results = UserActivity.paginate(:select => "DISTINCT activity_id",:page => params[:page], :per_page => 12)
+          @results = UserActivity.paginate(:select => "activity_id, 0 as user_id",:group=>"activity_id",:page => params[:page], :per_page => 12)
         end
       end    
       if @results == nil || @results.length == 0 ||  @results[0].activity_id == nil
         @results = {}
         logger.info(@results.length)
       end
+      
+      
     elsif params[:t] == 'places' 
       if location_search
         if params[:q] != nil and params[:q] != ''

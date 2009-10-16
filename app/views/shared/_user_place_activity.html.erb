@@ -6,21 +6,30 @@
 		<span>
      		<%= link_to (object.activity.name), object.activity %>
 		</span>
-		<br />
-		<span>
-			happens at <%= object.place_count.to_s%> places
-		</span>
-		
    	</div>
 	<div class="clear"></div>
-	&nbsp;&nbsp;&nbsp;<%= UserPlaceActivity.all(:conditions => {"place_id" => object.place.id, "activity_id" => object.activity.id}).length %>&nbsp;people do this here:
+	<% if object.place_count != "0"  %>
+		<% if object.place_count == "1" %>
+			1 Place
+		<% else %>
+	  		<%= object.place_count.to_s %> Places
+		<% end %>
+	<% end %>
+	&nbsp;&nbsp;&nbsp;
+	<% user_count =  UserPlaceActivity.all(:conditions => {"place_id" => object.place.id, "activity_id" => object.activity.id}).length %>
+	<% if user_count == 1 %>
+		1 Person
+	<% elsif user_count > 1 %>
+	  <%=user_count.to_s%>&nbsp;People
+	<% end %>
+	
     <div class="clear"></div>
 </div>
 <div class="actions">
 	<% if logged_in? && !current_user.user_place_activities.include?(object) %>
 	<%=  link_to image_tag("HPThumbUp.png", :width=>20,:class => " tooltip ", :title => "Add to favorites"), '#', 'data-href' => new_account_activity_path(:activity_id => object.activity, :view => "add_activity"), :class => "add_activity" %>
 	<% elsif  logged_in?    %>
-    <%=  link_to image_tag("HPThumbDown.png", :width=>20,:class => " tooltip ", :title => "Remove from favorites"), '#', 'data-href' => new_account_activity_path(:activity_id => object.activity), :class => "remove_activity" %> -->
+    <%=  link_to image_tag("HPThumbDown.png", :width=>20,:class => " tooltip ", :title => "Remove from favorites"), '#', 'data-href' => new_account_activity_path(:activity_id => object.activity), :class => "remove_activity" %>
 	<% end %>     
 </div>
 <div class="clear"></div>

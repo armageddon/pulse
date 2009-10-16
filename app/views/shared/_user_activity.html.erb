@@ -9,21 +9,24 @@
 		
    	</div>
 	<div class="clear"></div>
-	<% if @view != nil && @view == "user_favorites" %>
-	  <% places_count = UserPlaceActivity.all(:conditions => {"user_id" => current_user.id, "activity_id" => object.activity.id}).length %>
-	  <% if places_count == 1 %>
-	  	&nbsp;&nbsp;&nbsp;<%= "You do this at 1 place" %>
+	  <% if object.user_id == nil || object.user_id == 0%>
+		<% place_count = UserPlaceActivity.all(:select=>"DISTINCT place_id",:conditions=>{"activity_id" => object.activity.id }).length  %>
+	  <% else %>
+	    <% place_count = UserPlaceActivity.all(:select=>"DISTINCT place_id",:conditions => {"activity_id" => object.activity.id, "user_id" =>object.user_id }).length  %>
+	  <%end%>
+	  <% if place_count == 1 %>
+	  	&nbsp;&nbsp;&nbsp;1 Place
       <% else %>
-	 	&nbsp;&nbsp;&nbsp;<%= "You do this at " +places_count.to_s + " places" %>
+	 	&nbsp;&nbsp;&nbsp;<%= place_count.to_s + " Places" %>
 	  <% end %>
-	<% else %>
-	  <% activity_count = UserActivity.all(:conditions => {"activity_id" => object.activity.id}).length %>
-	  <% if activity_count == 1 %>
-	  	&nbsp;&nbsp;&nbsp;1 person likes doing this
-      <% else %>
-	 	&nbsp;&nbsp;&nbsp;<%= activity_count.to_s + " people like doing this" %>
+	  <% if object.user_id == nil || object.user_id == 0%>
+		<% user_count = UserActivity.all(:select=>"DISTINCT user_id",:conditions=>{"activity_id" => object.activity.id }).length  %>
 	  <% end %>
-	<% end %>
+	  <% if user_count == 1 %>
+	  	&nbsp;&nbsp;&nbsp;1 Person
+      <% elsif user_count != nil && user_count != 0 %>
+	 	&nbsp;&nbsp;&nbsp;<%= user_count.to_s + " People" %>
+	  <% end %>
 	
     <div class="clear"></div>
 </div>

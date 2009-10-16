@@ -6,8 +6,8 @@ class ProfilesController < ApplicationController
     @user = User.find_by_username(params[:id])
     @places = @user.places.paginate(:page => params[:page], :per_page => 5)
     @events = @user.events.find(:all, :include => [:place, :user])
-    @user_place_activities = UserPlaceActivity.paginate(:select => "DISTINCT user_place_activities.*", :conditions => ["user_id = ?",@user.id],:page => params[:page], :per_page => 5)
-    @activities =  @user.activities.paginate(:select => "DISTINCT activities.*", :page => params[:page], :per_page => 5)
+    @user_activities = UserActivity.paginate(:select => "DISTINCT user_activities.*", :conditions => ["user_id = ?",@user.id],:page => params[:page], :per_page => 5)
+    #@activities =  @user.activities.paginate(:select => "DISTINCT activities.*", :page => params[:page], :per_page => 5)
     # poor man's stats
     if @user != current_user
       @user.increment!(:profile_views, 1)
@@ -19,7 +19,7 @@ class ProfilesController < ApplicationController
         when "places"
           render :partial => "shared/object_collection", :locals => { :collection => @places }
         when "user_place_activities"
-           render :partial => "shared/object_collection", :locals => { :collection => @user_place_activities }
+           render :partial => "shared/object_collection", :locals => { :collection => @user_activities }
         end
       end
       format.html { render }
