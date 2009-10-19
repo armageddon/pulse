@@ -6,11 +6,7 @@ class UserFavoritesController < ApplicationController
     current_user.user_favorites.each do |uf|
       @favorites << User.find(uf.friend_id)
     end
-    #this displays user_pace_activities on favoritespage
     @user_activities = current_user.user_activities
-    logger.debug("length upa " + @user_activities.length.to_s)
-    logger.debug("length fav " + @favorites.length.to_s)
-    logger.debug("user " + current_user.id.to_s)
     @view = "user_favorites"
     respond_to do |format|
       format.html { render }
@@ -20,7 +16,6 @@ class UserFavoritesController < ApplicationController
   end
 
   def new
-    
     @user_favorite = current_user.user_favorites.build(params[:friend_id])
     if @user_favorites.save
       respond_to do |format|
@@ -28,7 +23,6 @@ class UserFavoritesController < ApplicationController
         format.js do
           render :text => "you added a friend"
         end
-        
       end
     else
         render :text => "oops"
