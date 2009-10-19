@@ -1,0 +1,14 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en-GB:
+  Favorites: "Favourites"
+  favorites: "favourites"
+  my_favorites: "My favourites"
+  ADD_TO_FAVORITES: "ADD TO FAVOURITES"
+  Add_to_favorites: "Add to favourites"
+  Remove_from_favorites: "Remove from favourites"
+  Add_place_to_favorites: "Add this place to your favourites"
+  your_favorite_people: "Your favourite people"
+  your_favorite_activities: "Your favourite activities"
+  your_favorite_places: "Your favourite places"

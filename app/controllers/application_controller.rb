@@ -12,4 +12,11 @@ class ApplicationController < ActionController::Base
   def login_required
     authorized? || access_denied
   end
+  
+  before_filter :set_user_language
+  
+  private 
+  def set_user_language
+    I18n.locale = 'en-GB'
+  end
 end
