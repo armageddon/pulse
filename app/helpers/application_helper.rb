@@ -60,7 +60,7 @@ module ApplicationHelper
   end
   
   def submit_button(text, options={})
-    %Q(<button class="submit" id="#{options[:id]}">
+    %Q(<button class="submit" id="#{options[:id]}" type="submit"
       <span class="submit_text">#{text}</span>
     </button>)
   end
