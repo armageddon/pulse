@@ -13,9 +13,10 @@ class UserFavoritesController < ApplicationController
     logger.debug("user " + current_user.id.to_s)
     @view = "user_favorites"
     respond_to do |format|
+      format.html { render }
       format.js do
       end
-    format.html { render }
+    
     end
   end
 
