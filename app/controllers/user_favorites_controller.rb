@@ -16,7 +16,6 @@ class UserFavoritesController < ApplicationController
       format.html { render }
       format.js do
       end
-    
     end
   end
 
