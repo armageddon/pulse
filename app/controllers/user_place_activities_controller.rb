@@ -17,8 +17,9 @@ class UserPlaceActivitiesController < ApplicationController
     @user_place_activity = UserPlaceActivity.new(:place_id => params[:place_id], :activity_id => params[:activity_id])
     @type = params[:type]
     respond_to do |format|
-      format.js { render :partial => "new_user_place_activity.html.erb", :locals => { :activity => @activity, :user_place_activity => @user_place_activity, :place => @place, :view => @view } }
       format.html { render }
+      format.js { render :partial => "new_user_place_activity.html.erb", :locals => { :activity => @activity, :user_place_activity => @user_place_activity, :place => @place, :view => @view } }
+      
     end
   end
 
@@ -29,8 +30,9 @@ class UserPlaceActivitiesController < ApplicationController
       upa.delete
     end
     respond_to do |format|
-      format.js { render :text => "deleted places" }
       format.html { render :text => "deleted places"}
+      format.js { render :text => "deleted places" }
+      
     end
   end
 
@@ -57,27 +59,27 @@ class UserPlaceActivitiesController < ApplicationController
       if @user_place_activity!=nil && @user_place_activity.save
         @user_place.save
         @user_activity.save
-        format.js {render :text => "You like to <span style='margin-top: 5px; color: rgb(153, 0, 0);'>" + @activity.name + "</span> at <span style='margin-top: 5px; color: rgb(153, 0, 0);'>" + @place.name  + "</span><br \>"   }
         format.html do
           flash[:notice] = "You have added a user place activity, user activity and user place"
           redirect_to account_places_path
         end
+        format.js {render :text => "You like to <span style='margin-top: 5px; color: rgb(153, 0, 0);'>" + @activity.name + "</span> at <span style='margin-top: 5px; color: rgb(153, 0, 0);'>" + @place.name  + "</span><br \>"   } 
       elsif @user_place!=nil && @user_place.save
-          format.js {render :text => "You like <span style='margin-top: 5px; color: rgb(153, 0, 0);'>" + @place.name  + "</span><br \>"   }
           format.html do
             flash[:notice] = "You have added a user place"
             redirect_to account_places_path
           end
+          format.js {render :text => "You like <span style='margin-top: 5px; color: rgb(153, 0, 0);'>" + @place.name  + "</span><br \>"   }
       elsif @user_activity!=nil && @user_activity.save
         logger.debug('before user_activity save')
-        format.js {render :text => "You like to <span style='margin-top: 5px; color: rgb(153, 0, 0);'>" + @activity.name + "</span> <br \>"   }
         format.html do
           flash[:notice] = "You have added a user activity"
           redirect_to account_places_path
         end
+        format.js {render :text => "You like to <span style='margin-top: 5px; color: rgb(153, 0, 0);'>" + @activity.name + "</span> <br \>"   }
       else
-        format.js { render :text => 'You have already added this place or activity', :status => 500 }
         format.html { render :action => :new}
+        format.js { render :text => 'You have already added this place or activity', :status => 500 }
       end
     end
   end

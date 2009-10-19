@@ -99,6 +99,10 @@ class SearchController < ApplicationController
    logger.info("params: " +  params.to_s())
     
       respond_to do |format|
+        format.html do
+
+          render 
+        end
           format.js do
             logger.info('results' + @results.to_s)
             if @results.length == 0
@@ -111,10 +115,7 @@ class SearchController < ApplicationController
             :content_type => "text/html"
             end
           end
-          format.html do
 
-            render 
-          end
       end
   end
 

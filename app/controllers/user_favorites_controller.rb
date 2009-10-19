@@ -24,10 +24,11 @@ class UserFavoritesController < ApplicationController
     @user_favorite = current_user.user_favorites.build(params[:friend_id])
     if @user_favorites.save
       respond_to do |format|
+        format.html { render }
         format.js do
           render :text => "you added a friend"
         end
-        format.html { render }
+        
       end
     else
         render :text => "oops"
@@ -39,16 +40,18 @@ class UserFavoritesController < ApplicationController
     @favorite = current_user.user_favorites.build(:friend_id => params[:friend_id])
     respond_to do |format|
       if @favorite.save
-        format.js do
-          render :text => "made user fav"
-        end
         format.html do
           flash[:notice] = "You have added #{@favorite.place.name}"
           render :text => "made user fav"
         end
+        format.js do
+          render :text => "made user fav"
+        end
+        
       else
+         format.html { render :nothing => true, :status => 500 }
         format.js { render :nothing => true, :status => 500 }
-        format.html { render :nothing => true, :status => 500 }
+       
       end
     end
   end

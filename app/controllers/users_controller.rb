@@ -99,8 +99,8 @@ include Graticule
     if params[:iframe]=="true"
        current_user.update_attributes(params[:user])
         respond_to do |format|
-           format.js { render :text => current_user.icon.url + "js"}
            format.html { render :text => current_user.icon.url(:profile) }
+           format.js { render :text => current_user.icon.url + "js"}
         end
     else
        params[:user][:dob] = Date.new(params[:year].to_i(),params[:month].to_i(),params[:day].to_i())
@@ -122,13 +122,13 @@ include Graticule
        respond_to do |format|
          logger.debug(params[:user]);
        if current_user.update_attributes(params[:user])
-          format.js { render :nothing => true}
           format.html { redirect_to account_path }
+          format.js { render :nothing => true}
        else
          logger.debug(current_user.errors.full_messages);
          logger.debug("in no change")
-          format.js { render :nothing => true, :status => 500 }
           format.html { render :action => "edit"}
+          format.js { render :nothing => true, :status => 500 }
        end
        end
     end

@@ -14,6 +14,7 @@ class ProfilesController < ApplicationController
     end
     logger.info("responding... profiles show")
     respond_to do |format|
+      format.html { render }
       format.js do
         case params[:type]
         when "places"
@@ -22,7 +23,7 @@ class ProfilesController < ApplicationController
            render :partial => "shared/object_collection", :locals => { :collection => @user_activities }
         end
       end
-      format.html { render }
+      
     end
   end
 
