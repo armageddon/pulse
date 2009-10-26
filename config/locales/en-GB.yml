@@ -12,3 +12,71 @@ en-GB:
   your_favorite_people: "Your favourite people"
   your_favorite_activities: "Your favourite activities"
   your_favorite_places: "Your favourite places"
+  
+  date:
+    formats:
+      default: "%d/%m/%Y"
+      short: "%e %b"
+      long: "%e %B %Y"
+      long_ordinal: "%e %B %Y"
+      only_day: "%e"
+ 
+    day_names: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
+    abbr_day_names: [Sun, Mon, Tue, Wed, Thu, Fri, Sat]
+    month_names: [~, January, February, March, April, May, June, July, August, September, October, November, December]
+    abbr_month_names: [~, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec]
+    order: [ :day, :month, :year ]
+  
+  time:
+    formats:
+      default: "%d %B %Y %H:%M"
+      time: "%H:%M"
+      short: "%d %b %H:%M"
+      long: "%A %d %B %Y %H:%M:%S %Z"
+      long_ordinal: "%A %d %B %Y %H:%M:%S %Z"
+      only_second: "%S"
+    am: 'am'
+    pm: 'pm'
+ 
+  datetime:
+    distance_in_words:
+      half_a_minute: "half a minute"
+      less_than_x_seconds:
+        zero: "less than one second"
+        one: "less than one second"
+        other: "less than {{count}} seconds"
+      x_seconds:
+        one: "1 second"
+        other: "{{count}} seconds"
+      less_than_x_minutes:
+        zero: "moins d'une minute"
+        one: "moins de 1 minute"
+        other: "moins de {{count}} minutes"
+      x_minutes:
+        one: "1 minute"
+        other: "{{count}} minutes"
+      about_x_hours:
+        one: "environ une heure"
+        other: "environ {{count}} heures"
+      x_days:
+        one: "1 jour"
+        other: "{{count}} jours"
+      about_x_months:
+        one: "environ un mois"
+        other: "environ {{count}} mois"
+      x_months:
+        one: "1 mois"
+        other: "{{count}} mois"
+      about_x_years:
+        one: "environ un an"
+        other: "environ {{count}} ans"
+      over_x_years:
+        one: "plus d'un an"
+        other: "plus de {{count}} ans"
+    prompts:
+      year: "Year"
+      month: "Month"
+      day: "Day"
+      hour: "Hour"
+      minute: "Minute"
+      second: "Second"

@@ -21,7 +21,7 @@
 	<div class="clear"></div>
 	
   <% else %>
-  <h4>Add this place to your favorites</h4>
+  <h4><%=I18n.translate("Add_place_to_favorites")%></h4>
 	<%= image_tag(place.icon.url(:thumb), :width => '30px', :height => '30px') %>
   	<%= place.name %> <span style="font-size: .7em;"><%= place.neighborhood %></span>
 	<%= f.hidden_field :id %>

@@ -9,6 +9,10 @@ class UserEventsController < ApplicationController
     logger.debug("in new")
     @place = Place.find(params[:place_id])
     @event = current_user.events.new
+    @event.when_time = Time.now
+    logger.debug('Created event')
+    logger.debug(@event.when_time)
+    logger.debug(@event)
     @event.place = @place
     respond_to do |format|
       format.html { render }

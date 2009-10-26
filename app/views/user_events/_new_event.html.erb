@@ -2,12 +2,11 @@
 
 <% form_for @event, :url => account_events_path do |f| %>
   <h3 id="month_name"><%= Time.current.strftime("%B") %></h3>
-  
   <div style="display: none;">
     <%= f.datetime_select :when_time %>
   </div>
   <%= f.hidden_field :place_id %>
-  <%= calendar_for(Time.now.year, Time.now.month, :hide_day_names => true, :hide_month_name => true, :next_and_previous_month => false) do |day|
+  <%= calendar_for(Time.now.year, Time.now.month >> 1, :hide_day_names => true, :hide_month_name => false, :next_month => "<div class = 'date_back'>&raquo;</div>", :previous_month => "&laquo;" ) do |day|
     link_to(day.day, '#', 'data-day' => day.day, 'data-month' => day.month)
   end %>
   Time 
