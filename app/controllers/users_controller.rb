@@ -21,9 +21,11 @@ include Graticule
   end
   
   def show
+    logger.debug("users show")
     logger.debug(current_user.errors.full_messages)
     @places = current_user.suggested_places
     @matches = current_user.matches(params[:page], 8)
+    logger.debug("matches: " + @matches.length.to_s)
 
   end
 

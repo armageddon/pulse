@@ -168,6 +168,13 @@ class User < ActiveRecord::Base
   end
 
   def matches(page=0, per_page=8)
+    logger.debug(sex_preference)
+    logger.debug(sex)
+    logger.debug(age_preference)
+    logger.debug(age)
+    logger.debug(id)
+    
+    
     @matches ||= User.paginate(:all, :conditions => [
       "sex = ? AND sex_preference = ? AND age in (?) AND age_preference in (?) AND id != ?",
       sex_preference,
