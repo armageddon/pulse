@@ -1,0 +1,187 @@
+<% form_tag search_people_path, :method => :get, :id => "advanced_search_side" do %>
+<%= hidden_field_tag "t", params[:t] %>
+<div class="section_header">
+	<div style="float:left;width:54px">
+		<h3 class="section_name">Filter Results </h3>
+	</div>
+	<div class="section_extra"></div>
+	<div class="clear">&nbsp;</div>
+</div>
+
+<label  class="search_criteria_header" style="padding-top:0px">Keyword</label><br \>
+<%= text_field_tag 'keyword', 'Keyword', :class => 'input_text' %><br />	
+<label class="search_criteria_header">Age</label><br \>
+<%= check_box_tag "age_COLLEGE", 1, params[:age_COLLEGE] == "yes" ? true : false  %> College <br \>
+<%= check_box_tag "age_EARLY_TWENTIES",1, params[:age_EARLY_TWENDIES] == "yes" ? true : false  %> Early Twenties<br \>
+<%= check_box_tag "age_MID_TWENTIES",1, params[:age_MID_TWENTIES]== "yes" ? true : false   %> Mid Twenties<br \>
+<%= check_box_tag "age_LATE_TWENTIES",1, params[:age_LATE_TWENTIES]== "yes" ? true : false   %> Late Twenties<br \>
+<%= check_box_tag "age_EARLY_THIRTIES",1, params[:age_EARLY_THIRTIES]== "yes" ? true : false   %> Early Thirties<br \>
+<%= check_box_tag "age_MID_THIRTIES",1, params[:age_MID_THIRTIES]== "yes" ? true : false   %> Mid Thirties<br \>
+<%= check_box_tag "age_LATE_THIRTIES",1, params[:age_LATE_THIRTIES]== "yes" ? true : false   %> Late Thirties<br \>
+<%= check_box_tag "age_EARLY_FORTIES",1, params[:age_EARLY_FORTIES]== "yes" ? true : false   %> Early Forties<br \>
+<%= check_box_tag "age_MID_FORTIES",1, params[:age_MID_FORTIES]== "yes" ? true : false   %> Mid Forties<br \>
+<%= check_box_tag "age_LATE_FORTIES",1, params[:age_LATE_FORTIES]== "yes" ? true : false   %> Late Forties<br \>
+<%= check_box_tag "age_OLDER",1, params[:age_OLDER]== "yes" ? true : false   %> Older<br \>
+
+
+<label  class="search_criteria_header">Gender</label><br \>
+<%= check_box_tag("gender_FEMALE") %> Female <br \>
+<%= check_box_tag("gender_MALE") %> Male<br \>
+
+<div class="float:left" id="postcodesearch">
+	<label class="search_criteria_header">Location</label><br \>	
+  	<div class='fancy_select' style="width:140px;margin-top: 0px">
+    	<%= hidden_field_tag 'distance', '0' %>
+    	<div class="fancy_select_target">
+			Any distance
+      	</div>
+	  	<div class="fancy_select_options" style="width:140px;">
+	   		<p>Any distance <span class="hidden_value">0</span></p>
+	    	<p>1 mile <span class="hidden_value">1</span></p>
+	    	<p>2 miles <span class="hidden_value">2</span></p>
+	   		<p>5 miles <span class="hidden_value">5</span></p>
+	   		<p>10 miles <span class="hidden_value">10</span></p>          
+	  	</div>
+	</div>
+   	from 
+	<%= text_field_tag 'postcode', 'Post code', :class => 'input_text' %><br />	
+</div>
+<label class="search_criteria_header">Activity</label><br \>
+<%= check_box_tag "ac_ART_AND_ENTERTAINMENT_AND_CULTURE",1, params[:ac_ART_AND_ENTERTAINMENT_AND_CULTURE]== "yes" ? true : false  %> Arts & Entertainment <br \>
+<%= check_box_tag "ac_BUSINESS_AND_CAREER",1, params[:ac_BUSINESS_AND_CAREER]== "yes" ? true : false  %> Business & Career<br \>
+<%= check_box_tag "ac_COMMUNITY_AND_LIFESTYLE",1, params[:ac_COMMUNITY_AND_LIFESTYLE]== "yes" ? true : false  %> Community & Lifestyle<br \>
+<%= check_box_tag "ac_EATING_AND_DRINKING",1, params[:ac_EATING_AND_DRINKING]== "yes" ? true : false  %> Eating & Drinking<br \>
+<%= check_box_tag "ac_HEALTH_AND_FITNESS",1, params[:ac_HEALTH_AND_FITNESS]== "yes" ? true : false  %> Health & Fitness<br \>
+<%= check_box_tag "ac_PETS_AND_ANIMALS",1, params[:ac_PETS_AND_ANIMALS]== "yes" ? true : false %> Pets & Animals<br \>
+<%= check_box_tag "ac_SPORTS",1, params[:ac_SPORTS]== "yes" ? true : false  %> Sports<br \>
+<%= check_box_tag "ac_TRAVEL",1, params[:ac_TRAVEL]== "yes" ? true : false  %> Travel<br \>
+
+<!--
+<label  class="search_criteria_header">Date</label><br \>
+between<br \>
+<%= hidden_field_tag 'startdate', current_user.dob %>
+<span>
+<div class='search_fancy_select', style="width:40px; float:left">
+	<%= hidden_field_tag 'day',current_user.dob.day %>
+	<div class="fancy_select_target">
+	   	<%= current_user.dob.day()%>
+	</div>
+	<div class="fancy_select_options" , style="width:40px">
+    		<% (1..31).each do|m|%>
+				<p><%=m%> <span class="hidden_value"><%= m %></span></p>
+			<% end %>
+	</div>
+  </div
+  <div class='fancy_select', style="width:45px; float:left">
+	<%= hidden_field_tag 'month',current_user.dob.month  %>
+  	<div class="fancy_select_target">
+	   	<%= Date::MONTHNAMES[current_user.dob.month].to_s[0..2]%>
+	</div>
+	<div class="fancy_select_options", style="width:56px">
+		<% i = 0 %>
+    		<% Date::MONTHNAMES.each do|m|%>
+				<p><%=m.to_s[0..2]%> <span class="hidden_value"><%= i %></span></p>
+				  <% i+=1 %>
+			<% end %>
+	</div>
+</div>
+  <div class='fancy_select' , style="width:50px; float:left">
+		<%= hidden_field_tag 'year',current_user.dob.year %>	
+  	<div class="fancy_select_target" >
+	  <%= current_user.dob.year()%>
+	</div>
+	<div class="fancy_select_options" , style="width:50px">
+    		<% (DateTime.now.year-18).downto(DateTime.now.year - 100) do|m|%>
+				<p><%=m%> <span class="hidden_value"><%= m %></span></p>
+			<% end %>
+	</div>
+	</div>
+</span>
+<div class="clear"></div>
+and <br />
+<span>
+<%= hidden_field_tag 'enddate', current_user.dob %>	
+<div class='fancy_select', style="width:40px; float:left">
+	<%= hidden_field_tag 'endday',current_user.dob.day %>
+	<div class="fancy_select_target">
+	   	<%= current_user.dob.day()%>
+	</div>
+	<div class="fancy_select_options" , style="width:40px">
+    		<% (1..31).each do|m|%>
+				<p><%=m%> <span class="hidden_value"><%= m %></span></p>
+			<% end %>
+	</div>
+  </div
+  <div class='fancy_select', style="width:45px; float:left">
+	<%= hidden_field_tag 'endmonth',current_user.dob.month  %>
+  	<div class="fancy_select_target">
+	   	<%= Date::MONTHNAMES[current_user.dob.month].to_s[0..2]%>
+	</div>
+	<div class="fancy_select_options", style="width:56px">
+		<% i = 0 %>
+    		<% Date::MONTHNAMES.each do|m|%>
+				<p><%=m.to_s[0..2]%> <span class="hidden_value"><%= i %></span></p>
+				  <% i+=1 %>
+			<% end %>
+	</div>
+</div>
+  <div class='fancy_select' , style="width:50px; float:left">
+		<%= hidden_field_tag 'endyear',current_user.dob.year %>	
+  	<div class="fancy_select_target" >
+	  <%= current_user.dob.year()%>
+	</div>
+	<div class="fancy_select_options" , style="width:50px">
+    		<% (DateTime.now.year-18).downto(DateTime.now.year - 100) do|m|%>
+				<p><%=m%> <span class="hidden_value"><%= m %></span></p>
+			<% end %>
+	</div>
+	</div>
+</span>
+-->
+
+<div id="advanced_search_submit" style="float:left;">
+	<%= submit_button ("Search", :id=> "search_sidebar_button") %>    
+</div>
+
+<% end %>
+
+<script type="text/javascript" charset="utf-8">
+//todo: clean up this javascript
+$("#advanced_search_side").submit(function() {
+	error = false;
+	if($(this).attr('t')=="user_place_activity")
+	{
+	  var postcode = $('#postcode');
+	  postcode.removeClass('invalid');
+   	  regexString = /^([A-PR-UWYZ0-9][A-HK-Y0-9][AEHMNPRTVXY0-9]?[ABEHMNPRVWXY0-9]? {1,2}[0-9][ABD-HJLN-UW-Z]{2}|GIR 0AA)$/
+	  if ($('#distance').val() != 0 && (postcode.val() == '' || postcode.val() == 'Post code' || regexString.test(postcode.val().toUpperCase()) != true)) {
+		postcode.addClass('invalid');
+	    postcode.nextAll('span.error').text('Please enter a valid post code.');
+	    error = true;
+	  }
+    }
+    if(!error) {
+	  var dataString = $('#advanced_search_side').serialize();
+	  $.ajax({
+	    type: "GET",
+	    url: "/search/place_activities",
+	    data: $('#advanced_search_side').serialize(), //advanced_search,
+	    success: function(p) {
+		  $('#activity_results').replaceWith(p);
+		  $("#dialog").jqmAddTrigger('.add_to_favorites, .add_event, .add_activity');
+	    }
+	  });
+	$.ajax({
+	    type: "GET",
+	    url: $(this).attr('action'),
+	    data: $('#advanced_search_side').serialize(), //advanced_search,
+	    success: function(p) {
+		  $('#results').replaceWith(p);
+	    }
+	  })
+    }
+    return false;
+});
+
+
+</script>

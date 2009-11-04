@@ -1,4 +1,15 @@
 class Activity < ActiveRecord::Base
+  
+  class ActivityCategory
+    ARTS_AND_CULTURE = 1
+    BUSINESS_AND_CAREER = 2
+    COMMUNITY_AND_LIFESTYLE = 3
+    EATING_AND_DRINKING = 4
+    HEALTH_AND_FITNESS = 5
+    PETS_AND_ANIMALS = 6
+    SPORTS = 7
+    TRAVEL = 8
+  end
 
   define_index do
     indexes name

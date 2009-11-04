@@ -1,81 +1,86 @@
-<h3 class="section">Map</h3>
-<div id="map_canvas" style="width: 160px; height: 320px; overflow: hidden;"></div>
-<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=<%= getmapsapikey(request.url) %>&sensor=true" type="text/javascript"></script>
-<script type="text/javascript" charset="utf-8">
-  var map = new GMap2(document.getElementById("map_canvas"));
+<% @c3 = yield(:c3) %>
+<% if @c3.present? %>
+  <%= @c3 %>
+<% else %>
+	<h3 class="section">Map</h3>
+	<div id="map_canvas" style="width: 160px; height: 320px; overflow: hidden;"></div>
+	<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=<%= getmapsapikey(request.url) %>&sensor=true" type="text/javascript"></script>
+	<script type="text/javascript" charset="utf-8">
+	  var map = new GMap2(document.getElementById("map_canvas"));
   
-  var custIcon = new GIcon(G_DEFAULT_ICON);
-  custIcon.iconSize = new GSize(8, 8);
-  custIcon.shadowSize = new GSize(0, 0);
-  custIcon.iconAnchor = new GPoint(0, 0);
-  var dotIcon = new GIcon(custIcon, '/images/map_dot.gif');
+	  var custIcon = new GIcon(G_DEFAULT_ICON);
+	  custIcon.iconSize = new GSize(8, 8);
+	  custIcon.shadowSize = new GSize(0, 0);
+	  custIcon.iconAnchor = new GPoint(0, 0);
+	  var dotIcon = new GIcon(custIcon, '/images/map_dot.gif');
   
-  <% if @events.blank? %>
-    <% @events = current_user.upcoming_events %>
-  <% end %>
-  
-  <% if false && @events.present? %>
-    <% @events.each_with_index do |e,i| %>
-      var marker<%= i.to_s %> = new GMarker(new GLatLng(<%= e.place.latitude %>, <%= e.place.longitude %>), { icon: dotIcon });
-      map.addOverlay(marker<%= i.to_s %>);
-    <% end %>
-    
-    <% min_lat = @events.min {|a,b| a.place.latitude <=> b.place.latitude } %>
-    <% max_lat = @events.max {|a,b| a.place.latitude <=> b.place.latitude } %>
-    <% min_lon = @events.min {|a,b| a.place.longitude <=> b.place.longitude } %>              
-    <% max_lon = @events.max {|a,b| a.place.longitude <=> b.place.longitude } %>
-    var sw = new GLatLng(<%= min_lat.place.latitude %>, <%= min_lon.place.longitude %>);
-    var ne = new GLatLng(<%= max_lat.place.latitude %>, <%= max_lon.place.longitude %>);
-    var bounds = new GLatLngBounds(sw,ne);
-    map.setCenter(bounds.getCenter(), map.getBoundsZoomLevel(bounds));
-  <% else %>
-	<% @latitude ||= 51.500152; @longitude ||= -0.126236 %> 
-	  <% if @place %>
-	    <% @latitude = @place.latitude %>
-	    <% @longitude = @place.longitude %>
-      map.addOverlay(new GMarker(new GLatLng(<%= @latitude %>, <%= @longitude %>), { icon: dotIcon }));
-	  <% elsif @places && !@places.empty? %>
-      <% @latitude = @places.first.latitude %>
-      <% @longitude = @places.first.longitude %>
-      <% @places.each do |place| %>
-        map.addOverlay(new GMarker(new GLatLng(<%= place.latitude %>, <%= place.longitude %>), { icon: dotIcon }));
-      <% end %>
+	  <% if @events.blank? %>
+	    <% @events = current_user.upcoming_events %>
 	  <% end %>
-	
-    map.setCenter(new GLatLng(<%= @latitude %>, <%= @longitude %>), 13);
-  <% end %>
-
-  var customUI = map.getDefaultUI();
-  customUI.controls.scalecontrol = false;
-  customUI.controls.menumaptypecontrol = false;
-  customUI.controls.smallzoomcontrol3d = false;
-  customUI.zoom.scrollwheel = false;
-  customUI.zoom.doubleclick = false;
-
-  map.setUI(customUI);
-  map.setMapType(G_PHYSICAL_MAP);
   
-</script>
+	  <% if false && @events.present? %>
+	    <% @events.each_with_index do |e,i| %>
+	      var marker<%= i.to_s %> = new GMarker(new GLatLng(<%= e.place.latitude %>, <%= e.place.longitude %>), { icon: dotIcon });
+	      map.addOverlay(marker<%= i.to_s %>);
+	    <% end %>
+    
+	    <% min_lat = @events.min {|a,b| a.place.latitude <=> b.place.latitude } %>
+	    <% max_lat = @events.max {|a,b| a.place.latitude <=> b.place.latitude } %>
+	    <% min_lon = @events.min {|a,b| a.place.longitude <=> b.place.longitude } %>              
+	    <% max_lon = @events.max {|a,b| a.place.longitude <=> b.place.longitude } %>
+	    var sw = new GLatLng(<%= min_lat.place.latitude %>, <%= min_lon.place.longitude %>);
+	    var ne = new GLatLng(<%= max_lat.place.latitude %>, <%= max_lon.place.longitude %>);
+	    var bounds = new GLatLngBounds(sw,ne);
+	    map.setCenter(bounds.getCenter(), map.getBoundsZoomLevel(bounds));
+	  <% else %>
+		<% @latitude ||= 51.500152; @longitude ||= -0.126236 %> 
+		  <% if @place %>
+		    <% @latitude = @place.latitude %>
+		    <% @longitude = @place.longitude %>
+	      map.addOverlay(new GMarker(new GLatLng(<%= @latitude %>, <%= @longitude %>), { icon: dotIcon }));
+		  <% elsif @places && !@places.empty? %>
+	      <% @latitude = @places.first.latitude %>
+	      <% @longitude = @places.first.longitude %>
+	      <% @places.each do |place| %>
+	        map.addOverlay(new GMarker(new GLatLng(<%= place.latitude %>, <%= place.longitude %>), { icon: dotIcon }));
+	      <% end %>
+		  <% end %>
+	
+	    map.setCenter(new GLatLng(<%= @latitude %>, <%= @longitude %>), 13);
+	  <% end %>
 
-<% if @events.present? %>
-<% @events.each do |e| %>
-<div class="calendar_entry">
-  <div class="date">
-    <div class="cmon"><%= e.when_time.strftime('%b') %></div>
-    <div class="cday"><%= e.when_time.strftime('%d') %></div>
-  </div>
+	  var customUI = map.getDefaultUI();
+	  customUI.controls.scalecontrol = false;
+	  customUI.controls.menumaptypecontrol = false;
+	  customUI.controls.smallzoomcontrol3d = false;
+	  customUI.zoom.scrollwheel = false;
+	  customUI.zoom.doubleclick = false;
 
-  <div class="ctext">
-    <%= e.user == current_user ? 'You' : e.user.first_name %> 
-    <%= e.when_time <= Time.now ? "was at" : "will be at" %>
-    <%= e.place.name %> <br />
-    <%= e.when_time.strftime('%I:%M%p') %>
-  </div>
+	  map.setUI(customUI);
+	  map.setMapType(G_PHYSICAL_MAP);
+  
+	</script>
 
-  <div class="clear">&nbsp;</div>
-</div>
+	<% if @events.present? %>
+	<% @events.each do |e| %>
+	<div class="calendar_entry">
+	  <div class="date">
+	    <div class="cmon"><%= e.when_time.strftime('%b') %></div>
+	    <div class="cday"><%= e.when_time.strftime('%d') %></div>
+	  </div>
 
-<div class="clear">&nbsp;</div>
+	  <div class="ctext">
+	    <%= e.user == current_user ? 'You' : e.user.first_name %> 
+	    <%= e.when_time <= Time.now ? "was at" : "will be at" %>
+	    <%= e.place.name %> <br />
+	    <%= e.when_time.strftime('%I:%M%p') %>
+	  </div>
 
-<% end %>
+	  <div class="clear">&nbsp;</div>
+	</div>
+
+	<div class="clear">&nbsp;</div>
+
+	<% end %>
+	<% end %>
 <% end %>

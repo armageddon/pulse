@@ -14,6 +14,9 @@ class UserPlaceActivitiesController < ApplicationController
     if params[:place_id].present?
       @place = Place.find(params[:place_id])
     end
+    
+
+    
     @user_place_activity = UserPlaceActivity.new(:place_id => params[:place_id], :activity_id => params[:activity_id])
     @type = params[:type]
     respond_to do |format|
@@ -55,6 +58,10 @@ class UserPlaceActivitiesController < ApplicationController
        @user_activity = UserActivity.new(:user_id => current_user.id, :activity_id => @activity.id)
     end
     error_string = ""
+    
+    
+    
+    
     respond_to do |format|
       if @user_place_activity!=nil && @user_place_activity.save
         @user_place.save

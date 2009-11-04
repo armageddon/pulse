@@ -1,3 +1,43 @@
+.search_fancy_select
+{
+  width: 130px;
+  height: 20px;
+  padding: 2px 5px 2px 5px;
+  color: #666;
+  border: 1px solid #eaecf1;
+  margin-top: 10px;
+  cursor: pointer;
+  background: #f7f8fa url(/images/fancy_select_handle.gif) right top no-repeat;
+  position: relative;
+	
+}
+
+.search_criteria_header
+{
+  margin-top: 10px; 
+  color:#990000;	
+}
+
+#new_user_place_activity
+{
+ height:30px;	
+}
+
+.what {
+	width:130px;
+	float:left;
+}
+
+.where {
+	width:150px;
+	float:left;	
+}
+
+.who {
+	width:170px;
+	float:left;	
+}
+
 .error {
   color: #990000;
   font-family: Helvetica !important;
@@ -145,6 +185,12 @@ a, a:visited, a:active {
   margin-bottom: 5px;
 }
 
+#results {
+	 width: 555px;	
+}
+#activity_results {
+	 width: 555px;	
+}
 .object .icon {
   width: 45px;
   float: left;
@@ -169,6 +215,12 @@ a, a:visited, a:active {
   float: left;
   padding-left: 15px;
 }
+.object .search_info {
+  width: 230px;
+  float: left;
+  padding-left: 15px;
+}
+
 
 .object .info h5 a {
   text-decoration: none;
@@ -176,7 +228,7 @@ a, a:visited, a:active {
 }
 
 .object .actions {
-  width: 30px;
+  width: 50px;
   float: right;
   color: #666;
   text-align: right;
@@ -665,7 +717,7 @@ button.submit span {
 #advanced_search_submit {
   width: 300px;
   text-align: left;
-  margin-top: 20px;
+  margin-top: 5px;
 }
 
 #month_name {

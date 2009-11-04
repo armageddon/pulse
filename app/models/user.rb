@@ -1,6 +1,7 @@
 require 'digest/sha1'
 
 class User < ActiveRecord::Base
+include UsersHelper
 
   define_index do
     indexes username
@@ -301,6 +302,31 @@ class User < ActiveRecord::Base
     ageopt
     
   end
+
+  def self.search_users(params)
+    search_criteria = SearchHelper.get_conditions(params)
+    
+    use_age = search_criteria[0]
+    use_gender = search_criteria[1]
+    use_place_location = search_criteria[2]
+    use_activity = search_criteria[3]
+    conditions = search_criteria[4]
+    
+    if !use_activity && !use_place_location #just user (gender sex)
+      @results = User.paginate(:all, :conditions => conditions, :page => params[:page], :per_page => 6)
+    end
+    if !use_activity && use_place_location
+      @results = User.paginate(:select => "users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join places on UPA.place_id = places.id", :conditions => conditions, :page => params[:page], :per_page => 6)
+    end
+    if use_activity && !use_place_location
+      @results = User.paginate(:select => "users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join activities on UPA.activity_id = activities.id", :conditions => conditions,:page => params[:page], :per_page => 12) 
+    end
+    if use_activity && use_place_location
+      @results = User.paginate(:select => "users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join places on UPA.place_id = places.id inner join activities on UPA.activity_id = activities.id", :conditions => conditions,:page => params[:page], :per_page => 12) 
+    end 
+    return @results
+  end
+
 
   protected
   def make_activation_code

@@ -1,0 +1,24 @@
+<%= hidden_field_tag "t", params[:t] %>
+<div class="section_header">
+	<div style="float:left;width:54px">
+		<h3 class="section_name">Find: </h3>
+	</div>
+	<div id="search_type" style="float:left;"> 
+		<%= link_to  "PLACES", search_path,:q => params[:q], :id=>"places_link", :style=>params[:t] == "places" ? "color:#000000" : "color:#990000"%> | 
+		<%= link_to  "PEOPLE", search_path,:q => params[:q], :id=>"people_link", :style=>params[:t] == "people" ? "color:#000000" : "color:#990000" %> | 
+		<%= link_to  "ACTIVITIES", search_path,:q => params[:q], :id=>"activities_link", :style=>params[:t] == "activities" ? "color:#000000" : "color:#990000" %>
+	</div>
+	<div class="section_extra"></div>
+	<div class="clear">&nbsp;</div>
+</div>
+<div id="search_criteria" style="float:left;">
+	<%= render :partial=>params[:t] %>
+</div>
+
+
+<div class="clear">&nbsp;</div>
+<div class="clear">&nbsp;</div>
+<div id="advanced_search_submit" style="float:left;">
+	<%= submit_button ("Search", :id=> "search_button") %>    
+</div>
+<div class="clear">&nbsp;</div>

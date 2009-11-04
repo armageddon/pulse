@@ -1,0 +1,15 @@
+<div style="float:left; width:84px" id="<%= dom_id object %>">
+	<div style="text-align:center;">
+	<%= link_to image_tag(object.icon.url(:thumb), :align => "center", :width => '30px', :height => '30px'), object %>
+	</div>
+	<div class="clear"></div>
+	<div style="text-align:center;">
+	<%= object.first_name %>
+	</div>
+	<div style="text-align:center;">
+		<%= link_to image_tag("HPMail.png", :width=>20, :class => " tooltip", :title => "Send a mail"), account_message_path(object),'data-href' => account_message_path(object)  %>
+		<%= (link_to image_tag("HPThumbUp.png", :width=>20, :class => " tooltip", :title => I18n.translate("Add_to_favorites")), "#",'data-href' => account_favorites_path, :class => "people_favorite", :friend_id => object.id) if !current_user.has_friend?(object.id)  %>
+	    <%= (link_to image_tag("HPThumbDown.png", :width=>20, :class => " tooltip", :title => I18n.translate("Add_to_favorites")), "#",'data-href' => account_favorites_path, :class => "people_unfavorite", :friend_id => object.id) if current_user.has_friend?(object.id) %>
+		
+	</div>
+</div>

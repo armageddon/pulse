@@ -1,5 +1,6 @@
 class SearchController < ApplicationController
   before_filter :login_required
+helper UsersHelper
 
   def index
     conditions = {}
@@ -32,7 +33,7 @@ class SearchController < ApplicationController
       geocoder = Graticule.service(:google).new "ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog"
       logger.debug(params[:postcode])
       if   params[:postcode] != nil && params[:distance] != nil
-        location = geocoder.locate ('london ' + params[:postcode])
+        location = geocoder.locate('london ' + params[:postcode])
         latitude, longitude = location.coordinates
         if latitude != nil && longitude != nil
           lat_range = params[:distance].to_i / ((6076.00 / 5280.00) * 60.00)
@@ -89,9 +90,10 @@ class SearchController < ApplicationController
       end
     else
       logger.info(params[:page])
+      logger.info("search users")
       @results =  type.search(params[:q],
         :conditions => conditions,
-        :page => params[:page], :per_page => 12)
+        :page => params[:page], :per_page => 6)
     end
     
     
@@ -100,13 +102,13 @@ class SearchController < ApplicationController
     
       respond_to do |format|
         format.html do
-
+          logger.debug("html")
           render 
         end
           format.js do
             logger.info('results' + @results.to_s)
             if @results.length == 0
-              render :text=>"<div id='results'>No results returned</div>"
+              render :text= > "<div id='results'>No results returned</div>"
             else
             render :partial => 'search_index', 
             #:locals => {
@@ -120,16 +122,46 @@ class SearchController < ApplicationController
   end
 
   def people
-    logger.debug("people")
     respond_to do |format|
       format.js do
-        render :partial => "people"
+        @users = User.search_users(params)
+        if @users == nil || @users.length == 0
+          render :text=>"<div id='results'>No results returned</div>"
+        else
+          render :partial => 'shared/user_collection', :locals => { :collection => @users },  :content_type => "text/html"
+        end
       end
     end
   end
 
+  def place_activities
+    respond_to do |format|
+      format.js do
+        @user_place_activities = UserPlaceActivity.search_user_place_activities(params)
+        
+        if  @user_place_activities == nil || @user_place_activities.length == 0
+          render :text=>"<div id='activity_results'>No results returned</div>"
+        else
+          render :partial => 'shared/search_place_activity_collection', :locals => { :collection => @user_place_activities },  :content_type => "text/html"
+        end
+      end
+    end
+  end
+  
+  def events
+     respond_to do |format|
+        format.js do
+          @user_place_activities = UserPlaceActivity.search_user_place_activities(params)
+          if @user_place_activities.length == 0
+            render :text=>"<div id='results'>No results returned</div>"
+          else
+            render :partial => 'shared/search_place_activity_collection', :locals => { :collection => @user_place_activities },  :content_type => "text/html"
+          end
+        end
+      end
+  end
+  
   def activities
-        logger.debug("activities")
     respond_to do |format|
       format.js do
         render :partial => "activities"

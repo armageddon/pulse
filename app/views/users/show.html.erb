@@ -1,6 +1,6 @@
 <% content_for :message do %>
   <h1>
-    Hello <%= current_user.first_name %>, welcome back to Pulse. 
+    Hello <%= current_user.first_name %>, welcome back to HelloPulse. 
     <% if current_user.unread_count > 0 %>
     You've received <%= link_to "#{current_user.unread_count} new messages", account_messages_path  %> and your 
     <% else %>
@@ -11,6 +11,6 @@
 <% end %>
 <h3 class="section">Your matches</h3>
 <%= render :partial => "shared/object", :collection => @matches %>
-
+<div class="clear"></div>
 <h3 class="section">Check out these places</h3>
-<%= render :partial => "shared/object", :collection => @places %>
+<%= render :partial => "shared/object",  :collection => @places  %>

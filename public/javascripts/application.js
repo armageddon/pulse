@@ -121,6 +121,22 @@ $(document).ready(function() {
     return false;
   })
 
+  $('.userpaginator').live('click', function() {
+    var link = $(this);
+
+    $('#page_loading').show();
+    //todo: need to set type here
+    $.get(link.attr('href'),{}, function(data) {
+      $('#page_loading').hide();
+      $('#results').html(data);
+      $('#results_header').html(data.total_entries)
+      $("#dialog").jqmAddTrigger('.add_to_favorites, .add_event, .add_activity');
+    })
+    return false;
+  })
+
+
+
   $('.fancy_select').live('click',function() {
     $('.fancy_select_options').hide();
     $(this).children('.fancy_select_options').show();

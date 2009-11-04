@@ -90,6 +90,15 @@ module UsersHelper
     end
   end
 
+  def self.test
+    
+  end
+
+
+  def searchUsers(options)
+    User.find(:all)
+    
+  end
 
   def age_options
     [

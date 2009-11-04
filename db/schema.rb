@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091009121209) do
+ActiveRecord::Schema.define(:version => 20091104154514) do
 
   create_table "activities", :force => true do |t|
     t.string   "name"
@@ -23,6 +23,11 @@ ActiveRecord::Schema.define(:version => 20091009121209) do
     t.string   "place_id"
     t.string   "activity_group_name"
     t.string   "category"
+    t.integer  "activity_category_id"
+  end
+
+  create_table "activity_categories", :force => true do |t|
+    t.string "description"
   end
 
   create_table "categories", :force => true do |t|
@@ -140,6 +145,18 @@ ActiveRecord::Schema.define(:version => 20091009121209) do
   end
 
   add_index "places", ["import_id"], :name => "idx_import_id"
+
+  create_table "timeline_events", :force => true do |t|
+    t.string   "event_type"
+    t.string   "subject_type"
+    t.string   "actor_type"
+    t.string   "secondary_subject_type"
+    t.integer  "subject_id"
+    t.integer  "actor_id"
+    t.integer  "secondary_subject_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "user_actions", :force => true do |t|
     t.integer  "user_id"
