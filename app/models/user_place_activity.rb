@@ -18,7 +18,7 @@ class UserPlaceActivity < ActiveRecord::Base
 
       if !use_activity && !use_place_location #just user (gender sex)
         #should never hit this - go to use search results
-        results = UserPlaceActivity.paginate(:select => "user_place_activities.activity_id,user_place_activities.place_id, count(user_id) as users_count", :order => "count(user_id) DESC", :joins => "inner join users on users.id = user_place_activities.user_id", :conditions => conditions, :page => params[:page], :per_page => 15)
+        results = UserPlaceActivity.paginate(:select => "user_place_activities.activity_id,user_place_activities.place_id, count(user_id) as users_count", :order => "count(user_id) DESC", :joins => "inner join users on users.id = user_place_activities.user_id",:group => 'user_place_activities.activity_id,user_place_activities.place_id', :conditions => conditions, :page => params[:page], :per_page => 15)
       end
       if !use_activity && use_place_location
         results = UserPlaceActivity.paginate(:select => "user_place_activities.activity_id,user_place_activities.place_id, count(user_id) as users_count", :order => "count(user_id) DESC", :joins => "inner join users on users.id = user_place_activities.user_id inner join places on user_place_activities.place_id = places.id",:group => 'user_place_activities.activity_id,user_place_activities.place_id', :conditions => conditions, :page => params[:page], :per_page => 15)
