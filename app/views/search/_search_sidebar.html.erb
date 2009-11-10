@@ -99,7 +99,6 @@
 	
 	$("#advanced_search_side").submit(function() {
 	    error = false;
-        alert('submit!');
 		if($(this).attr('t')=="user_place_activity"){
 		  var postcode = $('#postcode');
 		  postcode.removeClass('invalid');
@@ -135,7 +134,6 @@
 	
 	        var dataString = $('#advanced_search_side').serialize();
 	    	if(top_url.length>0) {
-		alert(top_url);
 			$.ajax({
 			    type: "GET",
 			    url: top_url,
