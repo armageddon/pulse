@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091104154514) do
+ActiveRecord::Schema.define(:version => 20091105175041) do
 
   create_table "activities", :force => true do |t|
     t.string   "name"
@@ -112,6 +112,10 @@ ActiveRecord::Schema.define(:version => 20091104154514) do
     t.datetime "updated_at"
   end
 
+  create_table "place_categories", :force => true do |t|
+    t.string "description"
+  end
+
   create_table "places", :force => true do |t|
     t.string   "name"
     t.string   "building"
@@ -142,6 +146,7 @@ ActiveRecord::Schema.define(:version => 20091104154514) do
     t.string   "category"
     t.boolean  "exclude",                :default => false
     t.string   "postcode"
+    t.integer  "place_category_id"
   end
 
   add_index "places", ["import_id"], :name => "idx_import_id"

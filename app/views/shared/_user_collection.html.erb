@@ -28,7 +28,7 @@
 <% end %>
 </div>
 
-<div style="float:left" id="users">
+<div style="float:left;width:500px" id="users">
   <%= render :partial => "shared/user_list", :collection => collection %>
 </div>
 
@@ -49,6 +49,9 @@
 	    <% reqpath = request.path %>
 	<% end %>	
   	<%= link_to ">", request.path + '?page=' + collection.next_page.to_s + qstring, :class => "userpaginator" %>
+<% else %>
+	<%= ">" %>
+	
 <% end %>
 </div>
 </div>

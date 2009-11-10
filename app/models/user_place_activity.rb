@@ -6,28 +6,33 @@ class UserPlaceActivity < ActiveRecord::Base
   validates_uniqueness_of :user_id, :scope => [:place_id, :activity_id], :message => "You have already added this activity"
   
   
-  def self.search_user_place_activities(params)
-     search_criteria = SearchHelper.get_conditions(params)
+  def self.search_user_place_activities(params, current_user)
+      
+      search_criteria = SearchCriteria.new(params, current_user).conditions
+      logger.debug("conditions")
+      logger.debug(search_criteria)
+
       results = {}
       use_age = search_criteria[0]
       use_gender = search_criteria[1]
       use_place_location = search_criteria[2]
       use_activity = search_criteria[3]
       conditions = search_criteria[4]
-    logger.debug(search_criteria)
-
       if !use_activity && !use_place_location #just user (gender sex)
+        logger.debug("people only")
         #should never hit this - go to use search results
         results = UserPlaceActivity.paginate(:select => "user_place_activities.activity_id,user_place_activities.place_id, count(user_id) as users_count", :order => "count(user_id) DESC", :joins => "inner join users on users.id = user_place_activities.user_id",:group => 'user_place_activities.activity_id,user_place_activities.place_id', :conditions => conditions, :page => params[:page], :per_page => 15)
       end
       if !use_activity && use_place_location
+        logger.debug("location")
         results = UserPlaceActivity.paginate(:select => "user_place_activities.activity_id,user_place_activities.place_id, count(user_id) as users_count", :order => "count(user_id) DESC", :joins => "inner join users on users.id = user_place_activities.user_id inner join places on user_place_activities.place_id = places.id",:group => 'user_place_activities.activity_id,user_place_activities.place_id', :conditions => conditions, :page => params[:page], :per_page => 15)
       end
       if use_activity && !use_place_location
-        logger.debug("search_user_place_activities")
+        logger.debug("activities")
         results = UserPlaceActivity.paginate(:select => "user_place_activities.activity_id,user_place_activities.place_id, count(user_id) as users_count", :order => "count(user_id) DESC", :joins => "inner join users on users.id = user_place_activities.user_id inner join activities on user_place_activities.activity_id = activities.id",:group => 'user_place_activities.activity_id,user_place_activities.place_id', :conditions => conditions,:page => params[:page], :per_page => 15) 
       end
       if use_activity && use_place_location
+        logger.debug("location and activities")
         results = UserPlaceActivity.paginate(:select => "user_place_activities.activity_id,user_place_activities.place_id, count(user_id) as users_count", :order => "count(user_id) DESC", :joins => "inner join users on users.id = user_place_activities.user_id inner join places on user_place_activities.place_id = places.id inner join activities on user_place_activities.activity_id = activities.id",:group => 'user_place_activities.activity_id,user_place_activities.place_id', :conditions => conditions,:page => params[:page], :per_page => 15) 
       end
       logger.debug(results.length)

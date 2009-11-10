@@ -1,4 +1,4 @@
-<% form_tag search_people_path, :method => :get, :id => "advanced_search_side" do %>
+<% form_tag search_people_path, :method => :get, :id => "advanced_search_side" do |f| %>
 <%= hidden_field_tag "t", params[:t] %>
 <div class="section_header">
 	<div style="float:left;width:54px">
@@ -7,54 +7,180 @@
 	<div class="section_extra"></div>
 	<div class="clear">&nbsp;</div>
 </div>
+<%= hidden_field_tag 'search_criteria[type]', @search_criteria.type, :id=>'search_criteria_type' %>
+<div id="search_type"  style="text-align:center">
+<div id="simple_search"   style="font-weight:bold; float:left"> Simple </div>
+<div id="advanced_search"  style="font-weight:bold; float:right"> Advanced </div>
+</div>
+<div class="clear">&nbsp;</div>
 
+<div id="keyword_criteria" style="background-color:lightgrey; padding:5px">
 <label  class="search_criteria_header" style="padding-top:0px">Keyword</label><br \>
-<%= text_field_tag 'keyword', 'Keyword', :class => 'input_text' %><br />	
-<label class="search_criteria_header">Age</label><br \>
-<%= check_box_tag "age_COLLEGE", 1, params[:age_COLLEGE] == "yes" ? true : false  %> College <br \>
-<%= check_box_tag "age_EARLY_TWENTIES",1, params[:age_EARLY_TWENDIES] == "yes" ? true : false  %> Early Twenties<br \>
-<%= check_box_tag "age_MID_TWENTIES",1, params[:age_MID_TWENTIES]== "yes" ? true : false   %> Mid Twenties<br \>
-<%= check_box_tag "age_LATE_TWENTIES",1, params[:age_LATE_TWENTIES]== "yes" ? true : false   %> Late Twenties<br \>
-<%= check_box_tag "age_EARLY_THIRTIES",1, params[:age_EARLY_THIRTIES]== "yes" ? true : false   %> Early Thirties<br \>
-<%= check_box_tag "age_MID_THIRTIES",1, params[:age_MID_THIRTIES]== "yes" ? true : false   %> Mid Thirties<br \>
-<%= check_box_tag "age_LATE_THIRTIES",1, params[:age_LATE_THIRTIES]== "yes" ? true : false   %> Late Thirties<br \>
-<%= check_box_tag "age_EARLY_FORTIES",1, params[:age_EARLY_FORTIES]== "yes" ? true : false   %> Early Forties<br \>
-<%= check_box_tag "age_MID_FORTIES",1, params[:age_MID_FORTIES]== "yes" ? true : false   %> Mid Forties<br \>
-<%= check_box_tag "age_LATE_FORTIES",1, params[:age_LATE_FORTIES]== "yes" ? true : false   %> Late Forties<br \>
-<%= check_box_tag "age_OLDER",1, params[:age_OLDER]== "yes" ? true : false   %> Older<br \>
+<%= text_field_tag 'search_criteria[keyword]', @search_criteria.keyword, :class => 'input_text'%><br />
+</div>
+<div id='people_criteria' style="background-color:lightgrey">	
+    <label class="search_criteria_header">Age</label><br \>
 
+    <% age_options.each do |opt| %>
+    	<%= check_box_tag "search_criteria[age_"+opt[1].to_s+"]", opt[1] , @search_criteria.ages.include?(opt[1]) %> <%= opt[0] %> <br \>
+    <% end %>
 
-<label  class="search_criteria_header">Gender</label><br \>
-<%= check_box_tag("gender_FEMALE") %> Female <br \>
-<%= check_box_tag("gender_MALE") %> Male<br \>
-
+    <label  class="search_criteria_header">Gender</label><br \>
+	<%= check_box_tag "search_criteria[sp1]",1, @search_criteria.sex_preferences.include?(1) %> Female <br \>
+	<%= check_box_tag "search_criteria[sp2]",2, @search_criteria.sex_preferences.include?(2)  %> Male<br \>
+</div>
+<div id='place_criteria' style="padding:5px">
 <div class="float:left" id="postcodesearch">
 	<label class="search_criteria_header">Location</label><br \>	
-  	<div class='fancy_select' style="width:140px;margin-top: 0px">
-    	<%= hidden_field_tag 'distance', '0' %>
-    	<div class="fancy_select_target">
-			Any distance
-      	</div>
-	  	<div class="fancy_select_options" style="width:140px;">
-	   		<p>Any distance <span class="hidden_value">0</span></p>
-	    	<p>1 mile <span class="hidden_value">1</span></p>
-	    	<p>2 miles <span class="hidden_value">2</span></p>
-	   		<p>5 miles <span class="hidden_value">5</span></p>
-	   		<p>10 miles <span class="hidden_value">10</span></p>          
-	  	</div>
-	</div>
-   	from 
-	<%= text_field_tag 'postcode', 'Post code', :class => 'input_text' %><br />	
+  	<%= drop_down('search_criteria[distance]', @search_criteria.distance, {:width => '100px'},distance_options, 'Any distance',0) %>
+   	<div class="clear"></div>
+    from 
+	<%= text_field_tag 'search_criteria[postcode]', @search_criteria.postcode, :class => 'input_text' %><br />	
 </div>
+</div>
+<div id='activity_criteria' style="padding:5px" >
 <label class="search_criteria_header">Activity</label><br \>
-<%= check_box_tag "ac_ART_AND_ENTERTAINMENT_AND_CULTURE",1, params[:ac_ART_AND_ENTERTAINMENT_AND_CULTURE]== "yes" ? true : false  %> Arts & Entertainment <br \>
-<%= check_box_tag "ac_BUSINESS_AND_CAREER",1, params[:ac_BUSINESS_AND_CAREER]== "yes" ? true : false  %> Business & Career<br \>
-<%= check_box_tag "ac_COMMUNITY_AND_LIFESTYLE",1, params[:ac_COMMUNITY_AND_LIFESTYLE]== "yes" ? true : false  %> Community & Lifestyle<br \>
-<%= check_box_tag "ac_EATING_AND_DRINKING",1, params[:ac_EATING_AND_DRINKING]== "yes" ? true : false  %> Eating & Drinking<br \>
-<%= check_box_tag "ac_HEALTH_AND_FITNESS",1, params[:ac_HEALTH_AND_FITNESS]== "yes" ? true : false  %> Health & Fitness<br \>
-<%= check_box_tag "ac_PETS_AND_ANIMALS",1, params[:ac_PETS_AND_ANIMALS]== "yes" ? true : false %> Pets & Animals<br \>
-<%= check_box_tag "ac_SPORTS",1, params[:ac_SPORTS]== "yes" ? true : false  %> Sports<br \>
-<%= check_box_tag "ac_TRAVEL",1, params[:ac_TRAVEL]== "yes" ? true : false  %> Travel<br \>
+
+<% activity_category_options.each do |opt| %>
+	<%= check_box_tag "search_criteria[ac_"+opt[1].to_s+"]", opt[1] , @search_criteria.activity_categories.include?(opt[1]) %> <%= opt[0] %> <br \>
+<% end %>
+</div>
+<div id="advanced_search_submit" style="float:left;">
+	<%= submit_button ("Search", :id=> "search_sidebar_button") %>    
+</div>
+
+<% end %>
+
+<script type="text/javascript" charset="utf-8">
+	//todo: clean up this javascript
+	var search_type = 1
+	var submit = true
+
+	$('#simple_search').live('click', function() {
+		$('#keyword_criteria').css('background-color','lightgrey');
+	  	$('#people_criteria').css('background-color','lightgrey');
+		$('#place_criteria').css('background-color','white');
+		$('#activity_criteria').css('background-color','white');
+		$('#search_criteria_type').val(1);
+	});
+	
+	$('#advanced_search').live('click', function() {
+		$('#keyword_criteria').css('background-color','white');
+	  	$('#people_criteria').css('background-color','lightgrey');
+		$('#place_criteria').css('background-color','lightgrey');
+		$('#activity_criteria').css('background-color','lightgrey');
+		$('#search_criteria_type').val(4);
+	});
+
+	$('#people_criteria').live('click', function() {
+		if($('#search_criteria_type').val()!=4){
+	    	$('#people_criteria').css('background-color','lightgrey');
+	    	$('#place_criteria').css('background-color','white');
+		    $('#activity_criteria').css('background-color','white');
+		    $('#search_criteria_type').val(1);
+	    }
+	});
+	$('#place_criteria').live('click', function() {
+		if($('#search_criteria_type').val()!=4){
+		    $('#people_criteria').css('background-color','white');
+		    $('#place_criteria').css('background-color','lightgrey');
+		    $('#activity_criteria').css('background-color','white');
+	    	$('#search_criteria_type').val(2);
+	    }
+	});
+	$('#activity_criteria').live('click', function() {
+		if($('#search_criteria_type').val()!=4){
+			$('#people_criteria').css('background-color','white');
+			$('#place_criteria').css('background-color','white');
+			$('#activity_criteria').css('background-color','lightgrey');
+			$('#search_criteria_type').val(3);
+		}
+	});	
+	
+	$("#advanced_search_side").submit(function() {
+	    error = false;
+        alert('submit!');
+		if($(this).attr('t')=="user_place_activity"){
+		  var postcode = $('#postcode');
+		  postcode.removeClass('invalid');
+	   	  regexString = /^([A-PR-UWYZ0-9][A-HK-Y0-9][AEHMNPRTVXY0-9]?[ABEHMNPRVWXY0-9]? {1,2}[0-9][ABD-HJLN-UW-Z]{2}|GIR 0AA)$/
+		  if ($('#distance').val() != 0 && (postcode.val() == '' || postcode.val() == 'Post code' || regexString.test(postcode.val().toUpperCase()) != true)) {
+			postcode.addClass('invalid');
+		    postcode.nextAll('span.error').text('Please enter a valid post code.');
+		    error = true;
+		  }
+	    }
+
+	    if(!error) {
+		  //if search type = 1 call people
+		  var top_url = "";
+		  var bottom_url = "";
+	
+		  var type = $('#search_criteria_type').val();
+		  switch(type) {
+			case "1":
+			  bottom_url = "/search/people"
+			break;
+			case "2":
+			  bottom_url = "/search/places"
+			break;
+			case "3":
+			  bottom_url = "/search/activities"
+			break;
+			case "4":
+			  bottom_url = "/search/place_activities"
+			  top_url = "search/people_list/"
+			break;
+		  }
+	
+	        var dataString = $('#advanced_search_side').serialize();
+	    	if(top_url.length>0) {
+		alert(top_url);
+			$.ajax({
+			    type: "GET",
+			    url: top_url,
+			    data: $('#advanced_search_side').serialize(), //advanced_search,
+			    success: function(p) {
+				  $('#results').replaceWith(p);
+			    }
+			  });
+			}
+			else{
+				$('#results').replaceWith("<div id='results'></div>");
+			}
+			if(bottom_url.length>0){
+			$.ajax({
+			    type: "GET",
+			    url: bottom_url,
+			    data: $('#advanced_search_side').serialize(), //advanced_search,
+			    success: function(p) {
+				  $('#activity_results').replaceWith(p);
+				  $("#dialog").jqmAddTrigger('.add_to_favorites, .add_event, .add_activity');
+			    }
+			});
+	    }
+    }
+    return false;
+});
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <!--
 <label  class="search_criteria_header">Date</label><br \>
@@ -138,50 +264,3 @@ and <br />
 	</div>
 </span>
 -->
-
-<div id="advanced_search_submit" style="float:left;">
-	<%= submit_button ("Search", :id=> "search_sidebar_button") %>    
-</div>
-
-<% end %>
-
-<script type="text/javascript" charset="utf-8">
-//todo: clean up this javascript
-$("#advanced_search_side").submit(function() {
-	error = false;
-	if($(this).attr('t')=="user_place_activity")
-	{
-	  var postcode = $('#postcode');
-	  postcode.removeClass('invalid');
-   	  regexString = /^([A-PR-UWYZ0-9][A-HK-Y0-9][AEHMNPRTVXY0-9]?[ABEHMNPRVWXY0-9]? {1,2}[0-9][ABD-HJLN-UW-Z]{2}|GIR 0AA)$/
-	  if ($('#distance').val() != 0 && (postcode.val() == '' || postcode.val() == 'Post code' || regexString.test(postcode.val().toUpperCase()) != true)) {
-		postcode.addClass('invalid');
-	    postcode.nextAll('span.error').text('Please enter a valid post code.');
-	    error = true;
-	  }
-    }
-    if(!error) {
-	  var dataString = $('#advanced_search_side').serialize();
-	  $.ajax({
-	    type: "GET",
-	    url: "/search/place_activities",
-	    data: $('#advanced_search_side').serialize(), //advanced_search,
-	    success: function(p) {
-		  $('#activity_results').replaceWith(p);
-		  $("#dialog").jqmAddTrigger('.add_to_favorites, .add_event, .add_activity');
-	    }
-	  });
-	$.ajax({
-	    type: "GET",
-	    url: $(this).attr('action'),
-	    data: $('#advanced_search_side').serialize(), //advanced_search,
-	    success: function(p) {
-		  $('#results').replaceWith(p);
-	    }
-	  })
-    }
-    return false;
-});
-
-
-</script>

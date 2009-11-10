@@ -21,5 +21,13 @@ class Activity < ActiveRecord::Base
   has_many :places, :through => :user_place_activities
   
 
+  def self.search_activities(params, current_user)
+    #this is repeated in other objects - refactor
+    search_criteria = SearchCriteria.new(params,current_user).conditions
+    @results = Activity.paginate(:all, :page => params[:page], :per_page => 15)
+
+
+    return @results
+  end
 end
 

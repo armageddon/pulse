@@ -47,8 +47,7 @@
 				
 		<%  when Place %>
 		<%    	if logged_in? && current_user.places.include?(object) %>
-		<%=     link_to image_tag("HPEvent.png", :width=>20,:class => " tooltip ", :title => "Add event"), '#', 'data-href' => new_account_event_path(:place_id => object.id), :place_id => object.id, :class => "add_event" %>
-		<%=     	link_to(image_tag("HPThumbDown.png", :width=>20,:class => " tooltip", :title => I18n.translate("Remove_from_favorites")), '#',:place_id => object.id, :class => "remove_place")  %>
+			<%=     	link_to(image_tag("HPThumbDown.png", :width=>20,:class => " tooltip", :title => I18n.translate("Remove_from_favorites")), '#',:place_id => object.id, :class => "remove_place")  %>
 		<%    	else %>
 		<%=     	link_to image_tag("HPThumbUp.png", :width=>20,:class => " tooltip ", :title => I18n.translate("Add_to_favorites")), '#', 'data-href' => new_account_place_activity_path(:place_id => object), :place_id => object.id, :class => "add_place" %>
 		<%    	end %>

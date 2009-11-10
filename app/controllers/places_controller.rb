@@ -25,6 +25,8 @@ class PlacesController < ApplicationController
        
       end
   end
+  
+  
 
   def autocomplete
     @places = Place.find(:all,:order => "name", :conditions => ["name like ? ", "#{params[:q]}%"])

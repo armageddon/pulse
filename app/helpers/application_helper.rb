@@ -1,5 +1,28 @@
 module ApplicationHelper
 
+  def drop_down(name, value, html_options, select_options, default_target = "Any", default_value = "")
+    opts = ""
+    target = ""
+    if default_value != ""
+       opts += "<p>" + default_target + "<span class='hidden_value'>" + default_value.to_s + "</span></p>"
+    end
+    select_options.each do |opt|
+      opts += "<p>" + opt[0] + "<span class='hidden_value'>" + opt[1].to_s + "</span></p>"
+      target = opt[0] if opt[1].to_s == value.to_s
+    end 
+    target = default_target if target.length==0
+    %Q(<div class='fancy_select' style="margin-top: 0px; width:#{html_options[:width]}; float:left">
+        #{hidden_field_tag name, value}
+        <div class="fancy_select_target">
+          #{target}
+        </div>
+  	  <div class="fancy_select_options" style="width:#{html_options[:width]};">
+  	    #{opts}     
+  	  </div>
+  	</div>)
+  end
+
+
   def googlecode(url)
     if url.include? ".co.uk"
       "UA-143478-7"
@@ -26,8 +49,6 @@ module ApplicationHelper
       content_tag(:span, :class => nav_link_class("user_matches")) { link_to "My matches", account_matches_path },
       content_tag(:span, :class => nav_link_class("user_messages")) { link_to "My messages#{current_user.unread_count > 0 ? " (#{current_user.unread_count})" : ""}", account_messages_path },
       content_tag(:span, :class => nav_link_class("user_favorites")) { link_to I18n.translate("my_favorites"), account_favorites_path },
-     
-      content_tag(:span, :class => nav_link_class("profile")) { link_to "My Events", account_events_path },
       content_tag(:span, :class => "nav_link") { link_to "Logout", logout_path }
     ].join("&nbsp;")
   end
@@ -61,7 +82,7 @@ module ApplicationHelper
   end
   
   def submit_button(text, options={})
-    %Q(<button class="submit" id="#{options[:id]}" type="submit"
+    %Q(<button class="submit" id="#{options[:id]}" type="submit"style="#{options[:style]}" 
       <span class="submit_text">#{text}</span>
     </button>)
   end

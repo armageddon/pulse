@@ -18,12 +18,12 @@
     <span class="fancy_quotes">&#8221;</span>
   </div>
  	<ul id="do_things">
-	   <li><%= link_to "FIND PEOPLE", :controller=>'search', :id=>'find_people_link' , :t => "people" %></li>
-	   <li><%= link_to "FIND PLACES", :controller=>'search', :id=>'find_places_link' , :t => "places" %></li>
-	   <li><%= link_to "FIND ACTIVITIES", :controller=>'search', :id=>'find_activities_link' , :t => "activities" %></li>
+	    <li><%= link_to "SEARCH", :controller=>'search', :action=>"search_criteria", :id=>'find_people_link' , :t => "people" %></li>
+	   
 	   <li><%= link_to "EDIT MY INFO", edit_account_path %></li>
 		<li>&nbsp;</li>
 		<% if @user != current_user %>
+		<!--todo: implement remove from favorites -->
 	   <li><%= link_to I18n.translate("ADD_TO_FAVORITES") %></li> 
 	   <li>&nbsp;</li>
 		<%end%>

@@ -1,4 +1,10 @@
-
+<div style="float:left" id="activity_results">
+<div class="section_header" >
+	<div style="float:left;width:200px">
+		<h3 style="width:100px;" class="section_name">People</h3>
+	</div>
+	<div class="clear">&nbsp;</div>
+</div>
 <%= render :partial => "shared/object", :collection => collection %>
 	<div class="clear"></div>
 <% if collection.next_page %>
@@ -18,6 +24,7 @@
   	<%= link_to "See more #{pagination_name collection}", request.path + '?page=' + collection.next_page.to_s + qstring, :class => "paginator" %>
 <% end %>
 <div id="page_loading" style="display: none;"><h4>Loading</h4></div>
+</div>
 </div>
 <script type="text/javascript" charset="utf-8">
 

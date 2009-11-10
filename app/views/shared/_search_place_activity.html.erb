@@ -1,6 +1,6 @@
 <div class="object" id="<%= dom_id object %>">
   <div class="icon" style="width:25;">
-	<%= link_to image_tag(object.place.icon.url(:thumb), :width => '23px', :height => '23px'), object.place %>
+
   </div>
   <div class="what">
 	<%= link_to (object.activity.name), object.activity %>
@@ -22,9 +22,9 @@
       <%= link_to image_tag("HPThumbDown.png", :width=>20,:class => " tooltip ", :title => I18n.translate("Remove_from_favorites")), '#', 'data-href' => new_account_activity_path(:activity_id => object.activity), :class => "remove_activity" %>
 	<%  end %> 
 	<div style="float:left">
-	<%=  link_to image_tag("HPEvent.png", :width=>20,:class => " tooltip ", :title => "Add event"), '#', 'data-href' => new_account_event_path(:place_id => object.place_id), :place_id => object.place_id, :class => "add_event" %>
+	</div>
   </div>
 </div>
  
-</div>
+
  <div class="clear"></div>

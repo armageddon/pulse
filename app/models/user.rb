@@ -14,17 +14,30 @@ include UsersHelper
   end
 
   class Age
-    COLLEGE        = 1
-    EARLY_TWENTIES = 2
-    MID_TWENTIES   = 3
-    LATE_TWENTIES  = 4
-    EARLY_THIRTIES = 5
-    MID_THIRTIES   = 6
-    LATE_THIRTIES  = 7
-    EARLY_FORTIES = 8
-    MID_FORTIES = 9
-    LATE_FORTIES = 10
-    OLDER  = 11
+   
+    def Age.add_item(key,value)
+        @hash ||= {}
+        @hash[key]=value
+    end
+    def Age.const_missing(key)
+        @hash[key]
+    end   
+    def Age.each
+        @hash.each {|key,value| yield(key,value)}
+    end
+    Age.add_item :COLLEGE,1
+    Age.add_item :EARLY_TWENTIES ,2
+    Age.add_item :MID_TWENTIES, 3
+    Age.add_item :LATE_TWENTIES, 4
+    Age.add_item :EARLY_THIRTIES, 5
+    Age.add_item :MID_THIRTIES, 6
+    Age.add_item :LATE_THIRTIES, 7
+    Age.add_item :EARLY_FORTIES, 8
+    Age.add_item :MID_FORTIES, 9
+    Age.add_item :LATE_FORTIES, 10
+    Age.add_item :OLDER,11
+
+    
   end
 
   class Sex
@@ -242,15 +255,7 @@ include UsersHelper
 
     return [] if matched_user_ids.empty?
 
-    User.find(:all, :conditions => [
-      "sex = ? AND sex_preference = ? AND age = ? AND age_preference = ? AND id != ? AND id IN (?)",
-      self.sex_preference,
-      self.sex,
-      self.age_preference,
-      self.age,
-      self.id,
-      matched_user_ids.map(&:id)
-    ])
+      User.find(:all, :conditions => ["sex = ? AND sex_preference = ? AND age = ? AND age_preference = ? AND id != ? AND id IN (?)",self.sex_preference,self.sex,self.age_preference, self.age,self.id,matched_user_ids.map(&:id)])
   end
   
   def matches_v3
@@ -303,9 +308,13 @@ include UsersHelper
     
   end
 
-  def self.search_users(params)
-    search_criteria = SearchHelper.get_conditions(params)
-    
+  def self.search_users_advanced(params, current_user)
+    #this is repeated in other objects - refactor
+    search_criteria = SearchCriteria.new(params,current_user).conditions
+    logger.debug("conditions")
+    logger.debug(search_criteria)
+
+    results = {}
     use_age = search_criteria[0]
     use_gender = search_criteria[1]
     use_place_location = search_criteria[2]
@@ -324,6 +333,15 @@ include UsersHelper
     if use_activity && use_place_location
       @results = User.paginate(:select => "users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join places on UPA.place_id = places.id inner join activities on UPA.activity_id = activities.id", :conditions => conditions,:page => params[:page], :per_page => 12) 
     end 
+    return @results
+  end
+
+  def self.search_users_simple(params, current_user)
+    #this is repeated in other objects - refactor
+    search_criteria = SearchCriteria.new(params,current_user).conditions
+    @results = User.paginate(:all, :page => params[:page], :per_page => 6)
+
+
     return @results
   end
 
