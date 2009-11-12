@@ -9,7 +9,8 @@
 	<%= link_to (object.place.name), object.place %>
   </div>
   <div class="who">
-  <% users = User.search_users(params, current_user) %>
+  <% users = User.search_users_pictures(params, current_user, object.place_id, object.activity_id) %>
+
   <%= render :partial  => "shared/user_pictures", :collection => users %>
   <% if users.total_entries > 3 %>
     <%= " and " +  (users.total_entries-3).to_s + " more ..." %>

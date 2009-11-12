@@ -335,15 +335,41 @@ include UsersHelper
     end 
     return @results
   end
+#todo: take place_activity out of user_place_activity??
+  def self.search_users_pictures(params, current_user, place_id, activity_id)
+    #this is repeated in other objects - refactor
+    search_criteria = SearchCriteria.new(params,current_user).conditions
 
+    results = {}
+    use_age = search_criteria[0]
+    use_gender = search_criteria[1]
+    use_place_location = search_criteria[2]
+    use_activity = search_criteria[3]
+    conditions = search_criteria[4]
+    conditions += " and place_id = " + place_id.to_s + " and activity_id = " + activity_id.to_s
+    
+    if !use_activity && !use_place_location #just user (gender sex)
+      @results = User.paginate(:select => "users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username", :conditions => conditions,:joins => "inner join user_place_activities UPA on UPA.user_id = users.id", :page => 1, :per_page => 3)
+    end
+    if !use_activity && use_place_location
+      @results = User.paginate(:select => "users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join places on UPA.place_id = places.id", :conditions => conditions, :page => params[:page], :per_page => 3)
+    end
+    if use_activity && !use_place_location
+      @results = User.paginate(:select => "users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join activities on UPA.activity_id = activities.id", :conditions => conditions,:page => params[:page], :per_page => 3) 
+    end
+    if use_activity && use_place_location
+      @results = User.paginate(:select => "users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join places on UPA.place_id = places.id inner join activities on UPA.activity_id = activities.id", :conditions => conditions,:page => params[:page], :per_page => 3) 
+    end 
+    return @results
+  end
+  
   def self.search_users_simple(params, current_user)
     #this is repeated in other objects - refactor
     search_criteria = SearchCriteria.new(params,current_user).conditions
     @results = User.paginate(:all, :page => params[:page], :per_page => 6)
-
-
     return @results
   end
+
 
 
   protected
