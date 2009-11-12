@@ -21,19 +21,19 @@ class UserPlaceActivity < ActiveRecord::Base
       if !use_activity && !use_place_location #just user (gender sex)
         logger.debug("people only")
         #should never hit this - go to use search results
-        results = UserPlaceActivity.paginate(:select => "user_place_activities.activity_id,user_place_activities.place_id, count(user_id) as users_count", :order => "count(user_id) DESC", :joins => "inner join users on users.id = user_place_activities.user_id",:group => 'user_place_activities.activity_id,user_place_activities.place_id', :conditions => conditions, :page => params[:page], :per_page => 15)
+        results = UserPlaceActivity.paginate(:select => "user_place_activities.activity_id,user_place_activities.place_id, count(user_id) as users_count", :order => "count(user_id) DESC", :joins => "inner join users on users.id = user_place_activities.user_id",:group => 'user_place_activities.activity_id,user_place_activities.place_id', :conditions => conditions, :page => params[:page], :per_page => 15, :order => "count(user_id) DESC")
       end
       if !use_activity && use_place_location
         logger.debug("location")
-        results = UserPlaceActivity.paginate(:select => "user_place_activities.activity_id,user_place_activities.place_id, count(user_id) as users_count", :order => "count(user_id) DESC", :joins => "inner join users on users.id = user_place_activities.user_id inner join places on user_place_activities.place_id = places.id",:group => 'user_place_activities.activity_id,user_place_activities.place_id', :conditions => conditions, :page => params[:page], :per_page => 15)
+        results = UserPlaceActivity.paginate(:select => "user_place_activities.activity_id,user_place_activities.place_id, count(user_id) as users_count", :order => "count(user_id) DESC", :joins => "inner join users on users.id = user_place_activities.user_id inner join places on user_place_activities.place_id = places.id",:group => 'user_place_activities.activity_id,user_place_activities.place_id', :order => "count(user_id) DESC", :conditions => conditions, :page => params[:page], :per_page => 15)
       end
       if use_activity && !use_place_location
         logger.debug("activities")
-        results = UserPlaceActivity.paginate(:select => "user_place_activities.activity_id,user_place_activities.place_id, count(user_id) as users_count", :order => "count(user_id) DESC", :joins => "inner join users on users.id = user_place_activities.user_id inner join activities on user_place_activities.activity_id = activities.id",:group => 'user_place_activities.activity_id,user_place_activities.place_id', :conditions => conditions,:page => params[:page], :per_page => 15) 
+        results = UserPlaceActivity.paginate(:select => "user_place_activities.activity_id,user_place_activities.place_id, count(user_id) as users_count", :order => "count(user_id) DESC", :joins => "inner join users on users.id = user_place_activities.user_id inner join activities on user_place_activities.activity_id = activities.id",:group => 'user_place_activities.activity_id,user_place_activities.place_id', :order => "count(user_id) DESC", :conditions => conditions,:page => params[:page], :per_page => 15) 
       end
       if use_activity && use_place_location
         logger.debug("location and activities")
-        results = UserPlaceActivity.paginate(:select => "user_place_activities.activity_id,user_place_activities.place_id, count(user_id) as users_count", :order => "count(user_id) DESC", :joins => "inner join users on users.id = user_place_activities.user_id inner join places on user_place_activities.place_id = places.id inner join activities on user_place_activities.activity_id = activities.id",:group => 'user_place_activities.activity_id,user_place_activities.place_id', :conditions => conditions,:page => params[:page], :per_page => 15) 
+        results = UserPlaceActivity.paginate(:select => "user_place_activities.activity_id,user_place_activities.place_id, count(user_id) as users_count", :order => "count(user_id) DESC", :joins => "inner join users on users.id = user_place_activities.user_id inner join places on user_place_activities.place_id = places.id inner join activities on user_place_activities.activity_id = activities.id", :order => "count(user_id) DESC",:group => 'user_place_activities.activity_id,user_place_activities.place_id', :conditions => conditions,:page => params[:page], :per_page => 15) 
       end
       logger.debug(results.length)
       return results
