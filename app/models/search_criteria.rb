@@ -19,7 +19,7 @@ class SearchCriteria
     @place_location_condition = ""
     @activity_category_condition = ""
     @keyword=""
-    @ages = [user.age_preference]
+    @ages = [user.age_preference-1,user.age_preference,user.age_preference+1]
     @activity_categories = Array.new
     @sex_preferences  = [user.sex_preference]
     @type = 1
@@ -48,7 +48,9 @@ class SearchCriteria
       if params[:search_criteria][:keyword] != nil 
         @keyword = params[:search_criteria][:keyword]
       end
-      
+      if params[:search_criteria][:type] != nil 
+        @type = params[:search_criteria][:type]
+      end
       @sex = User::Sex::MALE
       if  params[:search_criteria][:distance] != nil
         @distance =  1
@@ -90,7 +92,7 @@ class SearchCriteria
   def set_place_location_condition()
     #check postcode exists and is valid UK code
     condition = ""
-    if @params[:search_criteria][:distance] != nil && @params[:search_criteria][:distance].to_s != "0" 
+    if @params[:search_criteria]!= nil && @params[:search_criteria][:distance] != nil && @params[:search_criteria][:distance].to_s != "0" && @params[:search_criteria][:distance].to_s != ""
       distance = @params[:search_criteria][:distance]
       #refactor to use mySQL location datatype
       geocoder = Graticule.service(:google).new "ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog"

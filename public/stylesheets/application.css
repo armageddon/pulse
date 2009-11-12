@@ -1,8 +1,8 @@
 
 .criteria_highlight
 {
-	border-style:solid;
-
+	background-color:lightgrey;
+	padding:5px;
 }
 
 .search_fancy_select
@@ -188,6 +188,7 @@ a, a:visited, a:active {
 }
 
 .object {
+
   border-bottom: 1px dotted #ccc;
   margin-bottom: 5px;
 }

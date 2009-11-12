@@ -14,11 +14,12 @@
 </div>
 <div class="clear">&nbsp;</div>
 
-<div id="keyword_criteria" style="background-color:lightgrey; padding:5px">
+<div id="keyword_criteria"  style="padding:5px" class="<%=search_keyword_class(@search_criteria.type)%>" >
 <label  class="search_criteria_header" style="padding-top:0px">Keyword</label><br \>
 <%= text_field_tag 'search_criteria[keyword]', @search_criteria.keyword, :class => 'input_text'%><br />
 </div>
-<div id='people_criteria' style="background-color:lightgrey">	
+
+<div id='people_criteria' style="padding:5px" class="<%=search_people_class(@search_criteria.type)%>" >
     <label class="search_criteria_header">Age</label><br \>
 
     <% age_options.each do |opt| %>
@@ -29,7 +30,7 @@
 	<%= check_box_tag "search_criteria[sp1]",1, @search_criteria.sex_preferences.include?(1) %> Female <br \>
 	<%= check_box_tag "search_criteria[sp2]",2, @search_criteria.sex_preferences.include?(2)  %> Male<br \>
 </div>
-<div id='place_criteria' style="padding:5px">
+<div id='place_criteria'  style="padding:5px" class="<%=search_places_class(@search_criteria.type)%>" >
 <div class="float:left" id="postcodesearch">
 	<label class="search_criteria_header">Location</label><br \>	
   	<%= drop_down('search_criteria[distance]', @search_criteria.distance, {:width => '100px'},distance_options, 'Any distance',0) %>
@@ -38,7 +39,7 @@
 	<%= text_field_tag 'search_criteria[postcode]', @search_criteria.postcode, :class => 'input_text' %><br />	
 </div>
 </div>
-<div id='activity_criteria' style="padding:5px" >
+<div id='activity_criteria'  style="padding:5px" class="<%=search_activities_class(@search_criteria.type)%>" >
 <label class="search_criteria_header">Activity</label><br \>
 
 <% activity_category_options.each do |opt| %>
@@ -57,42 +58,42 @@
 	var submit = true
 
 	$('#simple_search').live('click', function() {
-		$('#keyword_criteria').css('background-color','lightgrey');
-	  	$('#people_criteria').css('background-color','lightgrey');
-		$('#place_criteria').css('background-color','white');
-		$('#activity_criteria').css('background-color','white');
+		$('#keyword_criteria').addClass("criteria_highlight");
+	  	$('#people_criteria').addClass("criteria_highlight");
+		$('#place_criteria').removeClass("criteria_highlight");
+		$('#activity_criteria').removeClass("criteria_highlight");
 		$('#search_criteria_type').val(1);
 	});
 	
 	$('#advanced_search').live('click', function() {
-		$('#keyword_criteria').css('background-color','white');
-	  	$('#people_criteria').css('background-color','lightgrey');
-		$('#place_criteria').css('background-color','lightgrey');
-		$('#activity_criteria').css('background-color','lightgrey');
+		$('#keyword_criteria').removeClass("criteria_highlight");
+	  	$('#people_criteria').addClass("criteria_highlight");
+		$('#place_criteria').addClass("criteria_highlight");
+		$('#activity_criteria').addClass("criteria_highlight");
 		$('#search_criteria_type').val(4);
 	});
 
 	$('#people_criteria').live('click', function() {
 		if($('#search_criteria_type').val()!=4){
-	    	$('#people_criteria').css('background-color','lightgrey');
-	    	$('#place_criteria').css('background-color','white');
-		    $('#activity_criteria').css('background-color','white');
+	    	$('#people_criteria').addClass("criteria_highlight");
+	    	$('#place_criteria').removeClass("criteria_highlight");
+		    $('#activity_criteria').removeClass("criteria_highlight");
 		    $('#search_criteria_type').val(1);
 	    }
 	});
 	$('#place_criteria').live('click', function() {
 		if($('#search_criteria_type').val()!=4){
-		    $('#people_criteria').css('background-color','white');
-		    $('#place_criteria').css('background-color','lightgrey');
-		    $('#activity_criteria').css('background-color','white');
+		    $('#people_criteria').removeClass("criteria_highlight");
+		    $('#place_criteria').addClass("criteria_highlight");
+		    $('#activity_criteria').removeClass("criteria_highlight");
 	    	$('#search_criteria_type').val(2);
 	    }
 	});
 	$('#activity_criteria').live('click', function() {
 		if($('#search_criteria_type').val()!=4){
-			$('#people_criteria').css('background-color','white');
-			$('#place_criteria').css('background-color','white');
-			$('#activity_criteria').css('background-color','lightgrey');
+			$('#people_criteria').removeClass("criteria_highlight");
+			$('#place_criteria').removeClass("criteria_highlight");
+			$('#activity_criteria').addClass("criteria_highlight");
 			$('#search_criteria_type').val(3);
 		}
 	});	

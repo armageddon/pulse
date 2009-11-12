@@ -5,6 +5,7 @@ helper UsersHelper
   def index
       
       @search_criteria = SearchCriteria.new(params, current_user)
+      logger.debug("type%%%%%%%%%%%%%%%%%%%% " + @search_criteria.type.to_s)
       @users = User.search_users_advanced(params, current_user)
       @user_place_activities = UserPlaceActivity.search_user_place_activities(params, current_user)
       respond_to do |format|
