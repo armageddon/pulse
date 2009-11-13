@@ -1,6 +1,6 @@
   <%= hidden_field_tag "t", params[:t] %>
   <div id="simple_search" style="width:230px;float:left;">
-	<% form_for @search_criteria, :url => search_path, :method => :get, :id => "simple_search" do |f| %>
+	<% form_tag search_path, :method => :get, :id => "simple_search" do |f| %>
 	<%= hidden_field_tag 'search_criteria[type]', @search_criteria.type, :id=>'search_criteria_type' %>
 	<div class="section_header" >
 		<div style="float:left;width:54px">
