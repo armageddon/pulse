@@ -11,11 +11,16 @@
 <% if collection.previous_page  %>
 	<% qstring = "" %>
 	<% params.each do |p| %>
-	    <% if p[0] != "page" %>
-		   <% qstring += "&" + p[0] + '=' + p[1] %>
+	    <% if p[0] != "page"  && p[0] != "search_criteria"%>
+		   <% qstring += "&" + p[0].to_s + '=' + p[1].to_s %>
 		<% end %> 
   	<% end %>
 	<% qstring += "&type="+collection.first.class.to_s.tableize %>
+	<% if params[:search_criteria] != nil %>
+	   	<%params[:search_criteria].each do |sc| %>
+			<% qstring += "&search_criteria[" + sc[0].to_s + ']=' + sc[1].to_s %>
+		<% end %>
+	<% end %>
     <% if controller_name == "search" %>
 		<% reqpath = request.path %>
 	<% else %>
@@ -37,10 +42,15 @@
 <% if collection.next_page %>
 	<% qstring = "" %>
 	<% params.each do |p| %>
-	    <% if p[0] != "page" %>
-		   <% qstring += "&" + p[0].to_s + '=' + p[1].to_s %>
+	    <% if p[0] != "page"  && p[0] != "search_criteria"%>
+		      <% qstring += "&" + p[0].to_s + '=' + p[1].to_s %>
 		<% end %> 
   	<% end %>
+    <% if params[:search_criteria] != nil %>
+	   	<%params[:search_criteria].each do |sc| %>
+			<% qstring += "&search_criteria[" + sc[0].to_s + ']=' + sc[1].to_s %>
+		<% end %>
+	<% end %>
 	<% qstring += "&type="+collection.first.class.to_s.tableize %>
     <% if controller_name == "search" %>
 		<% reqpath = request.path %>

@@ -9,9 +9,9 @@
 	</div>
 	<div id="search_type"  style="text-align:center">
 		<%= hidden_field_tag 'search_criteria[type]', @search_criteria.type, :id=>'search_criteria_type' %>
-	    <div id="simple_search"   class="search_type"> Simple&nbsp;&nbsp;</div>&nbsp;
-		<div id="advanced_search"  class="search_type"> Advanced </div>
-		<div id="map_search"  class="search_type"> Map </div>
+	    <div id="simple_search"   class="<%=search_type_simple_class(@search_criteria.type)%>"> Simple&nbsp;&nbsp;</div>&nbsp;
+		<div id="advanced_search"  class="<%=search_type_advanced_class(@search_criteria.type)%>"> Advanced </div>
+		<div id="map_search"  class="<%=search_type_map_class(@search_criteria.type)%>"> Map </div>
 	</div>
 	<div class="clear">&nbsp;</div>
 
