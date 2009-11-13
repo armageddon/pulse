@@ -1,5 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
   map.map '/map',  :controller => 'maps', :action => 'index'
+  map.map_places '/search/map', :controller => 'search', :action => 'map_places'
+  map.big_map '/big_map' , :controller => 'maps', :action => 'map'
   map.logout '/logout', :controller => 'sessions', :action => 'destroy'
   map.login '/login', :controller => 'sessions', :action => 'new'
   map.register '/register', :controller => 'users', :action => 'create'

@@ -9,25 +9,21 @@
 
 
 
-<% form_tag search_path, :method => :get, :id => "advanced_search" do %>
+<% form_tag search_path, :method => :get, :id => "advanced_search_form" do %>
 	<%= render :partial => 'shared/user_collection' , :locals => {:collection => @users}%>
 	<div class="clear">&nbsp;</div>
-
-	<div id="activity_results" style="float:left;width:560px">
-		<div class="section_header">
-			<div style="float:left;width:200px">
-				<h3 class="section_name"><span id="results_header">Activities: Page 1 of 1</span></h3>
-			</div>
-			<div class="clear">&nbsp;</div>
-		</div>	
-		Enter some search criteria above
+    <%= render :partial => 'shared/search_place_activity_collection' , :locals => {:collection => @user_place_activities}%>
+	<div class="clear">&nbsp;</div>
+    <div id='big_map' style='height:1px; overflow:hidden'>
+		<%= render :partial => 'maps/map' %>
 	</div>
+
 <% end %>
 
 
 <script type="text/javascript" charset="utf-8">
 //todo: clean up this javascript
-$("#advanced_search").submit(function() {
+$("#advanced_search_form").submit(function() {
 	error = false;
 	if($(this).attr('t')=="user_place_activity")
 	{

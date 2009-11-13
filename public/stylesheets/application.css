@@ -1,4 +1,17 @@
 
+.search_type_selected
+{
+  color:#990000;
+  font-weight: bold;
+  float: left;	
+}
+.search_type
+{
+  color: grey;
+  font-weight: bold;
+  float: left;	
+}
+
 .criteria_highlight
 {
 	background-color:lightgrey;

@@ -43,6 +43,28 @@ class Place < ActiveRecord::Base
     events.find(:all, :conditions => ['when_time >= ?', Time.now], :limit => 5)
   end
   
+  def self.search_places_map(params, current_user)
+      search_criteria = SearchCriteria.new(params, current_user).conditions
+      logger.debug("conditions")
+      logger.debug(search_criteria)
+
+      results = {}
+      use_age = search_criteria[0]
+      use_gender = search_criteria[1]
+      use_place_location = search_criteria[2]
+      use_activity = search_criteria[3]
+      conditions = search_criteria[4]
+       
+       if !use_activity && !use_place_location #just user (gender sex)
+         logger.debug("people only")
+         results = Place.paginate(:select => "places.latitude, places.longitude, places.name, places.address, places.neighborhood, places.category, count(UPA.activity_id)", :order => "count(UPA.activity_id) DESC", :joins => "inner join user_place_activities UPA on UPA.place_id = places.id inner join users on users.id = UPA.user_id",:group => 'places.latitude, places.longitude, places.name, places.address, places.neighborhood, places.category', :conditions => conditions, :page => params[:page], :per_page => 100, :order => "count(UPA.activity_id) DESC")
+       else
+         results = Place.paginate(:select => "places.latitude, places.longitude, places.name, places.address, places.neighborhood, places.category,count(UPA.activity_id)", :order => "count(user_id) DESC", :joins => "inner join user_place_activities UPA on UPA.place_id = places.id inner join activities on activities.id = UPA.activity_id inner join users on users.id = UPA.user_id",:group => 'places.latitude, places.longitude, places.name, places.address, places.neighborhood, places.category', :order => "count(UPA.activity_id) DESC", :conditions => conditions, :page => params[:page], :per_page => 100)
+       end
+       logger.debug(results.length)
+       return results
+  end
+  
   def self.search_places(params, current_user)
       #todo may need a switch here if we want to search places with joins to other tables
       #keep sphinx to one table searches for now

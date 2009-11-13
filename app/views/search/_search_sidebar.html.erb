@@ -1,55 +1,54 @@
 <% form_tag search_people_path, :method => :get, :id => "advanced_search_side" do |f| %>
-<%= hidden_field_tag "t", params[:t] %>
-<div class="section_header">
-	<div style="float:left;width:54px">
-		<h3 class="section_name">Filter Results </h3>
+	<%= hidden_field_tag "t", params[:t] %>
+	<div class="section_header">
+		<div style="float:left;width:54px">
+			<h3 class="section_name">Filter Results </h3>
+		</div>
+		<div class="section_extra"></div>
+		<div class="clear">&nbsp;</div>
 	</div>
-	<div class="section_extra"></div>
+	<div id="search_type"  style="text-align:center">
+		<%= hidden_field_tag 'search_criteria[type]', @search_criteria.type, :id=>'search_criteria_type' %>
+	    <div id="simple_search"   class="search_type"> Simple&nbsp;&nbsp;</div>&nbsp;
+		<div id="advanced_search"  class="search_type"> Advanced </div>
+		<div id="map_search"  class="search_type"> Map </div>
+	</div>
 	<div class="clear">&nbsp;</div>
-</div>
-<%= hidden_field_tag 'search_criteria[type]', @search_criteria.type, :id=>'search_criteria_type' %>
-<div id="search_type"  style="text-align:center">
-<div id="simple_search"   style="font-weight:bold; float:left"> Simple </div>
-<div id="advanced_search"  style="font-weight:bold; float:right"> Advanced </div>
-</div>
-<div class="clear">&nbsp;</div>
 
-<div id="keyword_criteria"  style="padding:5px" class="<%=search_keyword_class(@search_criteria.type)%>" >
-<label  class="search_criteria_header" style="padding-top:0px">Keyword</label><br \>
-<%= text_field_tag 'search_criteria[keyword]', @search_criteria.keyword, :class => 'input_text'%><br />
-</div>
-
-<div id='people_criteria' style="padding:5px" class="<%=search_people_class(@search_criteria.type)%>" >
-    <label class="search_criteria_header">Age</label><br \>
-
-    <% age_options.each do |opt| %>
-    	<%= check_box_tag "search_criteria[age_"+opt[1].to_s+"]", opt[1] , @search_criteria.ages.include?(opt[1]) %> <%= opt[0] %> <br \>
-    <% end %>
-
-    <label  class="search_criteria_header">Gender</label><br \>
-	<%= check_box_tag "search_criteria[sp1]",1, @search_criteria.sex_preferences.include?(1) %> Female <br \>
-	<%= check_box_tag "search_criteria[sp2]",2, @search_criteria.sex_preferences.include?(2)  %> Male<br \>
-</div>
-<div id='place_criteria'  style="padding:5px" class="<%=search_places_class(@search_criteria.type)%>" >
-<div class="float:left" id="postcodesearch">
-	<label class="search_criteria_header">Location</label><br \>	
-  	<%= drop_down('search_criteria[distance]', @search_criteria.distance, {:width => '100px'},distance_options, 'Any distance',0) %>
-   	<div class="clear"></div>
-    from 
-	<%= text_field_tag 'search_criteria[postcode]', @search_criteria.postcode, :class => 'input_text' %><br />	
-</div>
-</div>
-<div id='activity_criteria'  style="padding:5px" class="<%=search_activities_class(@search_criteria.type)%>" >
-<label class="search_criteria_header">Activity</label><br \>
-
-<% activity_category_options.each do |opt| %>
-	<%= check_box_tag "search_criteria[ac_"+opt[1].to_s+"]", opt[1] , @search_criteria.activity_categories.include?(opt[1]) %> <%= opt[0] %> <br \>
-<% end %>
-</div>
-<div id="advanced_search_submit" style="float:left;">
-	<%= submit_button ("Search", :id=> "search_sidebar_button") %>    
-</div>
-
+	<div id="keyword_criteria"  style="padding:5px" class="<%=search_keyword_class(@search_criteria.type)%>" >
+	   	<label  class="search_criteria_header" style="padding-top:0px">Keyword</label><br \>
+		<%= text_field_tag 'search_criteria[keyword]', @search_criteria.keyword, :class => 'input_text'%><br />
+	</div>
+	<div id="people_header" style="font-size:14px; background-color:grey; color:white;">People</div>
+	<div id='people_criteria' style="padding:5px" class="<%=search_people_class(@search_criteria.type)%>" >
+	    <label class="search_criteria_header">Age</label><br \>
+	    <% age_options.each do |opt| %>
+	    	<%= check_box_tag "search_criteria[age_"+opt[1].to_s+"]", opt[1] , @search_criteria.ages.include?(opt[1]) %> <%= opt[0] %> <br \>
+	    <% end %>
+	    <label  class="search_criteria_header">Gender</label><br \>
+		<%= check_box_tag "search_criteria[sp_1]",1, @search_criteria.sex_preferences.include?(1) %> Male <br \>
+		<%= check_box_tag "search_criteria[sp_2]",2, @search_criteria.sex_preferences.include?(2)  %> Female<br \>
+	</div>
+	<div id="place_header" style="font-size:14px; background-color:grey; color:white;">Places</div>
+	<div id='place_criteria'  style="padding:5px" class="<%=search_places_class(@search_criteria.type)%>" >
+		<label class="search_criteria_header">Location</label><br \>
+		<div class="float:left" id="postcodesearch">
+		  	<%= drop_down('search_criteria[distance]', @search_criteria.distance, {:width => '100px'},distance_options, 'Any distance',0) %>
+		   	<div class="clear"></div>
+		    from 
+			<%= text_field_tag 'search_criteria[postcode]', @search_criteria.postcode, :class => 'input_text' %><br />	
+		</div>
+	</div>
+	<div id="activity_header" style="font-size:14px; background-color:grey; color:white;">Activities</div>
+	<div id='activity_criteria'  style="padding:5px" class="<%=search_activities_class(@search_criteria.type)%>" >
+		<label class="search_criteria_header">Activity</label><br \>
+		<% activity_category_options.each do |opt| %>
+			<%= check_box_tag "search_criteria[ac_"+opt[1].to_s+"]", opt[1] , @search_criteria.activity_categories.include?(opt[1]) %> <%= opt[0] %> <br \>
+		<% end %>
+	</div>
+	<div id="advanced_search_submit" style="float:left;">
+		<%= submit_button ("Search", :id=> "search_sidebar_button") %>    
+	</div>
 <% end %>
 
 <script type="text/javascript" charset="utf-8">
@@ -58,45 +57,113 @@
 	var submit = true
 
 	$('#simple_search').live('click', function() {
-		$('#keyword_criteria').addClass("criteria_highlight");
-	  	$('#people_criteria').addClass("criteria_highlight");
-		$('#place_criteria').removeClass("criteria_highlight");
-		$('#activity_criteria').removeClass("criteria_highlight");
-		$('#search_criteria_type').val(1);
+		if($('#search_criteria_type').val() != "1")
+		{
+			$('#keyword_criteria').css("display","block");
+		  	$('#people_criteria').css("display","block");
+			$('#place_criteria').css("display","none");
+			$('#activity_criteria').css("display","none");
+			$('#search_criteria_type').val(1);
+			$('#big_map').css("height","0px");
+		    $('#results').css("display","block");
+		    $('#activity_results').css("display","block");
+			$("#advanced_search_side").submit();
+			$('#simple_search').addClass("search_type_selected");
+			$('#simple_search').removeClass("search_type");
+			$('#advanced_search').removeClass("search_type_selected").addClass("search_type");
+	        $('#map_search').removeClass("search_type_selected").addClass("search_type");;
+	        $('#keyword_criteria').css('display','block')
+        }
 	});
-	
 	$('#advanced_search').live('click', function() {
-		$('#keyword_criteria').removeClass("criteria_highlight");
-	  	$('#people_criteria').addClass("criteria_highlight");
-		$('#place_criteria').addClass("criteria_highlight");
-		$('#activity_criteria').addClass("criteria_highlight");
-		$('#search_criteria_type').val(4);
+		if($('#search_criteria_type').val() != "4")
+		{
+			$('#keyword_criteria').css("display","none");
+		  	$('#people_criteria').css("display","block");
+			$('#place_criteria').css("display","block");
+			$('#activity_criteria').css("display","block");
+			$('#search_criteria_type').val(4);
+			$('#big_map').css("height","0px");
+		    $('#results').css("display","block");
+		    $('#activity_results').css("display","block");
+			$("#advanced_search_side").submit();
+			$('#advanced_search').addClass("search_type_selected");
+			$('#advanced_search').removeClass("search_type");
+			$('#simple_search').removeClass("search_type_selected").addClass("search_type");;
+	        $('#map_search').removeClass("search_type_selected").addClass("search_type");;
+			$('#keyword_criteria').css('display','none')
+
+		}
+	});
+	$('#map_search').live('click', function() {
+		if($('#search_criteria_type').val() != "5")
+		{
+			$('#keyword_criteria').css("display","none");
+		  	$('#people_criteria').css("display","block");
+			$('#place_criteria').css("display","block");
+			$('#activity_criteria').css("display","block");
+			$('#search_criteria_type').val(5);
+		    $('#big_map').css("height","560px");
+		    $('#results').css("display","none");
+		    $('#activity_results').css("display","none");
+	     	$("#advanced_search_side").submit();
+			$('#map_search').addClass("search_type_selected");
+			$('#map_search').removeClass("search_type");
+			$('#advanced_search').removeClass("search_type_selected").addClass("search_type");;
+	        $('#simple_search').removeClass("search_type_selected").addClass("search_type");;
+	        $('#keyword_criteria').css('display','none')
+	}
 	});
 
+
 	$('#people_criteria').live('click', function() {
-		if($('#search_criteria_type').val()!=4){
-	    	$('#people_criteria').addClass("criteria_highlight");
-	    	$('#place_criteria').removeClass("criteria_highlight");
-		    $('#activity_criteria').removeClass("criteria_highlight");
+		if($('#search_criteria_type').val()!=4 && $('#search_criteria_type').val()!=5 ){
+	    	$('#people_criteria').css("display","block");
+	    	$('#place_criteria').css("display","none");
+		    $('#activity_criteria').css("display","none");
 		    $('#search_criteria_type').val(1);
 	    }
 	});
 	$('#place_criteria').live('click', function() {
-		if($('#search_criteria_type').val()!=4){
-		    $('#people_criteria').removeClass("criteria_highlight");
-		    $('#place_criteria').addClass("criteria_highlight");
-		    $('#activity_criteria').removeClass("criteria_highlight");
+		if($('#search_criteria_type').val()!=4&& $('#search_criteria_type').val()!=5){
+	    	$('#people_criteria').css("display","none");
+	    	$('#place_criteria').css("display","block");
+		    $('#activity_criteria').css("display","none");
 	    	$('#search_criteria_type').val(2);
 	    }
 	});
 	$('#activity_criteria').live('click', function() {
-		if($('#search_criteria_type').val()!=4){
-			$('#people_criteria').removeClass("criteria_highlight");
-			$('#place_criteria').removeClass("criteria_highlight");
-			$('#activity_criteria').addClass("criteria_highlight");
+		if($('#search_criteria_type').val()!=4&& $('#search_criteria_type').val()!=5){
+	    	$('#people_criteria').css("display","none");
+	    	$('#place_criteria').css("display","none");
+		    $('#activity_criteria').css("display","block");
 			$('#search_criteria_type').val(3);
 		}
 	});	
+	$('#people_header').live('click', function() {
+		if($('#search_criteria_type').val()!=4 && $('#search_criteria_type').val()!=5 ){
+	    	$('#people_criteria').css("display","block");
+	    	$('#place_criteria').css("display","none");
+		    $('#activity_criteria').css("display","none");
+		    $('#search_criteria_type').val(1);
+	    }
+	});
+	$('#place_header').live('click', function() {
+		if($('#search_criteria_type').val()!=4&& $('#search_criteria_type').val()!=5){
+	    	$('#people_criteria').css("display","none");
+	    	$('#place_criteria').css("display","block");
+		    $('#activity_criteria').css("display","none");
+	    	$('#search_criteria_type').val(2);
+	    }
+	});
+	$('#activity_header').live('click', function() {
+		if($('#search_criteria_type').val()!=4&& $('#search_criteria_type').val()!=5){
+	    	$('#people_criteria').css("display","none");
+	    	$('#place_criteria').css("display","none");
+		    $('#activity_criteria').css("display","block");
+			$('#search_criteria_type').val(3);
+		}
+	});
 	
 	$("#advanced_search_side").submit(function() {
 	    error = false;
@@ -117,6 +184,7 @@
 		  var bottom_url = "";
 	
 		  var type = $('#search_criteria_type').val();
+
 		  switch(type) {
 			case "1":
 			  bottom_url = "/search/people"
@@ -130,6 +198,10 @@
 			case "4":
 			  bottom_url = "/search/place_activities"
 			  top_url = "search/people_list/"
+			  break;
+			case "5":
+			  bottom_url = "/big_map"
+
 			break;
 		  }
 	
@@ -148,24 +220,67 @@
 				$('#results').replaceWith("<div id='results'></div>");
 			}
 			if(bottom_url.length>0){
-			$.ajax({
-			    type: "GET",
-			    url: bottom_url,
-			    data: $('#advanced_search_side').serialize(), //advanced_search,
-			    success: function(p) {
-				  $('#activity_results').replaceWith(p);
-				  $("#dialog").jqmAddTrigger('.add_to_favorites, .add_event, .add_activity');
-			    }
-			});
+              if(type!=5) {
+				$.ajax({
+			    	type: "GET",
+			    	url: bottom_url,
+			    	data: $('#advanced_search_side').serialize(), //advanced_search,
+			    	success: function(p) {
+				  		$('#activity_results').replaceWith(p);
+				  		$("#dialog").jqmAddTrigger('.add_to_favorites, .add_event, .add_activity');
+			    	}
+				});
+			} 
+			else {
+				map.clearOverlays();
+				var sw = new GLatLng(<%=  51.500152 %>, <%= -0.126236  %>);
+				var ne = new GLatLng(<%=  51.502152 %>, <%= -0.122236 %>);
+				var bounds = new GLatLngBounds(sw,ne);
+				var ma = new GMarker(bounds.getCenter(), { icon: dotIcon });
+				$.ajax({
+				    type: "GET",
+				    url: '/search/map',
+				    data: $('#advanced_search_side').serialize(), //advanced_search,
+				    success: function(p) {
+						var x = eval(p);
+						var marker= new Array();
+						for(var i =0; i < x.length; i++)
+						{
+							var point = new GLatLng(x[i].place.latitude, x[i].place.longitude)
+							var marker = createMarker(point,place_html(x[i].place));
+							map.addOverlay(marker);
+						}
+				    }
+				});
+			}
 	    }
     }
     return false;
 });
 
+function place_html(pl)
+{
+	return pl.name
+}
+function createMarker(point,html) {
+        var marker = new GMarker(point,{ icon: dotIcon });
+        GEvent.addListener(marker, "click", function() {
+          marker.openInfoWindowHtml(html);
+        });
+
+        // The new marker "mouseover" listener        
+        GEvent.addListener(marker,"mouseover", function() {
+          marker.openInfoWindowHtml(html);
+        });   
+		GEvent.addListener(marker,"mouseout", function() {
+          marker.closeInfoWindow();
+        });     
+        
+        return marker;
+      }
+
 
 </script>
-
-
 
 
 

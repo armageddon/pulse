@@ -1,4 +1,4 @@
-class SearchCriteria 
+class SearchCriteria < ActiveRecord::Base
 
   
   attr_reader :keyword, :sex, :sex_preference,:sex_preferences 
@@ -11,6 +11,7 @@ class SearchCriteria
   attr_reader :activity_category
   attr_reader :type
   attr_reader :low_lat, :high_lat, :low_long, :high_long
+  attr_reader :age_condition, :sex_condition
   
   def initialize (params, user)
     @params = params
@@ -19,9 +20,9 @@ class SearchCriteria
     @place_location_condition = ""
     @activity_category_condition = ""
     @keyword=""
-    @ages = [user.age_preference-1,user.age_preference,user.age_preference+1]
+    @ages = []
     @activity_categories = Array.new
-    @sex_preferences  = [user.sex_preference]
+    @sex_preferences  = []
     @type = 1
     @low_lat =0.0
     @high_lat =0.0
@@ -43,17 +44,25 @@ class SearchCriteria
       params[:search_criteria].each do |p|
         @ages << p[1] if p[0].to_s.rindex('age_') != nil
         @activity_categories << p[1] if p[0].to_s.rindex('ac_') != nil
-        @sex_preferences << p[1]  if p[0].to_s.rindex('sp_') != nil
+        @sex_preferences << p[1]  if p[0].to_s.rindex('sp_') != nil 
+       
+
+      
+        
       end
+      logger.debug('SEX PREFSSSSSSSSSS')
+      logger.debug(@sex_preferences)
       if params[:search_criteria][:keyword] != nil 
         @keyword = params[:search_criteria][:keyword]
       end
       if params[:search_criteria][:type] != nil 
         @type = params[:search_criteria][:type]
       end
-      @sex = User::Sex::MALE
-      if  params[:search_criteria][:distance] != nil
-        @distance =  1
+      
+      @sex = user.sex
+      
+      if  params[:search_criteria][:distance] != nil 
+        @distance =  params[:search_criteria][:distance]
       end
 
       @place_category = 0
@@ -69,6 +78,8 @@ class SearchCriteria
         s = ""
         @ages.each {|e| s+=e.to_s+','}
         @age_condition =  "age in( " + s.chomp(',') + ")"
+     else
+       @age_condition =  "1=0"
      end
   end
 
@@ -160,7 +171,12 @@ class SearchCriteria
 
 
 
-
+  def age_condition 
+    @age_condition
+  end
+  def sex_condition
+    @sex_condition
+  end
 
 
   def type

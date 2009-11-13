@@ -44,13 +44,23 @@ helper UsersHelper
       format.js do
         @users = User.search_users_simple(params, current_user)
         if @users == nil || @users.length == 0
-          render :text=>"<div style='width:500px' id='results'>No results returned</div>"
+          render :text=>"<div style='width:500px' id='activity_results'>No results returned</div>"
         else
           render :partial => 'shared/users_collection', :locals => { :collection => @users },  :content_type => "text/html"
         end
       end
     end
   end
+  
+  def map_places
+   @places = Place.search_places_map(params, current_user)
+   respond_to do |format|
+     format.js do
+       render :json => @places.to_json
+     end
+   end
+  end
+  
   def place_activities
     @search_criteria = SearchCriteria.new(params, current_user)
     logger.debug("ages: ")

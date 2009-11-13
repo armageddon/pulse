@@ -1,6 +1,6 @@
 
 <h3 class="section">Map</h3>
-<div id="map_canvas" style="width: 760px; height: 540px; overflow: hidden;"></div>
+<div id="map_canvas" style="width: 560px; height: 540px; overflow: hidden;"></div>
 <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=<%= getmapsapikey(request.url) %>&sensor=true" type="text/javascript"></script>
 <script type="text/javascript" charset="utf-8">
   var map = new GMap2(document.getElementById("map_canvas"));
@@ -19,7 +19,7 @@ map.addControl(new GSmallZoomControl())
   var sw = new GLatLng(<%=  51.500152 %>, <%= -0.126236  %>);
   var ne = new GLatLng(<%=  51.502152 %>, <%= -0.122236 %>);
   var bounds = new GLatLngBounds(sw,ne);
-  map.setCenter(bounds.getCenter(), 14);
+  map.setCenter(bounds.getCenter(), 13);
   map.enableInfoWindow()
 
   <% Place.paginate(:all, :page => 1, :per_page => 100 ).each_with_index do |e,i| %>
