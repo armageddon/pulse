@@ -4,7 +4,8 @@ class UserPlaceActivity < ActiveRecord::Base
   belongs_to :place
 
   validates_uniqueness_of :user_id, :scope => [:place_id, :activity_id], :message => "You have already added this activity"
-  
+  fires :addeduserplaceactivity, :on => :create, :actor => :user, :subject => :place, :secondary_subject => :activity
+  #todo - when does create fire - on new or on save?
   
   def self.search_user_place_activities(params, current_user)
       

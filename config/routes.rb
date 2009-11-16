@@ -21,7 +21,7 @@ ActionController::Routing::Routes.draw do |map|
   map.search_activities '/search/activities', :controller => "search", :action => "activities"
   map.search_place_activities '/search/place_activities', :controller => "search", :action => "place_activities"
   map.activity_list '/search/activity_list', :controller => 'search', :action => "activity_list" #todo - url doesnt look good
-  
+  map.feed '/feed', :controller => 'feeds', :action => 'feed'
   map.user_activity_list '/account/user_place_activities', :controller =>'users', :action => "user_places"
   map.resources :places, :collection => { :autocomplete => :get } do |p|
     p.resources :pictures, :controller => "place_pictures"

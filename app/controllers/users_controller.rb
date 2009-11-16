@@ -25,6 +25,7 @@ include Graticule
     logger.debug(current_user.errors.full_messages)
     @places = current_user.suggested_places
     @matches = current_user.matches(params[:page], 8)
+    @updates = TimelineEvent.paginate(:page=>1, :per_page => 10)
     logger.debug("matches: " + @matches.length.to_s)
 
   end

@@ -1,7 +1,7 @@
 class Place < ActiveRecord::Base
 
   define_index do
-    indexes :name
+    indexes name
     indexes address
     has longitude
     has latitude

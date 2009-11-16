@@ -1,3 +1,7 @@
+<% content_for :c3 do %>
+  <%= render :partial => "search/skyscraper" %>
+<% end %>
+
 <% content_for :message do %>
   <h1>
     Hello <%= current_user.first_name %>, welcome back to HelloPulse. 
@@ -9,8 +13,14 @@
     profile has been viewed by <%= current_user.profile_views %> <%= current_user.profile_views == 1 ? 'person' : 'people' %>.
   </h1>
 <% end %>
+
+<%= render :partial => "maps/small_map", :locals => {:collection => @updates} %>
+
+<%= render :partial => "feeds/feed_collection", :locals => {:collection => @updates} %>
+
+<!--
 <h3 class="section">Your matches</h3>
 <%= render :partial => "shared/object", :collection => @matches %>
 <div class="clear"></div>
 <h3 class="section">Check out these places</h3>
-<%= render :partial => "shared/object",  :collection => @places  %>
+<%= render :partial => "shared/object",  :collection => @places  %>-->

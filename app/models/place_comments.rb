@@ -1,0 +1,4 @@
+class PlaceComment < Comment
+  
+  
+end

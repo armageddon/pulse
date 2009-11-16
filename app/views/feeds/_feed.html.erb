@@ -1,0 +1,27 @@
+<div class="object" id="<%= dom_id object %>">
+    <% user = User.find(object.actor_id)%>
+  	<div class="icon">
+		<%= link_to image_tag(User.find(object.actor_id).icon.url(:thumb), :width => '45px', :height => '45px'), User.find(object.actor_id) %>
+	</div>
+	<div class="info_container">
+		<div style="float:left;font-size:13px">
+			<span>
+     		<%= link_to user.first_name, user %>
+			</span>
+		</div>
+		<div style="float:right">
+			<%= DateAndTimeHelper.didwhen(object.created_at) %>
+		
+	    </div>
+	    <div class="clear"></div>
+	    <div style="float:left">
+			added
+			<%= link_to Activity.find(object.secondary_subject_id).name,Activity.find(object.secondary_subject_id) %>
+			at
+			<%= link_to Place.find(object.subject_id).name,Place.find(object.subject_id) %>
+		</div>
+  </div>
+ <div class="clear"></div>
+ </div>
+
+ <div class="clear"></div>
