@@ -1,9 +1,9 @@
 <h3 class="section">Dashboard</h3>
 <div><div style="float:left">Matches</div><div style="float:right"><%= current_user.matches.total_entries %> </div></div><br/>
-<div><div style="float:left">Suggested Places</div><div style="float:right"><%= current_user.suggested_places.count %></div></div><br/>
-<div><div style="float:left">Mail</div><div style="float:right"><%= current_user.all_messages.count %></div></div><br/>
+<div><div style="float:left">Suggested Places</div><div style="float:right"><%= current_user.suggested_places.length %></div></div><br/>
+<div><div style="float:left">Mail</div><div style="float:right"><%= current_user.all_messages.length %></div></div><br/>
 <div><div style="float:left">Profile views</div><div style="float:right"><%= current_user.profile_views %></div></div><br/>
 
-<div><div style="float:left">Favourite Things</div><div style="float:right"><%=current_user.user_place_activities.count %></div></div><br/>
-<div><div style="float:left">Favourite People</div><div style="float:right"><%=current_user.friends.count %> </div></div><br/>
+<div><div style="float:left">Favourite Things</div><div style="float:right"><%=current_user.user_place_activities.length %></div></div><br/>
+<div><div style="float:left">Favourite People</div><div style="float:right"><%=current_user.friends.length %> </div></div><br/>
 
