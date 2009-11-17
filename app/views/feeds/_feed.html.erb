@@ -14,11 +14,30 @@
 		
 	    </div>
 	    <div class="clear"></div>
-	    <div style="float:left">
-			added
-			<%= link_to Activity.find(object.secondary_subject_id).name,Activity.find(object.secondary_subject_id) %>
-			at
-			<%= link_to Place.find(object.subject_id).name,Place.find(object.subject_id) %>
+
+		
+		<% if object.event_type == 'addeduserplaceactivity' %>
+		      <% user_place_activity = UserPlaceActivity.find(object.subject_id)%>
+	
+			  <div style="float:left">
+			  added
+			  <%= link_to user_place_activity.activity.name, user_place_activity_path(:id=>object.subject_id.to_s) %>
+			  at
+			  <%= link_to user_place_activity.place.name, user_place_activity_path(:id=>object.subject_id.to_s)  %>
+			</div>
+			<div class="clear"></div>
+			<div class="float:left">
+			<i>'<%= user_place_activity.description %>'</i>
+			</div>
+		<% else %>
+		<div style="float:left">
+			<%= link_to user.name,user %> joined HelloPulse
+		</div>
+		<% end %>
+
+		<div class="clear"></div>
+		<div>
+			
 		</div>
   </div>
  <div class="clear"></div>

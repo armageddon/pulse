@@ -26,6 +26,17 @@ class UserPlaceActivitiesController < ApplicationController
     end
   end
 
+  def show
+    logger.debug('show' + params[:id])
+     @user_place_activity=UserPlaceActivity.find(params[:id])
+     @place = @user_place_activity.place
+      @activity = @user_place_activity.activity
+     @users = User.paginate(:select => "users.*", :joins => "inner join user_place_activities UPA on UPA.user_id = users.id  ", :conditions=>'place_id = ' +@place.id.to_s + ' and activity_id = ' + @activity.id.to_s, :page => params[:page], :per_page => 6)
+     
+     
+     @user_place_activities = UserPlaceActivity.paginate(:conditions=>'place_id = ' +@place.id.to_s + ' and activity_id = ' + @activity.id.to_s, :page=>1,:per_page=>15)
+  end
+
   def destroy
     #depending on type - if place remove 
     @user_place_activities = current_user.user_place_activities.all(:conditions => ["place_id = ?", params[:place_id]])

@@ -4,7 +4,6 @@ class UserActivitiesController < ApplicationController
   end
   
   def destroy
-    logger.info("removing activity") 
     @user_places = current_user.user_activities.all(:conditions => ["activity_id = ?", params[:activity_id]])
     @user_places.each do |ua|
       ua.delete

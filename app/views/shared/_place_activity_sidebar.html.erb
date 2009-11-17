@@ -1,0 +1,45 @@
+<h3 class="section"><%= @activity.name + ' at ' + @place.name %></h3>
+
+<div id="profile_image">
+  <%= image_tag @place.icon.url(:profile) %>
+</div>
+<% if current_user.admin? %>
+   <div id="manage_pictures"><%= link_to "Manage place pictures", place_pictures_path(@place) %></div>
+<% end %>
+
+
+<br>
+<div id="address">
+ <%= @place.address %><br>
+ <%= @place.city %>, <%= @place.zip %><br>
+ <% if @place.website.present? %>
+ <%= link_to "website", @place.website %>
+ <% end %>
+</div>
+
+<ul id="do_things">
+    <li><%= link_to "SEARCH", :controller=>'search', :action=>"search_criteria", :id=>'find_people_link' , :t => "people" %></li>
+   <li><%= link_to "EDIT MY INFO", edit_account_path %></li>
+	<li>&nbsp;</li>
+   <li><%= link_to "REMOVE FROM MY PLACES", new_account_activity_path(@place), :id => "remove_place", :style => current_user.places.include?(@place) ? "" : "display: none;" %>
+ <%= link_to "ADD TO MY PLACES", '#', 'data-href' => new_account_activity_path(:place_id => @place), :class => "add_to_favorites" , :style => current_user.places.include?(@place) ? "display: none;" : "" %></li> 
+   <li>&nbsp;</li>
+     <li><%= link_to "INVITE A FRIEND", '#', 'data-href' => new_account_invitation_path, :class => "invite_a_friend" %>
+ </ul>
+<div id="manage_place"></div>
+ 
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function() {
+ $("#remove_place").click(function(event) {
+   var target = $(this).attr('href');
+   $.ajax({
+     type: "POST",
+     url: target,
+     success: function() { $("#remove_place").hide() && $("#add_place").show() },
+     data: { "_method": "delete", },
+   });
+   return false;
+ });
+});
+</script>
+

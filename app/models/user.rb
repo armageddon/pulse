@@ -3,6 +3,8 @@ require 'digest/sha1'
 class User < ActiveRecord::Base
 include UsersHelper
 
+fires :newuser, :on => :create, :actor => :self
+
   define_index do
     indexes username
     indexes first_name

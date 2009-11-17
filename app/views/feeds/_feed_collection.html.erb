@@ -7,25 +7,31 @@
 	<div class="clear">&nbsp;</div>
 </div>
 
-<%= render :partial => "feeds/feed", :collection => collection %>
-	<div class="clear"></div>
-<% if collection.next_page %>
-	<% qstring = "" %>
-	<% params.each do |p| %>
-	    <% if p[0] != "page" %>
-		   <% qstring += "&" + p[0].to_s + '=' + p[1].to_s %>
-		<% end %> 
-  	<% end %>
-	<% qstring += "&type="+collection.first.class.to_s.tableize %>
-    <% if controller_name == "search" %>
-		<% reqpath = request.path %>
-	<% else %>
-	    <!-- todo: add logic to decide which collection to get. at present there are no ajax calls for these -->
-	    <% reqpath = request.path %>
-	<% end %>	
-  	<%= link_to "See more #{pagination_name collection}", request.path + '?page=' + collection.next_page.to_s + qstring, :class => "paginator" %>
+<% if collection == nil || collection.length == 0 %>
+	No updates found
+<% else %>
+
+	<%= render :partial => "feeds/feed", :collection => collection %>
+		<div class="clear"></div>
+	<% if collection.next_page %>
+		<% qstring = "" %>
+		<% params.each do |p| %>
+		    <% if p[0] != "page" %>
+			   <% qstring += "&" + p[0].to_s + '=' + p[1].to_s %>
+			<% end %> 
+	  	<% end %>
+		<% qstring += "&type="+collection.first.class.to_s.tableize %>
+	    <% if controller_name == "search" %>
+			<% reqpath = request.path %>
+		<% else %>
+		    <!-- todo: add logic to decide which collection to get. at present there are no ajax calls for these -->
+		    <% reqpath = request.path %>
+		<% end %>	
+	  	<%= link_to "See more #{pagination_name collection}", request.path + '?page=' + collection.next_page.to_s + qstring, :class => "paginator" %>
+	<% end %>
+	<div id="page_loading" style="display: none;"><h4>Loading</h4></div>
 <% end %>
-<div id="page_loading" style="display: none;"><h4>Loading</h4></div>
+	
 </div>
 <script type="text/javascript" charset="utf-8">
 

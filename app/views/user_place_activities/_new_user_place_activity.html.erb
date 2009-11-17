@@ -1,4 +1,6 @@
+<div style="height:400px;">
 <% form_for user_place_activity, :url => account_place_activities_path do |f| %>
+
   <% if view == "add_activity" %>
     <h4>Add an activity</h4>
 	<%= hidden_field_tag 'activity_id', activity.id, :id => 'user_place_activity[activity_id]' %>
@@ -17,35 +19,43 @@
 	    :size => 50,
 	    "data-prefilled" => (user_place_activity.place.present? ? 'true' : 'false')
 	  %>
-
 	<div class="clear"></div>
-	
-  <% else %>
-  <h4><%=I18n.translate("Add_place_to_favorites")%></h4>
+  <% end %>
+  <% if view == "add_place" %>
+    <h4><%=I18n.translate("Add_place_to_favorites")%></h4>
 	<%= image_tag(place.icon.url(:thumb), :width => '30px', :height => '30px') %>
   	<%= place.name %> <span style="font-size: .7em;"><%= place.neighborhood %></span>
 	<%= f.hidden_field :id %>
-	  <%= hidden_field_tag 'place_id', place.id, :id => 'place_id' %>
-	  <div class="clear"></div>
+	<%= hidden_field_tag 'place_id', place.id, :id => 'place_id' %>
+	<div class="clear"></div>
 	<div id="activity_category_select" style="margin-top:10px">
-		<label  style="margin-top: 5px; color:#990000;">What do you do here?</label>
-				<div class="clear"></div>
+	    <label  style="margin-top: 5px; color:#990000;">What do you do here?</label>
+	    <div class="clear"></div>
 	    <%= render :partial => "shared/activity_select",  :locals => {:allow_any_activity => "1"} %>
-	  </div>
+	</div>
 	<div class="clear"></div>
   <% end %>
-  
-  
+  <% if view == "add_place_activity" %>
+    <h4><%=I18n.translate("Add_place_to_favorites")%></h4>
+	<%= image_tag(place.icon.url(:thumb), :width => '30px', :height => '30px') %>
+	<%= hidden_field_tag 'activity_id', activity.id, :id => 'user_place_activity[activity_id]' %>
+  	<%= activity.name %> <span style="font-size: .7em;"><%= activity.category %></span> at
+    <%= place.name %> <span style="font-size: .7em;"><%= place.neighborhood %></span>
+	<%= f.hidden_field :id %>
+	<%= hidden_field_tag 'place_id', place.id, :id => 'place_id' %>
+	<div class="clear"></div>
+  <% end %>
 
   </br>
   <div style="margin-top:10px">
-    <h4>Tell us everything important about it in less than a text message</h4>
-    <%= f.text_area :description, :rows => 10, :class => "input_text word_count" %>
+      <h4>Tell us everything important about it in less than a text message</h4>
+      <%= f.text_area :description, :rows => 10, :class => "input_text word_count" %>
   </div>
   <%= submit_button 'Save', :id => "new_activity", :plc_id => "34"%>
   <%= submit_button 'Cancel', :id => "cancel" %>
-<% end %>
 
+<% end %>
+</div>
 
 <script type="text/javascript" charset="utf-8">
 

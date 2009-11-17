@@ -34,6 +34,10 @@ ActionController::Routing::Routes.draw do |map|
   map.user_favorite_delete 'account/favorites/delete', :controller => 'user_favorites',  :action => 'destroy'
   map.user_activity_delete 'account/activities/delete', :controller => 'user_activities',  :action => 'destroy'
 
+map.user_place_activity '/user_place_activities', :controller => "user_place_activities", :action =>"show"
+
+
+
   map.resource :account, :controller => "users" do |u|
     u.resources :favorites, :controller => "user_favorites"
     u.resources :pictures, :controller => "user_pictures"
@@ -42,7 +46,7 @@ ActionController::Routing::Routes.draw do |map|
     u.resources :matches, :controller => "user_matches", :collection => { :all => :get }
     u.resources :activities, :controller => "user_activities"
     u.resources :places, :controller => "user_places"
-    u.resources :place_activities, :controller => "user_place_activities"
+    u.resources :place_activities, :controller => "user_place_activities", :action =>"show"
   end
   
   map.resources :profiles, :except => :show

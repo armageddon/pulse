@@ -11,4 +11,13 @@ class UserPlacesController < ApplicationController
       
     end
   end
+  
+ def create
+   logger.debug('in up create')
+ end
+ 
+ def new
+   logger.debug('in up new')
+   
+ end
 end
