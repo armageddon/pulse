@@ -125,8 +125,8 @@ helper UsersHelper
   end
   
   def search_criteria
-    logger.info("asasasas")
-    logger.info("params: " +  params.to_s())
+    @places = current_user.suggested_places
+    @matches = current_user.matches(params[:page], 8)
     @search_criteria = SearchCriteria.new(params, current_user)
     logger.info(@search_criteria.to_s)
     respond_to do |format|

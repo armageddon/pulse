@@ -75,7 +75,12 @@ class Place < ActiveRecord::Base
       logger.debug(search_criteria.high_lat)
       logger.debug(search_criteria.low_long)
       logger.debug(search_criteria.high_long)
-      results = Place.search(params[:search_criteria][:keyword], :conditions => {:latitude => search_criteria.low_lat..search_criteria.high_lat, :longitude => search_criteria.low_long..search_criteria.high_long},  :page=>1, :per_page=>20)
+      if search_criteria.distance != nil && search_criteria.distance != 0
+        results = Place.search(params[:search_criteria][:keyword], :conditions => {:latitude => search_criteria.low_lat..search_criteria.high_lat, :longitude => search_criteria.low_long..search_criteria.high_long},  :page=>1, :per_page=>20)
+      else
+        results = Place.search(params[:search_criteria][:keyword],  :page=>1, :per_page=>20)
+        
+      end
       return results
     #UserPlaceActivity.paginate(:conditions => conditions, :order => "count(user_id) DESC" ,:select => "user_place_activities.activity_id,user_place_activities.place_id, count(user_id) as users_count",:group => 'user_place_activities.activity_id,user_place_activities.place_id',:page => params[:page], :per_page => 12)  
     # :joins => "inner join places on user_place_activities.place_id = places.id", :conditions => ["latitude <= " +high_lat.to_s  + " and latitude >= " +low_lat.to_s  + " and longitude >= " +low_long.to_s  + " and longitude <= " +high_long.to_s

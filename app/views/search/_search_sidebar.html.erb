@@ -26,8 +26,8 @@
 	    	<%= check_box_tag "search_criteria[age_"+opt[1].to_s+"]", opt[1] , @search_criteria.ages.include?(opt[1]) %> <%= opt[0] %> <br \>
 	    <% end %>
 	    <label  class="search_criteria_header">Gender</label><br \>
-		<%= check_box_tag "search_criteria[sp_1]",1, @search_criteria.sex_preferences.include?(1) %> Male <br \>
-		<%= check_box_tag "search_criteria[sp_2]",2, @search_criteria.sex_preferences.include?(2)  %> Female<br \>
+		<%= check_box_tag "search_criteria[sp_1]",1, @search_criteria.sex_preferences.include?("1") %> Male <br \>
+		<%= check_box_tag "search_criteria[sp_2]",2, @search_criteria.sex_preferences.include?("2")  %> Female<br \>
 	</div>
 	<div id="place_header" style="font-size:14px; background-color:grey; color:white;">Places</div>
 	<div id='place_criteria'  style="padding:5px" class="<%=search_places_class(@search_criteria.type)%>" >

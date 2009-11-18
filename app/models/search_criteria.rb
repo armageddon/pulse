@@ -36,22 +36,30 @@ class SearchCriteria < ActiveRecord::Base
          @type = params[:search_criteria][:type]
          end
       
+      
+      
       if params[:search_criteria][:lower_age] != nil &&  params[:search_criteria][:upper_age] != nil
-        (params[:search_criteria][:lower_age].to_i..params[:search_criteria][:upper_age].to_i).each do |age|
-          ages << age
+        lower =   params[:search_criteria][:upper_age].to_i
+        upper =   params[:search_criteria][:lower_age].to_i
+        (lower..upper).each do |age|
+          @ages << age
         end
       end
+      
+      if params[:search_criteria][:sex_preference] != nil
+        #todo: both
+        @sex_preferences << params[:search_criteria][:sex_preference]
+      end
+      logger.debug('search criteria params: XXXXXXXXXXXX ' + params[:search_criteria].length.to_s)
       params[:search_criteria].each do |p|
+        logger.debug('XXXXXXXXXXXXXXXXXXXXXXXXXXX')
+        logger.debug(p[0].to_s + ' : ' + p[1].to_s )
         @ages << p[1] if p[0].to_s.rindex('age_') != nil
         @activity_categories << p[1] if p[0].to_s.rindex('ac_') != nil
         @sex_preferences << p[1]  if p[0].to_s.rindex('sp_') != nil 
-       
-
-      
-        
       end
-      logger.debug('SEX PREFSSSSSSSSSS')
-      logger.debug(@sex_preferences)
+      logger.debug('AGE PREFSSSSSSSSSS')
+      logger.debug(@ages)
       if params[:search_criteria][:keyword] != nil 
         @keyword = params[:search_criteria][:keyword]
       end
@@ -70,7 +78,26 @@ class SearchCriteria < ActiveRecord::Base
       if params[:search_criteria][:postcode] != nil
         @postcode = params[:search_criteria][:postcode]
       end
+    else
+      @sex_condition = ""
+      @sex = user.sex
+      @age_condition = ""
+      @place_location_condition = ""
+      @activity_category_condition = ""
+      @keyword=""
+      @ages = [user.age_preference - 1, user.age_preference, user.age_preference + 1]
+      @activity_categories = Array.new
+      @sex_preference  = user.sex_preference
+      @type = 1
+      @low_lat =0.0
+      @high_lat =0.0
+      @low_long =0.0
+      @high_long =0.0
+      @upper_age = user.age_preference - 1
+      @lower_age = user.age_preference + 1
+      
     end
+    
   end
   
   def set_age_condition()

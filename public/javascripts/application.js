@@ -1,5 +1,16 @@
 $(document).ready(function() {
 
+  $('#search_criteria_keyword').blur(function() {
+    if ($(this).val() == '')
+      $(this).val('Enter keyword');
+  })
+
+  $('#search_criteria_keyword').focus(function() {
+    if ($(this).val() == 'Enter keyword') {
+      $(this).val('');
+    }
+  });
+
   // misc rails specific stuff
   $.ajaxSetup({ 'beforeSend': function(xhr) {xhr.setRequestHeader("Accept", "text/javascript")} });
   
@@ -134,8 +145,6 @@ $(document).ready(function() {
     })
     return false;
   })
-
-
 
   $('.fancy_select').live('click',function() {
     $('.fancy_select_options').hide();
