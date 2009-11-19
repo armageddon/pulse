@@ -3,7 +3,8 @@ class SearchController < ApplicationController
 helper UsersHelper
 
   def index
-      
+      @places = current_user.suggested_places
+      @matches = current_user.matches(params[:page], 8)
       @search_criteria = SearchCriteria.new(params, current_user)
       logger.debug("type%%%%%%%%%%%%%%%%%%%% " + @search_criteria.type.to_s)
       @users = User.search_users_advanced(params, current_user)

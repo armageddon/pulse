@@ -2,38 +2,41 @@ module CssHelper
   
   def search_keyword_class(search_type)
     case search_type
-      when "1" then 'criteria_highlight'
-      when "2" then 'criteria_highlight'
-      when "3" then 'criteria_highlight'
-      when "4" then ''
+      when "1" then 'criteria_show'
+      when "2" then 'criteria_show'
+      when "3" then 'criteria_show'
+      when "4" then 'criteria_hide'
+      when "5" then 'criteria_hide'
       else ''
     end
   end
   def search_people_class(search_type)
     case search_type
-      when "1" then 'criteria_highlight'
-      when "2" then ''
-      when "3" then ''
-      when "4" then 'criteria_highlight'
+      when "1" then 'criteria_show'
+      when "2" then 'criteria_hide'
+      when "3" then 'criteria_hide'
+      when "4" then 'criteria_show'
+      when "5" then 'criteria_show'
       else ''
     end
   end
   def search_places_class(search_type)
     case search_type
-      when "1" then ''
-      when "2" then 'criteria_highlight'
-      when "3" then ''
-      when "4" then 'criteria_highlight'
+      when "1" then 'criteria_hide'
+      when "2" then 'criteria_show'
+      when "3" then 'criteria_hide'
+      when "4" then 'criteria_show'
+      when "5" then 'criteria_show'
       else ''
     end
   end
   def search_activities_class(search_type)
     case search_type
-      when "1" then ''
-      when "2" then ''
-      when "3" then 'criteria_highlight'
-      when "4" then 'criteria_highlight'
-      when "5" then 'criteria_highlight'
+      when "1" then 'criteria_hide'
+      when "2" then 'criteria_hide'
+      when "3" then 'criteria_show'
+      when "4" then 'criteria_show'
+      when "5" then 'criteria_show'
       else ''
     end
   end

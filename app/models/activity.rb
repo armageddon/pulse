@@ -13,6 +13,7 @@ class Activity < ActiveRecord::Base
 
   define_index do
     indexes name
+    has activity_category_id
   end
   has_attached_file :icon, :styles => { :thumb => "75x75#", :thumb => "160x160#" }, :default_url => "/images/Question.png"
   has_many :user_activities
@@ -22,12 +23,13 @@ class Activity < ActiveRecord::Base
   
 
   def self.search_activities(params, current_user)
-    #this is repeated in other objects - refactor
-    search_criteria = SearchCriteria.new(params,current_user).conditions
-    @results = Activity.paginate(:all, :page => params[:page], :per_page => 15)
-
-
-    return @results
+    search_criteria = SearchCriteria.new(params, current_user)
+    if search_criteria.activity_categories.length > 0
+      results = Activity.search(params[:search_criteria][:keyword], :conditions => {:activity_category_id => search_criteria.activity_categories},  :page=>1, :per_page=>20)
+    else
+      results = Activity.search(params[:search_criteria][:keyword], :page => 1, :per_page => 20)
+    end
+    return results
   end
 end
 

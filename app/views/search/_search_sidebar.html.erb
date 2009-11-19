@@ -19,6 +19,7 @@
 	   	<label  class="search_criteria_header" style="padding-top:0px">Keyword</label><br \>
 		<%= text_field_tag 'search_criteria[keyword]', @search_criteria.keyword, :class => 'input_text'%><br />
 	</div>
+	
 	<div id="people_header" style="font-size:14px; background-color:grey; color:white;">People</div>
 	<div id='people_criteria' style="padding:5px" class="<%=search_people_class(@search_criteria.type)%>" >
 	    <label class="search_criteria_header">Age</label><br \>
@@ -29,6 +30,7 @@
 		<%= check_box_tag "search_criteria[sp_1]",1, @search_criteria.sex_preferences.include?("1") %> Male <br \>
 		<%= check_box_tag "search_criteria[sp_2]",2, @search_criteria.sex_preferences.include?("2")  %> Female<br \>
 	</div>
+	
 	<div id="place_header" style="font-size:14px; background-color:grey; color:white;">Places</div>
 	<div id='place_criteria'  style="padding:5px" class="<%=search_places_class(@search_criteria.type)%>" >
 		<label class="search_criteria_header">Location</label><br \>
@@ -39,6 +41,7 @@
 			<%= text_field_tag 'search_criteria[postcode]', @search_criteria.postcode, :class => 'input_text' %><br />	
 		</div>
 	</div>
+	
 	<div id="activity_header" style="font-size:14px; background-color:grey; color:white;">Activities</div>
 	<div id='activity_criteria'  style="padding:5px" class="<%=search_activities_class(@search_criteria.type)%>" >
 		<label class="search_criteria_header">Activity</label><br \>

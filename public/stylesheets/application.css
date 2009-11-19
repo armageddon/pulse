@@ -11,7 +11,14 @@
   font-weight: bold;
   float: left;	
 }
-
+.criteria_show
+{
+	display:block;
+}
+.criteria_hide
+{
+	display:none;
+}
 .criteria_highlight
 {
 	background-color:lightgrey;

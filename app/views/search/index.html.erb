@@ -4,15 +4,19 @@
 <% end %>
 
 <% content_for :c3 do %>
-  <%= render :partial => "skyscraper" %>
+  <%= render :partial => "shared/mini_dashboard" %>
+<br />
+  <%= render :partial => "shared/message" %>	
 <% end %>
 
 
 
 <% form_tag search_path, :method => :get, :id => "advanced_search_form" do %>
-	<%= render :partial => 'shared/user_collection' , :locals => {:collection => @users}%>
+<!--todo: should only render divs - data to be filled by js -->
+	
+	<div id='results'>Loading....<</div> 
 	<div class="clear">&nbsp;</div>
-    <%= render :partial => 'shared/search_place_activity_collection' , :locals => {:collection => @user_place_activities}%>
+    <div id='activity_results'>Loading....<</div> 
 	<div class="clear">&nbsp;</div>
     <div id='big_map' style='height:1px; overflow:hidden'>
 		<%= render :partial => 'maps/map' %>
@@ -22,6 +26,13 @@
 
 
 <script type="text/javascript" charset="utf-8">
+
+
+   $(document).ready(function() {
+	$("#advanced_search_side").submit();
+   });
+
+
 //todo: clean up this javascript
 $("#advanced_search_form").submit(function() {
 	error = false;
