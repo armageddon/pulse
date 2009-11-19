@@ -39,6 +39,9 @@ $(document).ready(function() {
   });
 
   $("#user_icon").change(function(e) {
+
+		$('#add_photo').css('background','#F1F3F6 url(/images/loadercircles.gif) no-repeat scroll center center');
+		$('#add_photo').html('Please wait - your photo may take up to a minute to load......');
     $("#photo_upload").ajaxSubmit({
       iframe: true,
       extraData: { 'iframe': 'true' },
@@ -245,7 +248,18 @@ $(document).ready(function() {
       password_confirm.addClass('invalid');
       password.next().text('Your password and password confirmation do not match.');
       error = true;
-    }
+    } else if (password.val().length < 7) {
+		 password.addClass('invalid');
+	     password_confirm.addClass('invalid');
+	     password.next().text('Your passwordmust be 7 characters or more');
+	     error = true;
+	}
+	else if (password_confirm.val().length < 7) {
+		 password.addClass('invalid');
+	     password_confirm.addClass('invalid');
+	     password.next().text('Your passwordmust be 7 characters or more');
+	     error = true;
+	}
     
     var postcode = $('#user_postcode');
 	regexString = /^([A-PR-UWYZ0-9][A-HK-Y0-9][AEHMNPRTVXY0-9]?[ABEHMNPRVWXY0-9]? {1,2}[0-9][ABD-HJLN-UW-Z]{2}|GIR 0AA)$/

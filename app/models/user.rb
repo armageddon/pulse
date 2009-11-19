@@ -337,7 +337,8 @@ fires :newuser, :on => :create, :actor => :self
     end 
     return @results
   end
-#todo: take place_activity out of user_place_activity??
+
+  #todo: take place_activity out of user_place_activity??
   def self.search_users_pictures(params, current_user, place_id, activity_id)
     #this is repeated in other objects - refactor
     search_criteria = SearchCriteria.new(params,current_user).conditions
@@ -384,6 +385,6 @@ fires :newuser, :on => :create, :actor => :self
   def make_activation_code
         self.deleted_at = nil
         self.activation_code = self.class.make_token
-    end
+  end
 
 end

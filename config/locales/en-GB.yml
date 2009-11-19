@@ -12,7 +12,7 @@ en-GB:
   your_favorite_people: "Your favourite people"
   your_favorite_activities: "Your favourite activities"
   your_favorite_places: "Your favourite places"
-  
+  Password: "Password must be greater than 7 characters"
   date:
     formats:
       default: "%d/%m/%Y"
