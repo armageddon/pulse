@@ -18,9 +18,9 @@ class ProfilesController < ApplicationController
       format.js do
         case params[:type]
         when "places"
-          render :partial => "shared/object_collection", :locals => { :collection => @places }
+          render :partial => "shared_object_collections/object_collection", :locals => { :collection => @places }
         when "user_place_activities"
-           render :partial => "shared/object_collection", :locals => { :collection => @user_activities }
+           render :partial => "shared_object_collections/object_collection", :locals => { :collection => @user_activities }
         end
       end
       

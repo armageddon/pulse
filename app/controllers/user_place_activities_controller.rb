@@ -53,9 +53,13 @@ class UserPlaceActivitiesController < ApplicationController
   def create
     if(params[:activity_id] != "0")
       @activity = Activity.find(params[:activity_id])
+    else
+      @activity = Activity.find(:first)
     end
     if(params[:place_id] != "0" && params[:place_id] != "")
        @place = Place.find(params[:place_id])
+     else
+       @place = Place.find(:first);
     end 
     if @place != nil && @activity != nil
       @user_place_activity = current_user.user_place_activities.build(params[:user_place_activity])
@@ -70,34 +74,42 @@ class UserPlaceActivitiesController < ApplicationController
     end
     error_string = ""
     
-    
-    
-    
     respond_to do |format|
-      if @user_place_activity!=nil && @user_place_activity.save
-        @user_place.save
-        @user_activity.save
-        format.html do
-          flash[:notice] = "You have added a user place activity, user activity and user place"
-          redirect_to account_places_path
-        end
-        format.js {render :text => "You like to <span style='margin-top: 5px; color: rgb(153, 0, 0);'>" + @activity.name + "</span> at <span style='margin-top: 5px; color: rgb(153, 0, 0);'>" + @place.name  + "</span><br \>"   } 
-      elsif @user_place!=nil && @user_place.save
+      upa = UserPlaceActivity.find(:all, :conditions=> 'user_id = ' + current_user.id.to_s+ ' and place_id = ' +@user_place_activity.place_id.to_s + ' and activity_id = ' + @user_place_activity.activity_id.to_s)
+      logger.debug('daksjdakjsdhakjsdakjsdhaksjdhaksjdhaksjdhaksdjh' + (upa ==nil).to_s)
+       logger.debug('daksjdakjsdhakjsdakjsdhaksjdhaksjdhaksjdhaksdjh' + current_user.id.to_s)
+      if upa.length != 0 
+        format.html { render :action => :new}
+        format.js { render :text => 'You have already added this place or activity' }
+      else
+        if @user_place_activity!=nil && @user_place_activity.save
+          logger.debug('upa')
+          @user_place.save
+          @user_activity.save
           format.html do
-            flash[:notice] = "You have added a user place"
+            flash[:notice] = "You have added a user place activity, user activity and user place"
             redirect_to account_places_path
           end
-          format.js {render :text => "You like <span style='margin-top: 5px; color: rgb(153, 0, 0);'>" + @place.name  + "</span><br \>"   }
-      elsif @user_activity!=nil && @user_activity.save
-        logger.debug('before user_activity save')
-        format.html do
-          flash[:notice] = "You have added a user activity"
-          redirect_to account_places_path
+          #format.js { render :text => "You like to <span style='margin-top: 5px; color: rgb(153, 0, 0);'>" + @activity.name + "</span> at <span style='margin-top: 5px; color: rgb(153, 0, 0);'>" + @place.name  + "</span><br \>"   } 
+          format.js {render :partial => 'shared_objects/signup_place_activity', :object => @user_place_activity  }
+        elsif @user_place!=nil && @user_place.save
+            format.html do
+              flash[:notice] = "You have added a user place"
+              redirect_to account_places_path
+            end
+            #format.js {render :text => "You like <span style='margin-top: 5px; color: rgb(153, 0, 0);'>" + @place.name  + "</span><br \>"   }
+            format.js {render :partial => 'shared_objects/search_place_activity', :object => @user_place_activity  }
+        elsif @user_activity!=nil && @user_activity.save
+          logger.debug('before user_activity save')
+          format.html do
+            flash[:notice] = "You have added a user activity"
+            redirect_to account_places_path
+          end
+          format.js  {render :partial => 'shared_objects/search_place_activity', :object => @user_place_activity   }
+        else
+          format.html { render :action => :new}
+          format.js { render :text => 'You have already added this place or activity' }
         end
-        format.js {render :text => "You like to <span style='margin-top: 5px; color: rgb(153, 0, 0);'>" + @activity.name + "</span> <br \>"   }
-      else
-        format.html { render :action => :new}
-        format.js { render :text => 'You have already added this place or activity', :status => 500 }
       end
     end
   end

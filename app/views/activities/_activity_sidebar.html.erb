@@ -8,9 +8,7 @@
 <% end %>
 
 <ul id="do_things">
-   <li><%= link_to "FIND PEOPLE", :controller=>'search', :id=>'find_people_link' , :t => "people" %></li>
-   <li><%= link_to "FIND PLACES", :controller=>'search', :id=>'find_places_link' , :t => "places" %></li>
-   <li><%= link_to "FIND ACTIVITIES", :controller=>'search', :id=>'find_activities_link' , :t => "activities" %></li>
+   <li><%= link_to "SEARCH", :controller=>'search'%></li>
    <li><%= link_to "EDIT MY INFO", edit_account_path %></li>
    <li>&nbsp;</li>
    <li><%= link_to "REMOVE FROM MY ACTIVITIES", account_activity_path(@activity), :id => "remove_activity", :style => current_user.activities.include?(@activity) ? "" : "display: none;" %>

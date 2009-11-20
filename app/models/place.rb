@@ -71,9 +71,9 @@ class Place < ActiveRecord::Base
       search_criteria = SearchCriteria.new(params, current_user)
       search_criteria.conditions
       if search_criteria.distance != nil && search_criteria.distance != "0" && search_criteria.distance != "" 
-        results = Place.search(params[:search_criteria][:keyword], :conditions => {:latitude => search_criteria.low_lat..search_criteria.high_lat, :longitude => search_criteria.low_long..search_criteria.high_long},  :page=>1, :per_page=>20)
+        results = Place.search(params[:search_criteria][:keyword], :conditions => {:latitude => search_criteria.low_lat..search_criteria.high_lat, :longitude => search_criteria.low_long..search_criteria.high_long},  :page=>params[:page], :per_page=>14)
       else
-        results = Place.search(params[:search_criteria][:keyword],  :page=>1, :per_page=>20)
+        results = Place.search(params[:search_criteria][:keyword],  :page=>params[:page], :per_page=>14)
         
       end
       return results

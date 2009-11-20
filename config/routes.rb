@@ -17,7 +17,7 @@ ActionController::Routing::Routes.draw do |map|
   map.update '/update', :controller => "users", :action => 'update'
   map.search_places '/search/places', :controller => 'search', :action => "places"
   map.search_people '/search/people', :controller => 'search', :action => "people"
-   map.search_people '/search/people_list', :controller => 'search', :action => "people_list"
+  map.search_people '/search/people_list', :controller => 'search', :action => "people_list"
   map.search_activities '/search/activities', :controller => "search", :action => "activities"
   map.search_place_activities '/search/place_activities', :controller => "search", :action => "place_activities"
   map.activity_list '/search/activity_list', :controller => 'search', :action => "activity_list" #todo - url doesnt look good
@@ -34,7 +34,7 @@ ActionController::Routing::Routes.draw do |map|
   map.user_favorite_delete 'account/favorites/delete', :controller => 'user_favorites',  :action => 'destroy'
   map.user_activity_delete 'account/activities/delete', :controller => 'user_activities',  :action => 'destroy'
 
-map.user_place_activity '/user_place_activities', :controller => "user_place_activities", :action =>"show"
+  map.user_place_activity '/user_place_activities', :controller => "user_place_activities", :action =>"show"
 
 
 

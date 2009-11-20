@@ -5,7 +5,7 @@ class UserMatchesController < ApplicationController
     @matches = current_user.matches(params[:page], 8)
     respond_to do |format|
       format.html { render }
-      format.js { render :partial => "shared/object_collection", 
+      format.js { render :partial => "shared_object_collections/object_collection", 
         :locals => { :collection => @matches }
       }
     end

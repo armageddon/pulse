@@ -13,14 +13,50 @@
 
 <% form_tag search_path, :method => :get, :id => "advanced_search_form" do %>
 <!--todo: should only render divs - data to be filled by js -->
+<div id='people_container' class='<%=search_people_results_class(@search_criteria.type)%>'>
+	<div class="section_header" >
+		<div style="float:left;width:200px">
+			<h3 id='people_header' style="width:100px;" class="section_name">People</h3>
+		</div>
+		<div class="clear">&nbsp;</div>
+	</div>
+	<div class="clear">&nbsp;</div>
+	<div id='people_results' width ='550px'>Loading....</div> 
+</div>
+<div class="clear">&nbsp;</div>
+<div id='activity_container' class='<%=search_activity_results_class(@search_criteria.type)%>'>
+	<div class="section_header" >
+		<div style="float:left;width:200px">
+			<h3 style="width:100px;" class="section_name">Activities</h3>
+		</div>
+		<div class="clear">&nbsp;</div>
+	</div>
+	<div class="clear">&nbsp;</div>
 	
-	<div id='results'>Loading....<</div> 
+	<div style="width:45px;float:left">&nbsp;</div>
+	<div style="width:130px;float:left">What</div>
+	<div style="width:150px;float:left">Where</div>
+	<div style="width:170px;float:left">Who</div>
+	<div style="width:50px;float:left">Actions</div>
+	<div class="clear"></div>
+    <div id='activity_results'>Loading....</div> 
+</div>
+<div class="clear">&nbsp;</div>
+<div id='object_container' class='<%=search_object_results_class(@search_criteria.type)%>'>
+    <div class="section_header" >
+		<div style="float:left;width:200px">
+			<h3 id='object_header' style="width:100px;" class="section_name">People</h3>
+		</div>
+		<div class="clear">&nbsp;</div>
+	</div>
+	<div id='object_results'>Loading....</div> 
+</div>
+<div class="clear">&nbsp;</div>
 	<div class="clear">&nbsp;</div>
-    <div id='activity_results'>Loading....<</div> 
-	<div class="clear">&nbsp;</div>
-    <div id='big_map' style='height:1px; overflow:hidden'>
+	<div id='big_map' style='height:1px; overflow:hidden'>
 		<%= render :partial => 'maps/map' %>
 	</div>
+
 
 <% end %>
 

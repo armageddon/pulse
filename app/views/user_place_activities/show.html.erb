@@ -2,5 +2,5 @@
   <%= render :partial => "shared/place_activity_sidebar" %>
 <% end %>
 
-<%= render :partial => 'shared/user_collection' , :locals => {:collection => @users}%>
-<%= render :partial => 'shared/user_place_activity_comments_collection' , :locals => {:collection => @user_place_activities}%>
+<%= render :partial => 'shared_object_collections/user_collection' , :locals => {:collection => @users}%>
+<%= render :partial => 'shared_object_collections/user_place_activity_comments_collection' , :locals => {:collection => @user_place_activities}%>

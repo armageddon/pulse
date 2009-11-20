@@ -17,12 +17,18 @@
 <% end %>
 
 <%= render :partial => "maps/small_map", :locals => {:collection => @updates} %>
-
-<%= render :partial => "feeds/feed_collection", :locals => {:collection => @updates} %>
+<div style="float:left" id="activity_results">
+<div class="section_header" >
+	<div style="float:left;width:200px">
+		<h3 style="width:100px;" class="section_name">Updates</h3>
+	</div>
+	<div class="clear">&nbsp;</div>
+</div>
+<%= render :partial => "shared_object_collections/feed_collection", :locals => {:collection => @updates} %>
 
 <!--
 <h3 class="section">Your matches</h3>
-<%= render :partial => "shared/object", :collection => @matches %>
+<%= render :partial => "shared_objects/object", :collection => @matches %>
 <div class="clear"></div>
 <h3 class="section">Check out these places</h3>
-<%= render :partial => "shared/object",  :collection => @places  %>-->
+<%= render :partial => "shared_objects/object",  :collection => @places  %>-->

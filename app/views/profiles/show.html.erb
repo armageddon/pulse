@@ -35,6 +35,6 @@
 <% end %>
 
 <h3 class="section"><%= @user.sex == User::Sex::MALE ? 'His' : 'Her' %> places</h3>
-<%= render :partial => 'shared/object_collection', :locals => { :collection => @places } %>
+<%= render :partial => 'shared_object_collections/object_collection', :locals => { :collection => @places } %>
 <h3 class="section"><%= @user.sex == User::Sex::MALE ? 'His' : 'Her' %> activities</h3>
-<%= render :partial => 'shared/object_collection', :locals => { :collection => @user_activities } %>
+<%= render :partial => 'shared_object_collections/object_collection', :locals => { :collection => @user_activities } %>

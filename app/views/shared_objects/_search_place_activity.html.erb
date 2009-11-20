@@ -2,8 +2,10 @@
   <div class="icon" style="width:25;">
 
   </div>
-  <div class="what">
-	<%= link_to (object.activity.name), object.activity %>
+  <% upa = UserPlaceActivity.find(:first, :conditions=>"place_id = " + object.place.id.to_s + " and activity_id = " + object.activity.id.to_s) %>
+   <%= 'QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ' + upa.id.to_s %>
+<div class="what">
+	<%= link_to (upa.activity.name), object.activity%>
   </div>
   <div class="where">
 	<%= link_to (object.place.name), object.place %>
@@ -11,7 +13,7 @@
   <div class="who">
   <% users = User.search_users_pictures(params, current_user, object.place_id, object.activity_id) %>
 
-  <%= render :partial  => "shared/user_pictures", :collection => users %>
+  <%= render :partial  => "shared_objects/user_pictures", :collection => users %>
   <% if users.total_entries > 3 %>
     <%= " and " +  (users.total_entries-3).to_s + " more ..." %>
   <% end %>

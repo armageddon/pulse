@@ -1,15 +1,6 @@
 $(document).ready(function() {
 
-  $('#search_criteria_keyword').blur(function() {
-    if ($(this).val() == '')
-      $(this).val('Enter keyword');
-  })
 
-  $('#search_criteria_keyword').focus(function() {
-    if ($(this).val() == 'Enter keyword') {
-      $(this).val('');
-    }
-  });
 
   // misc rails specific stuff
   $.ajaxSetup({ 'beforeSend': function(xhr) {xhr.setRequestHeader("Accept", "text/javascript")} });
@@ -134,13 +125,10 @@ $(document).ready(function() {
 
   $('.userpaginator').live('click', function() {
     var link = $(this);
-
-    $('#page_loading').show();
     //todo: need to set type here
     $.get(link.attr('href'),{}, function(data) {
-      $('#page_loading').hide();
-      $('#results').html(data);
-      $('#results_header').html(data.total_entries)
+      $('#people_results').html(data);
+      //$('#results_header').html(data.total_entries)
       $("#dialog").jqmAddTrigger('.add_to_favorites, .add_event, .add_activity');
     })
     return false;

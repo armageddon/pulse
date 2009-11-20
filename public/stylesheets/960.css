@@ -18,35 +18,7 @@
 /* `Grid >> Global
 ----------------------------------------------------------------------------------------------------*/
 
-.step_text
-{
-	float:left;
-	display:inline;
-	width:200px;
-	position:relative;
-	margin-left: 230px;
-	margin-right: 10px;
-}
 
-.step_desc
-{
-	float:left;
-	display:inline;
-	width:200px;
-	position:relative;
-	margin-left: 10px;
-	margin-right: 10px;
-}
-
-.step
-{
-	float:left;
-	display:inline;
-	width:400px;
-	position:relative;
-	margin-left: 10px;
-	margin-right: 10px;	
-}
 
 .grid_1,
 .grid_2,
@@ -400,33 +372,3 @@
 
 /* http://sonspring.com/journal/clearing-floats */
 
-.clear {
-	clear: both;
-	display: block;
-	overflow: hidden;
-	visibility: hidden;
-	width: 0;
-	height: 0;
-}
-
-/* http://www.positioniseverything.net/easyclearing.html */
-
-.clearfix:after {
-	clear: both;
-	content: '.';
-	display: block;
-	visibility: hidden;
-	height: 0;
-}
-
-.clearfix {
-	display: inline-block;
-}
-
-* html .clearfix {
-	height: 1%;
-}
-
-.clearfix {
-	display: block;
-}

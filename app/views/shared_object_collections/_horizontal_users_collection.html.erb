@@ -1,11 +1,5 @@
 
-<div style="float:left" id="results">
-<div class="section_header" >
-	<div style="float:left;width:200px">
-		<h3 style="width:100px;" class="section_name">Page <%= collection.current_page%> of <%= collection.total_pages%></h3>
-	</div>
-	<div class="clear">&nbsp;</div>
-</div>
+
 <div id="userpage">
 <div style="float:left;width:23px;font-size:20px" id="page_back" >
 <% if collection.previous_page  %>
@@ -34,7 +28,7 @@
 </div>
 
 <div style="float:left;width:500px" id="users">
-  <%= render :partial => "shared/user_list", :collection => collection %>
+  <%= render :partial => "shared_objects/user_list", :collection => collection %>
 </div>
 
 
@@ -46,19 +40,15 @@
 		      <% qstring += "&" + p[0].to_s + '=' + p[1].to_s %>
 		<% end %> 
   	<% end %>
-    <% if params[:search_criteria] != nil %>
+	<% qstring += "&type="+collection.first.class.to_s.tableize %>
+	<% if params[:search_criteria] != nil %>
 	   	<%params[:search_criteria].each do |sc| %>
 			<% qstring += "&search_criteria[" + sc[0].to_s + ']=' + sc[1].to_s %>
 		<% end %>
 	<% end %>
-	<% qstring += "&type="+collection.first.class.to_s.tableize %>
-    <% if controller_name == "search" %>
-		<% reqpath = request.path %>
-	<% else %>
 	    <!-- todo: add logic to decide which collection to get. at present there are no ajax calls for these -->
-	    <% reqpath = request.path %>
-	<% end %>	
-  	<%= link_to ">", request.path + '?page=' + collection.next_page.to_s + qstring, :class => "userpaginator" %>
+	    <% reqpath = 'search/people_list'%>
+  	<%= link_to ">", reqpath + '?page=' + collection.next_page.to_s + qstring, :class => "userpaginator" %>
 <% else %>
 	<%= ">" %>
 	

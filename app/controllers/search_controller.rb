@@ -33,13 +33,14 @@ helper UsersHelper
         if @users == nil || @users.length == 0
           render :text=>"<div style='width:500px' id='results'>No results returned</div>"
         else
-          render :partial => 'shared/user_collection', :locals => { :collection => @users },  :content_type => "text/html"
+          render :partial => 'shared_object_collections/horizontal_users_collection', :locals => { :collection => @users },  :content_type => "text/html"
         end
       end
     end
   end
 
   def people
+    logger.debug('PEOPLE')
     @search_criteria = SearchCriteria.new(params, current_user)
     respond_to do |format|
       format.js do
@@ -47,7 +48,7 @@ helper UsersHelper
         if @users == nil || @users.length == 0
           render :text=>"<div style='width:500px' id='activity_results'>No results returned</div>"
         else
-          render :partial => 'shared/users_collection', :locals => { :collection => @users },  :content_type => "text/html"
+          render :partial => 'shared_object_collections/users_collection', :locals => { :collection => @users },  :content_type => "text/html"
         end
       end
     end
@@ -72,7 +73,7 @@ helper UsersHelper
         if  @user_place_activities == nil || @user_place_activities.length == 0
           render :text=>"<div style='width:500px' id='activity_results'>No results returned</div>"
         else
-          render :partial => 'shared/search_place_activity_collection', :locals => { :collection => @user_place_activities },  :content_type => "text/html"
+          render :partial => 'shared_object_collections/search_place_activity_collection', :locals => { :collection => @user_place_activities },  :content_type => "text/html"
         end
       end
     end
@@ -85,7 +86,7 @@ helper UsersHelper
           if @user_place_activities.length == 0
             render :text=>"<div style='width:500px' id='results'>No results returned</div>"
           else
-            render :partial => 'shared/search_place_activity_collection', :locals => { :collection => @user_place_activities },  :content_type => "text/html"
+            render :partial => 'shared_object_collections/search_place_activity_collection', :locals => { :collection => @user_place_activities },  :content_type => "text/html"
           end
         end
       end
@@ -95,7 +96,7 @@ helper UsersHelper
     @activities = Activity.search_activities(params, current_user)
     respond_to do |format|
       format.js do
-        render :partial => "shared/activity_collection", :locals => {:collection => @activities}
+        render :partial => "shared_object_collections/activity_collection", :locals => {:collection => @activities}
       end
     end
   end
@@ -105,7 +106,7 @@ helper UsersHelper
     @places = Place.search_places(params, current_user)
     respond_to do |format|
       format.js do
-        render :partial => "shared/place_collection", :locals => {:collection => @places}
+        render :partial => "shared_object_collections/place_collection", :locals => {:collection => @places}
       end
     end
   end  

@@ -68,8 +68,12 @@
 			$('#activity_criteria').css("display","none");
 			$('#search_criteria_type').val(1);
 			$('#big_map').css("height","0px");
-		    $('#results').css("display","block");
-		    $('#activity_results').css("display","block");
+			
+			$('#activity_container').css("display","none");
+		    $('#people_container').css("display","none");
+		    $('#object_container').css("display","block");
+		    $('#map_container').css("display","none");
+		
 			$("#advanced_search_side").submit();
 			$('#simple_search').addClass("search_type_selected");
 			$('#simple_search').removeClass("search_type");
@@ -87,8 +91,12 @@
 			$('#activity_criteria').css("display","block");
 			$('#search_criteria_type').val(4);
 			$('#big_map').css("height","0px");
-		    $('#results').css("display","block");
-		    $('#activity_results').css("display","block");
+			
+			$('#activity_container').css("display","block");
+		    $('#people_container').css("display","block");
+		    $('#object_container').css("display","none");
+		    $('#map_container').css("display","none");
+		
 			$("#advanced_search_side").submit();
 			$('#advanced_search').addClass("search_type_selected");
 			$('#advanced_search').removeClass("search_type");
@@ -107,8 +115,12 @@
 			$('#activity_criteria').css("display","block");
 			$('#search_criteria_type').val(5);
 		    $('#big_map').css("height","560px");
-		    $('#results').css("display","none");
-		    $('#activity_results').css("display","none");
+
+			$('#activity_container').css("display","none");
+		    $('#people_container').css("display","none");
+		    $('#object_container').css("display","none");
+		    $('#map_container').css("display","block");
+		
 	     	$("#advanced_search_side").submit();
 			$('#map_search').addClass("search_type_selected");
 			$('#map_search').removeClass("search_type");
@@ -168,7 +180,8 @@
 		}
 	});
 	
-	$("#advanced_search_side").submit(function() {
+    $("#advanced_search_side").submit(function() {
+	    //todo: refactor this method too long
 	    error = false;
 		if($(this).attr('t')=="user_place_activity"){
 		  var postcode = $('#postcode');
@@ -181,85 +194,94 @@
 		  }
 	    }
 
-	    if(!error) {
-		  //if search type = 1 call people
-		  var top_url = "";
-		  var bottom_url = "";
-	
+		if(!error) {
+		  var people_url = "";
+		  var objects_url = "";
+		  var activities_url = "";
+		  var map_url = "";
 		  var type = $('#search_criteria_type').val();
 
 		  switch(type) {
 			case "1":
-			  bottom_url = "/search/people"
+			  objects_url = "/search/people"
+				$('#object_header').text('People')
 			break;
 			case "2":
-			  bottom_url = "/search/places"
+			  objects_url = "/search/places"
+				$('#object_header').text('Places');
 			break;
 			case "3":
-			  bottom_url = "/search/activities"
+			  objects_url = "/search/activities"
+				$('#object_header').text('Activities');
 			break;
 			case "4":
-			  bottom_url = "/search/place_activities"
-			  top_url = "search/people_list/"
+			  activities_url = "/search/place_activities"
+			  people_url = "/search/people_list"
 			  break;
 			case "5":
-			  bottom_url = "/big_map"
-
+			  map_url = "/big_map"
 			break;
 		  }
 	
-	        var dataString = $('#advanced_search_side').serialize();
-	    	if(top_url.length>0) {
+          var dataString = $('#advanced_search_side').serialize();
+
+    	  if(people_url.length>0) {
+		    $.ajax({
+		      type: "GET",
+		      url: people_url,
+		      data: $('#advanced_search_side').serialize(), //advanced_search,
+		      success: function(p) {
+		        $('#people_results').html(p);
+			
+		      }
+		    });
+		  }
+	   	  if(activities_url.length>0){
+			$.ajax({
+		    	type: "GET",
+		    	url: activities_url,
+		    	data: $('#advanced_search_side').serialize(), //advanced_search,
+		    	success: function(p) {
+			  		$('#activity_results').html(p);
+		    	}
+			});
+		  }
+	   	  if(objects_url.length>0){
+			$.ajax({
+		    	type: "GET",
+		    	url: objects_url,
+		    	data: $('#advanced_search_side').serialize(), //advanced_search,
+		    	success: function(p) {
+			  		$('#object_results').html(p);
+		    	}
+			});
+		  }
+		  if(map_url.length>0){
+			map.clearOverlays();
+			var sw = new GLatLng(<%=  51.500152 %>, <%= -0.126236  %>);
+			var ne = new GLatLng(<%=  51.502152 %>, <%= -0.122236 %>);
+			var bounds = new GLatLngBounds(sw,ne);
+			var ma = new GMarker(bounds.getCenter(), { icon: dotIcon });
 			$.ajax({
 			    type: "GET",
-			    url: top_url,
+			    url: '/search/map',
 			    data: $('#advanced_search_side').serialize(), //advanced_search,
 			    success: function(p) {
-				  $('#results').replaceWith(p);
+					var x = eval(p);
+					var marker= new Array();
+					for(var i =0; i < x.length; i++)
+					{
+						var point = new GLatLng(x[i].place.latitude, x[i].place.longitude)
+						var marker = createMarker(point,place_html(x[i].place));
+						map.addOverlay(marker);
+					}
 			    }
-			  });
-			}
-			else{
-				$('#results').replaceWith("<div id='results'></div>");
-			}
-			if(bottom_url.length>0){
-              if(type!=5) {
-				$.ajax({
-			    	type: "GET",
-			    	url: bottom_url,
-			    	data: $('#advanced_search_side').serialize(), //advanced_search,
-			    	success: function(p) {
-				  		$('#activity_results').replaceWith(p);
-				  		$("#dialog").jqmAddTrigger('.add_to_favorites, .add_event, .add_activity');
-			    	}
-				});
-			} 
-			else {
-				map.clearOverlays();
-				var sw = new GLatLng(<%=  51.500152 %>, <%= -0.126236  %>);
-				var ne = new GLatLng(<%=  51.502152 %>, <%= -0.122236 %>);
-				var bounds = new GLatLngBounds(sw,ne);
-				var ma = new GMarker(bounds.getCenter(), { icon: dotIcon });
-				$.ajax({
-				    type: "GET",
-				    url: '/search/map',
-				    data: $('#advanced_search_side').serialize(), //advanced_search,
-				    success: function(p) {
-						var x = eval(p);
-						var marker= new Array();
-						for(var i =0; i < x.length; i++)
-						{
-							var point = new GLatLng(x[i].place.latitude, x[i].place.longitude)
-							var marker = createMarker(point,place_html(x[i].place));
-							map.addOverlay(marker);
-						}
-				    }
-				});
-			}
+			});
+		  }
 	    }
-    }
-    return false;
-});
+		return false;
+	});
+
 
 function place_html(pl)
 {

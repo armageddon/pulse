@@ -3,11 +3,11 @@
   <% end %>
 
   <h3 class="section"><%=I18n.translate("your_favorite_people") %></h3>
-  <%= render :partial => "shared/object", :collection => @favorites %>
+  <%= render :partial => "shared_objects/object", :collection => @favorites %>
 
   <h3 class="section"><%=I18n.translate("your_favorite_activities") %></h3>
-  <%= render :partial => "shared/object", :collection => current_user.user_activities, :locals => {:view => params[:view]} %>
+  <%= render :partial => "shared_objects/object", :collection => current_user.user_activities, :locals => {:view => params[:view]} %>
 
   <h3 class="section"><%=I18n.translate("your_favorite_places") %></h3>
-  <%= render :partial => "shared/object", :collection => current_user.places %>
+  <%= render :partial => "shared_objects/object", :collection => current_user.places %>
 <% end %>

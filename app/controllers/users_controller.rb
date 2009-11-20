@@ -9,14 +9,14 @@ include Graticule
   def user_places
     @places = current_user.places;
     respond_to do |format|
-       format.js { render :partial => "shared/object_collection", :locals => {:collection => @places}}
+       format.js { render :partial => "shared_object_collections/object_collection", :locals => {:collection => @places}}
     end
   end
   #todo: where is this called
   def user_place_activities
     @activities = current_user.activities;
     respond_to do |format|
-       format.js { render :partial => "shared/object_collection", :locals => {:collection => @activities}}
+       format.js { render :partial => "shared_object_collections/object_collection", :locals => {:collection => @activities}}
     end
   end
   
@@ -25,7 +25,7 @@ include Graticule
     logger.debug(current_user.errors.full_messages)
     @places = current_user.suggested_places
     @matches = current_user.matches(params[:page], 8)
-    @updates = TimelineEvent.paginate(:conditions => "actor_id <> " + current_user.id.to_s, :page=>1, :per_page => 10)
+    @updates = TimelineEvent.paginate(:conditions => "actor_id <> " + current_user.id.to_s, :page=>1, :per_page => 10, :order => 'created_at DESC')
     logger.debug("matches: " + @matches.length.to_s)
 
   end

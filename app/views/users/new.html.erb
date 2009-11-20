@@ -8,10 +8,10 @@
 </head>
 <body>
   <div id="container" class="container_16">
-    <div class="grid_4 alpha" id="logo">
-        <%= image_tag "logo.png" %>
+    <div style="width:172px;float:left" id="logo1">
+        <%= image_tag "logo.png", :style=>'width:100px' %>
     </div>
-    <div class="grid_12 omega" id="copy">
+    <div style="float:left;width:600px; font-size:16px" id="copy1">
       Welcome to Hello Pulse. We are using technology to build a totally new experience in online dating. Please complete the info below to get access to the site. Don’t be shy.
     </div>
     <div class="clear"></div>
@@ -34,6 +34,7 @@
 			</div>
 		</div>
 	</div>
+	<div class="clear"></div
     <div id="step_1" class="step">
 			<div class="step_1_container">
     			<% form_for @user, :url => account_path do |f| %>
@@ -92,7 +93,7 @@
     	<% form_tag '/account/', :method => "put", :id => "details_update" do %>
       	<label  style="margin-top: 5px; color:#990000;">Description</label>
       	<div id="description">
-        			<%= text_area_tag 'user[description]', 'Tell us about yourself', :id => "user_description", :class => "word_count" %>
+        			<%= text_area_tag 'user[description]', 'Give us a line that sums you up', :id => "user_description", :class => "word_count" %>
       		</div>
     	<label  style="margin-top: 5px; color:#990000;">Your gender</label>
       	<div class='fancy_select'>

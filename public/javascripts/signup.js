@@ -2,7 +2,7 @@ $(document).ready(function() {
   // File input hiding voodoo
   var over = false;
   var box  = false;
-
+  var loading = false;
   $(".word_count").charCounter(140, {
     container: "<div></div>"
   });
@@ -117,16 +117,35 @@ $(document).ready(function() {
         url: '/account/place_activities',
         data: $(this).serialize(),
         success: function(p) {
- 			if($('#user_place_activities').html().indexOf("Please add some activities") >= 0)
+			if (p != 'You have already added this place or activity')
 			{
-				$('#user_place_activities').html('');
+				if($('#user_place_activities').html().indexOf("Please add some activities") >= 0)
+				{
+					$('#user_place_activities').html('');
+				}
+				$('#user_place_activities').append(p);
+				//reset activity
+				$('#parent_value').val(0);
+			    $('#activity_category_target').text("Any category");
+			 	$('#activity_id').val(0);
+				$('#activity_target').text("Any activity");
+				$('#description').text("");
+				$('#place_id').val("0");
+				$('#place_name').text("");
+		
 			}
-			$('#user_place_activities').append(p);
+			else
+			{
+				$('#activity_error').addClass('show');
+				$('#activity_error').addClass('invalid');
+				$('#activity_error').val(p);
+			}
+				
         },
 		error: function(p)
 		{
 			$('#activity_error').addClass('show');
-				$('#activity_error').addClass('invalid');
+			$('#activity_error').addClass('invalid');
 			$('#activity_error').val(p.responseText);			
 		}
       })
@@ -150,7 +169,7 @@ $(document).ready(function() {
   });
 
   $('#user_description').focus(function() {
-    if ($(this).val() == 'Tell us about yourself') {
+    if ($(this).val() == 'Give us a line that sums you up') {
       $(this).val('');
     }
   });

@@ -60,7 +60,7 @@ class SearchCriteria < ActiveRecord::Base
       end
       logger.debug('AGE PREFSSSSSSSSSS')
       logger.debug(@ages)
-      if params[:search_criteria][:keyword] != nil 
+      if params[:search_criteria][:keyword] != nil && params[:search_criteria][:keyword] != 'Enter keyword'
         @keyword = params[:search_criteria][:keyword]
       end
       if params[:search_criteria][:type] != nil 
