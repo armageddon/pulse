@@ -3,7 +3,7 @@
 
   </div>
   <% upa = UserPlaceActivity.find(:first, :conditions=>"place_id = " + object.place.id.to_s + " and activity_id = " + object.activity.id.to_s) %>
-   <%= 'QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ' + upa.id.to_s %>
+
 <div class="what">
 	<%= link_to (upa.activity.name), object.activity%>
   </div>
