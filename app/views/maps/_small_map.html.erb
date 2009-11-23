@@ -25,7 +25,7 @@ map.addControl(new GSmallZoomControl())
   <% Place.search_places_map(params,current_user).each_with_index do |e,i| %>
     var marker<%= i.to_s %> = new GMarker(new GLatLng(<%= e.latitude %>, <%= e.longitude %>), { icon: dotIcon });
     map.addOverlay(marker<%= i.to_s %>);
-    var clickListener<%= i.to_s %> = GEvent.addListener(marker<%= i.to_s %>, "click", function() { marker<%= i.to_s %>.openInfoWindowHtml('<h1><%= e.name.gsub("\'","")%></h1><br/><%=e.category%><br/><%=e.neighborhood%><br/><br><%=e.user_place_activities.length%>&nbsp;people hang here') }));
+    var clickListener<%= i.to_s %> = GEvent.addListener(marker<%= i.to_s %>, "click", function() { marker<%= i.to_s %>.openInfoWindowHtml('') });
   <% end %>
 //map.addControl(new GMapTypeControl())
 
