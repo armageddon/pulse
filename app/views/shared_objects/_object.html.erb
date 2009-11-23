@@ -1,7 +1,7 @@
 
 
 
-
+<% if object != nil %>
 <div class="object" id="<%= dom_id object %>">
 	<% if object.is_a?(UserPlaceActivity) %>
 	  <%= render :partial => "shared_objects/user_place_activity", :object => object %> 
@@ -56,4 +56,5 @@
     <% end %>
   <div class="clear"></div>
 </div>
+<% end %>
 

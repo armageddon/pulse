@@ -22,11 +22,11 @@ map.addControl(new GSmallZoomControl())
   map.setCenter(bounds.getCenter(), 12);
   map.enableInfoWindow()
 
-  <% Place.search_places_map(params,current_user).each_with_index do |e,i| %>
-    var marker<%= i.to_s %> = new GMarker(new GLatLng(<%= e.latitude %>, <%= e.longitude %>), { icon: dotIcon });
-    map.addOverlay(marker<%= i.to_s %>);
-    var clickListener<%= i.to_s %> = GEvent.addListener(marker<%= i.to_s %>, "click", function() { marker<%= i.to_s %>.openInfoWindowHtml('') });
-  <% end %>
+  //<% Place.search_places_map(params,current_user).each_with_index do |e,i| %>
+  //  var marker<%= i.to_s %> = new GMarker(new GLatLng(<%= e.latitude %>, <%= e.longitude %>), { icon: dotIcon });
+  //  map.addOverlay(marker<%= i.to_s %>);
+  //  var clickListener<%= i.to_s %> = GEvent.addListener(marker<%= i.to_s %>, "click", function() { marker<%= i.to_s %>.openInfoWindowHtml('') });
+  //<% end %>
 //map.addControl(new GMapTypeControl())
 
   //var customUI = map.getDefaultUI();
