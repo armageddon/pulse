@@ -272,6 +272,16 @@ fires :newuser, :on => :create, :actor => :self
     messages.update_all(["read_at = ?", Time.now], { :read_at => nil})
   end
 
+  def has_user_place_activity(user_place_activity)
+    result = false
+    user_place_activities.each do |upa|
+      if upa.place_id == user_place_activity.place_id && upa.activity_id == user_place_activity.activity_id
+        result = true
+      end
+    end
+    result
+    
+  end
   #todo: these should be in a helper - need to move the calcs into the model by overriding the acriverecord update
   def get_age_option_from_age(age)
     logger.debug("age" + age.to_s())

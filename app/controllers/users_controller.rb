@@ -5,7 +5,17 @@ include Graticule
   before_filter :find_user, :only => [:suspend, :unsuspend, :destroy, :purge]
   before_filter :login_required, :except => [:redeem, :create]
 
+  def place_activity_list
+    @user_place_activities = UserPlaceActivity.paginate(:all, :conditions => 'user_id = ' + current_user.id.to_s, :page=> params[:page], :per_page=>10)
+  end
 
+  def favorites_list
+    @favorites = User.paginate(:joins=>"inner join user_favorites on user_favorites.friend_id = users.id", :conditions => "user_favorites.user_id = " + current_user.id.to_s,:page=>params[:page],:per_page=>6)
+    respond_to do |format|
+       format.js { render :partial => "shared_object_collections/favorite_users_collection", :locals => {:collection => @favorites}}
+    end
+  end
+  
   def user_places
     @places = current_user.places;
     respond_to do |format|

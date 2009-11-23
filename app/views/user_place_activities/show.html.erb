@@ -1,6 +1,12 @@
 <% content_for :c1 do %>
-  <%= render :partial => "shared/place_activity_sidebar" %>
+  <%= render :partial => "place_activity_sidebar" %>
 <% end %>
 
-<%= render :partial => 'shared_object_collections/user_collection' , :locals => {:collection => @users}%>
-<%= render :partial => 'shared_object_collections/user_place_activity_comments_collection' , :locals => {:collection => @user_place_activities}%>
+<div class="section_header" >
+	<div style="float:left;width:200px">
+		<h3 style="width:100px;" class="section_name">People</h3>
+	</div>
+	<div class="clear">&nbsp;</div>
+</div>
+<%= render :partial => 'shared_object_collections/horizontal_users_collection' , :locals => {:collection => @users}%>
+<%= render :partial => 'shared_object_collections/user_place_activity_comments_collection' , :locals => {:collection => @user_place_activity_comments}%>

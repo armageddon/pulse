@@ -14,9 +14,7 @@ class UserPlaceActivitiesController < ApplicationController
     if params[:place_id].present?
       @place = Place.find(params[:place_id])
     end
-    
 
-    
     @user_place_activity = UserPlaceActivity.new(:place_id => params[:place_id], :activity_id => params[:activity_id])
     @type = params[:type]
     respond_to do |format|
@@ -30,16 +28,17 @@ class UserPlaceActivitiesController < ApplicationController
     logger.debug('show' + params[:id])
      @user_place_activity=UserPlaceActivity.find(params[:id])
      @place = @user_place_activity.place
-      @activity = @user_place_activity.activity
+     @activity = @user_place_activity.activity
      @users = User.paginate(:select => "users.*", :joins => "inner join user_place_activities UPA on UPA.user_id = users.id  ", :conditions=>'place_id = ' +@place.id.to_s + ' and activity_id = ' + @activity.id.to_s, :page => params[:page], :per_page => 6)
-     
-     
      @user_place_activities = UserPlaceActivity.paginate(:conditions=>'place_id = ' +@place.id.to_s + ' and activity_id = ' + @activity.id.to_s, :page=>1,:per_page=>15)
+     @user_place_activity_comments = UserPlaceActivity.paginate(:conditions=>'place_id = ' +@place.id.to_s + ' and activity_id = ' + @activity.id.to_s + ' and LENGTH(description) > 0', :page=>1,:per_page=>15)
+    logger.debug('SSSSSSSSSSSSSSSSSSSSSSSSSSSS' + @user_place_activity_comments.length.to_s)
   end
 
   def destroy
     #depending on type - if place remove 
-    @user_place_activities = current_user.user_place_activities.all(:conditions => ["place_id = ?", params[:place_id]])
+    logger.debug('DESTOYYYYYYYYYY')
+    @user_place_activities = current_user.user_place_activities.all(:conditions => ["place_id = ? and activity_id = ?", params[:place_id], params[:activity_id]])
     @user_place_activities.each do |upa|
       upa.delete
     end
@@ -51,6 +50,7 @@ class UserPlaceActivitiesController < ApplicationController
   end
 
   def create
+    logger.debug('CREATE!!!!!!!!!!!')
     if(params[:activity_id] != "0")
       @activity = Activity.find(params[:activity_id])
     else
@@ -113,4 +113,15 @@ class UserPlaceActivitiesController < ApplicationController
       end
     end
   end
+
+  def list
+    logger.debug('UPA LIST')
+     @user_place_activities = UserPlaceActivity.paginate(:select => "user_place_activities.activity_id,user_place_activities.place_id, count(user_id) as users_count", :order => "count(user_id) DESC", :joins => "inner join users on users.id = user_place_activities.user_id",:group => 'user_place_activities.activity_id,user_place_activities.place_id', :conditions => 'user_id = ' + current_user.id.to_s, :page => params[:page], :per_page => 10, :order => "count(user_id) DESC")
+     respond_to do |format|
+       format.html { render }
+       format.js { render :partial => "shared_object_collections/favorite_place_activity_collection.html.erb", :locals => { :collection => @user_place_activities } }
+
+     end
+  end
+
 end

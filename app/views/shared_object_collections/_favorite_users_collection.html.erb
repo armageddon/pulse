@@ -47,7 +47,7 @@
 		<% end %>
 	<% end %>
 	    <!-- todo: add logic to decide which collection to get. at present there are no ajax calls for these -->
-	    <% reqpath = 'search/people_list'%>
+	    <% reqpath = '/favorites/people'%>
   	<%= link_to ">", reqpath + '?page=' + collection.next_page.to_s + qstring, :class => "userpaginator" %>
 <% else %>
 	<%= ">" %>

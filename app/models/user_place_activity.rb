@@ -42,4 +42,5 @@ class UserPlaceActivity < ActiveRecord::Base
     # :joins => "inner join places on user_place_activities.place_id = places.id", :conditions => ["latitude <= " +high_lat.to_s  + " and latitude >= " +low_lat.to_s  + " and longitude >= " +low_long.to_s  + " and longitude <= " +high_long.to_s
   end
   
+
 end

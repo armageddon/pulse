@@ -1,6 +1,6 @@
 <div class="object" id="<%= dom_id object %>">
     <% user = User.find(object.actor_id)%>
-  	<div class="icon">
+  	<div class="icon" style="margin-right:10px">
 		<%= link_to image_tag(User.find(object.actor_id).icon.url(:thumb), :width => '45px', :height => '45px'), User.find(object.actor_id) %>
 	</div>
 	<div class="info_container">
@@ -27,7 +27,11 @@
 			</div>
 			<div class="clear"></div>
 			<div class="float:left">
-			<i>'<%= user_place_activity.description %>'</i>
+			<i>
+				<% if user_place_activity.description!= nil and user_place_activity.description.length >0 %>
+					'<%= user_place_activity.description %>'
+				<%end%>
+			</i>
 			</div>
 		<% else %>
 		<div style="float:left">

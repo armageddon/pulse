@@ -30,12 +30,14 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :activities, :collection => { :autocomplete => :get } do |a|
     a.resources :pictures, :controller => "activity_pictures"
   end
-
+  map.user_place_activities '/account/place_activities' , :controller => 'user', :action => 'place_activity_list'
+  map.favorite_people 'favorites/people', :controller => 'users', :action => 'favorites_list'
+  map.favourite_place_activities 'user_place_activities/list', :controller => 'user_place_activities', :action=>'list'
   map.user_favorite_delete 'account/favorites/delete', :controller => 'user_favorites',  :action => 'destroy'
   map.user_activity_delete 'account/activities/delete', :controller => 'user_activities',  :action => 'destroy'
 
   map.user_place_activity '/user_place_activities', :controller => "user_place_activities", :action =>"show"
-
+  map.delete_place_activity '/account/delete_user_place_activity', :controller => 'user_place_activities', :action => 'destroy'
 
 
   map.resource :account, :controller => "users" do |u|
@@ -46,7 +48,10 @@ ActionController::Routing::Routes.draw do |map|
     u.resources :matches, :controller => "user_matches", :collection => { :all => :get }
     u.resources :activities, :controller => "user_activities"
     u.resources :places, :controller => "user_places"
-    u.resources :place_activities, :controller => "user_place_activities", :action =>"show"
+    
+    u.resources :place_activities, :controller => "user_place_activities" , :action => 'show'
+    u.resources :new_user_place_activity, :controller => "user_place_activities", :action => 'create'
+    u.resources :delete_activity_place,:controller => "user_place_activities", :action => 'destroy'
   end
   
   map.resources :profiles, :except => :show

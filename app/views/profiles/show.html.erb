@@ -1,3 +1,7 @@
+<% content_for :c3 do %>
+ &nbsp;
+<% end %>
+
 <% content_for :message do %>
   <% if !logged_in? || (logged_in? && current_user != @user) %>
     <h1>
@@ -9,32 +13,28 @@
 <% end %>
 
 <% content_for :c1 do %>
-  <h3 class="section"><%= @user.first_name %></h3>
-  <%= image_tag @user.icon.url(:profile) %>
-  <%= render :partial => "users/description", :locals => { :user => @user } %>
-  <div id="self_description">
-    <span class="fancy_quotes">&#8220;</span>
-    <%= @user.description %>
-    <span class="fancy_quotes">&#8221;</span>
-  </div>
- 	<ul id="do_things">
-	    <li><%= link_to "SEARCH", :controller=>'search', :action=>"search_criteria", :id=>'find_people_link' , :t => "people" %></li>
-	   
-	   <li><%= link_to "EDIT MY INFO", edit_account_path %></li>
-		<li>&nbsp;</li>
-		<% if @user != current_user %>
-		<!--todo: implement remove from favorites -->
-	   <li><%= link_to I18n.translate("ADD_TO_FAVORITES") %></li> 
-	   <li>&nbsp;</li>
-		<%end%>
-	    <li><%= link_to "INVITE A FRIEND", '#', 'data-href' => new_account_invitation_path, :class => "invite_a_friend" %>
-	 </ul>
-
-
-
+  <%= render :partial => 'profile_sidebar' %>
 <% end %>
+<div class='clear'></div>
 
-<h3 class="section"><%= @user.sex == User::Sex::MALE ? 'His' : 'Her' %> places</h3>
-<%= render :partial => 'shared_object_collections/object_collection', :locals => { :collection => @places } %>
-<h3 class="section"><%= @user.sex == User::Sex::MALE ? 'His' : 'Her' %> activities</h3>
-<%= render :partial => 'shared_object_collections/object_collection', :locals => { :collection => @user_activities } %>
+
+<div id='activity_container' class='<%=search_activity_results_class(@search_criteria.type)%>'>
+	<div class="section_header" >
+		<div style="float:left;width:200px">
+			<h3 style="width:100px;" class="section_name"><%= @user.sex == User::Sex::MALE ? 'His' : 'Her' %> activities</h3></h3>
+		</div>
+		<div class="clear">&nbsp;</div>
+	</div>
+	<div class="clear">&nbsp;</div>
+	
+	<div style="width:45px;float:left">&nbsp;</div>
+	<div style="width:130px;float:left">What</div>
+	<div style="width:150px;float:left">Where</div>
+	<div style="width:170px;float:left">Who</div>
+
+	<div class="clear"></div>
+    <div id='activity_results'>
+		<%= render :partial => 'shared_object_collections/user_place_activity_collection', :locals => { :collection => @user_place_activities } %>
+	
+	</div>
+</div> 

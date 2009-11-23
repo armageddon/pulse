@@ -128,9 +128,11 @@
 
       $.ajax({
         type: "POST",
-        url: $(this).attr('action'),
+        url: '/account/new_user_place_activity',
         data: $(this).serialize(),
         success: function(p) {
+			$('#add_place_activity').css('display','none');
+			$('#remove_place_activity').css('display','block');
           $('#dialog').jqmHide();
         },
         error: function(p) {

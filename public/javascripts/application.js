@@ -56,6 +56,29 @@ $(document).ready(function() {
     return false;
   })
 
+
+
+$("#remove_place_activity").live('click',function() {
+	 var link = $(this);
+	 
+     $.ajax({
+       type: "DELETE",
+       url: "/account/delete_user_place_activity",
+	   data: {"activity_id" : $(this).attr("activity_id"),"place_id" : $(this).attr("place_id")},
+       success: function(p) {
+
+		  $('#add_place_activity').css('display','block')
+		  $('#remove_place_activity').css('display','none')
+	     
+       },
+       error: function(p) {
+		 alert("error");
+	   },
+     })
+   return false;
+  })
+
+
   $(".remove_place").live('click',function() {
 	 var link = $(this);
 	 var frm = $(this).parents("form:first")[0];
@@ -69,6 +92,33 @@ $(document).ready(function() {
      	{
 	      link.parent().parent().removeClass('object');
 	      link.parent().parent().html('');
+	    }
+	    else
+	    {
+	      link.removeClass("remove_place");
+ 	  	  link.html('<img class=" tooltip" width="20" title="Add to favorites" src="/images/HPThumbUp.png" alt="Hpthumbup"/>');
+        }
+       },
+       error: function(p) {
+		 alert("error");
+	   },
+     })
+   return false;
+  })
+
+$(".remove_place_activity").live('click',function() {
+	 var link = $(this);
+	 var frm = $(this).parents("form:first")[0];
+     $.ajax({
+       type: "DELETE",
+       url: "/account/delete_user_place_activity",
+	   data: {"activity_id" : $(this).attr("activity_id"),"place_id" : $(this).attr("place_id")},
+       success: function(p) {
+	    //need to determinw which page this comes from and remove if favorites
+	    if((frm=='undefined')||(frm.id=='favorites'))
+     	{
+	      link.parent().parent().removeClass('object');
+	      link.parent().parent().replaceWith('');
 	    }
 	    else
 	    {

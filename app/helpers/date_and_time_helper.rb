@@ -19,7 +19,7 @@ module DateAndTimeHelper
     elsif val < 60  * 60 * (24 / 1.02) then
       result = "about #{(val / 60 / 60 * 1.02).to_i} hours ago"
     else
-      result = old_time.strftime("%H:%M %p %B %d, %Y")
+      result = old_time.strftime("%B %d, %Y")
 
     end
     result

@@ -46,7 +46,7 @@
 	      <% end %>
 		  <% end %>
 	
-	    map.setCenter(new GLatLng(<%= @latitude %>, <%= @longitude %>), 13);
+	    map.setCenter(new GLatLng(<%= @latitude %>, <%= @longitude %>), 16);
 	  <% end %>
 
 	  var customUI = map.getDefaultUI();
@@ -63,26 +63,5 @@
 
 	</script>
 
-	<% if @events.present? %>
-	<% @events.each do |e| %>
-	<div class="calendar_entry">
-	  <div class="date">
-	    <div class="cmon"><%= e.when_time.strftime('%b') %></div>
-	    <div class="cday"><%= e.when_time.strftime('%d') %></div>
-	  </div>
 
-	  <div class="ctext">
-	    <%= e.user == current_user ? 'You' : e.user.first_name %> 
-	    <%= e.when_time <= Time.now ? "was at" : "will be at" %>
-	    <%= e.place.name %> <br />
-	    <%= e.when_time.strftime('%I:%M%p') %>
-	  </div>
-
-	  <div class="clear">&nbsp;</div>
-	</div>
-
-	<div class="clear">&nbsp;</div>
-
-	<% end %>
-	<% end %>
 <% end %>

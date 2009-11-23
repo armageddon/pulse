@@ -1,0 +1,20 @@
+<h3 class="section"><%= @user.first_name %></h3>
+  <%= image_tag @user.icon.url(:profile) %>
+  <%= render :partial => "users/description", :locals => { :user => @user } %>
+  <div id="self_description">
+    <span class="fancy_quotes">&#8220;</span>
+    <%= @user.description %>
+    <span class="fancy_quotes">&#8221;</span>
+  </div>
+ 	<ul id="do_things">
+	    <li><%= link_to "SEARCH", :controller=>'search', :action=>"search_criteria", :id=>'find_people_link' , :t => "people" %></li>
+	   
+	   <li><%= link_to "EDIT MY INFO", edit_account_path %></li>
+		<li>&nbsp;</li>
+		<% if @user != current_user %>
+		<!--todo: implement remove from favorites -->
+	   <li><%= link_to I18n.translate("ADD_TO_FAVORITES") %></li> 
+	   <li>&nbsp;</li>
+		<%end%>
+	    <li><%= link_to "INVITE A FRIEND", '#', 'data-href' => new_account_invitation_path, :class => "invite_a_friend" %>
+	 </ul>
