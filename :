@@ -1,0 +1,40 @@
+more image upload positioning
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	modified:   public/javascripts/signup.js
+#
+diff --git a/public/javascripts/signup.js b/public/javascripts/signup.js
+index 1f78757..06a3e77 100644
+--- a/public/javascripts/signup.js
++++ b/public/javascripts/signup.js
+@@ -12,6 +12,12 @@ $(document).ready(function() {
+     return row.replace("<span style='font-size:9px'>","").replace("</span>","");
+   }
+ 	
++	
++  $('#add_photo').click(function(e) {
++		alert('xx');
++	    $('#user_icon').click();
++   });
++	
+   $('#add_photo').mouseover(function(e) {
+     over = true;
+   });
+@@ -26,10 +32,10 @@ $(document).ready(function() {
+         ) {
+           $('#upload_container').show();
+           $('#user_icon').css({
+-            left: e.pageX -680 ,
+-            top: e.pageY -210,
++			postion: 'absolute',
++            top: e.pageY -210  ,
+             cursor: 'pointer',
+-			opacity: 100,
++			opacity: 0,
+ 			
+           })
+ 
