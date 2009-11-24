@@ -30,7 +30,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :activities, :collection => { :autocomplete => :get } do |a|
     a.resources :pictures, :controller => "activity_pictures"
   end
-  map.user_place_activities '/account/place_activities' , :controller => 'user', :action => 'place_activity_list'
+  map.user_place_activities '/account/place_activities' , :controller => 'users', :action => 'place_activity_list'
   map.favorite_people 'favorites/people', :controller => 'users', :action => 'favorites_list'
   map.favourite_place_activities 'user_place_activities/list', :controller => 'user_place_activities', :action=>'list'
   map.user_favorite_delete 'account/favorites/delete', :controller => 'user_favorites',  :action => 'destroy'

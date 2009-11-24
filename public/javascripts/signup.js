@@ -11,11 +11,7 @@ $(document).ready(function() {
   function formatResult(row) {
     return row.replace("<span style='font-size:9px'>","").replace("</span>","");
   }
-	$('#add_photo').click(function(e) {
-	    alert('ex:ey:boxleft:boxright-' + e.pageX.toString()  + ' ' + e.pageY.toString()+ ' ' +box.left.toString()+ ' ' +box.top.toString());
-	  });
 	
-
 	
   $('#add_photo').mouseover(function(e) {
     over = true;
