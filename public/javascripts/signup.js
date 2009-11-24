@@ -29,7 +29,7 @@ $(document).ready(function() {
             left: e.pageX -680 ,
             top: e.pageY -210,
             cursor: 'pointer',
-			opacity: 0,
+			opacity: 100,
 			
           })
 
