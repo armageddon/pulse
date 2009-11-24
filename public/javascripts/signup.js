@@ -13,10 +13,7 @@ $(document).ready(function() {
   }
 	
 	
-  $('#add_photo').click(function(e) {
-		alert('xx');
-	    $('#user_icon').click();
-   });
+
 	
   $('#add_photo').mouseover(function(e) {
     over = true;
