@@ -7,11 +7,13 @@ $(document).ready(function() {
     container: "<div></div>"
   });
 
-
+ 
   function formatResult(row) {
     return row.replace("<span style='font-size:9px'>","").replace("</span>","");
   }
-	
+	$('#add_photo').click(function(e) {
+	    alert('ex:ey:boxleft:boxright-' + e.pageX.toString()  + ' ' + e.pageY.toString()+ ' ' +box.left.toString()+ ' ' +box.top.toString());
+	  });
 	
 
 	
@@ -28,9 +30,10 @@ $(document).ready(function() {
         (e.pageY < (box.top + $('#add_photo').height()))
         ) {
           $('#upload_container').show();
+		  var yoff = 
           $('#user_icon').css({
 			postion: 'absolute',
-            top: e.pageY -190  ,
+            top: e.pageY - box.top  ,
             cursor: 'pointer',
 			opacity: 100,
 			
