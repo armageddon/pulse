@@ -18,6 +18,7 @@ $(document).ready(function() {
 
   $(document).mousemove(function(e) {
     var box = $('#add_photo').offset();
+
     if ((e.pageX > box.left) &&
         (e.pageX < (box.left + $('#add_photo').width())) &&
         (e.pageY > box.top) &&
@@ -25,8 +26,8 @@ $(document).ready(function() {
         ) {
           $('#upload_container').show();
           $('#user_icon').css({
-            left: e.pageX -770 ,
-            top: e.pageY -220,
+            left: e.pageX -680 ,
+            top: e.pageY -210,
             cursor: 'pointer',
 			opacity: 0,
 			
@@ -34,7 +35,7 @@ $(document).ready(function() {
 
     } else {
       over = false;
-      $('#upload_container').hide();
+      //$('#upload_container').hide();
     }
   });
 

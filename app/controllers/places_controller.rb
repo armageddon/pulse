@@ -10,14 +10,14 @@ class PlacesController < ApplicationController
     if logged_in?
       @place_people = @place.users.paginate(:all, :limit => 5, :page => params[:page], :per_page => 6)
     end
-    @activities =  @place.user_place_activities.paginate(:select => "DISTINCT user_place_activities.*, 0 as place_count", :limit => 5, :page => params[:page], :per_page => 6)
+    @user_place_activities =  @place.user_place_activities.paginate(:select => "DISTINCT user_place_activities.*, 0 as user_count", :limit => 5, :page => params[:page], :per_page => 6)
      logger.info("responding... places show")
       respond_to do |format|
         format.html { render }
         format.js do
           case params[:type]
           when "activities"
-            render :partial => "shared_object_collections/object_collection", :locals => { :collection => @activities }
+            render :partial => "shared_object_collections/object_collection", :locals => { :collection => @user_place_activities }
           when "users"
              render :partial => "shared_object_collections/object_collection", :locals => { :collection => @place_people }
           end

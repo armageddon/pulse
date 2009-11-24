@@ -1,0 +1,32 @@
+<div class="object" id="<%= dom_id object %>" style="height:30px">
+  <div class="icon" style="width:25;">
+
+  </div>
+  <% upa = UserPlaceActivity.find(:first, :conditions=>"place_id = " + object.place.id.to_s + " and activity_id = " + object.activity.id.to_s) %>
+
+<div class="what">
+	<%= link_to (upa.activity.name), user_place_activity_path(:id=>upa.id)%>
+  </div>
+
+  <div class="who">
+  <% users = User.search_users_pictures(params, current_user, object.place_id, object.activity_id) %>
+  <%= render :partial  => "shared_objects/user_pictures", :collection => users %>
+  <% if users.total_entries > 3 %>
+    <%= " and " +  (users.total_entries-3).to_s + " more ..." %>
+  <% end %>
+  </div>
+  <div class="actions">
+	<% if controller_name == 'search' || controller_name == 'user_favorites' %>
+		<%  if logged_in? && !current_user.user_place_activities.include?(object) && controller_name != 'user_favorites' %>
+		  <%= link_to image_tag("HPThumbUp.png", :width=>20,:class => " tooltip ", :title => I18n.translate("Add_to_favorites")), '#', 'data-href' => new_account_place_activity_path(:activity_id => object.activity, :place_id => object.place_id, :view => "add_place_activity"), :class => "add_activity" %>
+		<%  elsif  logged_in?    %>
+	      <%= link_to image_tag("HPThumbDown.png", :width=>20,:class => " tooltip ", :title => I18n.translate("Remove_from_favorites")), '/account/delete_user_place_activity?activity_id =' + object.activity_id.to_s + '&place_id=' + object.place_id.to_s, 'data-href' => '/account/delete_user_place_activity?activity_id = ' + object.activity_id.to_s + ' &place_id = ' + object.place_id.to_s,:activity_id => object.activity_id, :place_id => object.place_id, :class => "remove_place_activity" %>
+		<%  end %> 
+	<% end %>
+	<div style="float:left">
+	</div>
+  </div>
+</div>
+ 
+
+ <div class="clear"></div>

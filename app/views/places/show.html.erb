@@ -2,9 +2,7 @@
   <%= render :partial => "place_sidebar" %>
 <% end %>
 
-<h3 class="section">People Who Hang Here</h3>
-<%= render :partial => "shared_object_collections/object_collection", :locals => { :collection => @place_people } %>
 
-<h3 class="section">Activities That Happen Here</h3>
-<%= render :partial => "shared_object_collections/object_collection", :locals => { :collection => @activities } %>
+<h3 class="section">Activities happening here</h3>
+<%= render :partial => "shared_object_collections/place_user_place_activity_collection", :locals => { :collection => @user_place_activities} %>
 
