@@ -30,7 +30,7 @@ $(document).ready(function() {
           $('#upload_container').show();
           $('#user_icon').css({
 			postion: 'absolute',
-            top: e.pageY -210  ,
+            top: e.pageY -190  ,
             cursor: 'pointer',
 			opacity: 100,
 			
