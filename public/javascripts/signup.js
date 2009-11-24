@@ -33,7 +33,7 @@ $(document).ready(function() {
 		  var yoff = 
           $('#user_icon').css({
 			postion: 'absolute',
-            top: e.pageY - box.top  ,
+            top: e.pageY - box.top - 10  ,
             cursor: 'pointer',
 			opacity: 100,
 			
