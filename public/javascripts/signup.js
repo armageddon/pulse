@@ -117,7 +117,7 @@ $(document).ready(function() {
     }
 	$.ajax({
         type: "POST",
-        url: '/account/place_activities',
+        url: '/user_place_activities/add',
         data: $(this).serialize(),
         success: function(p) {
 			if (p != 'You have already added this place or activity')

@@ -45,11 +45,9 @@
 			    <%= (link_to image_tag("HPThumbDown.png", :width=>20, :class => " tooltip", :title => I18n.translate("Add_to_favorites")), "#",'data-href' => account_favorites_path, :class => "people_unfavorite", :friend_id => object.id) if current_user.has_friend?(object.id) %>
 				
 			<% when Place %>
-				<%    	if logged_in? && current_user.places.include?(object) %>
-				<%=     	link_to(image_tag("HPThumbDown.png", :width=>20,:class => " tooltip", :title => I18n.translate("Remove_from_favorites")), '#',:place_id => object.id, :class => "remove_place")  %>
-				<%    	else %>
-				<%=     	link_to image_tag("HPThumbUp.png", :width=>20,:class => " tooltip ", :title => I18n.translate("Add_to_favorites")), '#', 'data-href' => new_account_place_activity_path(:place_id => object), :place_id => object.id, :class => "add_place" %>
-				<%    	end %>
+
+				<%= link_to image_tag("HPThumbUp.png", :width=>20,:class => " tooltip ", :title => I18n.translate("Add_to_favorites")), '#', 'data-href' => "/user_place_activities/new?place_id="+object.id.to_s+"&view=add_place", :place_id => object.id, :class => "add_place" %>
+			
 		<% end %>
 	</div>
 	<div class="clear"></div>

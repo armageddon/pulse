@@ -1,5 +1,5 @@
-<div style="height:400px;">
-<% form_for user_place_activity, :url => account_place_activities_path do |f| %>
+<div style="height:500px;">
+<% form_for user_place_activity, :url => '/user_place_activities/new' do |f| %>
 
   <% if view == "add_activity" %>
     <h4>Add an activity</h4>
@@ -128,7 +128,7 @@
 
       $.ajax({
         type: "POST",
-        url: '/account/new_user_place_activity',
+        url: '/user_place_activities/add',
         data: $(this).serialize(),
         success: function(p) {
 			$('#add_place_activity').css('display','none');

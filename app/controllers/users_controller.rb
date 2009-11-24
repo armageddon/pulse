@@ -7,6 +7,9 @@ include Graticule
 
   def place_activity_list
     @user_place_activities = UserPlaceActivity.paginate(:all, :conditions => 'user_id = ' + current_user.id.to_s, :page=> params[:page], :per_page=>10)
+    respond_to do |format|
+       format.js { render :partial => "shared_object_collections/search_place_activity_collection", :locals => {:collection => @user_place_activities }}
+    end
   end
 
   def favorites_list

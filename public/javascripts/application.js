@@ -63,7 +63,7 @@ $("#remove_place_activity").live('click',function() {
 	 
      $.ajax({
        type: "DELETE",
-       url: "/account/delete_user_place_activity",
+       url: "/user_place_activities/delete",
 	   data: {"activity_id" : $(this).attr("activity_id"),"place_id" : $(this).attr("place_id")},
        success: function(p) {
 

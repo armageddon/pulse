@@ -21,9 +21,9 @@
   <div class="actions">
 	<% if controller_name == 'search' || controller_name == 'user_favorites' %>
 		<%  if logged_in? && !current_user.user_place_activities.include?(object) && controller_name != 'user_favorites' %>
-		  <%= link_to image_tag("HPThumbUp.png", :width=>20,:class => " tooltip ", :title => I18n.translate("Add_to_favorites")), '#', 'data-href' => new_account_place_activity_path(:activity_id => object.activity, :place_id => object.place_id, :view => "add_place_activity"), :class => "add_activity" %>
+		  <%= link_to image_tag("HPThumbUp.png", :width=>20,:class => " tooltip ", :title => I18n.translate("Add_to_favorites")), '#', 'data-href' => "/user_place_activities/new?activity_id="+upa.activity_id.to_s+"&place_id="+upa.place_id.to_s+"&view=add_place_activity", :class => "add_activity" %>
 		<%  elsif  logged_in?    %>
-	      <%= link_to image_tag("HPThumbDown.png", :width=>20,:class => " tooltip ", :title => I18n.translate("Remove_from_favorites")), '/account/delete_user_place_activity?activity_id =' + object.activity_id.to_s + '&place_id=' + object.place_id.to_s, 'data-href' => '/account/delete_user_place_activity?activity_id = ' + object.activity_id.to_s + ' &place_id = ' + object.place_id.to_s,:activity_id => object.activity_id, :place_id => object.place_id, :class => "remove_place_activity" %>
+	      <%= link_to image_tag("HPThumbDown.png", :width=>20,:class => " tooltip ", :title => I18n.translate("Remove_from_favorites")), '/user_place_activities/delete?activity_id =' + object.activity_id.to_s + '&place_id=' + object.place_id.to_s, 'data-href' => '/account/delete_user_place_activity?activity_id = ' + object.activity_id.to_s + ' &place_id = ' + object.place_id.to_s,:activity_id => object.activity_id, :place_id => object.place_id, :class => "remove_place_activity" %>
 		<%  end %> 
 	<% end %>
 	<div style="float:left">

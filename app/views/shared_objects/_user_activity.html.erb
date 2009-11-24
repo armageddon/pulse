@@ -32,7 +32,7 @@
 </div>
 <div class="actions">
 	<% if logged_in? && !current_user.user_activities.include?(object) %>
-	<%=  link_to image_tag("HPThumbUp.png", :width=>20, :class => " tooltip ", :title => I18n.translate("Add_to_favorites")), '#', 'data-href' => new_account_place_activity_path(:activity_id => object.activity, :view => "add_activity"), :class => "add_activity" %>
+	<%=  link_to image_tag("HPThumbUp.png", :width=>20, :class => " tooltip ", :title => I18n.translate("Add_to_favorites")), '#', 'data-href' => "/user_place_activities/new?activity_id="+object.activity_id.to_s+"place_id="+object.place_id.to_s+"&view=add_place", :class => "add_activity" %>
 	<% elsif  logged_in?    %>
 	<%=  link_to image_tag("HPThumbDown.png", :width=>20, :class => " tooltip ", :title => I18n.translate("Remove_from_favorites")), '#', 'data-href' => new_account_activity_path(:activity_id => object.activity ),:activity_id => object.activity.id, :class => "remove_activity" %>
 	<% end %>      
