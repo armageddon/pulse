@@ -35,7 +35,7 @@ $(document).ready(function() {
 			postion: 'absolute',
             top: e.pageY - box.top - 10  ,
             cursor: 'pointer',
-			opacity: 100,
+			opacity: 0,
 			
           })
 
