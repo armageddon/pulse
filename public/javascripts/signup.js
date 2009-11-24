@@ -12,6 +12,12 @@ $(document).ready(function() {
     return row.replace("<span style='font-size:9px'>","").replace("</span>","");
   }
 	
+	
+  $('#add_photo').click(function(e) {
+		alert('xx');
+	    $('#user_icon').click();
+   });
+	
   $('#add_photo').mouseover(function(e) {
     over = true;
   });
@@ -26,10 +32,10 @@ $(document).ready(function() {
         ) {
           $('#upload_container').show();
           $('#user_icon').css({
-            left: e.pageX -680 ,
-            top: e.pageY -210,
+			postion: 'absolute',
+            top: e.pageY -210  ,
             cursor: 'pointer',
-			opacity: 100,
+			opacity: 0,
 			
           })
 
