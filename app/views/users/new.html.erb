@@ -84,7 +84,7 @@
 	</div>
 	<div id="step_2" class="step" style="display: none;" >
 	  <div id="step_2_container">
-      	<div id="upload_container" style="display: block;">
+      	<div id="upload_container" style="display: none;">
       	<% form_tag "/update", :multipart => true, :target => "image_upload", :id => "photo_upload" do%>
        		<%= file_field(:user , :icon, :style => "position: absolute;")%>
 		<% end %>
