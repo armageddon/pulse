@@ -395,32 +395,27 @@ after_create :welcome_mail
   end
 
 
-
- 
-
   def welcome_mail
     @subject = "Welcome to Pulse!"
     @body = "
     Hello <br /> 
-<br /> 
+    <br /> 
     We would like to extend an invitation to you to try our new website for singles!<br /> 
-<br /> 
+    <br /> 
     You’ve been chosen because we really value your feedback and/or because you’re a friend and you’ll go easy on us (not mutually exclusive). Either way, would love it if you could take a look at the site and let us know what you think!<br /> 
-<br /> 
+    <br /> 
     The site is built on the premise that we are more likely to meet people we’re interested in when we are out and about living our lives (rather than sitting at home behind a computer). HelloPulse allows singles to share information about themselves based on where they hang out and what they do: whether it’s tennis at a local club, wine-tasting at a favourite bar or listening to grunge music in Camden (as if).<br /> 
-<br /> 
-
+    <br /> 
     We’d love any feedback but particularly:<br /> 
-<br /> 
+    <br /> 
        1. Usability – is it easy to use, does it have the information you need, as more people begin to use it, could you imagine yourself using this site?<br /> 
        <br /> 
        2. Bugs and annoyances – stuff that doesn’t work<br /> 
        <br /> 
        3. Any great ideas about how we can increase the energy and buzz of the product<br /> 
        <br /> 
-<br /> 
-<br /> 
-    Jane and Pierre"
+       <br /> 
+       Jane and Pierre"
 
     @pulse_user = User.find(1)
     @message = @pulse_user.sent_messages.build({:recipient_id=>self.id,:subject=>@subject,:body=>@body})
