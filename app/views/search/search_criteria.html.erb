@@ -45,20 +45,27 @@
 		</div>
 		<br/>
 		<label class="search_criteria_header" style="padding-top:0px">People</label><br \>
-		<%= drop_down('search_criteria[sex]', @search_criteria.sex, {:width => '60px'},[['Man','1'],['Woman','2']]) %>
-		<div style="float:left;width:80px; text-align:center">Looking for</div>
-		   <%= drop_down('search_criteria[sex_preference]', @search_criteria.sex_preference, {:width => '60px'},[['Men','1'],['Women','2'],['Both','3']]) %>
+		<div style="padding-top:5px;">
+			<%= drop_down('search_criteria[sex]', @search_criteria.sex, {:width => '70px'},[['Man','1'],['Woman','2']]) %>
+			<div style="float:left;width:100px; text-align:center">Looking for</div>
+		    <%= drop_down('search_criteria[sex_preference]', @search_criteria.sex_preference, {:width => '70px'},[['Men','1'],['Women','2'],['Both','3']]) %>
+		</div>
 		<div class="clear">&nbsp;</div>
-		<%= drop_down('search_criteria[lower_age]', @search_criteria.lower_age, {:width => '90px'},age_options) %>
-		<div style="float:left;width:40px; text-align:center">to</div>
-		<%= drop_down('search_criteria[upper_age]', @search_criteria.upper_age, {:width => '90px'},age_options) %>
-		   <div class="clear">&nbsp;</div>
-		   <label class="search_criteria_header" style="padding-top:0px":float:left>Place</label><br \>
-		   <%= drop_down('search_criteria[place_category]', @search_criteria.place_category, {:width => '170px'},place_category_options, 'Any place','0') %>
-		   <br />
+		<div style="margin-top:3px">
+			<%= drop_down('search_criteria[lower_age]', @search_criteria.lower_age, {:width => '100px'},age_options) %>
+			<div style="float:left;width:40px; text-align:center">to</div>
+			<%= drop_down('search_criteria[upper_age]', @search_criteria.upper_age, {:width => '100px'},age_options) %>
+		</div>
 		<div class="clear">&nbsp;</div>
-		<div class="float:left" id="postcodesearch">
-			<%= drop_down('search_criteria[distance]', @search_criteria.distance, {:width => '100px'},distance_options, 'Any distance') %>
+		<div style="margin-top:10px">
+		   <label class="search_criteria_header" style="padding-top:10px":float:left>Place</label><br \>
+			<div style="float:left;margin-top:5px" >
+		   <%= drop_down('search_criteria[place_category]', @search_criteria.place_category, {:width => '255px'},place_category_options, 'Any place','0') %>
+	    	</div>
+		</div>
+		<div class="clear">&nbsp;</div>
+		<div style="float:left;margin-top:3px" id="postcodesearch">
+			<%= drop_down('search_criteria[distance]', @search_criteria.distance, {:width => '135px'},distance_options, 'Any distance','0') %>
 		  	<div style="float:left; text-align:center;width:60px">
 		  	     from 
 		     </div>
@@ -67,9 +74,11 @@
 		  	 </div>
 		</div>
 		<div class="clear">&nbsp;</div>
-		<label class="search_criteria_header" style="padding-top:0px":float:left>Activity</label><br \>
-		<div id="activity_category" style="margin-top:10px">	
-		  	<%= drop_down('search_criteria[activity_category]', @search_criteria.activity_category, {:width => '200px'},activity_category_options, 'Any activity') %>
+		<div style="float:left;margin-top:10px">
+			<label class="search_criteria_header" style="padding-top:0px":float:left>Activity</label><br \>
+			<div id="activity_category" style="margin-top:5px">	
+			  	<%= drop_down('search_criteria[activity_category]', @search_criteria.activity_category, {:width => '255px'},activity_category_options, 'Any activity','0') %>
+			</div>
 		</div>
 		<div class="clear">&nbsp;</div>
 		<div id="advanced_search_submit" style="float:left;text-align:center; margin-top:15px">
