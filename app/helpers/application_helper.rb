@@ -43,28 +43,29 @@ module ApplicationHelper
   
   def nav_links
     return unless logged_in?
-    
     [
-      content_tag(:span, :class => nav_link_class("users")) { link_to "Home", root_path },
-      content_tag(:span, :class => nav_link_class("user_matches")) { link_to "My matches", account_matches_path },
-      content_tag(:span, :class => nav_link_class("user_messages")) { link_to "My messages#{current_user.unread_count > 0 ? " (#{current_user.unread_count})" : ""}", account_messages_path },
-      content_tag(:span, :class => nav_link_class("user_favorites")) { link_to I18n.translate("my_favorites"), account_favorites_path },
-      content_tag(:span, :class => "nav_link") { link_to "Logout", logout_path }
+      content_tag(:li,:class=>nav_link_class('')) { link_to "Logout", logout_path },
+      content_tag(:li,:class=>nav_link_class('user_favorites')) { link_to I18n.translate("my_favorites"), account_favorites_path },
+      content_tag(:li,:class=>nav_link_class('user_messages')) { link_to "My messages#{current_user.unread_count > 0 ? " (#{current_user.unread_count})" : ""}", account_messages_path },
+      content_tag(:li,:class=>nav_link_class('user_matches')) { link_to "My matches", account_matches_path },
+      content_tag(:li,:class=>nav_link_class('users')) { link_to "Home", root_path }
     ].join("&nbsp;")
   end
 
   def nav_link_class(page)
     case page
     when "users"
-      controller_name == "users" ? "nav_link on" : "nav_link"
+      controller_name == "users" ? "selected" : ""
     when "user_matches"
-      controller_name == "user_matches" ? "nav_link on" : "nav_link"
+      controller_name == "user_matches" ? "selected" : ""
     when "user_messages"
-      controller_name == "user_messages" ? "nav_link on" : "nav_link"
+      controller_name == "user_messages" ? "selected" : ""
     when "profile"
-     (controller_name == "profiles" && current_user == @user) ? "nav_link on" : "nav_link"
+     (controller_name == "profiles" && current_user == @user) ? "selected" : ""
+     when "user_favorites"
+      controller_name == "user_favorites" ? "selected" : ""
     else
-      "nav_link"
+      ""
     end
   end
   

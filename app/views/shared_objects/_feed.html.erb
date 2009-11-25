@@ -1,5 +1,7 @@
+<% if (object.event_type == 'addeduserplaceactivity' && UserPlaceActivity.exists?(object.subject_id)) || object.event_type == 'newuser' %>   
+
 <div class="object" id="<%= dom_id object %>">
-    <% user = User.find(object.actor_id)%>
+ <% user = User.find(object.actor_id)%>
   	<div class="icon" style="margin-right:10px">
 		<%= link_to image_tag(User.find(object.actor_id).icon.url(:thumb), :width => '45px', :height => '45px'), User.find(object.actor_id) %>
 	</div>
@@ -16,7 +18,7 @@
 	    <div class="clear"></div>
 
 		
-		<% if object.event_type == 'addeduserplaceactivity' %>
+		<% if object.event_type == 'addeduserplaceactivity' && UserPlaceActivity.exists?(object.subject_id)%>
 		      <% user_place_activity = UserPlaceActivity.find(object.subject_id)%>
 	
 			  <div style="float:left">
@@ -33,11 +35,13 @@
 				<%end%>
 			</i>
 			</div>
-		<% else %>
+		<% elsif  object.event_type == 'newuser'%>
 		<div style="float:left">
 			<%= link_to user.name,user %> joined HelloPulse
 		</div>
-		<% end %>
+		<% else %>
+		
+		<%end%>
 
 		<div class="clear"></div>
 		<div>
@@ -45,6 +49,7 @@
 		</div>
   </div>
  <div class="clear"></div>
- </div>
 
+ </div>
+<% end %>
  <div class="clear"></div>

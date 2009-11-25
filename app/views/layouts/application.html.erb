@@ -1,31 +1,32 @@
-<%= render :partial => "shared/header" %>
-    
-   <%= hidden_field_tag "googlecode", googlecode(request.url) %>
-<div id="header">
-      
-      <div id="navigation">
-        <%= nav_links %>
-      </div>
-      
-      <div id="search">
-        <% form_tag '/search', :method => "get" do  %>
-          Search
-          <%= text_field_tag 'q', params[:q], :class => "input_text" %>
-          <%= submit_button 'GO' %>
-        <% end %>
-      </div>
+<body>
+  <div id="dialog" style="display: none;" class="jqmWindow"></div>
+
+	<%= render :partial => "shared/header" %>
+    <%= hidden_field_tag "googlecode", googlecode(request.url) %>
+
+
+	<div id="nav">
+	  <ul id="top-nav">
+	    <%= nav_links %>
+		<div id="search-box">
+	        <% form_tag '/search', :method => "get" do  %>	
+	          <%= text_field_tag 'q', params[:q], :class => "header_input_text" %>
+	          <button id="search" class="header_submit" style="" type="submit"></button>
+	        <% end %>
+	      </div>
+	    <div class="clear"></div>
+	  </ul>
+	</div>
+	
+	<div id="header"> 
+		<a href="#"><img src="/images/header_logo.png" alt="HelloPulse" id="logo" height="173" width="314"/></a> 
+		<div id="header-banner"><%= yield :message %></div>
+	</div>
+	<div id="container">
       
       <div class="clear">&nbsp;</div>
-    </div>
-    
-    <div id="content">
-        <div id="content_logo">
-          <%= link_to image_tag("logo_smaller.png"),account_path %>
-        </div>
-        
-        <div id="content_message">
-          <%= yield :message %>
-        </div>
+	<div id="content">
+
         
         <div class="clear">&nbsp;</div>
 
@@ -42,10 +43,8 @@
         </div>
         
         <div class="clear">&nbsp;</div>
-     </div>
-    
+    </div>
     <%= render :partial => "shared/footer" %>
-
 	<script type="text/javascript">
 	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
@@ -54,8 +53,10 @@
 	try {
 	var pageTracker = _gat._getTracker("<%= googlecode(request.url) %>");
 	pageTracker._trackPageview();
-	} catch(err) {}</script>
-
+	} catch(err) {}
+	</script>
+</div>
+</body>
 
 
 

@@ -5,7 +5,6 @@
 <% end %>
 
 <% content_for :message do %>
-  <h1>
     Hello <%= current_user.first_name %>, welcome back to HelloPulse. 
     <% if current_user.unread_count > 0 %>
     You've received <%= link_to "#{current_user.unread_count} new messages", account_messages_path  %> and your 
@@ -13,7 +12,6 @@
     Your 
     <% end %>
     profile has been viewed by <%= current_user.profile_views %> <%= current_user.profile_views == 1 ? 'person' : 'people' %>.
-  </h1>
 <% end %>
 
 <%= render :partial => "maps/small_map", :locals => {:collection => @updates} %>
