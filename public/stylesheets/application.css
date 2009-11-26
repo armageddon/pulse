@@ -765,7 +765,7 @@ button.submit span {
   margin: 0;
 }
 
-<!--
+/*
 Change log
 
 input_text -> header_input_text
@@ -773,9 +773,9 @@ input_text -> header_input_text
 
 
 
--->
+*/
 
-<!--ash-->
+/*ash*/
 body {
 	font-family:Arial, Helvetica, sans-serif;
 	color:#000;

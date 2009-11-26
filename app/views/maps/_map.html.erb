@@ -4,39 +4,23 @@
 <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=<%= getmapsapikey(request.url) %>&sensor=true" type="text/javascript"></script>
 <script type="text/javascript" charset="utf-8">
   var map = new GMap2(document.getElementById("map_canvas"));
-
-
-
-
   var custIcon = new GIcon(G_DEFAULT_ICON);
   custIcon.iconSize = new GSize(16, 16);
   custIcon.shadowSize = new GSize(20, 20);
   custIcon.iconAnchor = new GPoint(0, 0);
   custIcon.infoWindowAnchor = new GPoint(10,0);
   var dotIcon = new GIcon(custIcon, '/images/map_dot-20px.png');
-
-map.addControl(new GSmallZoomControl())
+  map.addControl(new GSmallZoomControl())
   var sw = new GLatLng(<%=  51.500152 %>, <%= -0.126236  %>);
   var ne = new GLatLng(<%=  51.502152 %>, <%= -0.122236 %>);
   var bounds = new GLatLngBounds(sw,ne);
   map.setCenter(bounds.getCenter(), 13);
   map.enableInfoWindow()
-
   <% Place.paginate(:all, :page => 1, :per_page => 100 ).each_with_index do |e,i| %>
     var marker<%= i.to_s %> = new GMarker(new GLatLng(<%= e.latitude %>, <%= e.longitude %>), { icon: dotIcon });
     map.addOverlay(marker<%= i.to_s %>);
     var clickListener<%= i.to_s %> = GEvent.addListener(marker<%= i.to_s %>, "click", function() { marker<%= i.to_s %>.openInfoWindowHtml('<h1><%= e.name.gsub("\'","")%></h1><br/><%=e.category%><br/><%=e.neighborhood%><br/><br><%=e.user_place_activities.length%>&nbsp;people hang here') });
   <% end %>
-map.addControl(new GMapTypeControl())
-
-  //var customUI = map.getDefaultUI();
-  //customUI.controls.scalecontrol = false;
-  //customUI.controls.menumaptypecontrol = false;
-  //customUI.controls.smallzoomcontrol3d = false;
-  //customUI.zoom.scrollwheel = false;
-  //customUI.zoom.doubleclick = false;
-
-  //map.setUI(customUI);
+  map.addControl(new GMapTypeControl())
   map.setMapType(G_NORMAL_MAP);
-
 </script>

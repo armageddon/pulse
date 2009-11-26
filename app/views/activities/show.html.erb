@@ -2,7 +2,26 @@
   <%= render :partial => "activity_sidebar" %>
 <% end %>
 
-<h3 class="section">People Who Do This</h3>
-<%= render :partial => "shared_object_collections/object_collection", :locals => { :collection => @activity_users } %>
-<h3 class="section">Places Where This Happens</h3>
-<%= render :partial => "shared_object_collections/object_collection", :locals => { :collection => @activity_places } %>
+<div class="section_header" >
+	<div style="float:left;width:200px">
+		<h3 style="width:100px;" class="section_name">People</h3>
+	</div>
+	<div class="clear">&nbsp;</div>
+</div>
+<div id='people_results'>
+	<%= render :partial => 'shared_object_collections/horizontal_users_collection' , :locals => {:collection => @users}%>
+</div>
+<div class="clear">&nbsp;</div>
+<div class="section_header" >
+	<div style="float:left;width:200px">
+		<h3 style="width:100px;" class="section_name">Comments</h3>
+	</div>
+	<div class="clear">&nbsp;</div>
+</div>
+<div>
+	<div style="width:45px;float:left">&nbsp;</div>
+	<div style="width:130px;float:left">Who</div>
+	<div style="width:300px;float:left">Why</div>
+	<div class="clear"></div>
+<%= render :partial => 'shared_object_collections/activity_comments_collection' , :locals => {:collection => @user_activity_comments}%>
+</div>

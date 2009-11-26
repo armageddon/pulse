@@ -1,0 +1,16 @@
+<div class="object" id="<%= dom_id object %>">
+
+	<div class="place_icon" style="width:45px;float:left">
+		<%= link_to image_tag(object.user.icon.url(:thumb), :width => '45px', :height => '45px'), object.user %>
+	</div>
+	<div class="place_who" style="width:130px;float:left">
+		<%=object.user.name%>
+	</div>
+	<div class="place_why" style="width:300px;float:left">
+	    <i><%=object.description%></i>
+	</div>	 
+	<div class="clear"></div>
+</div>
+
+
+

@@ -4,33 +4,33 @@
   <%= image_tag @activity.icon.url(:profile) %>
 </div>
 <% if current_user.admin? %>
-   <div id="manage_pictures"><%= link_to "Manage activity pictures", activity_pictures_path(@activity) %></div>
+  <div id="manage_pictures"><%= link_to "Manage activity pictures", activity_pictures_path(@activity) %></div>
 <% end %>
 
 <ul id="do_things">
-   <li><%= link_to "SEARCH", :controller=>'search'%></li>
-   <li><%= link_to "EDIT MY INFO", edit_account_path %></li>
-   <li>&nbsp;</li>
-   <li><%= link_to "REMOVE FROM MY ACTIVITIES", account_activity_path(@activity), :id => "remove_activity", :style => current_user.activities.include?(@activity) ? "" : "display: none;" %>
-   <li><%= link_to "ADD TO MY ACTIVITIES", new_account_activity_path(:activity_id => @activity), :class => "add_to_activity" , :style => current_user.activities.include?(@activity) ? "display: none;" : "" %>
-   <li>&nbsp;</li>
-   <li><%= link_to "INVITE A FRIEND", '#', 'data-href' => new_account_invitation_path, :class => "invite_a_friend" %>
+  <li><%= link_to "SEARCH", :controller=>'search'%></li>
+  <li><%= link_to "EDIT MY INFO", edit_account_path %></li>
+  <li>&nbsp;</li>
+  <li><%= link_to "REMOVE FROM MY ACTIVITIES", account_activity_path(@activity), :id => "remove_activity", :style => current_user.activities.include?(@activity) ? "" : "display: none;" %>
+  <li><%= link_to "ADD TO MY ACTIVITIES", new_account_activity_path(:activity_id => @activity), :class => "add_to_activity" , :style => current_user.activities.include?(@activity) ? "display: none;" : "" %>
+  <li>&nbsp;</li>
+  <li><%= link_to "INVITE A FRIEND", '#', 'data-href' => new_account_invitation_path, :class => "invite_a_friend" %>
 </ul>
 <div id="manage_activity"></div>
 <script type="text/javascript" charset="utf-8">
 
-$(document).ready(function() {
+  $(document).ready(function() {
 
- $("#remove_activity").click(function(event) {
-   var target = $(this).attr('href');
-   $.ajax({
-     type: "POST",
-     url: target,
-     success: function() { $("#remove_activity").hide() && $("#add_activity").show() },
-     data: { "_method": "delete", },
-   });
-   return false;
- });
-});
+    $("#remove_activity").click(function(event) {
+      var target = $(this).attr('href');
+      $.ajax({
+        type: "POST",
+        url: target,
+        success: function() { $("#remove_activity").hide() && $("#add_activity").show() },
+        data: { "_method": "delete", },
+      });
+      return false;
+    });
+  });
 </script>
 

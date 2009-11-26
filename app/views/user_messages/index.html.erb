@@ -1,3 +1,10 @@
+<% content_for :c3 do %>
+  <%= render :partial => "shared/mini_dashboard" %>
+<br />
+  <%= render :partial => "shared/message" %>	
+<% end %>
+
+
 <% content_for :message do %>
   <h1>Here are your recent and past messages.</h1>
 <% end %>

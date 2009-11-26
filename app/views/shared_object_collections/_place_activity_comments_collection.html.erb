@@ -1,10 +1,8 @@
-<div class="section_header" >
-	<div style="float:left;width:200px">
-		<h3 style="width:100px;" class="section_name">Comments</h3>
-	</div>
-	<div class="clear">&nbsp;</div>
-</div>
-<%= render :partial => "shared_objects/user_place_activity_comments", :collection => collection %>
+
+
+
+
+<%= render :partial => "shared_objects/place_activity_comments", :collection => collection %>
 	<div class="clear"></div>
 <% if collection.next_page %>
 	<% qstring = "" %>

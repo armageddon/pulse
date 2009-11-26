@@ -4,7 +4,13 @@
   </h1>
 <% end %>
 
+<% content_for :c3 do %>
+  <%= render :partial => "shared/mini_dashboard" %>
+<br />
+  <%= render :partial => "shared/message" %>	
+<% end %>
 
+	
 <h3 class="section">My matches</h3>
 <%= render :partial => 'shared_object_collections/object_collection', :locals => { :collection => @matches } %>
 

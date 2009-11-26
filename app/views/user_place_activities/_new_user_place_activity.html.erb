@@ -1,60 +1,60 @@
 <div style="height:500px;">
-<% form_for user_place_activity, :url => '/user_place_activities/new' do |f| %>
+  <% form_for user_place_activity, :url => '/user_place_activities/new' do |f| %>
 
-  <% if view == "add_activity" %>
-    <h4>Add an activity</h4>
-	<%= hidden_field_tag 'activity_id', activity.id, :id => 'user_place_activity[activity_id]' %>
-	<%= image_tag(activity.icon.url(:thumb), :width => '30px', :height => '30px') %>
-	<%= activity.name %> <span style="font-size: .7em;"><%= activity.category %></span>
-	<div class="clear"></div>
-	<label  style="margin-top: 5px; color:#990000; float:left">Where do you like doing this?</label>
-	<% if place != nil %>
-	  <%= hidden_field_tag 'place_id', place.id, :id => 'place_id' %>
-	<% else %>
-	  <%= hidden_field_tag 'place_id', "",:id => 'place_id' %>
-	<% end %>
-	<%= text_field_tag :place_name, 
-	    (user_place_activity.place.present? ? user_place_activity.place.name : nil), 
-	    :class => "input_text", :disabled => false,
-	    :size => 50,
-	    "data-prefilled" => (user_place_activity.place.present? ? 'true' : 'false')
-	  %>
-	<div class="clear"></div>
-  <% end %>
-  <% if view == "add_place" %>
-    <h4><%=I18n.translate("Add_place_to_favorites")%></h4>
-	<%= image_tag(place.icon.url(:thumb), :width => '30px', :height => '30px') %>
-  	<%= place.name %> <span style="font-size: .7em;"><%= place.neighborhood %></span>
-	<%= f.hidden_field :id %>
-	<%= hidden_field_tag 'place_id', place.id, :id => 'place_id' %>
-	<div class="clear"></div>
-	<div id="activity_category_select" style="margin-top:10px">
-	    <label  style="margin-top: 5px; color:#990000;">What do you do here?</label>
-	    <div class="clear"></div>
-	    <%= render :partial => "shared/activity_select",  :locals => {:allow_any_activity => "1"} %>
-	</div>
-	<div class="clear"></div>
-  <% end %>
-  <% if view == "add_place_activity" %>
-    <h4><%=I18n.translate("Add_place_to_favorites")%></h4>
-	<%= image_tag(place.icon.url(:thumb), :width => '30px', :height => '30px') %>
-	<%= hidden_field_tag 'activity_id', activity.id, :id => 'user_place_activity[activity_id]' %>
-  	<%= activity.name %> <span style="font-size: .7em;"><%= activity.category %></span> at
-    <%= place.name %> <span style="font-size: .7em;"><%= place.neighborhood %></span>
-	<%= f.hidden_field :id %>
-	<%= hidden_field_tag 'place_id', place.id, :id => 'place_id' %>
-	<div class="clear"></div>
-  <% end %>
+    <% if view == "add_activity" %>
+      <h4>Add an activity</h4>
+      <%= hidden_field_tag 'activity_id', activity.id, :id => 'user_place_activity[activity_id]' %>
+      <%= image_tag(activity.icon.url(:thumb), :width => '30px', :height => '30px') %>
+      <%= activity.name %> <span style="font-size: .7em;"><%= activity.category %></span>
+      <div class="clear"></div>
+      <label  style="margin-top: 5px; color:#990000; float:left">Where do you like doing this?</label>
+      <% if place != nil %>
+        <%= hidden_field_tag 'place_id', place.id, :id => 'place_id' %>
+      <% else %>
+        <%= hidden_field_tag 'place_id', "",:id => 'place_id' %>
+      <% end %>
+      <%= text_field_tag :place_name,
+        (user_place_activity.place.present? ? user_place_activity.place.name : nil),
+        :class => "input_text", :disabled => false,
+        :size => 50,
+        "data-prefilled" => (user_place_activity.place.present? ? 'true' : 'false')
+    %>
+      <div class="clear"></div>
+    <% end %>
+    <% if view == "add_place" %>
+      <h4><%=I18n.translate("Add_place_to_favorites")%></h4>
+      <%= image_tag(place.icon.url(:thumb), :width => '30px', :height => '30px') %>
+      <%= place.name %> <span style="font-size: .7em;"><%= place.neighborhood %></span>
+      <%= f.hidden_field :id %>
+      <%= hidden_field_tag 'place_id', place.id, :id => 'place_id' %>
+      <div class="clear"></div>
+      <div id="activity_category_select" style="margin-top:10px">
+        <label  style="margin-top: 5px; color:#990000;">What do you do here?</label>
+        <div class="clear"></div>
+        <%= render :partial => "shared/activity_select",  :locals => {:allow_any_activity => "1"} %>
+      </div>
+      <div class="clear"></div>
+    <% end %>
+    <% if view == "add_place_activity" %>
+      <h4><%=I18n.translate("Add_place_to_favorites")%></h4>
+      <%= image_tag(place.icon.url(:thumb), :width => '30px', :height => '30px') %>
+      <%= hidden_field_tag 'activity_id', activity.id, :id => 'user_place_activity[activity_id]' %>
+      <%= activity.name %> <span style="font-size: .7em;"><%= activity.category %></span> at
+      <%= place.name %> <span style="font-size: .7em;"><%= place.neighborhood %></span>
+      <%= f.hidden_field :id %>
+      <%= hidden_field_tag 'place_id', place.id, :id => 'place_id' %>
+      <div class="clear"></div>
+    <% end %>
 
-  </br>
-  <div style="margin-top:10px">
+    </br>
+    <div style="margin-top:10px">
       <h4>Tell us why you socialise here and why it's a good place to meet new people at</h4>
       <%= f.text_area :description, :rows => 10, :class => "input_text word_count" %>
-  </div>
-  <%= submit_button 'Save', :id => "new_activity", :plc_id => "34"%>
-  <%= submit_button 'Cancel', :id => "cancel" %>
+    </div>
+    <%= submit_button 'Save', :id => "new_activity", :plc_id => "34"%>
+    <%= submit_button 'Cancel', :id => "cancel" %>
 
-<% end %>
+  <% end %>
 </div>
 
 <script type="text/javascript" charset="utf-8">
@@ -66,88 +66,88 @@
         maxItemsToShow:30,
         mustMatch: false,
         onItemSelect: function(e) {
-               var extra = $(e).attr('extra');
-               if (extra.length > 0) {
-                $("#user_place_activity[activity_id]").val(extra[0])             
-              } else {
-                $("#user_place_activity[activity_id]").val('')             
-              }
+          var extra = $(e).attr('extra');
+          if (extra.length > 0) {
+            $("#user_place_activity[activity_id]").val(extra[0])
+          } else {
+            $("#user_place_activity[activity_id]").val('')
+          }
         },
       }
       $("#activity_name").autocomplete('/activities/autocomplete', ac_options);
     }   
 
 
-	 function formatResult(row) {
-	    return row.replace("<span style='font-size:9px'>","").replace("</span>","");
-	}
+    function formatResult(row) {
+      return row.replace("<span style='font-size:9px'>","").replace("</span>","");
+    }
 
-	$('#place_name').focus(function() {
-	    if ( !$.data(this, 'initialized') ) {
-	      $(this).val('');
-	      $("#place_name").autocomplete(
-	        "/places/autocomplete",
-	        {
-				minChars: 2,
-				cacheLength: 1,
-		        delay: 10,
-	         	autoFill:false,
-		        maxItemsToShow: 20,
-				formatResult: formatResult,
-		        mustMatch: false,
-				scroll: true,
-				scrollHeight: 20,
-	          onItemSelect: function(e) {
-	            var extra = $(e).attr('extra');
-	            if (extra.length > 0) {
-	              $("#place_id").val(extra[0])
-	            } else {
-	              $("#place_id").val('')
-	            }
-	          },
-	        }
-	      );
-	      $.data(this, 'initialized', true);
-	     $(this).blur();
-	     $(this).focus();
-	    }
-	  });
+    $('#place_name').focus(function() {
+      if ( !$.data(this, 'initialized') ) {
+        $(this).val('');
+        $("#place_name").autocomplete(
+        "/places/autocomplete",
+        {
+          minChars: 2,
+          cacheLength: 1,
+          delay: 10,
+          autoFill:false,
+          maxItemsToShow: 20,
+          formatResult: formatResult,
+          mustMatch: false,
+          scroll: true,
+          scrollHeight: 20,
+          onItemSelect: function(e) {
+            var extra = $(e).attr('extra');
+            if (extra.length > 0) {
+              $("#place_id").val(extra[0])
+            } else {
+              $("#place_id").val('')
+            }
+          },
+        }
+      );
+        $.data(this, 'initialized', true);
+        $(this).blur();
+        $(this).focus();
+      }
+    });
 
     $('.word_count').charCounter(140, {
       container: "<div></div>"
     })
 
-    <% if request.xhr? %>
-    $("#cancel").click(function() {
-      $("#dialog").jqmHide();
-      return false;
-    })
-    
-    $("#new_user_place_activity").submit(function() {
-	var place_id = $("#place_id").val();
-
-      $.ajax({
-        type: "POST",
-        url: '/user_place_activities/add',
-        data: $(this).serialize(),
-        success: function(p) {
-			$('#add_place_activity').css('display','none');
-			$('#remove_place_activity').css('display','block');
-          $('#dialog').jqmHide();
-        },
-        error: function(p) {
-		  //todo: here display error message
-		},
+<% if request.xhr? %>
+      $("#cancel").click(function() {
+        $("#dialog").jqmHide();
+        return false;
       })
+    
+      $("#new_user_place_activity").submit(function() {
+        var place_id = $("#place_id").val();
 
-	  var place_div = $("#place_"+place_id);
-	  var a = place_div.children(".actions").children("a");
-	  a.removeClass('add_place');
-	  a.addClass('remove_place');
-	  a.html('<img class=" tooltip " width="20" title="Remove from favorites" src="/images/HPThumbDown.png" alt="HpthumbDown"/>');
-      return false;
-    });
-    <% end %>
+        $.ajax({
+          type: "POST",
+          url: '/user_place_activities/add',
+          data: $(this).serialize(),
+          success: function(p) {
+            $('#add_place_activity').css('display','none');
+            $('#remove_place_activity').css('display','block');
+            $('#dialog').jqmHide();
+          },
+          error: function(p) {
+            //todo: here display error message
+          },
+        })
+
+        var place_div = $("#place_"+place_id);
+        var a = place_div.children(".actions").children("a");
+        a.removeClass('add_place');
+        a.addClass('remove_place');
+        a.html('<img class=" tooltip " width="20" title="Remove from favorites" src="/images/HPThumbDown.png" alt="HpthumbDown"/>');
+        return false;
+      });
+<% end %>
 
 
 

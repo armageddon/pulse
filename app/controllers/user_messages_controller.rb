@@ -13,6 +13,8 @@ class UserMessagesController < ApplicationController
   before_filter :set_other_user,  :only => [:show, :update]
   
   def index
+    @places = current_user.suggested_places
+    @matches = current_user.matches(params[:page], 8)
     @messages = current_user.messages
     current_user.read_all_messages!
   end

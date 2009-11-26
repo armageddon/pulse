@@ -8,5 +8,20 @@
 	</div>
 	<div class="clear">&nbsp;</div>
 </div>
-<%= render :partial => 'shared_object_collections/horizontal_users_collection' , :locals => {:collection => @users}%>
-<%= render :partial => 'shared_object_collections/user_place_activity_comments_collection' , :locals => {:collection => @user_place_activity_comments}%>
+<div id='people_results'>
+	<%= render :partial => 'shared_object_collections/horizontal_users_collection' , :locals => {:collection => @users}%>
+</div>
+
+<div class="section_header" >
+	<div style="float:left;width:200px">
+		<h3 style="width:100px;" class="section_name">Comments</h3>
+	</div>
+	<div class="clear">&nbsp;</div>
+</div>
+<div>
+	<div style="width:45px;float:left">&nbsp;</div>
+	<div style="width:130px;float:left">Who</div>
+	<div style="width:300px;float:left">Why</div>
+	<div class="clear"></div>
+<%= render :partial => 'shared_object_collections/place_activity_comments_collection' , :locals => {:collection => @user_place_activity_comments}%>
+</div>
