@@ -418,7 +418,7 @@ after_create :welcome_mail
        <br /> 
        Jane and Pierre"
 
-    @pulse_user = User.find(1)
+    @pulse_user = User.find(42)
     @message = @pulse_user.sent_messages.build({:recipient_id=>self.id,:subject=>@subject,:body=>@body})
     @message.save
     
