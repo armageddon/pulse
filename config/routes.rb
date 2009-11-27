@@ -50,16 +50,11 @@ ActionController::Routing::Routes.draw do |map|
    map.feed '/feed', :controller => 'feeds', :action => 'feed'
   
   #place_pictures controller
-  map.resources :places, :collection => { :autocomplete => :get } do |p|
-    p.resources :pictures, :controller => "place_pictures"
-  end
+
   
   #todo what the hell does the below line mean
-  map.resources :activities, :collection => { :autocomplete => :get } do |a|
-    a.resources :pictures, :controller => "activity_pictures"
-  end
 
- 
+
   map.user_favorite_delete 'account/favorites/delete', :controller => 'user_favorites',  :action => 'destroy'
   
   map.user_activity_delete 'account/activities/delete', :controller => 'user_activities',  :action => 'destroy'
@@ -70,6 +65,25 @@ ActionController::Routing::Routes.draw do |map|
   map.favourite_place_activities 'user_place_activities/list', :controller => 'user_place_activities', :action=>'list'
   map.add_user_place_activity 'user_place_activities/add', :controller => 'user_place_activities', :action=>'create'
 
+  #place_activity controller
+  map.resources :place_activities
+  map.place_activity_users '/place_activity/users', :controller => 'place_activities', :action => 'users'
+  map.place_activity_user_place_activities '/place_activity/user_place_activities', :controller => 'place_activities', :action => 'user_place_activities'
+  
+  #place_controller
+  map.resources :places, :collection => { :autocomplete => :get } do |p|
+    p.resources :pictures, :controller => "place_pictures"
+  end
+  map.place_users '/place/users', :controller => 'places', :action => 'users'
+  map.place_user_place_activities '/place/user_place_activities', :controller => 'places', :action => 'user_place_activities'
+  
+  #activity_controller
+  map.resources :activities, :collection => { :autocomplete => :get } do |a|
+    a.resources :pictures, :controller => "activity_pictures"
+  end
+  map.activity_users '/activity/users', :controller => 'activities', :action => 'users'
+  map.activity_user_place_activities '/activity/user_place_activities', :controller => 'activities', :action => 'user_place_activities'
+  
   
   #profiles controller
   map.resources :profiles, :except => :show

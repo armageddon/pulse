@@ -1,15 +1,16 @@
 <div class="object" id="<%= dom_id object %>">
+	<% pa = object.place_activity %>
   <div class="icon" style="width:25;">
 
   </div>
   <div class="what">
-	<%= link_to (object.activity.name), object.activity %>
+	<%= link_to (pa.activity.name), object.activity %>
   </div>
   <div class="where">
-	<%= link_to (object.place.name), object.place %>
+	<%= link_to (pa.place.name), object.place %>
   </div>
   <div class="who">
-  <% users = User.search_users_pictures(params, current_user, object.place_id, object.activity_id) %>
+  <% users = User.search_users_pictures(params, current_user, pa.place_id, pa.activity_id) %>
 
   <%= render :partial  => "shared_objects/user_pictures", :collection => users %>
   <% if users.total_entries > 3 %>

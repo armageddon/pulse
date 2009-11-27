@@ -1,3 +1,5 @@
+<label  style="margin-top: 5px; color:#990000;">What do you enjoy doing?</label>
+<div class="clear"></div>
 <div style="float:left;">
 	<%= render :partial => "shared/activity_select", :locals => {:allow_any_activity => "1"} %>
 </div>
@@ -15,7 +17,16 @@
     :size => 50,
     "data-prefilled" => (user_place_activity.place.present? ? 'true' : 'false')
   	%>
- 
+	<div class='clear'></div>
+ 	<div style="margin-top:10px; float:left">
+	<label  style="margin-top: 5px; color:#990000;">When do you do it?</label>
+<div class="clear"></div>
+	<%= drop_down('user_place_activity[day_of_week]', 'Monday', {:width => '130px'},dotw_options, 'Any day',0) %>&nbsp;
+	<%= drop_down('user_place_activity[time_of_day]', 'Early Mornings', {:width => '200px'},tod_options, 'Any time',0) %>
+
+
+	</div>
+
 	<div class="clear"></div>
 	<div style="margin-top:10px; float:left; margin-top:15px">
  		<label  style="margin-top: 5px; color:#990000;">Why do you like this place?</label>

@@ -1,0 +1,40 @@
+<div class="object" id="<%= dom_id object %>" style="height:46px">
+
+  <% pa  = PlaceActivity.find(:first, :conditions=>"id =" + object.place_activity_id.to_s)%>
+  
+<div class="what" style="float:left;width:145px;margin-right:5px">
+	<%= link_to (pa.activity.name), place_activity_path(:id=>pa.id)%>
+  </div>
+  <div class="where" style="float:left;width:145px;margin-right:5px">
+	<%= link_to (pa.place.name), place_activity_path(:id=>pa.id) %>
+  </div>
+	<div class="when" style="float:left;width:95px;margin-right:5px">
+		<% if object.day_of_week == 0 && object.time_of_day ==0 %>
+			Anytime
+		<% else %> 
+	    	<%=dotw(object.day_of_week) + "<br /> " + tod(object.time_of_day)%>
+		<% end %> 
+	</div>
+  <div class="who" style="float:left;width:95px;margin-right:5px">
+  <% users = User.search_users_pictures(params, current_user, pa.place.id, pa.activity.id) %>
+
+  <%= render :partial  => "shared_objects/user_pictures", :collection => users %>
+  <% if users.total_entries > 3 %>
+    <%= "" %>
+  <% end %>
+  </div>
+  <div class="actions" style="float:left;width:px;56margin-right:5px">
+	<% if controller_name == 'search' || controller_name == 'user_favorites' %>
+		<%  if logged_in? && !current_user.user_place_activities.include?(object) && controller_name != 'user_favorites' %>
+		  <%= link_to image_tag("HPThumbUp.png", :width=>20,:class => " tooltip ", :title => I18n.translate("Add_to_favorites")), '#', 'data-href' => "/user_place_activities/new?activity_id="+pa.activity_id.to_s+"&place_id="+pa.place_id.to_s+"&view=add_place_activity", :class => "add_activity" %>
+		<%  elsif  logged_in?    %>
+	      <%= link_to image_tag("HPThumbDown.png", :width=>20,:class => " tooltip ", :title => I18n.translate("Remove_from_favorites")), '/user_place_activities/delete?place_activity_id =' + pa.id.to_s, 'data-href' => '/account/delete_user_place_activity?activity_id = ' + pa.activity_id.to_s + '&place_id = ' + pa.place_id.to_s + '&place_activity_id = ' + pa.id.to_s,:place_activity_id=>pa.id,:activity_id => pa.activity_id, :place_id => pa.place_id, :class => "remove_place_activity" %>
+		<%  end %> 
+	<% end %>
+	<div style="float:left">
+	</div>
+  </div>
+</div>
+ 
+
+ <div class="clear"></div>

@@ -1,4 +1,4 @@
-<h3 class="section"><%= @activity.name + ' at ' + @place.name %></h3>
+<h3 class="section"><%= (link_to @activity.name, @activity) + ' at ' + (link_to @place.name, @place) %></h3>
 
 <div id="profile_image">
   <%= image_tag @place.icon.url(:profile) %>
@@ -9,7 +9,7 @@
 
 
 <br>
-<div id="address">
+<div id="address"> 
  <%= @place.address %><br>
  <%= @place.city %>, <%= @place.zip %><br>
  <% if @place.website.present? %>

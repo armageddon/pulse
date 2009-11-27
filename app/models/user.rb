@@ -73,7 +73,8 @@ after_create :welcome_mail
   has_many :invitations
   has_many :user_favorites
   has_many :friends, :through => :user_favorites, :source => :user
-
+  has_many :place_activities, :through => :user_place_activities
+  
   validates_presence_of     :location_id
   
   validates_uniqueness_of   :username
@@ -338,13 +339,13 @@ after_create :welcome_mail
       @results = User.paginate(:all, :conditions => conditions, :page => params[:page], :per_page => 6)
     end
     if !use_activity && use_place_location
-      @results = User.paginate(:select => "users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join places on UPA.place_id = places.id", :conditions => conditions, :page => params[:page], :per_page => 6)
+      @results = User.paginate(:select => "users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join place_activities PA on PA.id = UPA.place_activity_id inner join places on PA.place_id = places.id", :conditions => conditions, :page => params[:page], :per_page => 6)
     end
     if use_activity && !use_place_location
-      @results = User.paginate(:select => "users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join activities on UPA.activity_id = activities.id", :conditions => conditions,:page => params[:page], :per_page => 6) 
+      @results = User.paginate(:select => "users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join place_activities PA on PA.id = UPA.place_activity_id inner join activities on PA.activity_id = activities.id", :conditions => conditions,:page => params[:page], :per_page => 6) 
     end
     if use_activity && use_place_location
-      @results = User.paginate(:select => "users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join places on UPA.place_id = places.id inner join activities on UPA.activity_id = activities.id", :conditions => conditions,:page => params[:page], :per_page => 6) 
+      @results = User.paginate(:select => "users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join place_activities PA on PA.id = UPA.place_activity_id inner join places on PA.place_id = places.id inner join activities on PA.activity_id = activities.id", :conditions => conditions,:page => params[:page], :per_page => 6) 
     end 
     return @results
   end
@@ -353,7 +354,7 @@ after_create :welcome_mail
   def self.search_users_pictures(params, current_user, place_id, activity_id)
     #this is repeated in other objects - refactor
     if params[:search_criteria] == nil
-      @results = User.paginate(:select => "users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join places on UPA.place_id = places.id inner join activities on UPA.activity_id = activities.id", :conditions => ' places.id = ' +place_id.to_s + ' and activities.id = ' + activity_id.to_s,:page => params[:page], :per_page => 3) 
+      @results = User.paginate(:select => "users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join place_activities PA on PA.id = UPA.place_activity_id inner join places on PA.place_id = places.id inner join activities on PA.activity_id = activities.id", :conditions => ' places.id = ' +place_id.to_s + ' and activities.id = ' + activity_id.to_s,:page => params[:page], :per_page => 3) 
     else
       search_criteria = SearchCriteria.new(params,current_user).conditions
 
@@ -363,19 +364,19 @@ after_create :welcome_mail
       use_place_location = search_criteria[2]
       use_activity = search_criteria[3]
       conditions = search_criteria[4]
-      conditions += " and UPA.place_id = " + place_id.to_s + " and UPA.activity_id = " + activity_id.to_s
+      conditions += " and PA.place_id = " + place_id.to_s + " and PA.activity_id = " + activity_id.to_s
     
       if !use_activity && !use_place_location #just user (gender sex)
-        @results = User.paginate(:select => "users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username", :conditions => conditions,:joins => "inner join user_place_activities UPA on UPA.user_id = users.id", :page => 1, :per_page => 3)
+        @results = User.paginate(:select => " users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username", :conditions => conditions,:joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join place_activities PA on PA.id = UPA.place_activity_id", :page => 1, :per_page => 3)
       end
       if !use_activity && use_place_location
-        @results = User.paginate(:select => "users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join places on UPA.place_id = places.id", :conditions => conditions, :page => params[:page], :per_page => 3)
+        @results = User.paginate(:select => "  users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join place_activities PA on PA.id = UPA.place_activity_id inner join places on PA.place_id = places.id", :conditions => conditions, :page => params[:page], :per_page => 3)
       end
       if use_activity && !use_place_location
-        @results = User.paginate(:select => "users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join activities on UPA.activity_id = activities.id", :conditions => conditions,:page => params[:page], :per_page => 3) 
+        @results = User.paginate(:select => "  users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join place_activities PA on PA.id = UPA.place_activity_id inner join activities on PA.activity_id = activities.id", :conditions => conditions,:page => params[:page], :per_page => 3) 
       end
       if use_activity && use_place_location
-        @results = User.paginate(:select => "users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join places on UPA.place_id = places.id inner join activities on UPA.activity_id = activities.id", :conditions => conditions,:page => params[:page], :per_page => 3) 
+        @results = User.paginate(:select => "  users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join place_activities PA on PA.id = UPA.place_activity_id inner join places on PA.place_id = places.id inner join activities on PA.activity_id = activities.id", :conditions => conditions,:page => params[:page], :per_page => 3) 
       end 
     end
     return @results

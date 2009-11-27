@@ -47,6 +47,18 @@
     <% end %>
 
     </br>
+
+<div style="margin-top:10px; float:left">
+<h4>When do you do it?</h4>
+
+<%= drop_down('user_place_activity[day_of_week]', 'Monday', {:width => '130px'},dotw_options, 'Any day',0) %>
+<%= drop_down('user_place_activity[time_of_day]', 'Early Mornings', {:width => '200px'},tod_options, 'Any time',0) %>
+
+
+</div>
+<div class='clear'></div>
+  </br>
+
     <div style="margin-top:10px">
       <h4>Tell us why you socialise here and why it's a good place to meet new people at</h4>
       <%= f.text_area :description, :rows => 10, :class => "input_text word_count" %>
@@ -131,8 +143,6 @@
           url: '/user_place_activities/add',
           data: $(this).serialize(),
           success: function(p) {
-            $('#add_place_activity').css('display','none');
-            $('#remove_place_activity').css('display','block');
             $('#dialog').jqmHide();
           },
           error: function(p) {

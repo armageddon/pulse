@@ -17,10 +17,11 @@ class Place < ActiveRecord::Base
     :default_url => "/images/Question.png"
 
   belongs_to :location
-  has_many :user_place_activities
+  has_many :place_activities
+  has_many :user_place_activities, :through => :place_activities
   has_many :activities, :through => :user_place_activities
   has_many :user_places
-  has_many :users, :through => :user_places
+  has_many :users, :through => :user_place_activities
   
   has_many :events
   belongs_to :place_categories
@@ -57,9 +58,9 @@ class Place < ActiveRecord::Base
        
        if !use_activity && !use_place_location #just user (gender sex)
          logger.debug("people only")
-         results = Place.paginate(:select => "places.latitude, places.longitude, places.name, places.address, places.neighborhood, places.category, count(UPA.activity_id)", :order => "count(UPA.activity_id) DESC", :joins => "inner join user_place_activities UPA on UPA.place_id = places.id inner join users on users.id = UPA.user_id",:group => 'places.latitude, places.longitude, places.name, places.address, places.neighborhood, places.category', :conditions => conditions, :page => params[:page], :per_page => 100, :order => "count(UPA.activity_id) DESC")
+         results = Place.paginate(:select => "places.latitude, places.longitude, places.name, places.address, places.neighborhood, places.category, count(PA.activity_id)", :order => "count(PA.activity_id) DESC", :joins => "inner join place_activities PA on PA.place_id = places.id inner join user_place_activities UPA on UPA.place_activity_id = PA.id inner join users on users.id = UPA.user_id",:group => 'places.latitude, places.longitude, places.name, places.address, places.neighborhood, places.category', :conditions => conditions, :page => params[:page], :per_page => 100, :order => "count(PA.activity_id) DESC")
        else
-         results = Place.paginate(:select => "places.latitude, places.longitude, places.name, places.address, places.neighborhood, places.category,count(UPA.activity_id)", :order => "count(user_id) DESC", :joins => "inner join user_place_activities UPA on UPA.place_id = places.id inner join activities on activities.id = UPA.activity_id inner join users on users.id = UPA.user_id",:group => 'places.latitude, places.longitude, places.name, places.address, places.neighborhood, places.category', :order => "count(UPA.activity_id) DESC", :conditions => conditions, :page => params[:page], :per_page => 100)
+         results = Place.paginate(:select => "places.latitude, places.longitude, places.name, places.address, places.neighborhood, places.category,count(PA.activity_id)", :order => "count(user_id) DESC", :joins => "inner join place_activities PA on PA.place_id = places.id inner join user_place_activities UPA on PA.id = UPA.place_activity.id inner join activities on activities.id = PA.activity_id inner join users on users.id = UPA.user_id",:group => 'places.latitude, places.longitude, places.name, places.address, places.neighborhood, places.category', :order => "count(PA.activity_id) DESC", :conditions => conditions, :page => params[:page], :per_page => 100)
        end
        logger.debug(results.length)
        return results

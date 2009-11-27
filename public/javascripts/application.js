@@ -57,14 +57,14 @@ $(document).ready(function() {
   })
 
 
-
+/*
 $("#remove_place_activity").live('click',function() {
 	 var link = $(this);
 	 
      $.ajax({
        type: "DELETE",
        url: "/user_place_activities/delete",
-	   data: {"activity_id" : $(this).attr("activity_id"),"place_id" : $(this).attr("place_id")},
+	   data: {"place_activity_id" : $(this).attr("place_activity_id")},
        success: function(p) {
 
 		  $('#add_place_activity').css('display','block')
@@ -77,8 +77,8 @@ $("#remove_place_activity").live('click',function() {
      })
    return false;
   })
-
-
+*/
+/*
   $(".remove_place").live('click',function() {
 	 var link = $(this);
 	 var frm = $(this).parents("form:first")[0];
@@ -105,14 +105,14 @@ $("#remove_place_activity").live('click',function() {
      })
    return false;
   })
-
+*/
 $(".remove_place_activity").live('click',function() {
 	 var link = $(this);
 	 var frm = $(this).parents("form:first")[0];
      $.ajax({
        type: "DELETE",
-       url: "/account/delete_user_place_activity",
-	   data: {"activity_id" : $(this).attr("activity_id"),"place_id" : $(this).attr("place_id")},
+       url: "/user_place_activities/delete",
+	   data: {"place_activity_id" : $(this).attr("place_activity_id")},
        success: function(p) {
 	    //need to determinw which page this comes from and remove if favorites
 	    if((frm=='undefined')||(frm.id=='favorites'))
@@ -132,7 +132,7 @@ $(".remove_place_activity").live('click',function() {
      })
    return false;
   })
-
+/*
   $(".remove_activity").live('click',function() {
 	 var link = $(this);
 	 var frm = $(this).parents("form:first")[0];
@@ -159,7 +159,7 @@ $(".remove_place_activity").live('click',function() {
      })
    return false;
   })
-
+*/
   $('.paginator').live('click', function() {
     var link = $(this);
     link.hide();

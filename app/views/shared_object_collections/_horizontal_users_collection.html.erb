@@ -1,59 +1,58 @@
+<div id="userpage" style="width:556px;background-color:#EDEDED;">
+	<div style="align:center;text-align:center;float:left;width:20px;font-size:20px;background-color:#EDEDED;height:94px" id="page_back" >
+		<div style="width:20px;height:35px;float:left;"></div>
+		<div class="clear"></div>
+		<div style="height:24px">
+			<% if collection.previous_page  %>
+				<% qstring = "" %>
+				<% params.each do |p| %>
+				    <% if p[0] != "page"  && p[0] != "search_criteria"%>
+					   <% qstring += "&" + p[0].to_s + '=' + p[1].to_s %>
+					<% end %> 
+			  	<% end %>
+				<% qstring += "&type="+collection.first.class.to_s.tableize %>
+				<% if params[:search_criteria] != nil %>
+				   	<%params[:search_criteria].each do |sc| %>
+						<% qstring += "&search_criteria[" + sc[0].to_s + ']=' + sc[1].to_s %>
+					<% end %>
+				<% end %>
+			  	<%= link_to "<", reqpath + '?page=' + collection.previous_page.to_s + qstring, :class => "userpaginator" %>
+			<% else %>
+				<%= "<" %>
+			<% end %>
+		</div>
+		<div style="width:20px;height:35px;float:left;"></div>
+	</div>
 
+	<div style="float:left;height:94px;width:516px;background-color:#EDEDED;" id="users">
+  		<%= render :partial => "shared_objects/horizontal_user", :collection => collection %>
+	</div>
 
-<div id="userpage">
-<div style="float:left;width:23px;font-size:20px" id="page_back" >
-<% if collection.previous_page  %>
-	<% qstring = "" %>
-	<% params.each do |p| %>
-	    <% if p[0] != "page"  && p[0] != "search_criteria"%>
-		   <% qstring += "&" + p[0].to_s + '=' + p[1].to_s %>
-		<% end %> 
-  	<% end %>
-	<% qstring += "&type="+collection.first.class.to_s.tableize %>
-	<% if params[:search_criteria] != nil %>
-	   	<%params[:search_criteria].each do |sc| %>
-			<% qstring += "&search_criteria[" + sc[0].to_s + ']=' + sc[1].to_s %>
-		<% end %>
-	<% end %>
-    <% if controller_name == "search" %>
-		<% reqpath = request.path %>
-	<% else %>
-	    <!-- todo: add logic to decide which collection to get. at present there are no ajax calls for these -->
-	    <% reqpath = request.path %>
-	<% end %>	
-  	<%= link_to "<", request.path + '?page=' + collection.previous_page.to_s + qstring, :class => "userpaginator" %>
-<% else %>
-	<%= "<" %>
-<% end %>
-</div>
-
-<div style="float:left;width:500px" id="users">
-  <%= render :partial => "shared_objects/horizontal_user", :collection => collection %>
-</div>
-
-
-<div style="float:left;width:23px;font-size:20px"  id="page_forward">
-<% if collection.next_page %>
-	<% qstring = "" %>
-	<% params.each do |p| %>
-	    <% if p[0] != "page"  && p[0] != "search_criteria"%>
-		      <% qstring += "&" + p[0].to_s + '=' + p[1].to_s %>
-		<% end %> 
-  	<% end %>
-	<% qstring += "&type="+collection.first.class.to_s.tableize %>
-	<% if params[:search_criteria] != nil %>
-	   	<%params[:search_criteria].each do |sc| %>
-			<% qstring += "&search_criteria[" + sc[0].to_s + ']=' + sc[1].to_s %>
-		<% end %>
-	<% end %>
-	    <!-- todo: add logic to decide which collection to get. at present there are no ajax calls for these -->
-	    <% reqpath = 'search/people_list'%>
-  	<%= link_to ">", reqpath + '?page=' + collection.next_page.to_s + qstring, :class => "userpaginator" %>
-<% else %>
-	<%= ">" %>
-	
-<% end %>
-</div>
+	<div style="align:center;text-align:center;float:left;width:20px;font-size:20px;background-color:#EDEDED;height:94px" id="page_forward" >
+		<div style="width:20px;height:35px;float:left;">
+		</div>
+		<div class="clear"></div>
+		<div style="height:24px">
+			<% if collection.next_page %>
+				<% qstring = "" %>
+				<% params.each do |p| %>
+				    <% if p[0] != "page"  && p[0] != "search_criteria"%>
+					      <% qstring += "&" + p[0].to_s + '=' + p[1].to_s %>
+					<% end %> 
+			  	<% end %>
+				<% qstring += "&type="+collection.first.class.to_s.tableize %>
+				<% if params[:search_criteria] != nil %>
+				   	<%params[:search_criteria].each do |sc| %>
+						<% qstring += "&search_criteria[" + sc[0].to_s + ']=' + sc[1].to_s %>
+					<% end %>
+				<% end %>
+			  	<%= link_to ">", reqpath + '?page=' + collection.next_page.to_s + qstring, :class => "userpaginator" %>
+			<% else %>
+				<%= ">" %>	
+			<% end %>
+		</div>
+		<div style="width:20px;height:35px;float:left;"></div>
+	</div>
 </div>
 
 

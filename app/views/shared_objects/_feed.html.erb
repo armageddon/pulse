@@ -20,12 +20,12 @@
 		
 		<% if object.event_type == 'addeduserplaceactivity' && UserPlaceActivity.exists?(object.subject_id)%>
 		      <% user_place_activity = UserPlaceActivity.find(object.subject_id)%>
-	
+	          <% place_activity =  user_place_activity.place_activity %>
 			  <div style="float:left">
 			  added
-			  <%= link_to user_place_activity.activity.name, user_place_activity_path(:id=>object.subject_id.to_s) %>
+			  <%= link_to place_activity.activity.name, place_activity_path(:id=>place_activity.id.to_s) %>
 			  at
-			  <%= link_to user_place_activity.place.name, user_place_activity_path(:id=>object.subject_id.to_s)  %>
+			  <%= link_to place_activity.place.name, place_activity_path(:id=>place_activity.id.to_s)  %>
 			</div>
 			<div class="clear"></div>
 			<div class="float:left">

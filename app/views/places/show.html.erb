@@ -10,7 +10,9 @@
 	<div class="clear">&nbsp;</div>
 </div>
 <div id='people_results'>
-	<%= render :partial => 'shared_object_collections/horizontal_users_collection' , :locals => {:collection => @users}%>
+	<% if @users != nil and @users.length >0 %>
+	  <%= render :partial => 'shared_object_collections/horizontal_users_collection' , :locals => {:collection => @users,:reqpath=>'/place/users'}%>
+	<% end %>
 </div>
 
 <div class="section_header" >
@@ -20,9 +22,12 @@
 	<div class="clear">&nbsp;</div>
 </div>
 <div>
-	<div style="width:45px;float:left">&nbsp;</div>
-	<div style="width:130px;float:left">Who</div>
-	<div style="width:300px;float:left">Why</div>
+	<div style="margin-right:5px;width:136px;float:left;text-align:center;background-color:#EDEDED;">Who</div>
+	<div style="margin-right:5px;width:310px;float:left;text-align:center;background-color:#EDEDED;">Why & What</div>
+	<div style="width:100px;float:left;text-align:center;background-color:#EDEDED;">When</div>
 	<div class="clear"></div>
-<%= render :partial => 'shared_object_collections/place_comments_collection' , :locals => {:collection => @user_place_comments}%>
+	<% if @user_place_activities != nil and @user_place_activities.length >0 %>
+	
+		<%= render :partial => 'user_place_activity_collection' , :locals => {:collection => @user_place_activities}%>
+	<% end %>
 </div>

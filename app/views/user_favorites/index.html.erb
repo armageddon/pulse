@@ -10,12 +10,21 @@
 
   <h3 class="section"><%=I18n.translate("your_favorite_people") %></h3>
 <div id='people_results'>
-  <%= render :partial => "shared_object_collections/favorite_users_collection", :locals => {:collection => @favorites} %>
+  <%= render :partial => "shared_object_collections/horizontal_users_collection", :locals => {:collection => @favorites, :reqpath=> '/favorites/people'} %>
 </div>
 <div class='clear'></div>
 <br />
   <h3 class="section"><%=I18n.translate("your_favorite_activities") %></h3>
-  <%= render :partial => "shared_object_collections/favorite_place_activity_collection", :locals => {:collection => @user_place_activities} %>
+
+
+	<div style="margin-right:5px;width:145px;float:left;text-align:center;background-color:#EDEDED;">What</div>
+	<div style="margin-right:5px;width:145px;float:left;text-align:center;background-color:#EDEDED;">Where</div>
+	<div style="margin-right:5px;width:95px;float:left;text-align:center;background-color:#EDEDED;">When</div>
+	<div style="margin-right:5px;width:95px;float:left;text-align:center;background-color:#EDEDED;">Who</div>
+	<div style="width:56px;float:left;text-align:center;background-color:#EDEDED;">&nbsp;</div>
+	
+	<div class="clear"></div>
+	<%= render :partial => "user_place_activity_collection", :locals => {:collection => @user_place_activities} %>
 
 
 <% end %>

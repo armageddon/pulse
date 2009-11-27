@@ -33,7 +33,7 @@ helper UsersHelper
         if @users == nil || @users.length == 0
           render :text=>"<div style='width:500px' id='results'>No results returned</div>"
         else
-          render :partial => 'shared_object_collections/horizontal_users_collection', :locals => { :collection => @users },  :content_type => "text/html"
+          render :partial => 'shared_object_collections/horizontal_users_collection', :locals => { :collection => @users, :reqpath=>'/search/people_list' },  :content_type => "text/html"
         end
       end
     end
