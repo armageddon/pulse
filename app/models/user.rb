@@ -387,11 +387,12 @@ after_create :welcome_mail
     search_criteria = SearchCriteria.new(params,current_user)
     #@results = User.search(params[:search_criteria][:keyword],:conditions => , :page => params[:page], :per_page => 6)
     
-    logger.debug('Sphinx people criteria')
-    logger.debug(search_criteria.ages)
-    logger.debug(search_criteria.sex_preferences)
+    logger.info('Sphinx people criteria')
+    logger.info(search_criteria.ages)
+    logger.info(search_criteria.sex_preferences)
+    logger.info(params[:search_criteria][:keyword])
     @results = User.search(params[:search_criteria][:keyword], :conditions => {:age => search_criteria.ages , :sex => search_criteria.sex_preferences},  :page=>params[:page], :per_page=>14)
-    
+    logger.info("Results: " + @results.length)
     return @results
   end
 

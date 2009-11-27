@@ -1,4 +1,8 @@
-<h3 class="section"><%= @user.first_name %></h3>
+<div class="column_header">
+      <span>
+      	<h2>Details</h2>
+      </span>
+</div>
   <%= image_tag @user.icon.url(:profile) %>
   <%= render :partial => "users/description", :locals => { :user => @user } %>
   <div id="self_description">

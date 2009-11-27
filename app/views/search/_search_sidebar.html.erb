@@ -1,11 +1,9 @@
 <% form_tag search_people_path, :method => :get, :id => "advanced_search_side" do |f| %>
 	<%= hidden_field_tag "t", params[:t] %>
-	<div class="section_header">
-		<div style="float:left;width:54px">
-			<h3 class="section_name">Filter Results </h3>
-		</div>
-		<div class="section_extra"></div>
-		<div class="clear">&nbsp;</div>
+	 <div class="column_header">
+	      <span>
+	      	<h2>Filter Results</h2>
+	      </span>
 	</div>
 	<div id="search_type"  style="text-align:center">
 		<%= hidden_field_tag 'search_criteria[type]', @search_criteria.type, :id=>'search_criteria_type' %>

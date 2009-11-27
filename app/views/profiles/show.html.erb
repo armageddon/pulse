@@ -17,14 +17,14 @@
 <% end %>
 <div class='clear'></div>
 
-
+<div class="column_header">
+      <span>
+      	<h2><%=@user.first_name%></h2>
+      </span>
+</div>
+<div class="clear">&nbsp;</div>
 <div id='activity_container' class='<%=search_activity_results_class(@search_criteria.type)%>'>
-	<div class="section_header" >
-		<div style="float:left;width:200px">
-			<h3 style="width:100px;" class="section_name"><%= @user.sex == User::Sex::MALE ? 'His' : 'Her' %> activities</h3></h3>
-		</div>
-		<div class="clear">&nbsp;</div>
-	</div>
+
 	<div class="clear">&nbsp;</div>
 	
 	<div style="width:45px;float:left">&nbsp;</div>
