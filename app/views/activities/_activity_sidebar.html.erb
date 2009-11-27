@@ -1,7 +1,7 @@
 <h3 class="section"><%= @activity.name %></h3>
 
 <div id="profile_image">
-  <%= image_tag @activity.icon.url(:profile) %>
+  <%= image_tag(@activity.icon.url(:profile), :class=>"profile_image") %>
 </div>
 <% if current_user.admin? %>
   <div id="manage_pictures"><%= link_to "Manage activity pictures", activity_pictures_path(@activity) %></div>

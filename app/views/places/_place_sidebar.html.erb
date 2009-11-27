@@ -1,7 +1,12 @@
-<h3 class="section"><%= @place.name %></h3>
+
+<div class="column_header">
+      <span>
+      	<h2>Details</h2>
+      </span>
+</div>
 
 <div id="profile_image">
-  <%= image_tag @place.icon.url(:profile) %>
+  <%= image_tag(@place.icon.url(:profile), :class=>"profile_image") %>
 </div>
 <% if current_user.admin? %>
    <div id="manage_pictures"><%= link_to "Manage place pictures", place_pictures_path(@place) %></div>

@@ -2,9 +2,13 @@
 <% if @c1.present? %>
   <%= @c1 %>
 <% else %>
-  <h3 class="section">Me</h3>
+  <div class="column_header">
+        <span>
+        	<h2>Me</h2>
+        </span>
+  </div>
   <div id="dashboard_icon">
-    <%= image_tag current_user.icon.url(:profile) %>
+    <%= image_tag(current_user.icon.url(:profile), :class=>"profile_image") %>
   </div>
   <%= render :partial => "users/description", :locals => { :user => current_user } %>
   <div id="self_description">
