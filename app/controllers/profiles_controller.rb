@@ -22,7 +22,7 @@ class ProfilesController < ApplicationController
         when "places"
           render :partial => "shared_object_collections/object_collection", :locals => { :collection => @places }
         when "user_place_activities"
-           render :partial => "shared_object_collections/object_collection", :locals => { :collection => @user_activities }
+           render :partial => "shared_object_collections/object_collection", :locals => { :collection => @user_place_activities }
         end
       end
       
