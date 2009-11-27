@@ -3,7 +3,7 @@
 <% else %>
 
 	<%= render :partial => "shared_objects/feed", :collection => collection %>
-		<div class="clear"></div>
+	<div class="clear"></div>
 	<% if collection.next_page %>
 		<% qstring = "" %>
 		<% params.each do |p| %>
@@ -19,7 +19,7 @@
 	<div id="page_loading" style="display: none;"><h4>Loading</h4></div>
 <% end %>
 	
-</div>
+
 <script type="text/javascript" charset="utf-8">
 
   $(document).ready(function() {

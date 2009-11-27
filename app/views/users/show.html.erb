@@ -14,13 +14,23 @@
     profile has been viewed by <%= current_user.profile_views %> <%= current_user.profile_views == 1 ? 'person' : 'people' %>.
 <% end %>
 
-<%= render :partial => "maps/small_map", :locals => {:collection => @updates} %>
-<div style="float:left" id="activity_results">
-<div class="section_header" >
-	<div style="float:left;width:200px">
-		<h3 style="width:100px;" class="section_name">Updates</h3>
-	</div>
-	<div class="clear">&nbsp;</div>
+<div class="column_header">
+      <span>
+      	<h2>Home</h2>
+      </span>
 </div>
+
+<div style="float:left;width:556px; margin-bottom:4px;">
+		<h3 style="width:556px;font-size:14px" class="section_name">Click on the map to find people and places</h3>
+</div>
+<div class='clear'></div>
+<div id='small_map' style="margin-bottom:10px">
+<%= render :partial => "maps/small_map", :locals => {:collection => @updates} %>
+</div>
+
+<div style="float:left;width:556px; margin-bottom:4px;">
+		<h3 style="width:556px;font-size:14px" class="section_name">Activity feed</h3>
+</div>
+
 <%= render :partial => "shared_object_collections/feed_collection", :locals => {:collection => @updates} %>
 

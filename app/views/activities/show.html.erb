@@ -2,11 +2,10 @@
   <%= render :partial => "activity_sidebar" %>
 <% end %>
 
-<div class="section_header" >
-	<div style="float:left;width:200px">
-		<h3 style="width:100px;" class="section_name">People</h3>
-	</div>
-	<div class="clear">&nbsp;</div>
+<div class="column_header">
+      <span>
+      	<h2><%=@activity.name%></h2>
+      </span>
 </div>
 <div id='people_results'>
 	<%= render :partial => 'shared_object_collections/horizontal_users_collection' , :locals => {:collection => @users, :reqpath=>'/activity/users'}%>

@@ -8,20 +8,29 @@
   <% content_for :message do %>
   <% end %>
 
-  <h3 class="section"><%=I18n.translate("your_favorite_people") %></h3>
+<div class="column_header">
+      <span>
+      	<h2>My Favourites</h2>
+      </span>
+</div>
+<div style="float:left;width:556px; margin-bottom:4px;margin-top:0px">
+		<h3 style="width:556px;font-size:14px" class="section_name">People</h3>
+</div>
 <div id='people_results'>
   <%= render :partial => "shared_object_collections/horizontal_users_collection", :locals => {:collection => @favorites, :reqpath=> '/favorites/people'} %>
 </div>
 <div class='clear'></div>
 <br />
-  <h3 class="section"><%=I18n.translate("your_favorite_activities") %></h3>
+<div style="float:left;width:556px; margin-bottom:4px;margin-top:0px">
+		<h3 style="width:556px;font-size:14px" class="section_name">Activities</h3>
+</div>
 
 
-	<div style="margin-right:5px;width:145px;float:left;text-align:center;background-color:#EDEDED;">What</div>
-	<div style="margin-right:5px;width:145px;float:left;text-align:center;background-color:#EDEDED;">Where</div>
-	<div style="margin-right:5px;width:95px;float:left;text-align:center;background-color:#EDEDED;">When</div>
-	<div style="margin-right:5px;width:95px;float:left;text-align:center;background-color:#EDEDED;">Who</div>
-	<div style="width:56px;float:left;text-align:center;background-color:#EDEDED;">&nbsp;</div>
+	<div style="padding:5px;margin-right:5px;width:135px;float:left;text-align:center;background-color:#EDEDED;">What</div>
+	<div style="padding:5px;margin-right:5px;width:135px;float:left;text-align:center;background-color:#EDEDED;">Where</div>
+	<div style="padding:5px;margin-right:5px;width:85px;float:left;text-align:center;background-color:#EDEDED;">When</div>
+	<div style="padding:5px;margin-right:5px;width:85px;float:left;text-align:center;background-color:#EDEDED;">Who</div>
+	<div style="padding:5px;width:46px;float:left;text-align:center;background-color:#EDEDED;">&nbsp;</div>
 	
 	<div class="clear"></div>
 	<%= render :partial => "user_place_activity_collection", :locals => {:collection => @user_place_activities} %>

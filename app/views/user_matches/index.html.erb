@@ -11,6 +11,10 @@
 <% end %>
 
 	
-<h3 class="section">My matches</h3>
+<div class="column_header">
+      <span>
+      	<h2>My Matches</h2>
+      </span>
+</div>
 <%= render :partial => 'shared_object_collections/object_collection', :locals => { :collection => @matches } %>
 
