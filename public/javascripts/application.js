@@ -177,6 +177,7 @@ $(".remove_place_activity").live('click',function() {
     var link = $(this);
     //todo: need to set type here
     $.get(link.attr('href'),{}, function(data) {
+	
       $('#people_results').html(data);
       //$('#results_header').html(data.total_entries)
       $("#dialog").jqmAddTrigger('.add_to_favorites, .add_event, .add_activity');

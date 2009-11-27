@@ -1,9 +1,9 @@
-<div style="float:left; width:82px; height:90px;margin:2px; background-color:white" id="<%= dom_id object %>">
+<div style="float:left; width:82px; height:110px;margin-left:2px;margin-right:2px;margin-top:5px;margin-botton:5px; background-color:white" id="<%= dom_id object %>">
 	<div style="text-align:center;">
-	<%= link_to image_tag(object.icon.url(:thumb), :align => "center", :width => '50px', :height => '50px'), object %>
+	<%= link_to image_tag(object.icon.url(:thumb), :align => "center", :width => '55px', :height => '55px', :style=>"margin-top:3px;margin-bottom:3px;"), object %>
 	</div>
 	<div class="clear"></div>
-	<div style="text-align:center;">
+	<div style="text-align:center;margin-bottom:4px;">
 	<%= object.first_name %>
 	</div>
 	<div style="text-align:center;">
