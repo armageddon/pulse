@@ -2,19 +2,14 @@
   <%= render :partial => "place_activity_sidebar" , :locals => {:place_activity => @place_activity}%>
 <% end %>
 
-<div class="section_header" >
-	<div style="float:left;width:200px">
-		<h3 style="width:100px;" class="section_name">People</h3>
-	</div>
-	<div class="clear">&nbsp;</div>
-</div>
+
 <div id='people_results' style="margin-bottom:10px">
 	<%= render :partial => 'shared_object_collections/horizontal_users_collection' , :locals => {:collection => @users, :reqpath=>'/place_activity/users'}%>
 </div>
 
-<div style="float:left;width:556px; margin-bottom:7px;">
+<div style="float:left;width:556px; margin-bottom:7px;margin-top:10px">
 		<h3 style="width:556px;font-size:14px" class="section_name">Things happening here</h3>
-	</div>
+</div>
 
 <div>
 	<div style="margin-right:5px;width:136px;float:left;text-align:center;background-color:#EDEDED;">Who</div>

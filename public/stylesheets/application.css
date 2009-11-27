@@ -777,6 +777,7 @@ input_text -> header_input_text
 
 /*ash*/
 body {
+	font-size:12px;
 	font-family:Arial, Helvetica, sans-serif;
 	color:#000;
 	background-color:#fff;
@@ -789,6 +790,10 @@ img {
 .clear {
 	clear:both;
 }
+
+a{color:#bd0000;
+  text-decoration:none;}
+
 /*TOP NAVIGATION*/
 
 #nav {
@@ -829,12 +834,30 @@ img {
 	color:#333;
 }
 
+/*SEARCH SIDEBAR*/
 
+.search_sidebar_header_line{
+	background-image:url(/images/nav-bg-strip.png);
+	background-repeat:repeat-x;
+	height:4px;
+	margin-bottom: 2px;
+	}	
+
+.search_sidebar_header{
+	background-image:url(/images/nav-bg-strip.png);
+	background-repeat:repeat-x;
+	height:23px;
+	font-size: 14px;
+	text-align: center;
+	padding: 2px;
+	color: white;
+	margin-bottom: 2px;
+}
 /*HEADER*/
 
 #header {
 	width:980px;
-	height:140px;
+	height:128px;
 	position:relative;
 	margin:0 auto;
 }
@@ -859,7 +882,6 @@ img {
 .header_input_text{
 	margin:0;
 	width:159px;
-
 	float:left;
 	border:0;
 	-moz-border:1px solid #ccc;
@@ -880,22 +902,72 @@ img {
 	float:right;
 	margin:20px 0 0 0;
 	padding:10px;}	
-	
-	
-	.search_sidebar_header_line{
-		background-image:url(/images/nav-bg-strip.png);
-		background-repeat:repeat-x;
-		height:4px;
-		margin-bottom: 2px;
-		}	
-	
-.search_sidebar_header{
-	background-image:url(/images/nav-bg-strip.png);
-	background-repeat:repeat-x;
-	height:23px;
-	font-size: 14px;
-	text-align: center;
-	padding: 2px;
-	color: white;
-	margin-bottom: 2px;
+
+
+/*MAIN CONTENT*/
+
+#main_container{
+    width:980px;
+	margin:0 auto;
 	}
+
+#main_container #left {
+  float: left;
+  width: 200px;
+  margin-right: 20px;
+}
+
+#main_container #middle {
+  float: left;
+  width: 556px;
+  margin-right: 20px;
+}
+
+#main_container #right {
+	float: right;
+	width: 184px;
+}
+
+#main_container .column_container{
+	background-image:url(/images/column-strip-bg.png);
+	background-position:top left;
+	background-repeat:repeat-x;
+	border-top:1px #676767 solid;
+	min-height:500px;
+	}
+
+
+#main_container .column_header{
+	background-image:url(/images/header-strip.png);
+	background-position:top left;
+	background-repeat:repeat-x;
+	height:28px;
+	padding:5px 0 0 10px;
+	margin-bottom:10px;}
+
+
+#main_container .column_header h2{
+	background-image:url(/images/header-strip-arrow.png);
+	background-position: right bottom;
+	background-repeat:no-repeat;
+	height:33px;
+	margin-right:30px;
+	}
+
+.column_header h2{
+	font-size:14px;
+	color:#fff;}
+	
+/*FOOTER*/	
+
+#main_footer{
+	
+	width:958px;
+	border-top:1px solid #ccc;
+	border-left:1px solid #ccc;
+	border-right:1px solid #ccc;
+	background-color:#ededed;
+	padding:10px;
+
+	margin:0 auto;
+		margin-top:20px;}

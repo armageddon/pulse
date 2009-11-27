@@ -38,7 +38,7 @@ include Graticule
     logger.debug(current_user.errors.full_messages)
     @places = current_user.suggested_places
     @matches = current_user.matches(params[:page], 8)
-    @updates = TimelineEvent.paginate(:conditions => "actor_id <> " + current_user.id.to_s, :page=>1, :per_page => 10, :order => 'created_at DESC')
+    @updates = TimelineEvent.paginate(:conditions => "actor_id <> " + current_user.id.to_s, :page=>1, :per_page => 5, :order => 'created_at DESC')
     logger.debug("matches: " + @matches.length.to_s)
 
   end

@@ -12,6 +12,8 @@
   </head>
   <body>
     <%= hidden_field_tag "googlecode", googlecode(request.url) %>
+	<div id="dialog" style="display: none;" class="jqmWindow"></div>
+	
     <div id="nav">
       	<ul id="top-nav">
         	<%= nav_links %>
@@ -29,26 +31,40 @@
       <div id="header-banner"><%= yield :message %></div>
     </div>
 
-    <div id="dialog" style="display: none;" class="jqmWindow"></div>
-    <div id="container">
+	<!--Main Content Starts Here -->
 
-      <div class="clear">&nbsp;</div>
-      <div id="content">
-        <div class="clear">&nbsp;</div>
-        <div id="c1" class="column">
+	<div id="main_container">
+        <div id="left" class="column_container">
+		    <div class="column_header">
+		        <span>
+		        <h2>Details</h2>
+		        </span>
+		    </div>
           <%= render :partial => "shared/user_sidebar" %>
         </div>
-        <div id="c2" class="column">
+        <div id="middle" class="column_container">
+		    <div class="column_header">
+		        <span>
+		        <h2>Header text goes here</h2>
+		        </span>
+		    </div>
+	
           <%= yield %>
         </div>
-        <div id="c3" class="column">
+        <div id="right" class="column_container">
+		    <div class="column_header">
+		        <span>
+		        <h2>Map</h2>
+		        </span>
+		    </div>
+	
           <%= render :partial => "shared/map" %>
         </div>
-        <div class="clear">&nbsp;</div>
-      </div>
+	</div>
+	<div class="clear">&nbsp;</div>
+	<div id="main_footer">
+    	<%= render :partial => "shared/footer" %>
     </div>
-    <%= render :partial => "shared/footer" %>
-
     <script type="text/javascript">
       var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
       document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
