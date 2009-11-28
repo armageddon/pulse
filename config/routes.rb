@@ -10,7 +10,7 @@ ActionController::Routing::Routes.draw do |map|
   map.search_people '/search/people', :controller => 'search', :action => "people"
   map.search_people '/search/people_list', :controller => 'search', :action => "people_list"
   map.search_activities '/search/activities', :controller => "search", :action => "activities"
-  map.search_place_activities '/search/place_activities', :controller => "search", :action => "place_activities"
+  map.search_user_place_activities '/search/user_place_activities', :controller => "search", :action => "user_place_activities"
   map.activity_list '/search/activity_list', :controller => 'search', :action => "activity_list" #todo - url doesnt look good
   map.search '/search', :controller => "search", :action => 'index'
   map.search_criteria '/search_criteria',  :controller => "search", :action => 'search_criteria'

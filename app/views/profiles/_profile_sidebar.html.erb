@@ -15,9 +15,13 @@
 	   
 	   <li><%= link_to "EDIT MY INFO", edit_account_path %></li>
 		<li>&nbsp;</li>
+		<li><%= (link_to I18n.translate("ADD_TO_FAVORITES"), 'account/favorites/add',:id=> "profile_people_favorite",:class => "profile_people_favorite", :friend_id => object.id, :style=> current_user.has_friend?(object.id) ? 'display:none' : 'display:block') %></li>
+	    <li><%= (link_to 'REMOVE FROM FAVORITES', "account/favorites/delete", :id=> "profile_people_unfavorite",:class => "profile_people_unfavorite", :friend_id => object.id, :style=> current_user.has_friend?(object.id) ? 'display:block' : 'display:none')  %></li>
+		
+		
 		<% if @user != current_user %>
 		<!--todo: implement remove from favorites -->
-	   <li><%= link_to I18n.translate("ADD_TO_FAVORITES") %></li> 
+
 	   <li>&nbsp;</li>
 		<%end%>
 	    <li><%= link_to "INVITE A FRIEND", '#', 'data-href' => new_account_invitation_path, :class => "invite_a_friend" %>

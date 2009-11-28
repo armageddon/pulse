@@ -63,7 +63,7 @@ helper UsersHelper
    end
   end
   
-  def place_activities
+  def user_place_activities
     @search_criteria = SearchCriteria.new(params, current_user)
     logger.debug("ages: ")
     logger.debug(@search_criteria.ages)
@@ -73,7 +73,7 @@ helper UsersHelper
         if  @user_place_activities == nil || @user_place_activities.length == 0
           render :text=>"<div style='width:500px' id='activity_results'>No results returned</div>"
         else
-          render :partial => 'shared_object_collections/search_place_activity_collection', :locals => { :collection => @user_place_activities },  :content_type => "text/html"
+          render :partial => 'user_place_activity_collection', :locals => { :collection => @user_place_activities },  :content_type => "text/html"
         end
       end
     end

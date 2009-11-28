@@ -5,12 +5,12 @@
 	      	<h2>Filter Results</h2>
 	      </span>
 	</div>
-	<div id="search_type"  style="text-align:center">
-		<%= hidden_field_tag 'search_criteria[type]', @search_criteria.type, :id=>'search_criteria_type' %>
-	    <div id="simple_search"   class="<%=search_type_simple_class(@search_criteria.type)%>"> Simple&nbsp;&nbsp;</div>&nbsp;
-		<div id="advanced_search"  class="<%=search_type_advanced_class(@search_criteria.type)%>"> Advanced </div>
-		<div id="map_search"  class="<%=search_type_map_class(@search_criteria.type)%>"> Map </div>
-	</div>
+	<%= hidden_field_tag 'search_criteria[type]', @search_criteria.type, :id=>'search_criteria_type' %>
+	<ul id="search_type"  style="text-align:center">
+		<li id="simple_search"   class="<%=search_type_simple_class(@search_criteria.type)%>"> Simple;</l1>
+		<li id="advanced_search"  class="<%=search_type_advanced_class(@search_criteria.type)%>"> Advanced </l1>
+		<li id="map_search"  class="<%=search_type_map_class(@search_criteria.type)%>"> Map </l1>
+	</ul>
 	<div class="clear">&nbsp;</div>
 
 	<div id="keyword_criteria"  style="padding:5px" class="<%=search_keyword_class(@search_criteria.type)%>" >
@@ -214,7 +214,7 @@
 				$('#object_header').text('Activities');
 			break;
 			case "4":
-			  activities_url = "/search/place_activities"
+			  activities_url = "/search/user_place_activities"
 			  people_url = "/search/people_list"
 			  break;
 			case "5":

@@ -433,7 +433,7 @@ table.calendar td a.active {
 
 #page_loading {
   color: black;
-  background: Window url('/images/indicator.gif') right center no-repeat;
+  background: Window url('images/indicator.gif') right center no-repeat;
   width: 80px;
 }
 
@@ -666,7 +666,7 @@ block;
 }
 
 .ac_loading {
-  background: Window url('/images/indicator.gif') right center no-repeat;
+  background: Window url('images/indicator.gif') right center no-repeat;
 }
 
 .ac_over {
@@ -681,16 +681,12 @@ button {
   border: 0;
   padding: 0;
   cursor: pointer;
-  overflow: visibl
-
-e;
+  overflow: visible;
 /* removes extra side padding in IE */
 }
 
 button::-moz-focus-inner {
   border: none;
-
-
 /* overrides extra padding in Firefox */
 }
 
@@ -975,3 +971,36 @@ a{color:#bd0000;
 /* USER SIDEBAR */
 .profile_image{	
 	width:200px;}
+	
+	
+	/* SUB NAVIGATION IN SIDEBAR */
+	
+	
+#do_things li{
+	font-weight:700;
+	margin-bottom:3px;
+	text-transform:uppercase;
+	padding:4px;
+	background-image:url(/images/nav-bullet.png);
+	background-position:right;
+	background-color:#ededed;
+	background-repeat:no-repeat;
+	border-left:3px #ccc solid;
+	}
+	
+#do_things li:hover{
+	background-color:#dedede;
+	}	
+	
+#do_things li a{
+	font-family:Arial, Helvetica, sans-serif;
+	display:block;}	
+	
+#do_things .blank{
+	background-color:#FFF;
+	background-image:none;
+	border:0;
+	height:10px;}
+	
+#do_things .blank:hover{
+	background-color:#FFF;}

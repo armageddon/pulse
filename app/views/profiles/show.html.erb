@@ -13,7 +13,7 @@
 <% end %>
 
 <% content_for :c1 do %>
-  <%= render :partial => 'profile_sidebar' %>
+  <%= render :partial => 'profile_sidebar', :locals => {:object => @user} %>
 <% end %>
 <div class='clear'></div>
 
