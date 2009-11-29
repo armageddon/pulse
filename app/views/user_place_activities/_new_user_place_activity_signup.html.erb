@@ -1,7 +1,7 @@
 <label  style="margin-top: 5px; color:#990000;">What do you enjoy doing?</label>
 <div class="clear"></div>
 <div style="float:left;">
-	<%= render :partial => "shared/activity_select", :locals => {:allow_any_activity => "1"} %>
+	<%= render :partial => "shared/activity_select_signup", :locals => {:allow_any_activity => "1",:horizontal=>true} %>
 </div>
 </br>
 </br>
@@ -22,6 +22,7 @@
 	<label  style="margin-top: 5px; color:#990000;">When do you do it?</label>
 <div class="clear"></div>
 	<%= drop_down('user_place_activity[day_of_week]', 'Monday', {:width => '130px'},dotw_options, 'Any day',0) %>&nbsp;
+	&nbsp;&nbsp;
 	<%= drop_down('user_place_activity[time_of_day]', 'Early Mornings', {:width => '200px'},tod_options, 'Any time',0) %>
 
 
@@ -31,7 +32,8 @@
 	<div style="margin-top:10px; float:left; margin-top:15px">
  		<label  style="margin-top: 5px; color:#990000;">Why do you like this place?</label>
  		<div class="clear"></div>
-  		<%= text_area_tag('description','', :rows => 3, :class => "input_text_box word_count") %>
+  		<%= text_area_tag('description','', :rows => 2, :cols=>70, :class => "input_text word_count") %>
 	</div>
 
 </div>
+

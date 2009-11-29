@@ -45,10 +45,7 @@
   color:#990000;	
 }
 
-#new_user_place_activity
-{
- height:30px;	
-}
+
 
 .what {
 	width:130px;
@@ -79,9 +76,7 @@ div.map_canvas div.span {
 	display:hidden;
 }
 
-* {
-  font-family: Verdana, Serif;
-}
+
 
 div#content_logo img {
 	width: 100px;	
@@ -511,7 +506,8 @@ table.calendar td a.active {
   padding: 2px 5px 2px 5px;
   color: #666;
   border: 1px solid #eaecf1;
-  margin-top: 10px;
+  margin-top: 3px;
+  margin-bottom: 5px
   cursor: pointer;
   background: #f7f8fa url(/images/fancy_select_handle.gif) right top no-repeat;
   position: relative;
@@ -583,7 +579,7 @@ table.calendar td a.active {
   border: 1px solid #f1f3f6;
   background-color: #f1f3f6;
   color: #666;
-  width: 180px;
+  width: 280px;
 }
 
 .section_header {
@@ -708,22 +704,7 @@ button span {
 
 /* OPTIONAL BUTTON STYLES for applying custom look and feel: */
 
-button.submit {
-  padding: 0 0 0 10px;
-  margin-right: 5px;
-  font-size: 12px;
-  text-align: center;
-  background: transparent url(/images/button_20_right.gif) no-repeat right;
-}
 
-button.submit span {
-  padding: 0 10px 0 10px;
-  height: 20px;
-  line-height: 20px;
-  font-family: Arial, Helvetica, Verdana !important;
-  background: transparent url(/images/button_20_left.gif) no-repeat left top;
-  color: #fff;
-}
 
 #search_q {
 }
@@ -1047,3 +1028,33 @@ a{color:#bd0000;
 .map_show{
 	height:200px;
 	}
+	
+	/*Sign up*/
+	
+	#add_photo {
+	  width: 170px;
+	  height: 170px;
+	  padding: 20px 10px 10px 10px;
+	  background-color: #f1f3f6;
+	  color: #666;
+	  font-size: 1.3em;
+	  background: #f1f3f6 url(/images/add_photo.gif) center no-repeat;
+	  cursor: pointer;
+	}
+
+	#add_photo_button {
+	  text-align: center;
+	}
+	
+	/* NEW SUBMIT BUTTON */
+
+
+	.submit{
+	padding:2px!important;
+	Background-color:#bf1212!important;
+	border:2px solid #9f1111!important;
+	color:#fff!important;
+	margin:3px;
+	Font-weight:700!important;
+	Font-family:arial!important;
+	background-image:none;}

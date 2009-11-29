@@ -14,12 +14,7 @@
     profile has been viewed by <%= current_user.profile_views %> <%= current_user.profile_views == 1 ? 'person' : 'people' %>.
 <% end %>
 
-<% form_tag '/search', :method => "get", :id=>'search_form' do  %>
-	<%= hidden_field_tag 'search_criteria[type]', '5', :class => "header_input_text" %>
-	<%= hidden_field_tag 'search_criteria[sex_preference]', current_user.sex_preference, :class => "header_input_text" %>
-	<%= hidden_field_tag 'search_criteria[lower_age]', [current_user.age_preference-1], :class => "header_input_text" %>
-	<%= hidden_field_tag 'search_criteria[upper_age]', [current_user.age_preference+1], :class => "header_input_text" %>
-<% end %>
+
 
 <div class="column_header">
       <span>

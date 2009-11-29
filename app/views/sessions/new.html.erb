@@ -89,9 +89,9 @@
         <% end %>
         
         <% form_tag redeem_path, :id => 'redeem_form', :style => "display: none;" do -%>
-        Please enter your invitation code:
-        <%= text_field_tag 'invite_code', nil, :class => "input_text", :value => "Invite Code", :size => "10" %>
-        <%= submit_button ("GO", :type =>'submit' ) %>
+          Please enter your invitation code:
+          <%= text_field_tag 'invite_code', nil, :class => "input_text", :value => "Invite Code", :size => "10" %>
+          <%= submit_button ("GO", :type =>'submit' ) %>
         <% end %>
 
       <% if flash[:error] %>        

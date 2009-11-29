@@ -19,15 +19,15 @@
 <!--Advanced-->
 <div id='people_container' class='<%=search_people_results_class(@search_criteria.type)%>'>
 	<div class="clear">&nbsp;</div>
+	<div style="float:left;width:556px; margin-bottom:4px;">
+			<h3 style="width:556px;font-size:14px" class="section_name">People who hang here</h3>
+	</div>
 	<div id='people_results' width ='550px'>Loading....</div> 
 </div>
 <div class="clear">&nbsp;</div>
 <div id='activity_container' class='<%=search_activity_results_class(@search_criteria.type)%>'>
-	<div class="section_header" >
-		<div style="float:left;width:200px">
-			<h3 style="width:100px;" class="section_name">Activities</h3>
-		</div>
-		<div class="clear">&nbsp;</div>
+	<div style="float:left;width:556px; margin-bottom:4px;">
+			<h3 style="width:556px;font-size:14px" class="section_name">Things happening here</h3>
 	</div>
 	<div class="clear">&nbsp;</div>
 	
@@ -43,11 +43,8 @@
 
 <!--simple-->
 <div id='object_container' class='<%=search_object_results_class(@search_criteria.type)%>'>
-    <div class="section_header" >
-		<div style="float:left;width:200px">
-			<h3 id='object_header' style="width:100px;" class="section_name">People</h3>
-		</div>
-		<div class="clear">&nbsp;</div>
+    <div style="float:left;width:556px; margin-bottom:4px;">
+			<h3 style="width:556px;font-size:14px" class="section_name">People who hang here</h3>
 	</div>
 	<div id='object_results'>Loading....</div> 
 </div>
@@ -56,6 +53,9 @@
 <!--map-->
 <div id='big_map' style='overflow:hidden' class='<%=search_map_results_class(@search_criteria.type)%>'>
 <!--style='height:1px; overflow:hidden'-->
+<div style="float:left;width:556px; margin-bottom:4px;">
+		<h3 style="width:556px;font-size:14px" class="section_name">Heat Map</h3>
+</div>
 	<%= render :partial => 'maps/map' %>
 </div>
 <% end %>

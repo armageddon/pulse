@@ -49,73 +49,50 @@ class UserPlaceActivitiesController < ApplicationController
   end
 
   def create
-    if(params[:activity_id] != "0")
+
+    if params[:activity_id]!="0" && params[:activity_id]!="0"
       @activity = Activity.find(params[:activity_id])
-    else
-      @activity = Activity.find(:first)
-    end
-    if(params[:place_id] != "0" && params[:place_id] != "")
-       @place = Place.find(params[:place_id])
-     else
-       @place = Place.find(:first);
-    end 
-    if @place != nil && @activity != nil
-        place_activity = PlaceActivity.find(:first,:conditions=>['place_id = ? and activity_id = ?',@place.id.to_s, @activity.id.to_s])
-        
-        if place_activity == nil
-          place_activity = PlaceActivity.new(:activity_id => @activity.id, :place_id => @place.id)
-          place_activity.save
-        end
-
-      @user_place_activity = current_user.user_place_activities.build(:description => params[:user_place_activity][:description], :place_id => params[:place_id], :activity_id => params[:activity_id], :place_activity => params[:place_activity], :day_of_week => params[:user_place_activity][:day_of_week], :time_of_day => params[:user_place_activity][:time_of_day])
-      #@user_place_activity.place = @place
-      #@user_place_activity.activity = @activity
-    end
-    if @place != nil
-      @user_place = UserPlace.new(:user_id => current_user.id, :place_id => @place.id)
-    end
-    if @activity != nil
-       @user_activity = UserActivity.new(:user_id => current_user.id, :activity_id => @activity.id)
-    end
-    error_string = ""
-    
-    respond_to do |format|
-     
-      @user_place_activity.place_activity_id = place_activity.id
-      logger.debug('SET UPAs PA')
-      upa = UserPlaceActivity.find(:all, :conditions=> 'user_id = ' + current_user.id.to_s+ ' and place_id = ' +@place.id.to_s + ' and activity_id = ' + @activity.id.to_s)
-       logger.debug('UPAs length' + upa.length.to_s)
-
-        if @user_place_activity!=nil && @user_place_activity.save
-          logger.debug('upa')
-          @user_place.save
-          logger.debug('SAVED USER_PLACE')
-          @user_activity.save
-          logger.debug('SAVED USER_ACTIVITY')
-          format.html do
+      @place = Place.find(params[:place_id]) 
+      place_activity = PlaceActivity.find(:first,:conditions=>['place_id = ? and activity_id = ?',@place.id.to_s, @activity.id.to_s])
+      if place_activity == nil
+         place_activity = PlaceActivity.new(:activity_id => @activity.id, :place_id => @place.id)
+         place_activity.save
+      end
+      @user_place_activity = current_user.user_place_activities.build(:description => params[:user_place_activity][:description], :place_id => params[:place_id], :activity_id => params[:activity_id], :day_of_week => params[:user_place_activity][:day_of_week], :time_of_day => params[:user_place_activity][:time_of_day]) 
+      @user_place_activity.place_activity = place_activity
+      @user_place_activity.save
+      respond_to do |format|
+        format.html do
             flash[:notice] = "You have added a user place activity, user activity and user place"
             redirect_to account_places_path
-          end
-          #format.js { render :text => "You like to <span style='margin-top: 5px; color: rgb(153, 0, 0);'>" + @activity.name + "</span> at <span style='margin-top: 5px; color: rgb(153, 0, 0);'>" + @place.name  + "</span><br \>"   } 
-          format.js {render :partial => 'shared_objects/signup_place_activity', :object => @user_place_activity  }
-        elsif @user_place!=nil && @user_place.save
-            format.html do
-              flash[:notice] = "You have added a user place"
-              redirect_to account_places_path
-            end
-            #format.js {render :text => "You like <span style='margin-top: 5px; color: rgb(153, 0, 0);'>" + @place.name  + "</span><br \>"   }
-            format.js {render :partial => 'shared_objects/search_place_activity', :object => @user_place_activity  }
-        elsif @user_activity!=nil && @user_activity.save
-          logger.debug('before user_activity save')
-          format.html do
-            flash[:notice] = "You have added a user activity"
-            redirect_to account_places_path
-          end
-          format.js  {render :partial => 'shared_objects/search_place_activity', :object => @user_place_activity   }
-        else
-          format.html { render :action => :new}
-          format.js { render :text => 'You have already added this place or activity' }
         end
+        format.js {render :partial => 'shared_objects/signup_user_place_activity', :object => @user_place_activity  }
+      end
+    elsif params[:place_id]!="0" && params[:activity_id]=="0"
+      @place = Place.find(params[:place_id]) 
+      @user_place = UserPlace.new(:user_id => current_user.id, :place_id => @place.id)
+      @user_place.save
+      respond_to do |format|
+        format.html do
+          redirect_to account_places_path
+        end
+        format.js {render :partial => 'shared_objects/signup_user_place', :object => @user_place  }
+      end
+    elsif params[:place_id]=="0" && params[:activity_id]!="0"
+      @activity = Activity.find(params[:activity_id])
+      @user_activity = UserActivity.new(:user_id => current_user.id, :activity_id => @activity.id)
+      @user_activity.save
+      respond_to do |format|
+        format.html do
+           redirect_to account_places_path
+        end
+        format.js  {render :partial => 'shared_objects/signup_user_activity', :object => @user_activity   }
+      end
+    else
+      respond_to do |format|
+        format.html { render :action => :new}
+        format.js { render :text => 'You have already added this place or activity' }
+      end
     end
   end
 

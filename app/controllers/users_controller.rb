@@ -56,7 +56,7 @@ include Graticule
     
     if params[:invite_code] == "pulse12345"
       @user = User.new
-      render :action => :new, :layout => false
+      render :action => :new
     else
       flash[:error] = "Sorry, we were unable to locate that invitation code."
       redirect_to '/'

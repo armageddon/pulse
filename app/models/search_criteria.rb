@@ -96,8 +96,8 @@ class SearchCriteria < ActiveRecord::Base
       @high_lat =0.0
       @low_long =0.0
       @high_long =0.0
-      @upper_age = user.age_preference - 1
-      @lower_age = user.age_preference + 1
+      @upper_age = user.age_preference + 1
+      @lower_age = user.age_preference - 1
       
     end
     
