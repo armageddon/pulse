@@ -206,7 +206,7 @@
 		<div style="margin-top:10px; float:left; margin-top:15px">
 	 		<label  style="margin-top: 5px; color:#990000;">Why do you like this place?</label>
 	 		<div class="clear"></div>
-	  		<%= text_area_tag('description','', :rows => 2, :cols=>70, :class => "input_text word_count") %>
+	  		<%= text_area_tag('description','', :rows => 2, :cols=>70,:id=>'user_place_activity[description]',:name=> 'user_place_activity[description]',:class => "input_text word_count") %>
 		</div>
 
 	</div>

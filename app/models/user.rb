@@ -55,7 +55,7 @@ after_create :welcome_mail
   include Authorization::AasmRoles
 
   has_attached_file :icon, 
-        :styles => { :thumb => "75x75#", :profile => "200x200#", :large => "640x480>" }, 
+        :styles => { :thumb => "75x75#", :profile => "200x200#" }, 
         :url => "/:class/:attachment/:id/:style_:filename",
         :default_url => "/images/:style/missing.png"
 
