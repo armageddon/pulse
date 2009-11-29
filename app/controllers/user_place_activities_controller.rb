@@ -50,7 +50,7 @@ class UserPlaceActivitiesController < ApplicationController
 
   def create
 
-    if params[:activity_id]!="0" && params[:activity_id]!="0"
+    if params[:activity_id]!="0" && params[:place_id]!="0"
       @activity = Activity.find(params[:activity_id])
       @place = Place.find(params[:place_id]) 
       place_activity = PlaceActivity.find(:first,:conditions=>['place_id = ? and activity_id = ?',@place.id.to_s, @activity.id.to_s])
