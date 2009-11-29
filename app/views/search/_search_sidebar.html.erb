@@ -7,7 +7,7 @@
 	</div>
 	<%= hidden_field_tag 'search_criteria[type]', @search_criteria.type, :id=>'search_criteria_type' %>
 	<ul id="search_type"  style="text-align:center">
-		<li id="simple_search"   class="<%=search_type_simple_class(@search_criteria.type)%>"> Simple;</l1>
+		<li id="simple_search"   class="<%=search_type_simple_class(@search_criteria.type)%>"> Simple</l1>
 		<li id="advanced_search"  class="<%=search_type_advanced_class(@search_criteria.type)%>"> Advanced </l1>
 		<li id="map_search"  class="<%=search_type_map_class(@search_criteria.type)%>"> Map </l1>
 	</ul>
@@ -89,7 +89,7 @@
 			$('#place_criteria').css("display","block");
 			$('#activity_criteria').css("display","block");
 			$('#search_criteria_type').val(4);
-			$('#big_map').css("height","0px");
+			$('#big_map').css('height','1px','overflow','hidden');
 			
 			$('#activity_container').css("display","block");
 		    $('#people_container').css("display","block");
@@ -256,7 +256,7 @@
 			});
 		  }
 		  if(map_url.length>0){
-			map.clearOverlays();
+			
 			var sw = new GLatLng(<%=  51.500152 %>, <%= -0.126236  %>);
 			var ne = new GLatLng(<%=  51.502152 %>, <%= -0.122236 %>);
 			var bounds = new GLatLngBounds(sw,ne);
@@ -266,6 +266,7 @@
 			    url: '/search/map',
 			    data: $('#advanced_search_side').serialize(), //advanced_search,
 			    success: function(p) {
+				map.clearOverlays();
 					var x = eval(p);
 					var marker= new Array();
 					for(var i =0; i < x.length; i++)

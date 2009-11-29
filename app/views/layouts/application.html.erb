@@ -22,7 +22,7 @@
       	</ul>
 	 	<div id="search-box">
           	<% form_tag '/search', :method => "get" do  %>
-            	<%= text_field_tag 'q', params[:q], :class => "header_input_text" %>
+            	<%= text_field_tag 'search_criteria[keyword]', '', :class => "header_input_text" %>
             	<button id="search" class="header_submit" style="" type="submit"></button>
           	<% end %>
      	</div>

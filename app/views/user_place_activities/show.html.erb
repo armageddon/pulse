@@ -2,6 +2,7 @@
   <%= render :partial => "place_activity_sidebar" %>
 <% end %>
 
+
 <div class="section_header" >
 	<div style="float:left;width:200px">
 		<h3 style="width:100px;" class="section_name">People</h3>
@@ -28,18 +29,3 @@
 
 
 
-$.ajax({
-    type: "GET",
-    url: '/search/map',
-    data: $('#advanced_search_side').serialize(), //advanced_search,
-    success: function(p) {
-		var x = eval(p);
-		var marker= new Array();
-		for(var i =0; i < x.length; i++)
-		{
-			var point = new GLatLng(x[i].place.latitude, x[i].place.longitude)
-			var marker = createMarker(point,place_html(x[i].place));
-			map.addOverlay(marker);
-		}
-    }
-});

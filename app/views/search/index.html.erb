@@ -16,9 +16,8 @@
       </span>
 </div>
 <% form_tag '/search/user_place_activites', :method => :get, :id => "advanced_search_form" do %>
-<!--todo: should only render divs - data to be filled by js -->
+<!--Advanced-->
 <div id='people_container' class='<%=search_people_results_class(@search_criteria.type)%>'>
-	
 	<div class="clear">&nbsp;</div>
 	<div id='people_results' width ='550px'>Loading....</div> 
 </div>
@@ -32,6 +31,7 @@
 	</div>
 	<div class="clear">&nbsp;</div>
 	
+	
 	<div style="padding:5px;margin-right:5px;width:135px;float:left;text-align:center;background-color:#EDEDED;">What</div>
 	<div style="padding:5px;margin-right:5px;width:135px;float:left;text-align:center;background-color:#EDEDED;">Where</div>
 	<div style="padding:5px;margin-right:5px;width:85px;float:left;text-align:center;background-color:#EDEDED;">When</div>
@@ -40,6 +40,8 @@
     <div id='activity_results'>Loading....</div> 
 </div>
 <div class="clear">&nbsp;</div>
+
+<!--simple-->
 <div id='object_container' class='<%=search_object_results_class(@search_criteria.type)%>'>
     <div class="section_header" >
 		<div style="float:left;width:200px">
@@ -50,12 +52,12 @@
 	<div id='object_results'>Loading....</div> 
 </div>
 <div class="clear">&nbsp;</div>
-	<div class="clear">&nbsp;</div>
-	<div id='big_map' style='height:1px; overflow:hidden'>
-		<%= render :partial => 'maps/map' %>
-	</div>
 
-
+<!--map-->
+<div id='big_map' style='overflow:hidden' class='<%=search_map_results_class(@search_criteria.type)%>'>
+<!--style='height:1px; overflow:hidden'-->
+	<%= render :partial => 'maps/map' %>
+</div>
 <% end %>
 
 

@@ -1004,41 +1004,7 @@ a{color:#bd0000;
 	
 #do_things .blank:hover{
 	background-color:#FFF;}
-	
-	/*SIDEBAR SEARCH TABS*/	
 
-
-	#search_type li{
-	font-weight:700;
-	cursor:pointer;
-	padding:5px;
-	background-color:#dedede;
-	list-style:none;
-	display:inline;
-	margin-right:4px;
-	border-right:1px solid #ccc;
-	border-top:1px solid #ccc;
-	border-left:1px solid #ccc;
-	}
-
-	#search_type{
-	border-bottom:1px solid #999;
-	height:27px;
-	padding:0px;
-	margin:20px 0px 7px 0px;
-	}
-
-	#advanced_search{
-	margin:0px;
-	}
-
-	.search_type_selected{
-	background-color:#999!important;
-	color:#fff!important;
-	border-right:1px solid #666!important;
-	border-top:1px solid #666!important;
-	border-left:1px solid #666!important;
-	}
 /* Map */
 .map_hide{
 	height:1px; 

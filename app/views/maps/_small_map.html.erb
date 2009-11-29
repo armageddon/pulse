@@ -1,9 +1,17 @@
 
+<% form_tag '/search', :method => "get", :id=>'search_form' do  %>
+	<%= hidden_field_tag 'search_criteria[type]', '5', :class => "header_input_text" %>
+	<%= hidden_field_tag 'search_criteria[sex_preference]', current_user.sex_preference, :class => "header_input_text" %>
+	<%= hidden_field_tag 'search_criteria[lower_age]', [current_user.age_preference-1], :class => "header_input_text" %>
+	<%= hidden_field_tag 'search_criteria[upper_age]', [current_user.age_preference+1], :class => "header_input_text" %>
+<% end %>
 
-<div id="map_canvas" style="width: 560px; height: 200px; overflow: hidden;"></div>
+<div id="map_canvas" style="width: 560px; height: 200px; overflow: hidden;">
+
+</div>
 <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=<%= getmapsapikey(request.url) %>&sensor=true" type="text/javascript"></script>
 <script type="text/javascript" charset="utf-8">
-  var map = new GMap2(document.getElementById("map_canvas"));
+  var small_map = new GMap2(document.getElementById("map_canvas"));
   var custIcon = new GIcon(G_DEFAULT_ICON);
   custIcon.iconSize = new GSize(16, 16);
   custIcon.shadowSize = new GSize(20, 20);
@@ -14,21 +22,23 @@
   var sw = new GLatLng(<%=  51.500152 %>, <%= -0.126236  %>);
   var ne = new GLatLng(<%=  51.502152 %>, <%= -0.122236 %>);
   var bounds = new GLatLngBounds(sw,ne);
-  map.setCenter(bounds.getCenter(), 12);
-  map.enableInfoWindow()  
-map.disableDragging() 
+  small_map.setCenter(bounds.getCenter(), 12);
+  small_map.enableInfoWindow()  
+  small_map.disableDragging() 
 
 
-  map.setMapType(G_NORMAL_MAP);
+  small_map.setMapType(G_NORMAL_MAP);
 
-GEvent.addListener(map, "click", function() {
-  	window.location = "/search"
+
+	
+GEvent.addListener(small_map, "click", function() {
+  	$('#search_form').submit();
 });
 
 	$.ajax({
 	    type: "GET",
 	    url: '/search/map',
-	    data: '', //advanced_search,
+	    data: {"search_criteria[type]" : "5","search_criteria[age_preference]" : "<%= current_user.age_preference%>","search_criteria[age_preferences]" : "<%= current_user.sex_preference%>" },
 	    success: function(p) {
 			var x = eval(p);
 			var marker= new Array();
@@ -36,7 +46,7 @@ GEvent.addListener(map, "click", function() {
 			{
 				var point = new GLatLng(x[i].place.latitude, x[i].place.longitude)
 				var marker = createMarker(point);
-				map.addOverlay(marker);
+				small_map.addOverlay(marker);
 			}
 	    }
 	});

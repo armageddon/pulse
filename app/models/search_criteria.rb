@@ -32,6 +32,9 @@ class SearchCriteria < ActiveRecord::Base
     
    
     if params[:search_criteria] != nil
+      logger.debug('SEARCH CRITERIA')
+      logger.debug(params[:search_criteria])
+      logger.debug('SEARCH CRITERIA')
        if params[:search_criteria][:type] != nil 
          @type = params[:search_criteria][:type]
          end
@@ -39,10 +42,14 @@ class SearchCriteria < ActiveRecord::Base
       
       
       if params[:search_criteria][:lower_age] != nil &&  params[:search_criteria][:upper_age] != nil
-        lower =   params[:search_criteria][:upper_age].to_i
-        upper =   params[:search_criteria][:lower_age].to_i
+                   logger.debug('HAS PARAMETER AGES')
+        logger.debug(params[:search_criteria][:lower_age])
+        lower =   params[:search_criteria][:lower_age].to_i
+        upper =   params[:search_criteria][:upper_age].to_i
         (lower..upper).each do |age|
           @ages << age
+           logger.debug('AGES')
+            logger.debug(ages)
         end
       end
       
@@ -50,16 +57,11 @@ class SearchCriteria < ActiveRecord::Base
         #todo: both
         @sex_preferences << params[:search_criteria][:sex_preference]
       end
-      logger.debug('search criteria params: XXXXXXXXXXXX ' + params[:search_criteria].length.to_s)
-      params[:search_criteria].each do |p|
-        logger.debug('XXXXXXXXXXXXXXXXXXXXXXXXXXX')
-        logger.debug(p[0].to_s + ' : ' + p[1].to_s )
+       params[:search_criteria].each do |p|
         @ages << p[1] if p[0].to_s.rindex('age_') != nil
         @activity_categories << p[1] if p[0].to_s.rindex('ac_') != nil
         @sex_preferences << p[1]  if p[0].to_s.rindex('sp_') != nil 
       end
-      logger.debug('AGE PREFSSSSSSSSSS')
-      logger.debug(@ages)
       if params[:search_criteria][:keyword] != nil && params[:search_criteria][:keyword] != 'Enter keyword'
         @keyword = params[:search_criteria][:keyword]
       end
@@ -88,6 +90,7 @@ class SearchCriteria < ActiveRecord::Base
       @ages = [user.age_preference - 1, user.age_preference, user.age_preference + 1]
       @activity_categories = Array.new
       @sex_preference  = user.sex_preference
+      @sex_preferences  = [user.sex_preference.to_s]
       @type = 1
       @low_lat =0.0
       @high_lat =0.0
