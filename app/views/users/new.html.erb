@@ -18,14 +18,14 @@
   <div id="step_text" class="step_text">
     <div class="clearfix"></div>
     <div id="step_1_text" class = "step_desc" >
-				Please choose a user name and enter your account information
+				<h3>Please choose a user name and enter your account information</h3>
     </div>
     <div id="step_2_text" class = "step_desc" style="display: none;">
-				Nice job! We've sent you an email with a link we need you to visit in order to confirm your account.
-			        But don't worry about that right now. Instead go ahead and fill out the info to the right. Don't forget to add a photo!
+				<h3>Nice job! We've sent you a confirmation email.
+					But don't worry about that right now. Instead go ahead and fill out the info below. Don't forget to add a photo!</h3>
     </div>
     <div id="step_3_text" class = "step_desc" style="display: none;">
-				Looking good. One last step. We need you to add one activity that you like to do or place you like to go. This helps us get a better understanding of the things you like and we can begin matching you with other people.
+				<h3>Looking good. One last step. We need you to add some activities that you like to do or places you like to go. This helps us get a better understanding of the things you like and we can begin matching you with other people.</h3>
     </div>
   </div>
 </div>
@@ -33,47 +33,54 @@
 <div id="step_1" class="step">
   <div class="step_1_container">
     <% form_for @user, :url => account_path do |f| %>
-      <p>
-        <label  style="margin-top: 5px; color:#990000;">First name</label>
-      <div class="clear"></div>
-      <%= text_field_tag 'user[first_name]', @user.first_name || 'First name', :class => 'input_text' %>
-      <span class="error"></span>
-      </p>
-      <p>
-        <label  style="margin-top: 5px; color:#990000;">Username</label>
-      <div class="clear"></div>
-      <%= text_field_tag 'user[username]', @user.username || "Username", :class => 'input_text' %>
-      <span class="error"></span>
-      </p>
-      <p>
-        <label  style="margin-top: 5px; color:#990000;">Password</label>
-      <div class="clear"></div>
-      <%= text_field_tag 'password_holder', 'Password', :class => 'input_text' %>
-      <%= f.password_field :password, :class => 'input_text', :style => 'display: none;' %>
-      <span class="error"></span>
-      </p>
-      <p>
-        <label  style="margin-top: 5px; color:#990000;">Password confirmation</label>
-      <div class="clear"></div>
-      <%= text_field_tag 'password_confirmation_holder', 'Password confirmation', :class => 'input_text' %>
-      <%= f.password_field :password_confirmation, :class => 'input_text', :style => 'display: none;' %>
-      <span class="error"></span>
-      </p>
-      <p>
-        <label  style="margin-top: 5px; color:#990000;">Email address</label>
-      <div class="clear"></div>
-      <%= text_field_tag 'user[email]', @user.email || 'Email address', :class => 'input_text' %>
-      <span class="error"></span>
-      </p>
-      <p>
-        <label  style="margin-top: 5px; color:#990000;">Post Code</label>
-      <div class="clear"></div>
-      <%= text_field_tag 'user[postcode]', @user.postcode || 'Post code', :class => 'input_text' %>
-      <span class="error"></span>
-      </p>
       <div>
-        <%= image_submit_tag 'save_info.png', :height => "20px", :width => "70px", :style => "margin-top:5px" %>
-      </div>
+        <div style='padding-top:5px;'>
+	    	<label  class='sign_up_label'>First name</label>
+		</div>
+      	<div class="clear"></div>
+      	<%= text_field_tag 'user[first_name]', @user.first_name || 'First name', :class => 'input_text' %>
+      	<span class="error"></span>
+	</div>
+	<div><div style='padding-top:10px;'>
+        <label class='sign_up_label'>Username</label>
+</div>
+      	<div class="clear"></div>
+      	<%= text_field_tag 'user[username]', @user.username || "Username", :class => 'input_text' %>
+      	<span class="error"></span>
+	</div>
+	<div><div style='padding-top:10px;'>
+        <label  class='sign_up_label'>Password</label>
+</div>
+      	<div class="clear"></div>
+      	<%= text_field_tag 'password_holder', 'Password', :class => 'input_text' %>
+      	<%= f.password_field :password, :class => 'input_text', :style => 'display: none;' %>
+      	<span class="error"></span>
+	</div>
+	<div><div style='padding-top:10px;'>
+        <label  class='sign_up_label'>Password confirmation</label>
+</div>
+      	<div class="clear"></div>
+      	<%= text_field_tag 'password_confirmation_holder', 'Password confirmation', :class => 'input_text' %>
+      	<%= f.password_field :password_confirmation, :class => 'input_text', :style => 'display: none;' %>
+      	<span class="error"></span>
+	</div>
+	<div><div style='padding-top:10px;'>
+        <label  class='sign_up_label'>Email address</label>
+</div>
+      	<div class="clear"></div>
+      	<%= text_field_tag 'user[email]', @user.email || 'Email address', :class => 'input_text' %>
+      	<span class="error"></span>
+	</div>
+	<div><div style='padding-top:10px;'>
+        <label  class='sign_up_label'>Post Code</label>
+</div>
+      	<div class="clear"></div>
+      	<%= text_field_tag 'user[postcode]', @user.postcode || 'Post code', :class => 'input_text' %>
+      	<span class="error"></span>
+	</div>
+      	<div>
+        	<%= submit_button 'Save', :height => "20px", :width => "70px", :style => "margin-top:10px" %>
+      	</div>
     <% end %>
   </div>
 </div>
@@ -84,22 +91,29 @@
         <%= file_field(:user , :icon, :style => "position: absolute;")%>
       <% end %>
     </div>
+
     <div id="add_photo">Add photo</div>
     <% form_tag '/account/', :method => "put", :id => "details_update" do %>
-      <label  style="margin-top: 5px; color:#990000;">Description</label>
-      <div id="description">
-        <%= text_area_tag 'user[description]', 'Give us a line that sums you up', :rows=>2, :cols=>45,:id => "user_description", :class => "word_count" %>
-      </div>
-      <label  style="margin-top: 5px; color:#990000;">Your gender</label>
-      <div class='fancy_select'>
-        <%= hidden_field_tag 'user[sex]' %>
-        <div class="fancy_select_target">Select a gender</div>
-        <div class="fancy_select_options">
-          <p>Male <span class="hidden_value"><%= User::Sex::MALE %></span></p>
-          <p>Female <span class="hidden_value"><%= User::Sex::FEMALE %></span></p>
-        </div>
-      </div>
-      <div style="clear:both;"> </div>
+    <div>
+		<label  style="margin-top: 10px; color:#990000;">Description</label>
+		<div id="description_panel">
+	        <%= text_area_tag 'user[description]', 'Give us a line that sums you up', :rows=>2, :cols=>45,:id => "user_description", :class => "word_count" %>
+	    </div>
+  	</div>
+	<div style="clear:both;"> </div>
+	<div style='padding-top:10px;'>
+		<label  style="margin-top: 5px; color:#990000;">Your gender</label>
+      	<div class='fancy_select'>
+        	<%= hidden_field_tag 'user[sex]' %>
+        	<div class="fancy_select_target">Select a gender</div>
+        	<div class="fancy_select_options">
+          		<p>Male <span class="hidden_value"><%= User::Sex::MALE %></span></p>
+          		<p>Female <span class="hidden_value"><%= User::Sex::FEMALE %></span></p>
+        	</div>
+      	</div>
+	</div>
+    <div style="clear:both;"> </div>
+	<div style='padding-top:10px;'>
       <label  style="margin-top: 5px; color:#990000;">Date of Birth</label>
       <div style="clear:both;"> </div>
       <%= hidden_field_tag 'user[dob]' %>
@@ -141,29 +155,34 @@
           </div>
         </div>
       </span>
+	</div>
       <div style="clear:both;"> </div>
+<div style='padding-top:10px;'>
       <label  style="margin-top: 5px; color:#990000;">Gender preference</label>
       <div class='fancy_select'>
         <%= hidden_field_tag 'user[sex_preference]' %>
-        <div class="fancy_select_target">Looking for</div>
+        <div class="fancy_select_target" id='user_gender_preference_target'>Looking for</div>
         <div class="fancy_select_options">
           <p>Male <span class="hidden_value"><%= User::Sex::MALE %></span></p>
           <p>Female <span class="hidden_value"><%= User::Sex::FEMALE %></span></p>
           <p>Both <span class="hidden_value"><%= User::Sex::BOTH %></span></p>          
         </div>
       </div>
+</div>
+<div style='padding-top:10px;'>
       <label  style="margin-top: 5px; color:#990000;">Age preference</label>
       <div class='fancy_select'>
         <%= hidden_field_tag 'user[age_preference]' %>
-        <div class="fancy_select_target">Around the age</div>
+        <div class="fancy_select_target" id="user_age_preference_target">Around the age</div>
         <div class="fancy_select_options">
           <% age_options.each do |op| %>
             <p><%= op[0] %> <span class="hidden_value"><%= op[1] %></span></p>
           <% end %>
         </div>
       </div>
-      <div class="image_submit">
-        <%= image_submit_tag 'save_info.png', :height => "20px", :width => "70px" %>
+</div>
+      <div class="image_submit; padding-top:10px">
+        <%= submit_button "Save info", :height => "20px", :width => "70px" %>
       </div>
     <% end %>
   </div>
@@ -184,7 +203,7 @@
 		<label  style="margin-top: 5px; color:#990000;">Where do you like doing it?</label>
 		<div class="clear"></div>
 
-		<%= hidden_field_tag 'place_id', "", :id => 'place_id' %>
+		<%= hidden_field_tag 'place_id', "0", :id => 'place_id' %>
 		<%= text_field_tag :place_name, 
 	    (user_place_activity.place.present? ? user_place_activity.place.name : nil), 
 	    :class => "input_text", :disabled => user_place_activity.place.present?,
@@ -195,18 +214,18 @@
 	 	<div style="margin-top:10px; float:left">
 		<label  style="margin-top: 5px; color:#990000;">When do you do it?</label>
 	<div class="clear"></div>
-		<%= drop_down('user_place_activity[day_of_week]', 'Monday', {:width => '130px'},dotw_options, 'Any day',0) %>&nbsp;
+		<%= drop_down('user_place_activity[day_of_week]', '0', {:width => '130px',:id=>'day_of_week'},dotw_options, 'Any day',0) %>&nbsp;
 		<div style="width:10px;float:left;">&nbsp;</div>
-		<%= drop_down('user_place_activity[time_of_day]', 'Early Mornings', {:width => '200px'},tod_options, 'Any time',0) %>
+		<%= drop_down('user_place_activity[time_of_day]', '0', {:width => '200px',:id=>'time_of_day'},tod_options, 'Any time',0) %>
 
 
 		</div>
 
 		<div class="clear"></div>
 		<div style="margin-top:10px; float:left; margin-top:15px">
-	 		<label  style="margin-top: 5px; color:#990000;">Why do you like this place?</label>
+	 		<label style="margin-top: 5px; color:#990000;">Why do you like this place?</label>
 	 		<div class="clear"></div>
-	  		<%= text_area_tag('description','', :rows => 2, :cols=>70,:id=>'user_place_activity[description]',:name=> 'user_place_activity[description]',:class => "input_text word_count") %>
+	  		<%= text_area_tag('user_place_activity[description]','', :rows => 2, :cols=>70,:class => "input_text word_count") %>
 		</div>
 
 	</div>
@@ -217,9 +236,7 @@
         <div  style="float:left;">
           <%= submit_button ("Add activity") %>    
         </div>
-        <div style="float:left;">
-          <%= submit_button ("Finish", :id=> "finished") %>    
-        </div>
+    
       </div>
       <div class="clear"></div>
       <div id="activities_container" style="float:left; margin-top:10px;">
@@ -242,6 +259,9 @@
               Please add some activities
         </div>
       </div>
+	    <div style="float:left;">
+          <%= submit_button ("Finish", :id=> "finished") %>    
+        </div>
     <% end %>
   </div>
 </div>

@@ -1,6 +1,6 @@
 module ApplicationHelper
 
-  def drop_down(name, value, html_options, select_options, default_target = "Any", default_value = "")
+  def drop_down(name, value, html_options, select_options, default_target = "Any", default_value = "", id="")
     opts = ""
     target = ""
     if default_value != ""
@@ -13,7 +13,7 @@ module ApplicationHelper
     target = default_target if target.length==0
     %Q(<div class='fancy_select' style="margin-top: 0px; width:#{html_options[:width]}; float:left">
         #{hidden_field_tag name, value}
-        <div class="fancy_select_target">
+        <div class="fancy_select_target" id="#{html_options[:id]}_target">
           #{target}
         </div>
   	  <div class="fancy_select_options" style="width:#{html_options[:width]};">

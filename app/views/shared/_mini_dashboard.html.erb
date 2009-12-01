@@ -3,11 +3,15 @@
       	<h2>Dashboard</h2>
       </span>
 </div>
-<div><div style="float:left">Matches</div><div style="float:right"><%= current_user.matches.total_entries %> </div></div><br/>
-<div><div style="float:left">Suggested Places</div><div style="float:right"><%= current_user.suggested_places.length %></div></div><br/>
-<div><div style="float:left">Mail</div><div style="float:right"><%= current_user.all_messages.length %></div></div><br/>
-<div><div style="float:left">Profile views</div><div style="float:right"><%= current_user.profile_views %></div></div><br/>
-
-<div><div style="float:left">Favourite Things</div><div style="float:right"><%=current_user.user_place_activities.length %></div></div><br/>
-<div><div style="float:left">Favourite People</div><div style="float:right"><%=current_user.friends.length %> </div></div><br/>
-
+<div><div style="float:left;font-size:14px;"><%=link_to 'Matches',  account_matches_path %></div><div style="float:right;font-size:14px;"><%= current_user.matches.total_entries %> </div></div><br/>
+<div class='clear'></div>
+<div><div style="float:left;font-size:14px;"><%=link_to 'Suggested Places',account_matches_path %></div><div style="float:right;font-size:14px;"><%= current_user.suggested_places.length %></div></div><br/>
+<div class='clear'></div>
+<div><div style="float:left;font-size:14px;"><%=link_to 'Mail', account_messages_path%></div><div style="float:right;font-size:14px;"><%= current_user.all_messages.length %></div></div><br/>
+<div class='clear'></div>
+<div><div style="float:left;font-size:14px;"><%=link_to 'Profile views', profile_path(current_user)%></div><div style="float:right;font-size:14px;"><%= current_user.profile_views %></div></div><br/>
+<div class='clear'></div>
+<div><div style="float:left;font-size:14px;"><%=link_to 'Favourite Things' ,account_favorites_path%></div><div style="float:right;font-size:14px;"><%=current_user.user_place_activities.length %></div></div><br/>
+<div class='clear'></div>
+<div><div style="float:left;font-size:14px;"><%=link_to 'Favourite People', account_favorites_path%></div><div style="float:right;font-size:14px;"><%=current_user.friends.length %> </div></div><br/>
+<div class='clear'></div>

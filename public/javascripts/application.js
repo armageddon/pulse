@@ -278,16 +278,21 @@ $(document).ready(function() {
     var error = false;
     $('#activity_error').removeClass("show");
     $('#activity_error').removeClass("hidden_value");
-   // if ($('#place_id').val() == '') {
-    //  $('#place_name').addClass('invalid');
-    //  error = true;
-    //}
-    if($('#pa_description').val() == 'Tell us everything important about it in less than a text message' ||
-      $('#pa_description').val() == ''
+    if($('#user_place_activity[description]').val() == 'Tell us everything important about it in less than a text message' ||
+      $('#user_place_activity[description]').val() == ''
     ) {
-      $('#pa_description').addClass('invalid');
+      $('#user_place_activity[description]').addClass('invalid');
       error = true
     }
+	if($('#place_id').val() == 0 && $('#activity_id').val() == 0)
+	{
+		$('#activity_error').addClass('show');
+		$('#activity_error').addClass('invalid');
+		$('#activity_error').val("You need to select a place or an activity");
+		error = true
+	}
+
+
     if (error) {
       return false;
     }
@@ -308,9 +313,13 @@ $(document).ready(function() {
 			    $('#activity_category_target').text("Any category");
 			 	$('#activity_id').val(0);
 				$('#activity_target').text("Any activity");
-				$('#description').val("");
+				$('#user_place_activity_description').val("");
 				$('#place_id').val("0");
 				$('#place_name').val("");
+				$('#day_of_week_target').html("Any day");
+				$('#time_of_day_target').html("Any time");
+				$('#user_place_activity_time_of_day').val(0);
+				$('#user_place_activity_time_of_day').val(0);
 
 			}
 			else
@@ -583,14 +592,14 @@ $(document).ready(function() {
 function toggleSteps(step) {
 	switch(step) {
 		case 2: 
-		  	$('#signup_header_step1').css('font-size','14px','font-weight','normal');
-		  	$('#signup_header_step2').css('font-size','16px','font-weight','bold');
-		  	$('#signup_header_step3').css('font-size','14px','font-weight','normal');
+		  	$('#signup_header_step1').css('font-size','14px','font-weight','normal !important');
+		  	$('#signup_header_step2').css('font-size','16px','font-weight','bold !important');
+		  	$('#signup_header_step3').css('font-size','14px','font-weight','normal !important');
 		break;
 		case 3:
-			$('#signup_header_step1').css('font-size','14px','font-weight','normal');
-			$('#signup_header_step2').css('font-size','14px','font-weight','normal');
-			$('#signup_header_step3').css('font-size','16px','font-weight','bold');
+			$('#signup_header_step1').css('font-size','14px','font-weight','normal !important');
+			$('#signup_header_step2').css('font-size','14px','font-weight','normal !important');
+			$('#signup_header_step3').css('font-size','16px','font-weight','bold !important');
 		
 		break;
 	}
