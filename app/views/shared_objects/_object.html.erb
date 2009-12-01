@@ -3,11 +3,7 @@
 
 <% if object != nil %>
 <div class="object" id="<%= dom_id object %>">
-	<% if object.is_a?(UserPlaceActivity) %>
-	  <%= render :partial => "shared_objects/user_place_activity", :object => object %> 
-	<% elsif object.is_a?(UserActivity) %>
-	  <%= render :partial => "shared_objects/user_activity", :object => object, :locals => {:view => params[:view]} %>
-	<% else %>
+testing
 	<div class="icon">
 		<%= link_to image_tag(object.icon.url(:thumb), :width => '45px', :height => '45px'), object %>
 	</div>
@@ -54,5 +50,5 @@
     <% end %>
   <div class="clear"></div>
 </div>
-<% end %>
+
 
