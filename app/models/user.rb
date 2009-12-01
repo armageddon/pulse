@@ -7,11 +7,9 @@ fires :newuser, :on => :create, :actor => :self
 after_create :welcome_mail
 
   define_index do
-    indexes username
+ 
     indexes first_name
-    indexes email
-    has sex
-    has age
+
     # indexes places.name, :as => "places"
     # indexes activities.name, :as => "activities"
   end
@@ -391,7 +389,7 @@ after_create :welcome_mail
     logger.info(search_criteria.ages)
     logger.info(search_criteria.sex_preferences)
     logger.info(params[:search_criteria][:keyword])
-    @results = User.search(params[:search_criteria][:keyword], :conditions => {:age => search_criteria.ages , :sex => search_criteria.sex_preferences},  :page=>params[:page], :per_page=>20, :retry_stale => 3)
+    @results = User.search(params[:search_criteria][:keyword],  :page=>params[:page], :per_page=>20, :retry_stale => 3)
     return @results
   end
 
