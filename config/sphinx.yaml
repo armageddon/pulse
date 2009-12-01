@@ -1,0 +1,12 @@
+development:
+  enable_star: 1
+  min_infix_len: 1
+  bin_path: '/usr/local/bin'
+test:
+  enable_star: 1
+  min_infix_len: 1
+  bin_path: '/usr/local/bin'
+production:
+  enable_star: 1
+  min_infix_len: 1
+  bin_path: '/usr/local/bin'
