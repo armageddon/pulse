@@ -63,4 +63,21 @@ class UserFavoritesController < ApplicationController
     end
   end
 
+  def users
+
+    @favorites = User.paginate(:joins=>"inner join user_favorites on user_favorites.friend_id = users.id", :conditions => "user_favorites.user_id = " + current_user.id.to_s,:page=>params[:page],:per_page=>6)
+      logger.debug('FAVORITES: ' + @favorites.length.to_s)
+    respond_to do |format|
+      format.html { render }
+      format.js { render :partial => "shared_object_collections/horizontal_users_collection", :locals => { :collection => @favorites , :reqpath=>'/favorites/users' } }
+    end
+  end
+
+  def user_place_activities
+    @user_place_activities = current_user.user_place_activities.paginate(:all, :order=>'created_at DESC',:page=>params[:page], :per_page=>10)
+    respond_to do |format|
+      format.html { render }
+      format.js { render :partial => "user_place_activity_collection", :locals => { :collection => @user_place_activities } }
+    end
+  end
 end

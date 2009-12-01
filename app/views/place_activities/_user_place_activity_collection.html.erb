@@ -16,8 +16,7 @@
     <% if controller_name == "search" %>
 		<% reqpath = request.path %>
 	<% else %>
-	    <!-- todo: add logic to decide which collection to get. at present there are no ajax calls for these -->
-	    <% reqpath = '/place/user_place_activities' %>
+	    <% reqpath = '/place/user_place_activities'%>
 	<% end %>	
   	<%= link_to "See more #{pagination_name collection}", reqpath + '?page=' + collection.next_page.to_s + qstring, :class => "paginator" %>
 <% end %>

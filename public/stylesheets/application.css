@@ -962,7 +962,7 @@ a{color:#bd0000;
 	margin-bottom:3px;
 	text-transform:uppercase;
 	padding:4px;
-	background-image:url(/images/nav-bullet.png);
+
 	background-position:right;
 	background-color:#ededed;
 	background-repeat:no-repeat;
@@ -1026,7 +1026,7 @@ a{color:#bd0000;
 	overflow:hidden;}
 	
 .map_show{
-	height:200px;
+	height:100%;
 	}
 	
 	/*Sign up*/

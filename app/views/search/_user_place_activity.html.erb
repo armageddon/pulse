@@ -1,4 +1,4 @@
-<div class="object" id="<%= dom_id object %>"  >
+<div class="object" id="<%= dom_id object %>" style='min-height:30px' >
 
   <% pa  = object.place_activity %>
   <div class="what" style="padding:5px;margin-right:5px;width:140px;float:left;">
@@ -7,7 +7,7 @@
   <div class="where" style="padding:5px;;margin-right:5px;width:135px;float:left">
 	<%= link_to (pa.place.name), place_activity_path(:id=>pa.id) %>
   </div>
-  <div class="when" style="padding:5px;margin-right:5px;width:85px;float:left;">
+  <div class="when" style="padding-left:5px;padding-right:5px;margin-right:5px;width:85px;float:left;">
 		<% if object.day_of_week == 0 && object.time_of_day ==0 %>
 		Anytime
 		<% else %> 

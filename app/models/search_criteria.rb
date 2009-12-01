@@ -36,6 +36,8 @@ class SearchCriteria < ActiveRecord::Base
       logger.debug(params[:search_criteria])
       logger.debug('SEARCH CRITERIA')
        if params[:search_criteria][:type] != nil 
+         logger.debug('TYPE')
+         logger.debug(params[:search_criteria][:type])
          @type = params[:search_criteria][:type]
          end
       

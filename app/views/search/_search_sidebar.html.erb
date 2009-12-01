@@ -12,48 +12,52 @@
 		<li id="map_search"  class="<%=search_type_map_class(@search_criteria.type)%>"> Map </l1>
 	</ul>
 	<div class="clear">&nbsp;</div>
-
-	<div id="keyword_criteria"  style="padding:5px" class="<%=search_keyword_class(@search_criteria.type)%>" >
-	   	<label  class="search_criteria_header" style="padding-top:0px">Keyword</label><br \>
-		<%= text_field_tag 'search_criteria[keyword]', @search_criteria.keyword, :class => 'input_text'%><br />
-	</div>
-	
-	<div id="people_header" class="search_sidebar_header">People</div>
-	<div id='people_criteria' style="padding:5px" class="<%=search_people_class(@search_criteria.type)%>" >
-	    <label class="search_criteria_header">Age</label><br \>
-	    <% age_options.each do |opt| %>
-	    	<%= check_box_tag "search_criteria[age_"+opt[1].to_s+"]", opt[1] , @search_criteria.ages.include?(opt[1]) %> <%= opt[0] %> <br \>
-	    <% end %>
-	    <label  class="search_criteria_header">Gender</label><br \>
-		<%= check_box_tag "search_criteria[sp_1]",1, @search_criteria.sex_preferences.include?("1") %> Male <br \>
-		<%= check_box_tag "search_criteria[sp_2]",2, @search_criteria.sex_preferences.include?("2")  %> Female<br \>
-	</div>
-	
-	<div id="place_header" class="search_sidebar_header">Places</div>
-	<div id='place_criteria'  style="padding:5px" class="<%=search_places_class(@search_criteria.type)%>" >
-		<label class="search_criteria_header">Location</label><br \>
-		<div class="float:left" id="postcodesearch">
-		  	<%= drop_down('search_criteria[distance]', @search_criteria.distance, {:width => '100px'},distance_options, 'Any distance',0) %>
-		   	<div class="clear"></div>
-		    from 
-			<%= text_field_tag 'search_criteria[postcode]', @search_criteria.postcode, :class => 'input_text' %><br />	
+	<div style='min-height:400px'>
+		<div id="keyword_criteria"  style="padding:5px" class="<%=search_keyword_class(@search_criteria.type)%>" >
+		   	<label  class="search_criteria_header" style="padding-top:0px">Keyword</label><br \>
+			<%= text_field_tag 'search_criteria[keyword]', @search_criteria.keyword, :class => 'input_text'%><br />
 		</div>
-	</div>
 	
-	<div id="activity_header" class="search_sidebar_header">Activities</div>
-	<div id='activity_criteria'  style="padding:5px" class="<%=search_activities_class(@search_criteria.type)%>" >
-		<label class="search_criteria_header">Activity</label><br \>
-		<% activity_category_options.each do |opt| %>
-			<%= check_box_tag "search_criteria[ac_"+opt[1].to_s+"]", opt[1] , @search_criteria.activity_categories.include?(opt[1]) %> <%= opt[0] %> <br \>
-		<% end %>
-	</div>
-	<div id="place_header" class="search_sidebar_header_line"></div>
+		<div id="people_header" class="search_sidebar_header">People</div>
+		<div id='people_criteria' style="padding:5px" class="<%=search_people_class(@search_criteria.type)%>" >
+		    <label class="search_criteria_header">Age</label><br \>
+		    <% age_options.each do |opt| %>
+		    	<%= check_box_tag "search_criteria[age_"+opt[1].to_s+"]", opt[1] , @search_criteria.ages.include?(opt[1]) %> <%= opt[0] %> <br \>
+		    <% end %>
+		    <label  class="search_criteria_header">Gender</label><br \>
+			<%= check_box_tag "search_criteria[sp_1]",1, @search_criteria.sex_preferences.include?("1") %> Male <br \>
+			<%= check_box_tag "search_criteria[sp_2]",2, @search_criteria.sex_preferences.include?("2")  %> Female<br \>
+		</div>
+	
+		<div id="place_header" class="search_sidebar_header">Places</div>
+		<div id='place_criteria'  style="padding:5px" class="<%=search_places_class(@search_criteria.type)%>" >
+			<label class="search_criteria_header">Location</label><br \>
+			<div class="float:left" id="postcodesearch">
+			  	<%= drop_down('search_criteria[distance]', @search_criteria.distance, {:width => '100px'},distance_options, 'Any distance',0) %>
+			   	<div class="clear"></div>
+			    from 
+				<%= text_field_tag 'search_criteria[postcode]', @search_criteria.postcode, :class => 'input_text' %><br />	
+			</div>
+		</div>
+	
+		<div id="activity_header" class="search_sidebar_header">Activities</div>
+		<div id='activity_criteria'  style="padding:5px" class="<%=search_activities_class(@search_criteria.type)%>" >
+			<label class="search_criteria_header">Activity</label><br \>
+			<% activity_category_options.each do |opt| %>
+				<%= check_box_tag "search_criteria[ac_"+opt[1].to_s+"]", opt[1] , @search_criteria.activity_categories.include?(opt[1]) %> <%= opt[0] %> <br \>
+			<% end %>
+		</div>
+		<div id="place_header" class="search_sidebar_header_line"></div>
+	 </div>
 	<div id="advanced_search_submit" style="float:left;">
 		<%= submit_button ("Search", :id=> "search_sidebar_button") %>    
 	</div>
 <% end %>
 
 <script type="text/javascript" charset="utf-8">
+
+
+
 	//todo: clean up this javascript
 	var search_type = 1
 	var submit = true
@@ -131,6 +135,7 @@
 
 
 	$('#people_criteria').live('click', function() {
+	
 		if($('#search_criteria_type').val()!=4 && $('#search_criteria_type').val()!=5 ){
 	    	$('#people_criteria').css("display","block");
 	    	$('#place_criteria').css("display","none");
@@ -155,6 +160,7 @@
 		}
 	});	
 	$('#people_header').live('click', function() {
+	
 		if($('#search_criteria_type').val()!=4 && $('#search_criteria_type').val()!=5 ){
 	    	$('#people_criteria').css("display","block");
 	    	$('#place_criteria').css("display","none");
@@ -199,7 +205,7 @@
 		  var activities_url = "";
 		  var map_url = "";
 		  var type = $('#search_criteria_type').val();
-
+	
 		  switch(type) {
 			case "1":
 			  objects_url = "/search/people"
@@ -246,6 +252,7 @@
 			});
 		  }
 	   	  if(objects_url.length>0){
+
 			$.ajax({
 		    	type: "GET",
 		    	url: objects_url,
@@ -256,7 +263,7 @@
 			});
 		  }
 		  if(map_url.length>0){
-			
+	
 			var sw = new GLatLng(<%=  51.500152 %>, <%= -0.126236  %>);
 			var ne = new GLatLng(<%=  51.502152 %>, <%= -0.122236 %>);
 			var bounds = new GLatLngBounds(sw,ne);
@@ -304,7 +311,11 @@ function createMarker(point,html) {
         return marker;
       }
 
-
+	$(document).ready(function() {
+		//todo: why is search_criteria type not getting set earlier in html?
+		$('#search_criteria_type').val(<%=@search_criteria.type%>)
+		$("#advanced_search_side").submit();
+	});
 </script>
 
 
@@ -320,86 +331,3 @@ function createMarker(point,html) {
 
 
 
-
-<!--
-<label  class="search_criteria_header">Date</label><br \>
-between<br \>
-<%= hidden_field_tag 'startdate', current_user.dob %>
-<span>
-<div class='search_fancy_select', style="width:40px; float:left">
-	<%= hidden_field_tag 'day',current_user.dob.day %>
-	<div class="fancy_select_target">
-	   	<%= current_user.dob.day()%>
-	</div>
-	<div class="fancy_select_options" , style="width:40px">
-    		<% (1..31).each do|m|%>
-				<p><%=m%> <span class="hidden_value"><%= m %></span></p>
-			<% end %>
-	</div>
-  </div
-  <div class='fancy_select', style="width:45px; float:left">
-	<%= hidden_field_tag 'month',current_user.dob.month  %>
-  	<div class="fancy_select_target">
-	   	<%= Date::MONTHNAMES[current_user.dob.month].to_s[0..2]%>
-	</div>
-	<div class="fancy_select_options", style="width:56px">
-		<% i = 0 %>
-    		<% Date::MONTHNAMES.each do|m|%>
-				<p><%=m.to_s[0..2]%> <span class="hidden_value"><%= i %></span></p>
-				  <% i+=1 %>
-			<% end %>
-	</div>
-</div>
-  <div class='fancy_select' , style="width:50px; float:left">
-		<%= hidden_field_tag 'year',current_user.dob.year %>	
-  	<div class="fancy_select_target" >
-	  <%= current_user.dob.year()%>
-	</div>
-	<div class="fancy_select_options" , style="width:50px">
-    		<% (DateTime.now.year-18).downto(DateTime.now.year - 100) do|m|%>
-				<p><%=m%> <span class="hidden_value"><%= m %></span></p>
-			<% end %>
-	</div>
-	</div>
-</span>
-<div class="clear"></div>
-and <br />
-<span>
-<%= hidden_field_tag 'enddate', current_user.dob %>	
-<div class='fancy_select', style="width:40px; float:left">
-	<%= hidden_field_tag 'endday',current_user.dob.day %>
-	<div class="fancy_select_target">
-	   	<%= current_user.dob.day()%>
-	</div>
-	<div class="fancy_select_options" , style="width:40px">
-    		<% (1..31).each do|m|%>
-				<p><%=m%> <span class="hidden_value"><%= m %></span></p>
-			<% end %>
-	</div>
-  </div
-  <div class='fancy_select', style="width:45px; float:left">
-	<%= hidden_field_tag 'endmonth',current_user.dob.month  %>
-  	<div class="fancy_select_target">
-	   	<%= Date::MONTHNAMES[current_user.dob.month].to_s[0..2]%>
-	</div>
-	<div class="fancy_select_options", style="width:56px">
-		<% i = 0 %>
-    		<% Date::MONTHNAMES.each do|m|%>
-				<p><%=m.to_s[0..2]%> <span class="hidden_value"><%= i %></span></p>
-				  <% i+=1 %>
-			<% end %>
-	</div>
-</div>
-  <div class='fancy_select' , style="width:50px; float:left">
-		<%= hidden_field_tag 'endyear',current_user.dob.year %>	
-  	<div class="fancy_select_target" >
-	  <%= current_user.dob.year()%>
-	</div>
-	<div class="fancy_select_options" , style="width:50px">
-    		<% (DateTime.now.year-18).downto(DateTime.now.year - 100) do|m|%>
-				<p><%=m%> <span class="hidden_value"><%= m %></span></p>
-			<% end %>
-	</div>
-	</div>
-</span>
--->

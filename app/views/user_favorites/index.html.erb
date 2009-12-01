@@ -4,6 +4,10 @@
   <%= render :partial => "shared/message" %>	
 <% end %>
 <div>
+	<% content_for :message do %>
+	<h1>These are your favourite people and things to do. The activities are what link you to your matches
+	</h1>
+	<% end %>
 <% form_tag search_path, :method => :get, :id => "favorites" do %>
   <% content_for :message do %>
   <% end %>
@@ -13,11 +17,15 @@
       	<h2>My Favourites</h2>
       </span>
 </div>
-<div style="float:left;width:556px; margin-bottom:4px;margin-top:0px">
-		<h3 style="width:556px;font-size:14px" class="section_name">People</h3>
+<div style="float:left;width:356px; margin-bottom:4px;margin-top:0px">
+		<h3 style="width:356px;font-size:14px" class="section_name">People</h3>
 </div>
+<div style="text-align: right;float:right;width:200px; margin-bottom:4px;margin-top:0px">
+		<h4 id="people_paging" style="width:200px;font-size:12px" class="section_name">Page 1 of <%=@favorites.total_pages %></h3>
+</div>
+<div class='clear'></div>
 <div id='people_results'>
-  <%= render :partial => "shared_object_collections/horizontal_users_collection", :locals => {:collection => @favorites, :reqpath=> '/favorites/people'} %>
+  <%= render :partial => "shared_object_collections/horizontal_users_collection", :locals => {:collection => @favorites, :reqpath=> '/favorites/users'} %>
 </div>
 <div class='clear'></div>
 <br />

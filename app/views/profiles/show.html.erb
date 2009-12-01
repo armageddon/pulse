@@ -9,6 +9,10 @@
     and see if you have anything in common. If you like, <%= link_to "send #{sex_to_s @user} a message", account_message_path(@user) %>.
     Or you can go <%= link_to "back to your matches", account_matches_path %>.
     </h1>
+<% else %>
+<h1>
+  This is your profile
+  </h1>
   <% end %>
 <% end %>
 

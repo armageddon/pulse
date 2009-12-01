@@ -103,55 +103,7 @@ $(document).ready(function() {
         })
         return false;
     })
-    /*
-$("#remove_place_activity").live('click',function() {
-	 var link = $(this);
-	 
-     $.ajax({
-       type: "DELETE",
-       url: "/user_place_activities/delete",
-	   data: {"place_activity_id" : $(this).attr("place_activity_id")},
-       success: function(p) {
 
-		  $('#add_place_activity').css('display','block')
-		  $('#remove_place_activity').css('display','none')
-	     
-       },
-       error: function(p) {
-		 alert("error");
-	   },
-     })
-   return false;
-  })
-*/
-    /*
-  $(".remove_place").live('click',function() {
-	 var link = $(this);
-	 var frm = $(this).parents("form:first")[0];
-     $.ajax({
-       type: "DELETE",
-       url: "/account/places/delete",
-	   data: {"place_id" : $(this).attr("place_id")},
-       success: function(p) {
-	    //need to determinw which page this comes from and remove if favorites
-	    if((frm=='undefined')||(frm.id=='favorites'))
-     	{
-	      link.parent().parent().removeClass('object');
-	      link.parent().parent().html('');
-	    }
-	    else
-	    {
-	      link.removeClass("remove_place");
- 	  	  link.html('<img class=" tooltip" width="20" title="Add to favorites" src="/images/HPThumbUp.png" alt="Hpthumbup"/>');
-        }
-       },
-       error: function(p) {
-		 alert("error");
-	   },
-     })
-   return false;
-  })
-*/
     $(".remove_place_activity").live('click',function() {
         var link = $(this);
         var frm = $(this).parents("form:first")[0];
@@ -180,34 +132,7 @@ $("#remove_place_activity").live('click',function() {
         })
         return false;
     })
-    /*
-  $(".remove_activity").live('click',function() {
-	 var link = $(this);
-	 var frm = $(this).parents("form:first")[0];
-     $.ajax({
-       type: "DELETE",
-       url: "/account/activities/delete",
-	   data: {"activity_id" : $(this).attr("activity_id")},
-       success: function(p) {
-	    //need to determinw which page this comes from and remove if favorites
-	    if((frm=='undefined')||(frm.id=='favorites'))
-     	{
-	      link.parent().parent().removeClass('object');
-	      link.parent().parent().html('');
-	    }
-	    else
-	    {
-	      link.removeClass("remove_place");
- 	  	  link.html('<img class=" tooltip" width="20" title="Add to favorites" src="/images/HPThumbUp.png" alt="Hpthumbup"/>');
-        }
-       },
-       error: function(p) {
-		 alert("error");
-	   },
-     })
-   return false;
-  })
-*/
+
     $('.paginator').live('click', function() {
         var link = $(this);
         link.hide();
@@ -225,9 +150,11 @@ $("#remove_place_activity").live('click',function() {
         var link = $(this);
         //todo: need to set type here
         $.get(link.attr('href'),{}, function(data) {
-	
+			
             $('#people_results').html(data);
             //$('#results_header').html(data.total_entries)
+
+			$('#people_paging').html('Page ' + $('#user_page').val() + ' of ' + $('#user_page_count').val() );
             $("#dialog").jqmAddTrigger('.add_to_favorites, .add_event, .add_activity');
         })
         return false;

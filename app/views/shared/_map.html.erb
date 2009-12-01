@@ -13,58 +13,41 @@
 	</div>
 	<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=<%= getmapsapikey(request.url) %>&sensor=true" type="text/javascript"></script>
 	<script type="text/javascript" charset="utf-8">
-	  var map2 = new GMap2(document.getElementById("map_canvasg"));
+	  var map2 = new GMap2(document.getElementById("map_canvas"));
   
 	  var custIcon = new GIcon(G_DEFAULT_ICON);
 	  custIcon.iconSize = new GSize(8, 8);
 	  custIcon.shadowSize = new GSize(0, 0);
 	  custIcon.iconAnchor = new GPoint(0, 0);
 	  var dotIcon = new GIcon(custIcon, '/images/map_dot.gif');
+ 
   
-	  <% if @events.blank? %>
-	    <% @events = current_user.upcoming_events %>
-	  <% end %>
-  
-	  <% if false && @events.present? %>
-	    <% @events.each_with_index do |e,i| %>
-	      var marker<%= i.to_s %> = new GMarker(new GLatLng(<%= e.place.latitude %>, <%= e.place.longitude %>), { icon: dotIcon });
-	      map.addOverlay(marker<%= i.to_s %>);
-	    <% end %>
-    
-	    <% min_lat = @events.min {|a,b| a.place.latitude <=> b.place.latitude } %>
-	    <% max_lat = @events.max {|a,b| a.place.latitude <=> b.place.latitude } %>
-	    <% min_lon = @events.min {|a,b| a.place.longitude <=> b.place.longitude } %>              
-	    <% max_lon = @events.max {|a,b| a.place.longitude <=> b.place.longitude } %>
-	    var sw = new GLatLng(<%= min_lat.place.latitude %>, <%= min_lon.place.longitude %>);
-	    var ne = new GLatLng(<%= max_lat.place.latitude %>, <%= max_lon.place.longitude %>);
-	    var bounds = new GLatLngBounds(sw,ne);
-	    map.setCenter(bounds.getCenter(), map.getBoundsZoomLevel(bounds));
-	  <% else %>
+
 		<% @latitude ||= 51.500152; @longitude ||= -0.126236 %> 
 		  <% if @place %>
 		    <% @latitude = @place.latitude %>
 		    <% @longitude = @place.longitude %>
-	      map.addOverlay(new GMarker(new GLatLng(<%= @latitude %>, <%= @longitude %>), { icon: dotIcon }));
+	      map2.addOverlay(new GMarker(new GLatLng(<%= @latitude %>, <%= @longitude %>), { icon: dotIcon }));
 		  <% elsif @places && !@places.empty? %>
 	      <% @latitude = @places.first.latitude %>
 	      <% @longitude = @places.first.longitude %>
 	      <% @places.each do |place| %>
-	        map.addOverlay(new GMarker(new GLatLng(<%= place.latitude %>, <%= place.longitude %>), { icon: dotIcon }));
+	        map2.addOverlay(new GMarker(new GLatLng(<%= place.latitude %>, <%= place.longitude %>), { icon: dotIcon }));
 	      <% end %>
 		  <% end %>
 	
-	    map.setCenter(new GLatLng(<%= @latitude %>, <%= @longitude %>), 16);
-	  <% end %>
+	    map2.setCenter(new GLatLng(<%= @latitude %>, <%= @longitude %>), 16);
 
-	  var customUI = map.getDefaultUI();
+
+	  var customUI = map2.getDefaultUI();
 	  customUI.controls.scalecontrol = false;
 	  customUI.controls.menumaptypecontrol = false;
 	  customUI.controls.smallzoomcontrol3d = false;
 	  customUI.zoom.scrollwheel = false;
 	  customUI.zoom.doubleclick = false;
 
-	  map.setUI(customUI);
-	  map.setMapType(G_PHYSICAL_MAP);
+	  map2.setUI(customUI);
+	  map2.setMapType(G_PHYSICAL_MAP);
   
 
 

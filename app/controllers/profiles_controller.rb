@@ -22,5 +22,7 @@ class ProfilesController < ApplicationController
       format.js { render :partial => "user_place_activity_collection", :locals => { :collection => @user_place_activities } }
     end
   end
+  
+  
  
 end

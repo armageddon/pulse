@@ -12,17 +12,13 @@
   </div>
  	<ul id="do_things">
 	    <li><%= link_to "SEARCH", :controller=>'search', :action=>"search_criteria", :id=>'find_people_link' , :t => "people" %></li>
-	   
-	   <li><%= link_to "EDIT MY INFO", edit_account_path %></li>
-		<li>&nbsp;</li>
-		<li><%= (link_to I18n.translate("ADD_TO_FAVORITES"), 'account/favorites/add',:id=> "profile_people_favorite",:class => "profile_people_favorite", :friend_id => object.id, :style=> current_user.has_friend?(object.id) ? 'display:none' : 'display:block') %></li>
-	    <li><%= (link_to 'REMOVE FROM FAVORITES', "account/favorites/delete", :id=> "profile_people_unfavorite",:class => "profile_people_unfavorite", :friend_id => object.id, :style=> current_user.has_friend?(object.id) ? 'display:block' : 'display:none')  %></li>
-		
-		
-		<% if @user != current_user %>
-		<!--todo: implement remove from favorites -->
-
-	   <li>&nbsp;</li>
-		<%end%>
-	    <li><%= link_to "INVITE A FRIEND", '#', 'data-href' => new_account_invitation_path, :class => "invite_a_friend" %>
+	    <li><%= link_to "EDIT MY INFO", edit_account_path %></li>
+		<li><%= link_to "INVITE A FRIEND", '#', 'data-href' => new_account_invitation_path, :class => "invite_a_friend" %>
 	 </ul>
+	<br />
+	<% if @user.id != current_user.id %>
+		<%= (link_to I18n.translate("ADD_TO_FAVORITES"), 'account/favorites/add',:id=> "profile_people_favorite",:class => "profile_people_favorite submit ", :friend_id => object.id, :style=> current_user.has_friend?(object.id) ? 'display:none' : 'display:block') %>
+	    <%= (link_to 'REMOVE FROM FAVORITES', "account/favorites/delete", :id=> "profile_people_unfavorite",:class => "profile_people_unfavorite submit", :friend_id => object.id, :style=> current_user.has_friend?(object.id) ? 'display:block' : 'display:none')  %>
+		<% end %>
+
+	    

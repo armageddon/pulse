@@ -4,9 +4,11 @@
 <% end %>
 
 <% content_for :c3 do %>
-  <%= render :partial => "shared/mini_dashboard" %>
-<br />
-  <%= render :partial => "shared/message" %>	
+  <div class="column_header">
+      <span>
+      	<h2>&nbsp;</h2>
+      </span>
+</div>
 <% end %>
 
 
@@ -37,14 +39,18 @@
 	<div style="padding:5px;margin-right:5px;width:85px;float:left;text-align:center;background-color:#EDEDED;">When</div>
 	<div style="padding:5px;margin-right:5px;width:85px;float:left;text-align:center;background-color:#EDEDED;">Who</div>
 	<div style="padding:5px;width:46px;float:left;text-align:center;background-color:#EDEDED;">&nbsp;</div>
-    <div id='activity_results'>Loading....</div> 
+    <div class="clear">&nbsp;</div>
+	<div id='activity_results'>Loading....</div> 
 </div>
 <div class="clear">&nbsp;</div>
 
 <!--simple-->
 <div id='object_container' class='<%=search_object_results_class(@search_criteria.type)%>'>
-    <div style="float:left;width:556px; margin-bottom:4px;">
-			<h3 style="width:556px;font-size:14px" class="section_name">People who hang here</h3>
+    <div style="float:left;width:356px; margin-bottom:4px;margin-top:0px">
+			<h3 style="width:356px;font-size:14px" class="section_name"></h3>
+	</div>
+	<div style="text-align: right;float:right;width:200px; margin-bottom:4px;margin-top:0px">
+			<h4 id="people_paging" style="width:200px;font-size:12px" class="section_name">Page 1 of 1/h3>
 	</div>
 	<div id='object_results'>Loading....</div> 
 </div>
@@ -64,9 +70,7 @@
 <script type="text/javascript" charset="utf-8">
 
 
-   $(document).ready(function() {
-	$("#advanced_search_side").submit();
-   });
+
 
 
 //todo: clean up this javascript

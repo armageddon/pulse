@@ -15,9 +15,9 @@
 		<% end %>
 	<% end %>
 	<% qstring += "&type="+collection.first.class.to_s.tableize %>
-	    <!-- todo: add logic to decide which collection to get. at present there are no ajax calls for these -->
-	    <% reqpath = '/user_place_activities/list' %>	
+
   	<%= link_to "See more #{pagination_name collection}", reqpath + '?page=' + collection.next_page.to_s + qstring, :class => "paginator" %>
+
 <% end %>
 <div id="page_loading" style="display: none;"><h4>Loading</h4></div>
 </div>
