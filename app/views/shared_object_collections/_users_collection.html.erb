@@ -1,29 +1,6 @@
 
-
+<h1>TESTING</h1>
 	<%= render :partial => "shared_objects/object", :collection => collection %>
-	<div class="clear"></div>
-	<% if collection.next_page %>
-		<% qstring = "" %>
-		<% params.each do |p| %>
-		    <% if p[0] != "page" && p[0] != "search_criteria"%>
-			   <% qstring += "&" + p[0].to_s + '=' + p[1].to_s %>
-			<% end %> 
-	  	<% end %>
-		<% qstring += "&type="+collection.first.class.to_s.tableize %>
-		<% if params[:search_criteria] != nil %>
-		   	<%params[:search_criteria].each do |sc| %>
-				<% qstring += "&search_criteria[" + sc[0].to_s + ']=' + sc[1].to_s %>
-			<% end %>
-		<% end %>
-	    <% if controller_name == "search" %>
-			<% reqpath = request.path %>
-		<% else %>
-		    <!-- todo: add logic to decide which collection to get. at present there are no ajax calls for these -->
-		    <% reqpath = '/search/people' %>
-		<% end %>	
-	  	<%= link_to "See more #{pagination_name collection}", reqpath + '?page=' + collection.next_page.to_s + qstring, :class => "paginator" %>
-	<% end %>
-	<div id="page_loading" style="display: none;"><h4>Loading</h4></div>
 
 <script type="text/javascript" charset="utf-8">
 
