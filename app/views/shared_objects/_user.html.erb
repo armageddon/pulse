@@ -3,7 +3,7 @@
 
 <% if object != nil %>
 <div class="object" id="<%= dom_id object %>">
-
+testing
 	<div class="icon">
 		<%= link_to image_tag(object.icon.url(:thumb), :width => '45px', :height => '45px'), object %>
 	</div>
@@ -13,42 +13,26 @@
 	     		<%= link_to object.name, object %>
 			</span>
 	   	</div>
-		<div class="category_info">
-			<% case object 
-	     		when Place
-	     		%>
-	     		<%= object.category %> 
-			<% end %>
-		</div>
+
 		<div class="clear"></div>
 		<div class="description">
-	     		<% if controller_name == 'places' && object.is_a?(User) %>
-	        	  <span class="fancy_quotes">&#8220;</span>
-			      <%= object.description %>
-			      <span class="fancy_quotes">&#8221;</span>
-	  		    <% elsif object.is_a?(Place)%>
-	     	      <span><%=object.neighborhood%> </span>
-	     		<% elsif object.is_a?(User) %>
+	    
 	     		  <span class="fancy_quotes">&#8220;</span><%= object.description %><span class="fancy_quotes">&#8221;</span>      
-	     		<% end %>
+	     
 	   	</div>
 	    <div class="clear"></div>
 	</div>
 	<div class="actions">
-		<% case object  when User %>
+
 				<%= link_to image_tag("HPMail.png", :width=>20, :class => " tooltip", :title => "Send a mail"), account_message_path(object),'data-href' => account_message_path(object)  %>
 				<%= (link_to image_tag("HPThumbUp.png", :width=>20, :class => " tooltip", :title => I18n.translate("Add_to_favorites")), "#",'data-href' => account_favorites_path, :class => "people_favorite", :friend_id => object.id) if !current_user.has_friend?(object.id)  %>
 			    <%= (link_to image_tag("HPThumbDown.png", :width=>20, :class => " tooltip", :title => I18n.translate("Add_to_favorites")), "#",'data-href' => account_favorites_path, :class => "people_unfavorite", :friend_id => object.id) if current_user.has_friend?(object.id) %>
 				
-			<% when Place %>
-
-				<%= link_to image_tag("HPThumbUp.png", :width=>20,:class => " tooltip ", :title => I18n.translate("Add_to_favorites")), '#', 'data-href' => "/user_place_activities/new?place_id="+object.id.to_s+"&view=add_place", :place_id => object.id, :class => "add_place" %>
-			
-		<% end %>
+	
 	</div>
 	<div class="clear"></div>
     <% end %>
   <div class="clear"></div>
 </div>
-<% end %>
+
 
