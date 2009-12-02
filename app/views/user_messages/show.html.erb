@@ -4,24 +4,34 @@
       	<h2>My messages with <%= @other_user.username %></h2>
       </span>
 </div>
+
+<div style='margin-bottom:20px'>
+  <div class="icon" style='float:left'>
+    <%= image_tag current_user.icon(:thumb), :width => "45px", :height => "45px" %>
+  </div>
+  <div class="message" style='float:left'>
+    <h4>Me</h4>
+    <% form_for Message.new, :url => account_message_path(@other_user), :html => {:method => "put"} do |m| %>
+	  <%= m.text_area :body %>
+	  <div style='clear'></div>
+      <%= submit_button 'Send','#' %>
+      <div style='clear'></div>
+    <% end %>
+  </div>
+  <div style='clear'></div>
+</div>
+<div style='clear'></div>
+
+
+
 <% if @messages.length > 0 %>
   <%= render :partial => "message", :collection => @messages %>
 <% else %>
   <h4>You haven't sent or received any messages from <%= @other_user.username %> yet.</h4>
 <% end %>
 
-<div id="message_composer" class="">
-  <div class="icon">
-    <%= image_tag current_user.icon(:thumb), :width => "45px", :height => "45px" %>
-  </div>
-  
-  <div class="message">
-    <h4>Me</h4>
-    <% form_for Message.new, :url => account_message_path(@other_user), :html => {:method => "put"} do |m| %>
-      <span class="fancy_quotes">&#8220;</span> <%= m.text_area :body %>
-      <%= image_submit_tag 'go.png' %>
-    <% end %>
-  </div>
-</div>
+
+
+
 
 
