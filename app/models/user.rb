@@ -399,25 +399,17 @@ after_create :welcome_mail
   def welcome_mail
     @subject = "Welcome to Pulse!"
     @body = "
-    Hello <br /> 
-    <br /> 
-    We would like to extend an invitation to you to try our new website for singles!<br /> 
-    <br /> 
-    You’ve been chosen because we really value your feedback and/or because you’re a friend and you’ll go easy on us (not mutually exclusive). Either way, would love it if you could take a look at the site and let us know what you think!<br /> 
-    <br /> 
-    The site is built on the premise that we are more likely to meet people we’re interested in when we are out and about living our lives (rather than sitting at home behind a computer). HelloPulse allows singles to share information about themselves based on where they hang out and what they do: whether it’s tennis at a local club, wine-tasting at a favourite bar or listening to grunge music in Camden (as if).<br /> 
-    <br /> 
-    We’d love any feedback but particularly:<br /> 
-    <br /> 
-       1. Usability – is it easy to use, does it have the information you need, as more people begin to use it, could you imagine yourself using this site?<br /> 
-       <br /> 
-       2. Bugs and annoyances – stuff that doesn’t work<br /> 
-       <br /> 
-       3. Any great ideas about how we can increase the energy and buzz of the product<br /> 
-       <br /> 
-       <br /> 
-       Jane and Pierre"
-
+    Hello!<br /> 
+<br /> 
+    Thanks so much for checking out HelloPulse – the next generation site for bringing like-minded single people together.  We’re currently testing the site and really appreciate your feedback.  <br /> 
+<br /> 
+    The idea behind HelloPulse is that you get a better insight into what someone is like based on where they go and what they do than you do than by reading a profile where everyone tends to sound the same.  We also know that you’re more likely to meet someone when you’re out living your life rather than sitting behind a computer.  That’s why HelloPulse helps you connect in the real world.  Just tell us where to go to meet great single people. <br /> 
+<br /> 
+    Please let us know your thoughts on the feedback form at the bottom of the page.  We’re constantly updating the site so can’t wait to show you what’s new.<br /> 
+<br /> 
+    Happy searching.<br /> 
+<br /> 
+    The HelloPulse Team<br /> "
     @pulse_user = User.find(42)
     @message = @pulse_user.sent_messages.build({:recipient_id=>self.id,:subject=>@subject,:body=>@body})
     @message.save

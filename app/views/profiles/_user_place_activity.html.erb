@@ -14,12 +14,10 @@
 		<% end %>
 	</div>
 	<div class="place_why" style="margin-right:5px;width:216px;float:left">
-		<i><%= object.description%></i>
+		<i><%= object.description%>&nbsp;</i>
 	</div>
-  <div class="actions" style="width:35px;float:left">
-	<% if controller_name == 'search' || controller_name == 'user_favorites' %>
+  <div class="actions" style="width:23px;float:left">
 		<%= link_to image_tag("HPThumbUp.png", :width=>20,:class => " tooltip ", :title => I18n.translate("Add_to_favorites")), '#', 'data-href' => "/user_place_activities/new?activity_id="+pa.activity_id.to_s+"&place_id="+pa.place_id.to_s+"&view=add_place_activity", :class => "add_activity" %>
-	<% end %>
   </div>
 </div>
  

@@ -1,3 +1,8 @@
+<% content_for :c3 do %>
+  <%= render :partial => "shared/mini_dashboard" %>
+<br />
+  <%= render :partial => "shared/message" %>	
+<% end %>
 
 <div class="column_header">
       <span>
@@ -9,10 +14,10 @@
   <div class="icon" style='float:left'>
     <%= image_tag current_user.icon(:thumb), :width => "45px", :height => "45px" %>
   </div>
-  <div class="message" style='float:left'>
+  <div class="message" style='float:left;padding-left:15px;width:430px'>
     <h4>Me</h4>
     <% form_for Message.new, :url => account_message_path(@other_user), :html => {:method => "put"} do |m| %>
-	  <%= m.text_area :body %>
+	  <%= m.text_area :body , :cols => 30%>
 	  <div style='clear'></div>
       <%= submit_button 'Send','#' %>
       <div style='clear'></div>
@@ -21,9 +26,10 @@
   <div style='clear'></div>
 </div>
 <div style='clear'></div>
+<br/>
+<br/>
 
-
-
+<div style='margin-top:10px'>
 <% if @messages.length > 0 %>
   <%= render :partial => "message", :collection => @messages %>
 <% else %>
@@ -31,7 +37,7 @@
 <% end %>
 
 
-
+</div>
 
 
 

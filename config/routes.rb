@@ -5,6 +5,7 @@ ActionController::Routing::Routes.draw do |map|
   map.big_map '/big_map' , :controller => 'maps', :action => 'map'
   
   #search controller
+  map.search_nav '/search/nav', :controller => 'search', :action => "nav"
   map.search_places '/search/places', :controller => 'search', :action => "places"
   map.search_people '/search/people', :controller => 'search', :action => "people"
   map.search_people '/search/people_list', :controller => 'search', :action => "people_list"

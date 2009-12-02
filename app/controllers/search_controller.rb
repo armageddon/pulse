@@ -151,4 +151,28 @@ helper UsersHelper
       end
     end
   end
+
+  def nav
+    logger.debug('NAAAAAAAAAAAAAAAAAAAAAAAAV')
+    list = [Place.search_places(params, current_user),User.search_users_simple(params, current_user),Activity.search_activities(params, current_user)]
+    logger.debug (list)
+    list.sort_by {|a| a.total_entries}
+     logger.debug('NAAAAAAAAAAAAAAAAAAAAAAAAVafterselect')
+    logger.debug (list[0][0].type)
+       case list[0][0]
+    when Place
+      logger.debug ('NAAAAAAAAAAAAAAAAAAAAAAAAVplace')
+      params[:search_criteria][:type] = 2
+    when Activity
+      logger.debug ('NAAAAAAAAAAAAAAAAAAAAAAAAVactivity')
+      params[:search_criteria][:type] = 3
+    when User
+      logger.debug ('NAAAAAAAAAAAAAAAAAAAAAAAAVuser')
+      params[:search_criteria][:type] = 1
+    end
+    @search_criteria = SearchCriteria.new(params, current_user)
+    
+    render :template=> "search/index"  
+  end
+
 end

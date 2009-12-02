@@ -8,3 +8,9 @@ class InvitationMailer < ActionMailer::Base
     @body[:user] = invitation.user
   end
 end
+
+
+
+
+
+

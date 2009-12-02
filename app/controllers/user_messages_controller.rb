@@ -20,6 +20,8 @@ class UserMessagesController < ApplicationController
   end
 
   def show
+    @places = current_user.suggested_places
+    @matches = current_user.matches(params[:page], 8)
     @message  = current_user.sent_messages.build
     @messages = Message.between(current_user.id, @other_user.id)
   end
