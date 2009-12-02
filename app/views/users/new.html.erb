@@ -30,7 +30,7 @@
   </div>
 </div>
 <div class="clear"></div
-<div id="step_1" class="step" style='display:block; position:relative;'>
+<div id="step_1" class="step" style='display:block;'>
   <div class="step_1_container">
     <% form_for @user, :url => account_path do |f| %>
       <div>
@@ -84,7 +84,7 @@
     <% end %>
   </div>
 </div>
-<div id="step_2" class="step" style="display: none; position:relative;" >
+<div id="step_2" class="step" style="display: none;" >
   <div id="step_2_container">
     <div id="upload_container" style="display: none;">
       <% form_tag "/update", :multipart => true, :target => "image_upload", :id => "photo_upload" do%>
@@ -187,7 +187,7 @@
     <% end %>
   </div>
 </div>
-<div id="step_3" class="step" style="display: none; position:relative;">
+<div id="step_3" class="step" style="display: none; ">
   <div id="step_3_container">
     <% form_tag('/account/activities', :id => "pa_select") do    %>
       <% user_place_activity = UserPlaceActivity.new %>
