@@ -1,8 +1,4 @@
 $(document).ready(function() {
-
-
-
-    // misc rails specific stuff
     $.ajaxSetup({ 
         'beforeSend': function(xhr) {
             xhr.setRequestHeader("Accept", "text/javascript")
@@ -22,7 +18,6 @@ $(document).ready(function() {
         settings.data = settings.data || "";
         settings.data += (settings.data ? "&" : "") + "authenticity_token=" + encodeURIComponent(AUTH_TOKEN);
     });
-
 
     $(".people_unfavorite").live('click',function() {
         var link = $(this);
@@ -85,7 +80,8 @@ $(document).ready(function() {
         })
         return false;
     })
-    $(".profile_people_favorite").live('click',function() {
+    
+	$(".profile_people_favorite").live('click',function() {
         var link = $(this);
         $.ajax({
             type: "POST",
@@ -176,51 +172,29 @@ $(document).ready(function() {
         return false;
     });
 
-  //SIGN UP
-// File input hiding voodoo
-  var over = false;
-  var box  = false;
-  var loading = false;
-  $(".word_count").charCounter(140, {
-    container: "<div></div>"
-  });
+    //SIGN UP
+    // File input hiding voodoo
+    var over = false;
+    var box  = false;
+    var loading = false;
+    $(".word_count").charCounter(140, {
+      container: "<div></div>"
+   });
 
 
   function formatResult(row) {
     return row.replace("<span style='font-size:9px'>","").replace("</span>","");
   }
 
-
   $('#add_photo').mouseover(function(e) {
     over = true;
   });
 
-  $(document).mousemove(function(e) {
-    var box = $('#add_photo').offset();
 
-    if ((e.pageX > box.left) &&
-        (e.pageX < (box.left + $('#add_photo').width())) &&
-        (e.pageY > box.top) &&
-        (e.pageY < (box.top + $('#add_photo').height()))
-        ) {
-          $('#upload_container').show();
-          $('#user_icon').css({
-			postion: 'absolute',
-            top: e.pageY  - 10  ,
-            cursor: 'pointer',
-			opacity: 0,
-          })
-
-    } else {
-      over = false;
-      //$('#upload_container').hide();
-    }
-  });
 
   $("#user_icon").change(function(e) {
-
-		$('#add_photo').css('background','#F1F3F6 url(/images/loadercircles.gif) no-repeat scroll center center');
-		$('#add_photo').html('Please wait - your photo may take up to a minute to load......');
+	$('#add_photo').css('background','#F1F3F6 url(/images/loadercircles.gif) no-repeat scroll center center');
+	$('#add_photo').html('Please wait - your photo may take up to a minute to load......');
     $("#photo_upload").ajaxSubmit({
       iframe: true,
       extraData: { 'iframe': 'true' },
@@ -575,7 +549,7 @@ $(document).ready(function() {
         url: $(this).attr('action'),
         data: $(this).serialize(),
         success: function() {
-	toggleSteps(3);
+			toggleSteps(3);
 		  	$('#step_2').fadeOut();
 	        $('#step_3').fadeIn();
 			$('#step_2_text').fadeOut();
@@ -583,11 +557,11 @@ $(document).ready(function() {
       },
       });
       return false;
-    }
+  	}
 
-});
+	});
 
-});
+  });
 
 function toggleSteps(step) {
 	switch(step) {
