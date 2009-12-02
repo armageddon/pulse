@@ -106,7 +106,7 @@
           } else {
             $("#user_place_activity[activity_id]").val('')
           }
-        },
+        }
       }
       $("#activity_name").autocomplete('/activities/autocomplete', ac_options);
     }   
@@ -138,7 +138,7 @@
             } else {
               $("#place_id").val('')
             }
-          },
+          }
         }
       );
         $.data(this, 'initialized', true);
@@ -169,7 +169,7 @@
           },
           error: function(p) {
             //todo: here display error message
-          },
+          }
         })
 
         var place_div = $("#place_"+place_id);
