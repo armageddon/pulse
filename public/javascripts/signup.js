@@ -312,7 +312,7 @@ $(document).ready(function() {
 	        toggleSteps(2);
 			if(navigator.appName=="Microsoft Internet Explorer")
 			{
-				alert('you are using ie');
+			
 				$('#step_1_text').css('display','none');
 				$('#step_2_text').css('display','block');
 				$('#step_1').css('display','none');
@@ -412,7 +412,7 @@ $(document).ready(function() {
 			toggleSteps(3);
 			if(navigator.appName=="Microsoft Internet Explorer")
 			{
-					alert('you are using ie');
+				
 				$('#step_2_text').css('display','none');
 				$('#step_3_text').css('display','block');
 				$('#step_2').css('display','none');
