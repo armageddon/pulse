@@ -1,5 +1,7 @@
 $(document).ready(function() {
-  // File input hiding voodoo
+
+  //SIGN UP
+// File input hiding voodoo
   var over = false;
   var box  = false;
   var loading = false;
@@ -7,12 +9,11 @@ $(document).ready(function() {
     container: "<div></div>"
   });
 
- 
+
   function formatResult(row) {
     return row.replace("<span style='font-size:9px'>","").replace("</span>","");
   }
-	
-	
+
   $('#add_photo').mouseover(function(e) {
     over = true;
   });
@@ -26,13 +27,11 @@ $(document).ready(function() {
         (e.pageY < (box.top + $('#add_photo').height()))
         ) {
           $('#upload_container').show();
-		  var yoff = 
           $('#user_icon').css({
 			postion: 'absolute',
-            top: e.pageY - box.top - 10  ,
+            top: e.pageY  - 10  ,
             cursor: 'pointer',
-			opacity: 0,
-			
+			opacity: 0
           })
 
     } else {
@@ -42,9 +41,8 @@ $(document).ready(function() {
   });
 
   $("#user_icon").change(function(e) {
-
-		$('#add_photo').css('background','#F1F3F6 url(/images/loadercircles.gif) no-repeat scroll center center');
-		$('#add_photo').html('Please wait - your photo may take up to a minute to load......');
+	$('#add_photo').css('background','#F1F3F6 url(/images/loadercircles.gif) no-repeat scroll center center');
+	$('#add_photo').html('Please wait - your photo may take up to a minute to load......');
     $("#photo_upload").ajaxSubmit({
       iframe: true,
       extraData: { 'iframe': 'true' },
@@ -57,10 +55,10 @@ $(document).ready(function() {
             textAlign: 'center'
           })
         }
-      },
+      }
     })
   });
-  
+
   $('#place_name').focus(function() {
     if ( !$.data(this, 'initialized') ) {
       $(this).val('');
@@ -83,7 +81,7 @@ $(document).ready(function() {
             } else {
               $("#place_id").val('')
             }
-          },
+          }
         }
       );
       $.data(this, 'initialized', true);
@@ -102,16 +100,21 @@ $(document).ready(function() {
     var error = false;
     $('#activity_error').removeClass("show");
     $('#activity_error').removeClass("hidden_value");
-   // if ($('#place_id').val() == '') {
-    //  $('#place_name').addClass('invalid');
-    //  error = true;
-    //}
-    if($('#pa_description').val() == 'Tell us everything important about it in less than a text message' ||
-      $('#pa_description').val() == ''
+    if($('#user_place_activity[description]').val() == 'Tell us everything important about it in less than a text message' ||
+      $('#user_place_activity[description]').val() == ''
     ) {
-      $('#pa_description').addClass('invalid');
+      $('#user_place_activity[description]').addClass('invalid');
       error = true
     }
+	if($('#place_id').val() == 0 && $('#activity_id').val() == 0)
+	{
+		$('#activity_error').addClass('show');
+		$('#activity_error').addClass('invalid');
+		$('#activity_error').val("You need to select a place or an activity");
+		error = true
+	}
+
+
     if (error) {
       return false;
     }
@@ -132,10 +135,14 @@ $(document).ready(function() {
 			    $('#activity_category_target').text("Any category");
 			 	$('#activity_id').val(0);
 				$('#activity_target').text("Any activity");
-				$('#description').text("");
+				$('#user_place_activity_description').val("");
 				$('#place_id').val("0");
-				$('#place_name').text("");
-		
+				$('#place_name').val("");
+				$('#day_of_week_target').html("Any day");
+				$('#time_of_day_target').html("Any time");
+				$('#user_place_activity_time_of_day').val(0);
+				$('#user_place_activity_time_of_day').val(0);
+
 			}
 			else
 			{
@@ -143,7 +150,7 @@ $(document).ready(function() {
 				$('#activity_error').addClass('invalid');
 				$('#activity_error').val(p);
 			}
-				
+
         },
 		error: function(p)
 		{
@@ -282,11 +289,11 @@ $(document).ready(function() {
 	     password.next().text('Your passwordmust be 7 characters or more');
 	     error = true;
 	}
-    
+
     var postcode = $('#user_postcode');
 	regexString = /^([A-PR-UWYZ0-9][A-HK-Y0-9][AEHMNPRTVXY0-9]?[ABEHMNPRVWXY0-9]? {1,2}[0-9][ABD-HJLN-UW-Z]{2}|GIR 0AA)$/
 	if (postcode.val() == '' || postcode.val() == 'Post code' || regexString.test(postcode.val().toUpperCase()) != true) {
-		
+
 		postcode.addClass('invalid');
 	    postcode.next().text('Please enter a valid post code.');
 	    error = true;
@@ -302,10 +309,21 @@ $(document).ready(function() {
         url: $(this).attr('action'),
         data: $(this).serialize(),
         success: function(msg) {
-			$('#step_1').fadeOut();
-	        $('#step_2').fadeIn();
-			$('#step_1_text').fadeOut();
-			$('#step_2_text').fadeIn();   
+	        toggleSteps(2);
+			if(navigator.appName=="Microsoft Internet Explorer")
+			{
+				$('#step_1').css('display','none');
+		        $('#step_2').css('display','block');
+				$('#step_1_text').css('display','none');
+				$('#step_2_text').css('display','block');
+			}
+			else
+			{
+			    $('#step_1').fadeOut();
+	            $('#step_2').fadeIn();
+			    $('#step_1_text').fadeOut();
+		    	$('#step_2_text').fadeIn();   
+		    }	
         },
         error: function(xhr) {
           var errors = $.httpData(xhr, 'json');
@@ -389,13 +407,44 @@ $(document).ready(function() {
         url: $(this).attr('action'),
         data: $(this).serialize(),
         success: function() {
-		  	$('#step_2').fadeOut();
-	        $('#step_3').fadeIn();
-			$('#step_2_text').fadeOut();
-			$('#step_3_text').fadeIn();
-      },
+			toggleSteps(3);
+			if(navigator.appName=="Microsoft Internet Explorer")
+			{
+				$('#step_2').css('display','none');
+		        $('#step_3').css('display','block');
+				$('#step_2_text').css('display','none');
+				$('#step_3_text').css('display','block');
+			}
+			else
+			{
+		  		$('#step_2').fadeOut();
+		        $('#step_3').fadeIn();
+				$('#step_2_text').fadeOut();
+			    $('#step_3_text').fadeIn();
+		    }	
+      }
       });
       return false;
-    }
+  	}
+
+	});
+
+
   });
-});
+
+
+	function toggleSteps(step) {
+		switch(step) {
+			case 2: 
+			  	$('#signup_header_step1').css('font-size','14px','font-weight','normal !important');
+			  	$('#signup_header_step2').css('font-size','16px','font-weight','bold !important');
+			  	$('#signup_header_step3').css('font-size','14px','font-weight','normal !important');
+			break;
+			case 3:
+				$('#signup_header_step1').css('font-size','14px','font-weight','normal !important');
+				$('#signup_header_step2').css('font-size','14px','font-weight','normal !important');
+				$('#signup_header_step3').css('font-size','16px','font-weight','bold !important');
+
+			break;
+		}
+	}
