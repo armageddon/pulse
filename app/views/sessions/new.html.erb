@@ -20,24 +20,19 @@
     #hello { margin-bottom: 0px;}
     #session_form { }
     #errors { font-size: .5em; text-align: right;}
-    /* REQUIRED BUTTON STYLES: */		
-    button { 
-    	position: relative;
-    	border: 0; 
-    	padding: 0;
-    	cursor: pointer;
-    	overflow: visible; /* removes extra side padding in IE */
-    }
+    /* REQUIRED BUTTON STYLES: */	
 
-    button::-moz-focus-inner {
-    	border: none;  /* overrides extra padding in Firefox */
-    }
-
-    button span { 
-    	position: relative;
-    	display: block; 
-    	white-space: nowrap;	
-    }
+	
+   	.submit{
+	padding:2px!important;
+	Background-color:#bf1212!important;
+	border:2px solid #9f1111!important;
+	color:#fff!important;
+	margin:3px;
+	margin-bottom:10px;
+	Font-weight:700!important;
+	Font-family:arial!important;
+	background-image:none;}
 
     @media screen and (-webkit-min-device-pixel-ratio:0) {
     	/* Safari and Google Chrome only - fix margins */
@@ -46,24 +41,7 @@
     	}
     }
     
-    
-    /* OPTIONAL BUTTON STYLES for applying custom look and feel: */		
-    button.submit { 
-    	padding: 0 0 0 10px; 
-    	margin-right:5px; 
-    	font-size: 12px; 
-    	text-align: center; 
-    	background: transparent url(/images/button_20_right.gif) no-repeat right; 
-    }
 
-    button.submit span {
-    	padding: 0 10px 0 10px; 
-    	height: 20px;
-    	line-height: 20px;
-    	font-family: Arial, Helvetica, Verdana !important;
-    	background: transparent url(/images/button_20_left.gif) no-repeat left top; 
-    	color:#fff; 
-    }
     
   </style>
 </head>
@@ -93,7 +71,7 @@
         <% form_tag redeem_path, :id => 'redeem_form', :style => "display: none;" do -%>
           Please enter your invitation code:
           <%= text_field_tag 'invite_code', nil, :class => "input_text", :value => "Invite Code", :size => "10" %>
-          <%= submit_button ("GO", :type =>'submit' ) %>
+          <%= submit_button "GO", :class =>'submit'  %>
         <% end %>
 
       <% if flash[:error] %>        
