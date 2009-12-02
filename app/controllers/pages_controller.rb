@@ -1,5 +1,5 @@
 class PagesController < ApplicationController
-  layout "one_column"
+ 
   
   def about
   end

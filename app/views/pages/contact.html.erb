@@ -1,4 +1,19 @@
-<h1 style="margin-bottom: 20px; border-bottom: 1px solid #ccc; margin-top: 10px;">Feedback</h1>
+<% content_for :c3 do %>
+  &nbsp;		
+<% end %>
+<% content_for :c1 do %>
+  &nbsp;	
+<% end %>
+<% content_for :message do %>
+ <h2></h2>
+<% end %>
+
+<div class="column_header">
+      <span>
+      	<h2 id="step_header">Feedback</h2>
+      </span>
+</div>
+
 <% if !params[:thanks] %>
 
 <% form_tag "/contact" do %>
