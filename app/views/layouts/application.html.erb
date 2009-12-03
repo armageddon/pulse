@@ -17,12 +17,12 @@
 	<div id="dialog" style="display: none;" class="jqmWindow"></div>
 	
     <div id="nav">
-      	<ul id="top-nav" style="width:980px">
+	<div >
+      	<ul id="top-nav" >
         	<%= nav_links %>
-		
       	</ul>
-
-	 	<div id="search-box" style="display:inline;float:right">
+</div>
+	 	<div id="search-box" >
           	<% form_tag '/search/nav?search_criteria_header[type]=1', :method => "get" do  %>
             	<%= text_field_tag 'search_criteria[keyword]', '', :class => "header_input_text" %>
 				<%= hidden_field_tag 'search_criteria_header[type]', '1', :class => "header_input_text" %>
