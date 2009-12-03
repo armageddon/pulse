@@ -3,45 +3,44 @@
 <br />
   <%= render :partial => "shared/message" %>	
 <% end %>
-<div>
-	<% content_for :message do %>
-	<h2>These are your favourite people and things to do. The activities are what link you to your matches
-	</h2>
-	<% end %>
+
+<% content_for :message do %>
+	<h2>These are your favourite people and things to do. The activities are what link you to your matches</h2>
+<% end %>
+
 <% form_tag search_path, :method => :get, :id => "favorites" do %>
-  <% content_for :message do %>
-  <% end %>
 
-<div class="column_header">
-      <span>
-      	<h2>My Favourites</h2>
-      </span>
-</div>
-<div style="float:left;width:356px; margin-bottom:4px;margin-top:0px">
+
+	<div class="column_header">
+      	<span>
+      		<h2>My Favourites</h2>
+      	</span>
+	</div>
+	<div style="float:left;width:356px; margin-bottom:4px;margin-top:0px">
 		<h3 style="width:356px;font-size:14px" class="section_name">People</h3>
-</div>
-<div style="text-align: right;float:right;width:200px; margin-bottom:4px;margin-top:0px">
-		<h4 id="people_paging" style="width:200px;font-size:12px" class="section_name">Page 1 of <%=@favorites.total_pages %></h3>
-</div>
-<div class='clear'></div>
-<div id='people_results'>
-  <%= render :partial => "shared_object_collections/horizontal_users_collection", :locals => {:collection => @favorites, :reqpath=> '/favorites/users'} %>
-</div>
-<div class='clear'></div>
-<br />
-<div style="float:left;width:556px; margin-bottom:4px;margin-top:0px">
+	</div>
+	<div style="text-align: right;float:right;width:200px; margin-bottom:4px;margin-top:0px">
+		<h4 id="people_paging" style="width:200px;font-size:12px" class="section_name">Page 1 of <%=@favorites.total_pages %></h4>
+	</div>
+	<div class='clear'></div>
+	<div id='people_results'>
+  		<%= render :partial => "shared_object_collections/horizontal_users_collection", :locals => {:collection => @favorites, :reqpath=> '/favorites/users'} %>
+	</div>
+	<div class='clear'></div>
+	<br />
+
+	<div style="float:left;width:556px; margin-bottom:4px;margin-top:0px">
 		<h3 style="width:556px;font-size:14px" class="section_name">Activities</h3>
-</div>
+	</div>
 
-
-	<div style="padding:5px;margin-right:5px;width:135px;float:left;text-align:center;background-color:#EDEDED;">What</div>
-	<div style="padding:5px;margin-right:5px;width:135px;float:left;text-align:center;background-color:#EDEDED;">Where</div>
-	<div style="padding:5px;margin-right:5px;width:85px;float:left;text-align:center;background-color:#EDEDED;">When</div>
-	<div style="padding:5px;margin-right:5px;width:85px;float:left;text-align:center;background-color:#EDEDED;">Who</div>
-	<div style="padding:5px;width:46px;float:left;text-align:center;background-color:#EDEDED;">&nbsp;</div>
-	
-	<div class="clear"></div>
-	<%= render :partial => "user_place_activity_collection", :locals => {:collection => @user_place_activities} %>
-
+	<div>
+		<div style="padding:5px;margin-right:5px;width:135px;float:left;text-align:center;background-color:#EDEDED;">What</div>
+		<div style="padding:5px;margin-right:5px;width:135px;float:left;text-align:center;background-color:#EDEDED;">Where</div>
+		<div style="padding:5px;margin-right:5px;width:85px;float:left;text-align:center;background-color:#EDEDED;">When</div>
+		<div style="padding:5px;margin-right:5px;width:85px;float:left;text-align:center;background-color:#EDEDED;">Who</div>
+		<div style="padding:5px;width:46px;float:left;text-align:center;background-color:#EDEDED;">&nbsp;</div>
+		<div class="clear"></div>
+		<%= render :partial => "user_place_activity_collection", :locals => {:collection => @user_place_activities} %>
+	</div>
 
 <% end %>
