@@ -31,7 +31,7 @@ $(document).ready(function() {
 			postion: 'absolute',
             top: e.pageY  - 10  ,
             cursor: 'pointer',
-			opacity: 0
+			opacity: 50
           })
 
     } else {
@@ -312,7 +312,6 @@ $(document).ready(function() {
 	        toggleSteps(2);
 			if(navigator.appName=="Microsoft Internet Explorer")
 			{
-			
 				$('#step_1_text').css('display','none');
 				$('#step_2_text').css('display','block');
 				$('#step_1').css('display','none');
