@@ -13,6 +13,7 @@ en-GB:
   your_favorite_activities: "Your favourite activities"
   your_favorite_places: "Your favourite places"
   Password: "Password must be greater than 7 characters"
+  Username: "This user name has already been taken"
   date:
     formats:
       default: "%d/%m/%Y"

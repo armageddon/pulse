@@ -77,7 +77,7 @@ after_create :welcome_mail
   
   validates_presence_of     :location_id
   
-  validates_uniqueness_of   :username
+  validates_uniqueness_of   :username,    :message =>" has already been taken"
   validates_presence_of     :username
   validates_length_of       :username,    :within => 3..40, :allow_blank => true;
   validates_format_of       :username,    :with => Authentication.login_regex, :message => Authentication.bad_login_message, :allow_blank => true;
@@ -86,7 +86,7 @@ after_create :welcome_mail
   validates_format_of       :first_name,  :with => Authentication.name_regex,  :message => Authentication.bad_name_message, :allow_nil => true
   validates_length_of       :first_name,  :maximum => 100
   
-  validates_uniqueness_of   :email
+  validates_uniqueness_of   :email,       :message =>" is already in use"
   validates_presence_of     :email
   validates_length_of       :email,       :within => 6..100 #r@a.wk
   validates_format_of       :email,       :with => Authentication.email_regex, :message => Authentication.bad_email_message
