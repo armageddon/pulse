@@ -2,52 +2,52 @@
 
 	<% allow_any_activity ||= 0  %>
 	<div id="activity_category" style="margin-top:5px;float:left;">	
-	  <div class='fancy_select_parent' style="width: 230px;" id="activity_category_div">
-	      <%= hidden_field_tag 'category', "parent_value" %>
-	    <div class="fancy_select_target_parent" id="activity_category_target" style="width:300px">
-		  <% if allow_any_activity != '1' %>
-	        <%= Activity.all(:select => "DISTINCT category").first.category %>
-	      <% else %>
-	        Any category
-		  <% end %>
-	    </div>
-	    <div class="fancy_select_options_parent" id="activity_category_options" style="width: 250px;">
-	      	  <% if allow_any_activity == '1' %>
-				<p>Any category<span class="hidden_value_parent"><0></span></p>
+	  	<div class='fancy_select_parent' style="width: 330px;" id="activity_category_div">
+		      <%= hidden_field_tag 'activity_category_id', "parent_value" %>
+		    <div class="fancy_select_target_parent" id="activity_category_target" style="width:300px">
+			  <% if allow_any_activity != '1' %>
+		        <%= ActivityCategory.all().first %>
+		      <% else %>
+		        Any category
 			  <% end %>
-			  <% Activity.all(:select => "DISTINCT category").each do |l| %>
-	            <p><%= l.category %><span class="hidden_value_parent"><%= l.category %></span></p>
-	          <% end %> 
-	    </div>
-	  </div>
+		    </div>
+		    <div class="fancy_select_options_parent" id="activity_category_options" style="width: 300px;">
+		      	  <% if allow_any_activity == '1' %>
+					<p>Any category<span class="hidden_value_parent"><0></span></p>
+				  <% end %>
+				  <% ActivityCategory.all().each do |l| %>
+		            <p><%= l.description %><span class="hidden_value_parent"><%= l.id %></span></p>
+		          <% end %> 
+		    </div>
+		  </div>
 	</div>
 	
 	<div id="activity" style="margin-left:10px;margin-top:5px;float:left;">	
-	  <% first_activity_id = Activity.all(:conditions => "category='"+ (Activity.all(:select => "DISTINCT category").first.category)+"'").first.id %>
-	  <div class='fancy_select_child' style="width: 200px;">
-		<% if allow_any_activity != '1' %>
-	      <%= hidden_field_tag 'activity_id', first_activity_id, :id => 'activity_id' %>
-	    <% else %>
-		  <%= hidden_field_tag 'activity_id', 0, :id => 'activity_id' %>
-		<% end %>
-	
-	    <div class="fancy_select_target_child" id="activity_target">
-	        <% if allow_any_activity != '1' %>
-			  <%= Activity.all(:conditions => "category='"+ (Activity.all(:select => "DISTINCT category").first.category)+"'").first.name %>
-	    	<% else %>
-				Any activity
+	  	<% first_activity_id = Activity.all(:conditions => "activity_category_id="+ ActivityCategory.first.id.to_s).first.id %>
+		  <div class='fancy_select_child' style="width: 250px;">
+			<% if allow_any_activity != '1' %>
+		      <%= hidden_field_tag 'activity_id', first_activity_id, :id => 'activity_id' %>
+		    <% else %>
+			  <%= hidden_field_tag 'activity_id', 0, :id => 'activity_id' %>
 			<% end %>
-		</div>
-	    <div class="fancy_select_options_child" id="activity_options">
-	      <% if allow_any_activity == '1' %>
-			<p>Any activity<span class="hidden_value_parent"><0></span></p>
-		  <% else %>       
-	        <% Activity.all(:conditions => "category = '"+ (Activity.all(:select => "DISTINCT category").first.category)+"'").each do |l| %>
-	           <p><%= l.name %><span class="hidden_value_child"><%= l.id %></span></p>
-		  <% end %>
-	       <%end%>
-	    </div>
-	  </div>
+
+		    <div class="fancy_select_target_child" id="activity_target">
+		        <% if allow_any_activity != '1' %>
+				  <%= Activity.all().first.name %>
+		    	<% else %>
+					Any activity
+				<% end %>
+			</div>
+		    <div class="fancy_select_options_child" id="activity_options">
+		      <% if allow_any_activity == '1' %>
+				<p>Any activity<span class="hidden_value_parent"><0></span></p>
+			  <% else %>       
+		        <% Activity.all(:conditions => "activity_category_id = '" + ActivityCategories.all().first.id.to_s).each do |l| %>
+		           <p><%= l.name %><span class="hidden_value_child"><%= l.id %></span></p>
+			  <% end %>
+		       <%end%>
+		    </div>
+		  </div>
 	</div>
 
 
@@ -80,7 +80,7 @@
 	      type: "GET",
 			dataType: "json",
 	      url: "/search/activity_list",
-	      data: { "category" : $(this).find('.hidden_value_parent').text() },
+	      data: { "activity_category_id" : $(this).find('.hidden_value_parent').text() },
 	      success: function(p) {
 		   $('#activity_id').val(p[0].activity.id);
 	       $('#activity_target').replaceWith('<div id="activity_target" class="fancy_select_target_child">' + p[0].activity.name+'</div>');
