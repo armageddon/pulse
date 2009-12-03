@@ -2,7 +2,6 @@ module OptionsHelper
 
   def age_options
     [
-      ["College age", User::Age::COLLEGE],
       ["Early twenties", User::Age::EARLY_TWENTIES],
       ["Mid twenties", User::Age::MID_TWENTIES],
       ["Late twenties", User::Age::LATE_TWENTIES],

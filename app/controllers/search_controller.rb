@@ -114,11 +114,9 @@ helper UsersHelper
   
   def activity_list
     
-    @category = params[:category]
-    logger.debug(@category)
-        logger.debug("activity_list")
+    @category = params[:activity_category_id]
         @activities = Activity.all(:conditions => {
-          :category => params[:category]
+          :activity_category_id => params[:activity_category_id]
           })
     respond_to do |format|
       format.js do
