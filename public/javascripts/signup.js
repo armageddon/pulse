@@ -34,7 +34,7 @@ $(document).ready(function() {
             top: e.pageY  - 10  ,
 			left: e.pageX  - 250  ,
             cursor: 'pointer',
-			opacity: 50
+			opacity: 0
           })
 }
 else
@@ -44,7 +44,7 @@ else
       top: e.pageY  - 10  ,
 		left: e.pageX  - 10  ,
       cursor: 'pointer',
-		opacity: 50
+		opacity: 0
     })
 }
 
