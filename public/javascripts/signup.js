@@ -27,12 +27,26 @@ $(document).ready(function() {
         (e.pageY < (box.top + $('#add_photo').height()))
         ) {
           $('#upload_container').show();
+		if(navigator.appName=="Microsoft Internet Explorer")
+{
           $('#user_icon').css({
 			postion: 'absolute',
             top: e.pageY  - 10  ,
+			left: e.pageX  - 10  ,
             cursor: 'pointer',
 			opacity: 50
           })
+}
+else
+{
+	$('#user_icon').css({
+		postion: 'absolute',
+      top: e.pageY  - 10  ,
+		left: e.pageX  - 10  ,
+      cursor: 'pointer',
+		opacity: 50
+    })
+}
 
     } else {
       over = false;
