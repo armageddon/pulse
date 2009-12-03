@@ -1,119 +1,119 @@
 
 <div style="float:left;">
-	<% allow_any_activity ||= 0  %>
-	<div id="activity_category" style="margin-top:10px">	
-	  <div class='fancy_select_parent' style="width: 330px;" id="activity_category_div">
-	      <%= hidden_field_tag 'activity_category_id', "parent_value" %>
-	    <div class="fancy_select_target_parent" id="activity_category_target" style="width:300px">
-		  <% if allow_any_activity != '1' %>
-	        <%= ActivityCategory.all().first %>
-	      <% else %>
-	        Any category
-		  <% end %>
-	    </div>
-	    <div class="fancy_select_options_parent" id="activity_category_options" style="width: 300px;">
-	      	  <% if allow_any_activity == '1' %>
-				<p>Any category<span class="hidden_value_parent"><0></span></p>
-			  <% end %>
-			  <% ActivityCategory.all().each do |l| %>
-	            <p><%= l.description %><span class="hidden_value_parent"><%= l.id %></span></p>
-	          <% end %> 
-	    </div>
-	  </div>
-	</div>
-	<div id="activity" style="margin-left:10px;">	
-	  <% first_activity_id = Activity.all(:conditions => "activity_category_id="+ ActivityCategory.first.id.to_s).first.id %>
-	  <div class='fancy_select_child' style="width: 250px;">
-		<% if allow_any_activity != '1' %>
-	      <%= hidden_field_tag 'activity_id', first_activity_id, :id => 'activity_id' %>
-	    <% else %>
-		  <%= hidden_field_tag 'activity_id', 0, :id => 'activity_id' %>
-		<% end %>
-	
-	    <div class="fancy_select_target_child" id="activity_target">
-	        <% if allow_any_activity != '1' %>
-			  <%= Activity.all().first.name %>
-	    	<% else %>
-				Any activity
-			<% end %>
-		</div>
-	    <div class="fancy_select_options_child" id="activity_options">
-	      <% if allow_any_activity == '1' %>
-			<p>Any activity<span class="hidden_value_parent"><0></span></p>
-		  <% else %>       
-	        <% Activity.all(:conditions => "activity_category_id = '" + ActivityCategories.all().first.id.to_s).each do |l| %>
-	           <p><%= l.name %><span class="hidden_value_child"><%= l.id %></span></p>
-		  <% end %>
-	       <%end%>
-	    </div>
-	  </div>
-	</div>
+  <% allow_any_activity ||= 0  %>
+  <div id="activity_category" style="margin-top:10px">	
+    <div class='fancy_select_parent' style="width: 330px;" id="activity_category_div">
+      <%= hidden_field_tag 'activity_category_id', "parent_value" %>
+      <div class="fancy_select_target_parent" id="activity_category_target" style="width:300px">
+        <% if allow_any_activity != '1' %>
+          <%= ActivityCategory.all().first %>
+        <% else %>
+                  Any category
+        <% end %>
+      </div>
+      <div class="fancy_select_options_parent" id="activity_category_options" style="width: 300px;">
+        <% if allow_any_activity == '1' %>
+          <p>Any category<span class="hidden_value_parent"><0></span></p>
+        <% end %>
+        <% ActivityCategory.all().each do |l| %>
+          <p><%= l.description %><span class="hidden_value_parent"><%= l.id %></span></p>
+        <% end %> 
+      </div>
+    </div>
+  </div>
+  <div id="activity" style="margin-left:10px;">	
+    <% first_activity_id = Activity.all(:conditions => "activity_category_id="+ ActivityCategory.first.id.to_s).first.id %>
+    <div class='fancy_select_child' style="width: 250px;">
+      <% if allow_any_activity != '1' %>
+        <%= hidden_field_tag 'activity_id', first_activity_id, :id => 'activity_id' %>
+      <% else %>
+        <%= hidden_field_tag 'activity_id', 0, :id => 'activity_id' %>
+      <% end %>
+
+      <div class="fancy_select_target_child" id="activity_target">
+        <% if allow_any_activity != '1' %>
+          <%= Activity.all().first.name %>
+        <% else %>
+                                  Any activity
+        <% end %>
+      </div>
+      <div class="fancy_select_options_child" id="activity_options">
+        <% if allow_any_activity == '1' %>
+          <p>Any activity<span class="hidden_value_parent"><0></span></p>
+        <% else %>       
+          <% Activity.all(:conditions => "activity_category_id = '" + ActivityCategories.all().first.id.to_s).each do |l| %>
+            <p><%= l.name %><span class="hidden_value_child"><%= l.id %></span></p>
+          <% end %>
+        <%end%>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script type="text/javascript" charset="utf-8">
 
   //***************PARENT**************
-	$('.fancy_select_parent').live('click',function() {
-      $('.fancy_select_options_parent').hide();
-      $(this).children('.fancy_select_options_parent').show();
-    })
+  $('.fancy_select_parent').live('click',function() {
+    $('.fancy_select_options_parent').hide();
+    $(this).children('.fancy_select_options_parent').show();
+  })
 
-	$('.fancy_select_parent p').live('mouseover',function() {
-		$(this).addClass('hover');
-	}).live('mouseout',function() {
-		$(this).removeClass('hover');
-	}).live('click',function() {
-		$(this).parent().prevAll('input').val($(this).find('.hidden_value_parent').text());
-	$(this).parent().prev().html($(this).html());
-	$(this).parent().hide();
+  $('.fancy_select_parent p').live('mouseover',function() {
+    $(this).addClass('hover');
+  }).live('mouseout',function() {
+    $(this).removeClass('hover');
+  }).live('click',function() {
+    $(this).parent().prevAll('input').val($(this).find('.hidden_value_parent').text());
+    $(this).parent().prev().html($(this).html());
+    $(this).parent().hide();
 
-	if($(this).find('.hidden_value_parent').text() == "<0>") {
-		$('#activity_id').val("0");
-		$('#activity_target').replaceWith('<div id="activity_target" class="fancy_select_target_child">Any activity</div>');
-		var optslist = '<div class="fancy_select_options_child" id="activity_options">';
-		optslist = optslist+'<p>Any activity<span class="hidden_value_child">0</span></p>'
-		$('#activity_options').replaceWith(optslist);
-	}
-	else	{
-		$.ajax({
-	      type: "GET",
-			dataType: "json",
-	      url: "/search/activity_list",
-	      data: { "activity_category_id" : $(this).find('.hidden_value_parent').text() },
-	      success: function(p) {
-		   $('#activity_id').val(p[0].activity.id);
-	       $('#activity_target').replaceWith('<div id="activity_target" class="fancy_select_target_child">' + p[0].activity.name+'</div>');
-			var i=0;
-			var optslist = '<div class="fancy_select_options_child" id="activity_options">';
-			for(i=0;i<p.length;i++)
-			{
-			   optslist = optslist+'<p>'+ p[i].activity.name +'<span class="hidden_value_child">'+ p[i].activity.id +'</span></p>'
-			}
-			optslist = optslist+'</div>';
-			$('#activity_options').replaceWith(optslist);
-	      }
-	    })
-	}
-	return false;
-	})
+    if($(this).find('.hidden_value_parent').text() == "<0>") {
+      $('#activity_id').val("0");
+      $('#activity_target').replaceWith('<div id="activity_target" class="fancy_select_target_child">Any activity</div>');
+      var optslist = '<div class="fancy_select_options_child" id="activity_options">';
+      optslist = optslist+'<p>Any activity<span class="hidden_value_child">0</span></p>'
+      $('#activity_options').replaceWith(optslist);
+    }
+    else	{
+      $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: "/search/activity_list",
+        data: { "activity_category_id" : $(this).find('.hidden_value_parent').text() },
+        success: function(p) {
+          $('#activity_id').val(p[0].activity.id);
+          $('#activity_target').replaceWith('<div id="activity_target" class="fancy_select_target_child">' + p[0].activity.name+'</div>');
+          var i=0;
+          var optslist = '<div class="fancy_select_options_child" id="activity_options">';
+          for(i=0;i<p.length;i++)
+          {
+            optslist = optslist+'<p>'+ p[i].activity.name +'<span class="hidden_value_child">'+ p[i].activity.id +'</span></p>'
+          }
+          optslist = optslist+'</div>';
+          $('#activity_options').replaceWith(optslist);
+        }
+      })
+    }
+    return false;
+  })
 	
   //***************CHILD**************
-	$('.fancy_select_child').live('click',function() {
-	    $('.fancy_select_options_child').hide();
-	    $(this).children('.fancy_select_options_child').show();
-	  });
+  $('.fancy_select_child').live('click',function() {
+    $('.fancy_select_options_child').hide();
+    $(this).children('.fancy_select_options_child').show();
+  });
 
-	$('.fancy_select_options_child p').live('mouseover',function() {
-		$(this).addClass('hover');
-	}).live('mouseout',function() {
-		$(this).removeClass('hover');
-	}).live('click',function() {
-		$(this).parent().prevAll('input').val($(this).find('.hidden_value_child').text());
-	$(this).parent().prev().html($(this).html());
-	$(this).parent().hide();
-	$('#user_place_activity[activity_id]').val($(this).find('.hidden_value_child').val());
-	return false;
-	});
+  $('.fancy_select_options_child p').live('mouseover',function() {
+    $(this).addClass('hover');
+  }).live('mouseout',function() {
+    $(this).removeClass('hover');
+  }).live('click',function() {
+    $(this).parent().prevAll('input').val($(this).find('.hidden_value_child').text());
+    $(this).parent().prev().html($(this).html());
+    $(this).parent().hide();
+    $('#user_place_activity[activity_id]').val($(this).find('.hidden_value_child').val());
+    return false;
+  });
 
 
 </script>

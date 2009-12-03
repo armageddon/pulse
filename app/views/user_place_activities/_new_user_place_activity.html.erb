@@ -42,7 +42,7 @@
       <%= f.hidden_field :id %>
       <%= hidden_field_tag 'place_id', place.id, :id => 'place_id' %>
       <div class="clear"></div>
-<%else%>
+	<%else%>
 	<h2>Add to favourites</h2>
 	
 	
@@ -51,14 +51,14 @@
         <div class="clear"></div>
         <%= render :partial => "shared/activity_select",  :locals => {:allow_any_activity => "1"} %>
       </div>
-</div>
+
   <div class="clear"></div>
 	<label  style="margin-top: 5px; color:#990000; float:left">Where do you like doing it?</label>
 	   <div class="clear"></div>
 	<% if place != nil %>
         <%= hidden_field_tag 'place_id', place.id, :id => 'place_id' %>
       <% else %>
-        <%= hidden_field_tag 'place_id', "",:id => 'place_id' %>
+        <%= hidden_field_tag 'place_id', "0",:id => 'place_id' %>
       <% end %>
       <%= text_field_tag :place_name,
         (user_place_activity.place.present? ? user_place_activity.place.name : nil),
@@ -70,7 +70,7 @@
 
 <% end %>
 
-    </br>
+    <br />
 
 <div style="margin-top:10px; float:left">
 <label  style="margin-top: 5px; color:#990000; float:left">When do you do it?</label>
@@ -79,7 +79,7 @@
 <%= drop_down('user_place_activity[time_of_day]', 'Early Mornings', {:width => '200px'},tod_options, 'Any time',0) %>
 </div>
 <div class='clear'></div>
-  </br>
+  <br />
 
     <div style="margin-top:10px">
       <label  style="margin-top: 5px; color:#990000; float:left">Tell us why you socialise here and why it's a good place to meet new people at</label>
@@ -160,6 +160,7 @@
       })
     
       $("#new_user_place_activity").submit(function() {
+	
         var place_id = $("#place_id").val();
 
         $.ajax({
