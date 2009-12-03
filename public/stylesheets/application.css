@@ -522,7 +522,7 @@ table.calendar td a.active {
   border: 1px solid #ccc;
   padding: 2px 4px 2px 4px;
   display: none;
-  z-index: 9000;
+  z-index: 100000;
 }
 .fancy_select_options_parent {
   background-color: white;
@@ -533,7 +533,7 @@ table.calendar td a.active {
   border: 1px solid #ccc;
   padding: 2px 4px 2px 4px;
   display: none;
-  z-index: 9000;
+  z-index: 100000;
 }
 .fancy_select_options_child {
   background-color: white;
@@ -544,7 +544,7 @@ table.calendar td a.active {
   border: 1px solid #ccc;
   padding: 2px 4px 2px 4px;
   display: none;
-  z-index: 9000;
+  z-index: 100000;
 }
 .fancy_select_options p {
   margin: 1px;
