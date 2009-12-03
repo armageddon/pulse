@@ -410,7 +410,7 @@ after_create :welcome_mail
     Happy searching.<br /> 
 <br /> 
     The HelloPulse Team<br /> "
-    @pulse_user = User.find(32)
+    @pulse_user = User.find(209)
     @message = @pulse_user.sent_messages.build({:recipient_id=>self.id,:subject=>@subject,:body=>@body})
     @message.save
     
