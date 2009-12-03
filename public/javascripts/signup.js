@@ -1,11 +1,14 @@
 $(document).ready(function() {
 
 	$(function() {
+		if(navigator.appName=="Microsoft Internet Explorer")
+		{
 		var zIndexNumber = 1000;
 		$('div').each(function() {
 			$(this).css('zIndex', zIndexNumber);
 			zIndexNumber -= 10;
 		});
+	}
 	});
 	
   //SIGN UP
