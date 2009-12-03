@@ -32,7 +32,7 @@ $(document).ready(function() {
           $('#user_icon').css({
 			postion: 'absolute',
             top: e.pageY  - 10  ,
-			left: e.pageX  - 10  ,
+			left: e.pageX  - 250  ,
             cursor: 'pointer',
 			opacity: 50
           })
