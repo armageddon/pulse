@@ -94,6 +94,16 @@
 <script type="text/javascript" charset="utf-8">
 
   $(document).ready(function() {
+	$(function() {
+
+		var zIndexNumber = 1000;
+		$('div').each(function() {
+			$(this).css('zIndex', zIndexNumber);
+			zIndexNumber -= 10;
+		});
+
+	});
+	
     if ($("#activity_name").attr("data-prefilled") == "false") {
       var ac_options = {
         autoFill:false,
