@@ -116,12 +116,16 @@ $(document).ready(function() {
         var error = false;
         $('#activity_error').removeClass("show");
         $('#activity_error').removeClass("hidden_value");
-        if($('#user_place_activity[description]').val() == 'Tell us everything important about it in less than a text message' ||
-            $('#user_place_activity[description]').val() == ''
-            ) {
-            $('#user_place_activity[description]').addClass('invalid');
-            error = true
+        if($('#user_place_activity[description]').val() == "tell us why you socialise here and whether it's good for meeting people" )
+        {
+            $('#user_place_activity[description]').val("");
         }
+        // if($('#user_place_activity[description]').val() == "tell us why you socialise here and whether it's good for meeting people" ||
+        //     $('#user_place_activity[description]').val() == ''
+        //    ) {
+        //    $('#user_place_activity[description]').addClass('invalid');
+        //   error = true
+        //}
         if($('#place_id').val() == 0 && $('#activity_id').val() == 0)
         {
             $('#activity_error').addClass('show');
@@ -188,8 +192,8 @@ $(document).ready(function() {
         }
     })
 
-    $('#pa_description').focus(function() {
-        if ($(this).text() == 'Tell us everything important about it in less than a text message') {
+    $('#user_place_activity_description').focus(function() {
+        if ($(this).text() == "tell us why you socialise here and whether it's good for meeting people") {
             $(this).text('');
         }
     });

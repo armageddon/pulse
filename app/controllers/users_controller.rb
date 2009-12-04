@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-include Graticule
+  include Graticule
   # Protect these actions behind an admin login
   # before_filter :admin_required, :only => [:suspend, :unsuspend, :destroy, :purge]
   before_filter :find_user, :only => [:suspend, :unsuspend, :destroy, :purge]
@@ -8,28 +8,28 @@ include Graticule
   def place_activity_list
     @user_place_activities = UserPlaceActivity.paginate(:all, :conditions => 'user_id = ' + current_user.id.to_s, :page=> params[:page], :per_page=>10)
     respond_to do |format|
-       format.js { render :partial => "shared_object_collections/search_place_activity_collection", :locals => {:collection => @user_place_activities }}
+      format.js { render :partial => "shared_object_collections/search_place_activity_collection", :locals => {:collection => @user_place_activities }}
     end
   end
 
   def favorites_list
     @favorites = User.paginate(:joins=>"inner join user_favorites on user_favorites.friend_id = users.id", :conditions => "user_favorites.user_id = " + current_user.id.to_s,:page=>params[:page],:per_page=>6)
     respond_to do |format|
-       format.js { render :partial => "shared_object_collections/favorite_users_collection", :locals => {:collection => @favorites}}
+      format.js { render :partial => "shared_object_collections/favorite_users_collection", :locals => {:collection => @favorites}}
     end
   end
   
   def user_places
     @places = current_user.places;
     respond_to do |format|
-       format.js { render :partial => "shared_object_collections/object_collection", :locals => {:collection => @places}}
+      format.js { render :partial => "shared_object_collections/object_collection", :locals => {:collection => @places}}
     end
   end
   #todo: where is this called
   def user_place_activities
     @activities = current_user.activities;
     respond_to do |format|
-       format.js { render :partial => "shared_object_collections/object_collection", :locals => {:collection => @activities}}
+      format.js { render :partial => "shared_object_collections/object_collection", :locals => {:collection => @activities}}
     end
   end
   
@@ -51,7 +51,7 @@ include Graticule
 
   def redeem
     logger.debug("Begin redeem")
-       @user_place_activity = UserPlaceActivity.new
+    @user_place_activity = UserPlaceActivity.new
     logout_keeping_session!
     
     if params[:invite_code] == "pulse12345"
@@ -105,48 +105,46 @@ include Graticule
   end
 
   def edit
-     logger.debug(current_user.errors.full_messages)
+    logger.debug(current_user.errors.full_messages)
     @user = current_user
   end
 
   def update
     
-        @user_place_activity = UserPlaceActivity.new
+    @user_place_activity = UserPlaceActivity.new
     if params[:iframe]=="true"
-       current_user.update_attributes(params[:user])
-        respond_to do |format|
-           format.html { render :text => current_user.icon.url(:profile) }
-           format.js { render :text => current_user.icon.url + "js"}
-        end
+      current_user.update_attributes(params[:user])
+      respond_to do |format|
+        format.html { render :text => current_user.icon.url(:profile) }
+        format.js { render :text => current_user.icon.url + "js"}
+      end
     else
-       params[:user][:dob] = Date.new(params[:year].to_i(),params[:month].to_i(),params[:day].to_i())
-       logger.debug(params[:user][:dob])
-       logger.debug(current_user.get_age_option_from_dob(params[:user][:dob]))
-       params[:user][:age] = current_user.get_age_option_from_dob(params[:user][:dob])
-       geocoder = Graticule.service(:google).new "ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog"
-       logger.debug(params[:user][:postcode])
-       if   params[:user][:postcode] != nil
-         location = geocoder.locate('london ' + params[:user][:postcode])
-         latitude, longitude = location.coordinates
-         if latitude != nil && longitude != nil
+      params[:user][:dob] = Date.new(params[:year].to_i(),params[:month].to_i(),params[:day].to_i())
+      params[:user][:age] = current_user.get_age_option_from_dob(params[:user][:dob])
+      geocoder = Graticule.service(:google).new "ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog"
+      logger.debug(params[:user][:postcode])
+      if   params[:user][:postcode] != nil
+        location = geocoder.locate('london ' + params[:user][:postcode])
+        latitude, longitude = location.coordinates
+        if latitude != nil && longitude != nil
           current_user.lat = latitude
           current_user.long = longitude
           params[:user][:lat] = latitude
           params[:user][:long] = longitude
-         end
-       end
-       respond_to do |format|
-         logger.debug(params[:user]);
-       if current_user.update_attributes(params[:user])
+        end
+      end
+      respond_to do |format|
+        logger.debug(params[:user]);
+        if current_user.update_attributes(params[:user])
           format.html { redirect_to account_path }
           format.js { render :nothing => true}
-       else
-         logger.debug(current_user.errors.full_messages);
-         logger.debug("in no change")
+        else
+          logger.debug(current_user.errors.full_messages);
+          logger.debug("in no change")
           format.html { render :action => "edit"}
           format.js { render :nothing => true, :status => 500 }
-       end
-       end
+        end
+      end
     end
   end
 

@@ -51,3 +51,4 @@ end
 
 ANYTHING_ACTIVITY_ID = 159;
 ANYWHERE_PLACE_ID=1;
+USER_PLACE_DESCRIPTION_TEXT = "tell us why you socialise here and whether it's good for meeting people"

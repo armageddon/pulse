@@ -42,20 +42,20 @@
       <%= f.hidden_field :id %>
       <%= hidden_field_tag 'place_id', place.id, :id => 'place_id' %>
       <div class="clear"></div>
-	<%else%>
-	<h2>Add to favourites</h2>
-	
-	
-	<div id="activity_category_select" style="margin-top:10px">
+    <%else%>
+      <h2>Add to favourites</h2>
+
+
+      <div id="activity_category_select" style="margin-top:10px">
         <label  style="margin-top: 5px; color:#990000;">What do you like doing?</label>
         <div class="clear"></div>
         <%= render :partial => "shared/activity_select",  :locals => {:allow_any_activity => "1"} %>
       </div>
 
-  <div class="clear"></div>
-	<label  style="margin-top: 5px; color:#990000; float:left">Where do you like doing it?</label>
-	   <div class="clear"></div>
-	<% if place != nil %>
+      <div class="clear"></div>
+      <label  style="margin-top: 5px; color:#990000; float:left">Where do you like doing it?</label>
+      <div class="clear"></div>
+      <% if place != nil %>
         <%= hidden_field_tag 'place_id', place.id, :id => 'place_id' %>
       <% else %>
         <%= hidden_field_tag 'place_id', ANYWHERE_PLACE_ID,:id => 'place_id' %>
@@ -68,22 +68,23 @@
     %>
       <div class="clear"></div>
 
-<% end %>
+    <% end %>
 
     <br />
 
-<div style="margin-top:10px; float:left">
-<label  style="margin-top: 5px; color:#990000; float:left">When do you do it?</label>
-<div class="clear"></div>
-<%= drop_down('user_place_activity[day_of_week]', 'Monday', {:width => '130px'},dotw_options, 'Any day',0) %>
-<%= drop_down('user_place_activity[time_of_day]', 'Early Mornings', {:width => '200px'},tod_options, 'Any time',0) %>
-</div>
-<div class='clear'></div>
-  <br />
+    <div style="margin-top:10px; float:left">
+      <label  style="margin-top: 5px; color:#990000; float:left">When do you do it?</label>
+      <div class="clear"></div>
+      <%= drop_down('user_place_activity[day_of_week]', 'Monday', {:width => '130px'},dotw_options, 'Any day',0) %>
+      <%= drop_down('user_place_activity[time_of_day]', 'Early Mornings', {:width => '200px'},tod_options, 'Any time',0) %>
+    </div>
+    <div class='clear'></div>
+    <br />
 
     <div style="margin-top:10px">
-      <label  style="margin-top: 5px; color:#990000; float:left">Tell us why you socialise here and why it's a good place to meet new people at</label>
-      <%= f.text_area :description, :rows => 10, :class => "input_text word_count" %>
+      <label  style="margin-top: 5px; color:#990000; float:left">Why do you like this place?</label>
+      <div class='clear'></div>
+      <%= text_area_tag('user_place_activity[description]',USER_PLACE_DESCRIPTION_TEXT, :rows => 2, :cols=>45,:class => "input_text word_count") %>
     </div>
     <%= submit_button 'Save', :id => "new_activity", :plc_id => "34"%>
     <%= submit_button 'Cancel', :id => "cancel" %>
@@ -138,6 +139,12 @@
       container: "<div></div>"
     })
 
+    $('#user_place_activity_description').focus(function() {
+      if ($(this).text() == "tell us why you socialise here and whether it's good for meeting people") {
+        $(this).text('');
+      }
+    });
+
 <% if request.xhr? %>
       $("#cancel").click(function() {
         $("#dialog").jqmHide();
@@ -145,7 +152,10 @@
       })
     
       $("#new_user_place_activity").submit(function() {
-	
+        if($('#user_place_activity_description').val() == "tell us why you socialise here and whether it's good for meeting people")
+        {
+          $('#user_place_activity_description').val("")
+        }
         var place_id = $("#place_id").val();
 
         $.ajax({
