@@ -28,7 +28,7 @@
 			<% if allow_any_activity != '1' %>
 		      <%= hidden_field_tag 'activity_id', first_activity_id, :id => 'activity_id' %>
 		    <% else %>
-			  <%= hidden_field_tag 'activity_id', 0, :id => 'activity_id' %>
+			  <%= hidden_field_tag 'activity_id', ANYTHING_ACTIVITY_ID, :id => 'activity_id' %>
 			<% end %>
 
 		    <div class="fancy_select_target_child" id="activity_target">
@@ -40,7 +40,7 @@
 			</div>
 		    <div class="fancy_select_options_child" id="activity_options">
 		      <% if allow_any_activity == '1' %>
-				<p>Any activity<span class="hidden_value_parent"><0></span></p>
+				<p>Any activity<span class="hidden_value_parent"><%=ANYTHING_ACTIVITY_ID%></span></p>
 			  <% else %>       
 		        <% Activity.all(:conditions => "activity_category_id = '" + ActivityCategories.all().first.id.to_s).each do |l| %>
 		           <p><%= l.name %><span class="hidden_value_child"><%= l.id %></span></p>

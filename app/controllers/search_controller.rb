@@ -70,6 +70,7 @@ class SearchController < ApplicationController
     respond_to do |format|
       format.js do
         @user_place_activities = UserPlaceActivity.search_user_place_activities(params, current_user)
+       
         if  @user_place_activities == nil || @user_place_activities.length == 0
           render :text=>"<div style='width:500px' id='activity_results'>No results returned</div>"
         else

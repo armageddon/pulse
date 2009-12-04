@@ -49,8 +49,9 @@ class UserPlaceActivitiesController < ApplicationController
   end
 
   def create
-
-    if params[:activity_id]!="0" && params[:place_id]!="0"
+  logger.debug('UPA CREATE!!!!!!!!!!!!!!!!!'+params[:activity_id])
+  logger.debug('UPA CREATE!!!!!!!!!!!!!!!!!'+params[:place_id])
+    if !(params[:activity_id]==ANYTHING_ACTIVITY_ID.to_s && params[:place_id]==ANYWHERE_PLACE_ID.to_s)
       @activity = Activity.find(params[:activity_id])
       @place = Place.find(params[:place_id]) 
       place_activity = PlaceActivity.find(:first,:conditions=>['place_id = ? and activity_id = ?',@place.id.to_s, @activity.id.to_s])
@@ -66,27 +67,7 @@ class UserPlaceActivitiesController < ApplicationController
             flash[:notice] = "You have added a user place activity, user activity and user place"
             redirect_to account_places_path
         end
-        format.js {render :partial => 'shared_objects/signup_user_place_activity', :object => @user_place_activity  }
-      end
-    elsif params[:place_id]!="0" && params[:activity_id]=="0"
-      @place = Place.find(params[:place_id]) 
-      @user_place = UserPlace.new(:user_id => current_user.id, :place_id => @place.id)
-      @user_place.save
-      respond_to do |format|
-        format.html do
-          redirect_to account_places_path
-        end
-        format.js {render :partial => 'shared_objects/signup_user_place', :object => @user_place  }
-      end
-    elsif params[:place_id]=="0" && params[:activity_id]!="0"
-      @activity = Activity.find(params[:activity_id])
-      @user_activity = UserActivity.new(:user_id => current_user.id, :activity_id => @activity.id)
-      @user_activity.save
-      respond_to do |format|
-        format.html do
-           redirect_to account_places_path
-        end
-        format.js  {render :partial => 'shared_objects/signup_user_activity', :object => @user_activity   }
+        format.js {render :partial => 'user_place_activity', :object => @user_place_activity  }
       end
     else
       respond_to do |format|

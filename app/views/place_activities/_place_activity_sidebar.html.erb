@@ -28,9 +28,12 @@
 <%= link_to "ADD TO MY FAVOURITES", '#', 'data-href' => "/user_place_activities/new?activity_id="+@activity.id.to_s+"&place_id="+@place.id.to_s+"&place_activity_id="+@place_activity.id.to_s+"&view=add_place_activity", :id => "add_place_activity", :class => "add_to_favorites submit"  %></li> 
 <br/>
 <br/>
-
-Check out <%= link_to @place.name, @place %> <br/>
-Check out <%= link_to @activity.name, @activity %>
+<% if @place.id != ANYWHERE_PLACE_ID %>
+  Check out <%= link_to @place.name, @place %> <br/>
+<% end %>
+<% if @activity.id != ANYTHING_ACTIVITY_ID %>
+  Check out <%= link_to @activity.name, @activity %>
+<% end %>
 
 <div id="manage_place"></div>
  

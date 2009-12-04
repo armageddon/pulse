@@ -2,6 +2,9 @@ class ActivitiesController < ApplicationController
   def show
       @activity =Activity.find(params[:id])
       @user_place_activities = @activity.user_place_activities.paginate(:order=>'created_at DESC',:page=>1,:per_page=>10)
+      @user_place_activities.each do |d|
+           logger.debug('UPA ID::::::::::::::::' + d.id.to_s)
+       end
       @users = @activity.users.paginate(:all,:group => :user_id, :page => params[:page], :per_page => 6)
    end
 

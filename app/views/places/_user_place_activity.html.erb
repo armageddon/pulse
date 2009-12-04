@@ -7,7 +7,11 @@
 		<%=link_to object.user.name,object.user%>
 	</div>
 	<div class="place_why" style="width:305px;float:left;margin-right:5px;">
-		<%=link_to object.activity.name, object.activity%><br/>
+          <% if object.activity.id != ANYTHING_ACTIVITY_ID %>
+                  <%=link_to object.activity.name, object.activity%><br/>
+                <% else %>
+                    <%=   object.activity.name %><br/>
+                <% end %>
 		<i><%=object.description%>&nbsp;</i>
 	</div>
 	<div class="place_when" style="margin-left:5px;width:95px;float:left">

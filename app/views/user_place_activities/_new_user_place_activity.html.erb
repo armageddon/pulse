@@ -11,7 +11,7 @@
       <% if place != nil %>
         <%= hidden_field_tag 'place_id', place.id, :id => 'place_id' %>
       <% else %>
-        <%= hidden_field_tag 'place_id', "",:id => 'place_id' %>
+        <%= hidden_field_tag 'place_id', ANYWHERE_PLACE_ID,:id => 'place_id' %>
       <% end %>
       <%= text_field_tag :place_name,
         (user_place_activity.place.present? ? user_place_activity.place.name : nil),
@@ -58,7 +58,7 @@
 	<% if place != nil %>
         <%= hidden_field_tag 'place_id', place.id, :id => 'place_id' %>
       <% else %>
-        <%= hidden_field_tag 'place_id', "0",:id => 'place_id' %>
+        <%= hidden_field_tag 'place_id', ANYWHERE_PLACE_ID,:id => 'place_id' %>
       <% end %>
       <%= text_field_tag :place_name,
         (user_place_activity.place.present? ? user_place_activity.place.name : nil),
@@ -96,22 +96,7 @@
   $(document).ready(function() {
 
 	
-    if ($("#activity_name").attr("data-prefilled") == "false") {
-      var ac_options = {
-        autoFill:false,
-        maxItemsToShow:30,
-        mustMatch: false,
-        onItemSelect: function(e) {
-          var extra = $(e).attr('extra');
-          if (extra.length > 0) {
-            $("#user_place_activity[activity_id]").val(extra[0])
-          } else {
-            $("#user_place_activity[activity_id]").val('')
-          }
-        }
-      }
-      $("#activity_name").autocomplete('/activities/autocomplete', ac_options);
-    }   
+
 
 
     function formatResult(row) {

@@ -10,7 +10,7 @@
 	<label  style="margin-top: 5px; color:#990000;">Where do you like doing it?</label>
 	<div class="clear"></div>
 
-	<%= hidden_field_tag 'place_id', "", :id => 'place_id' %>
+	<%= hidden_field_tag 'place_id', ANYWHERE_PLACE_ID, :id => 'place_id' %>
 	<%= text_field_tag :place_name, 
     (user_place_activity.place.present? ? user_place_activity.place.name : nil), 
     :class => "input_text", :disabled => user_place_activity.place.present?,

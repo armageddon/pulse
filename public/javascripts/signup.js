@@ -1,14 +1,4 @@
 $(document).ready(function() {
-
-    $(function() {
-	
-        var zIndexNumber = 1000;
-        $('div').each(function() {
-            $(this).css('zIndex', zIndexNumber);
-            zIndexNumber -= 10;
-        });
-	
-    });
 	
     //SIGN UP
     // File input hiding voodoo
@@ -105,7 +95,7 @@ $(document).ready(function() {
                         if (extra.length > 0) {
                             $("#place_id").val(extra[0])
                         } else {
-                            $("#place_id").val('')
+                            $("#place_id").val("1")
                         }
                     }
                 }
@@ -159,10 +149,10 @@ $(document).ready(function() {
                     //reset activity
                     $('#parent_value').val(0);
                     $('#activity_category_target').text("Any category");
-                    $('#activity_id').val(0);
+                    $('#activity_id').val(159);
                     $('#activity_target').text("Any activity");
                     $('#user_place_activity_description').val("");
-                    $('#place_id').val("0");
+                    $('#place_id').val("1");
                     $('#place_name').val("");
                     $('#day_of_week_target').html("Any day");
                     $('#time_of_day_target').html("Any time");

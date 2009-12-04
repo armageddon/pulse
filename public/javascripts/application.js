@@ -1,13 +1,5 @@
 $(document).ready(function() {
-	$(function() {
 	
-			var zIndexNumber = 1000;
-			$('div').each(function() {
-				$(this).css('zIndex', zIndexNumber);
-				zIndexNumber -= 10;
-			});
-
-	});	
     $.ajaxSetup({ 
         'beforeSend': function(xhr) {
             xhr.setRequestHeader("Accept", "text/javascript")
