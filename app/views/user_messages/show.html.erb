@@ -6,7 +6,7 @@
 
 <div class="column_header">
       <span>
-      	<h2>My messages with <%= @other_user.username %></h2>
+      	<h2>My messages with <%= @other_user.first_name %></h2>
       </span>
 </div>
 
@@ -33,7 +33,7 @@
 <% if @messages.length > 0 %>
   <%= render :partial => "message", :collection => @messages %>
 <% else %>
-  <h4>You haven't sent or received any messages from <%= @other_user.username %> yet.</h4>
+  <h4>You haven't sent or received any messages from <%= @other_user.first_name %> yet.</h4>
 <% end %>
 
 
