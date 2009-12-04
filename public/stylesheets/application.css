@@ -428,7 +428,7 @@ table.calendar td a.active {
 
 #page_loading {
   color: black;
-  background: Window url('images/indicator.gif') right center no-repeat;
+  background: Window url('/images/indicator.gif') right center no-repeat;
   width: 80px;
 }
 

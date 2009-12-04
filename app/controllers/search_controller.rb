@@ -1,29 +1,28 @@
 class SearchController < ApplicationController
   before_filter :login_required
-helper UsersHelper
+  helper UsersHelper
 
   def index
-    logger.debug ('SEARCH CONTROLLER INDEX')
     logger.debug(params)
-      @places = current_user.suggested_places
-      @matches = current_user.matches(params[:page], 8)
-      @search_criteria = SearchCriteria.new(params, current_user)
-      @users = User.search_users_advanced(params, current_user)
-      @user_place_activities = UserPlaceActivity.search_user_place_activities(params, current_user)
-      respond_to do |format|
-        format.html do
-          render 
-        end
-          format.js do
-            logger.info('results' + @results.to_s)
-            if @results == nil or @results.length == 0
-              render :text=> "<div id='results'>No results returned</div>"
-            else
-              render :partial => 'search_index', :content_type => "text/html"
-            end
-          end
-
+    @places = current_user.suggested_places
+    @matches = current_user.matches(params[:page], 8)
+    @search_criteria = SearchCriteria.new(params, current_user)
+    @users = User.search_users_advanced(params, current_user)
+    @user_place_activities = UserPlaceActivity.search_user_place_activities(params, current_user)
+    respond_to do |format|
+      format.html do
+        render
       end
+      format.js do
+        logger.info('results' + @results.to_s)
+        if @results == nil or @results.length == 0
+          render :text=> "<div id='results'>No results returned</div>"
+        else
+          render :partial => 'search_index', :content_type => "text/html"
+        end
+      end
+
+    end
   end
 
   def people_list
@@ -56,12 +55,12 @@ helper UsersHelper
   end
   
   def map_places
-   @places = Place.search_places_map(params, current_user)
-   respond_to do |format|
-     format.js do
-       render :json => @places.to_json
-     end
-   end
+    @places = Place.search_places_map(params, current_user)
+    respond_to do |format|
+      format.js do
+        render :json => @places.to_json
+      end
+    end
   end
   
   def user_place_activities
@@ -81,16 +80,16 @@ helper UsersHelper
   end
   
   def events
-     respond_to do |format|
-        format.js do
-          @user_place_activities = UserPlaceActivity.search_user_place_activities(params, current_user)
-          if @user_place_activities.length == 0
-            render :text=>"<div style='width:500px' id='results'>No results returned</div>"
-          else
-            render :partial => 'shared_object_collections/search_place_activity_collection', :locals => { :collection => @user_place_activities },  :content_type => "text/html"
-          end
+    respond_to do |format|
+      format.js do
+        @user_place_activities = UserPlaceActivity.search_user_place_activities(params, current_user)
+        if @user_place_activities.length == 0
+          render :text=>"<div style='width:500px' id='results'>No results returned</div>"
+        else
+          render :partial => 'shared_object_collections/search_place_activity_collection', :locals => { :collection => @user_place_activities },  :content_type => "text/html"
         end
       end
+    end
   end
   
   def activities
@@ -115,9 +114,9 @@ helper UsersHelper
   def activity_list
     
     @category = params[:activity_category_id]
-        @activities = Activity.all(:conditions => {
-          :activity_category_id => params[:activity_category_id]
-          })
+    @activities = Activity.all(:conditions => {
+        :activity_category_id => params[:activity_category_id]
+      })
     respond_to do |format|
       format.js do
         render :json=> @activities.to_json
@@ -138,14 +137,14 @@ helper UsersHelper
       format.js do
         logger.info('results' + @results.to_s)
         if @results.length == 0
-            render :text= > "<div id='results'>No results returned</div>"
-          else
-            render :partial => 'search_index', 
+          render :text= > "<div id='results'>No results returned</div>"
+        else
+          render :partial => 'search_index',
             #:locals => {
-            #   :object => @results, :q => params[:q], :t => params[:t]
-            # },
-            :content_type => "text/html"
-          end
+          #   :object => @results, :q => params[:q], :t => params[:t]
+          # },
+          :content_type => "text/html"
+        end
       end
     end
   end
@@ -153,23 +152,17 @@ helper UsersHelper
   def nav
     logger.debug('NAAAAAAAAAAAAAAAAAAAAAAAAV')
     list = [Place.search_places(params, current_user),User.search_users_simple(params, current_user),Activity.search_activities(params, current_user)]
-    logger.debug (list)
     list.sort_by {|a| a.total_entries}
-     logger.debug('NAAAAAAAAAAAAAAAAAAAAAAAAVafterselect')
-    logger.debug (list[0][0].type)
-       case list[0][0]
+    logger.debug('NAAAAAAAAAAAAAAAAAAAAAAAAVafterselect')
+    case list[0][0]
     when Place
-      logger.debug ('NAAAAAAAAAAAAAAAAAAAAAAAAVplace')
       params[:search_criteria][:type] = 2
     when Activity
-      logger.debug ('NAAAAAAAAAAAAAAAAAAAAAAAAVactivity')
       params[:search_criteria][:type] = 3
     when User
-      logger.debug ('NAAAAAAAAAAAAAAAAAAAAAAAAVuser')
       params[:search_criteria][:type] = 1
     end
     @search_criteria = SearchCriteria.new(params, current_user)
-    
     render :template=> "search/index"  
   end
 

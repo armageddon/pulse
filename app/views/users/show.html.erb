@@ -13,6 +13,8 @@
     Your 
     <% end %>
     profile has been viewed by <%= current_user.profile_views %> <%= current_user.profile_views == 1 ? 'person' : 'people' %>.
+    <br />
+    Add more <%=  link_to 'activities', '#', 'data-href' => "/user_place_activities/new?view=new", :class => "add_activity" %> to refine or increase your matches
 </h2>
 <% end %>
 

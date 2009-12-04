@@ -1,72 +1,72 @@
 
 <% content_for :c1 do %>
-   <%= render :partial => "search_sidebar" , :locals => {:search_criteria => @search_criteria}%>
+  <%= render :partial => "search_sidebar" , :locals => {:search_criteria => @search_criteria}%>
 <% end %>
 
 <% content_for :c3 do %>
   <div class="column_header">
-      <span>
-      	<h2>&nbsp;</h2>
-      </span>
-</div>
+    <span>
+      <h2>&nbsp;</h2>
+    </span>
+  </div>
 <% end %>
 
 
- <div class="column_header">
-      <span>
-      	<h2>Search Results</h2>
-      </span>
+<div class="column_header">
+  <span>
+    <h2>Search Results</h2>
+  </span>
 </div>
 <% form_tag '/search/user_place_activites', :method => :get, :id => "advanced_search_form" do %>
-<!--Advanced-->
-<div id='people_container' class='<%=search_people_results_class(@search_criteria.type)%>'>
-	<div class="clear">&nbsp;</div>
-	
-	<div style="float:left;width:36px; margin-bottom:4px;">
-			<h3 style="width:306px;font-size:14px" class="section_name">People who hang here</h3>
-	</div>
-	<div style="text-align: right;float:right;width:200px; margin-bottom:4px;margin-top:0px">
-			<h4 id="people_paging" style="width:200px;font-size:12px" class="section_name">Page 1 of 1</h4>
-	</div>
-	<div class='clear'></div>
-	<div id='people_results' width ='550px'>Loading....</div> 
-</div>
-<div class="clear">&nbsp;</div>
-<div id='activity_container' class='<%=search_activity_results_class(@search_criteria.type)%>'>
-	<div style="float:left;width:556px; margin-bottom:4px;">
-			<h3 style="width:556px;font-size:14px" class="section_name">Things happening here</h3>
-	</div>
-	<div class="clear">&nbsp;</div>
-	
-	
-	<div style="padding:5px;margin-right:5px;width:135px;float:left;text-align:center;background-color:#EDEDED;">What</div>
-	<div style="padding:5px;margin-right:5px;width:135px;float:left;text-align:center;background-color:#EDEDED;">Where</div>
-	<div style="padding:5px;margin-right:5px;width:85px;float:left;text-align:center;background-color:#EDEDED;">When</div>
-	<div style="padding:5px;margin-right:5px;width:85px;float:left;text-align:center;background-color:#EDEDED;">Who</div>
-	<div style="padding:5px;width:46px;float:left;text-align:center;background-color:#EDEDED;">&nbsp;</div>
+  <!--Advanced-->
+  <div id='people_container' class='<%=search_people_results_class(@search_criteria.type)%>'>
     <div class="clear">&nbsp;</div>
-	<div id='activity_results'>Loading....</div> 
-</div>
-<div class="clear">&nbsp;</div>
 
-<!--simple-->
-<div id='object_container' class='<%=search_object_results_class(@search_criteria.type)%>'>
+    <div style="float:left;width:36px; margin-bottom:4px;">
+      <h3 style="width:306px;font-size:14px" class="section_name">People who hang here</h3>
+    </div>
+    <div style="text-align: right;float:right;width:200px; margin-bottom:4px;margin-top:0px">
+      <h4 id="people_paging" style="width:200px;font-size:12px" class="section_name">Page 1 of 1</h4>
+    </div>
+    <div class='clear'></div>
+    <div id='people_results' width ='550px'>Loading....</div>
+  </div>
+  <div class="clear">&nbsp;</div>
+  <div id='activity_container' class='<%=search_activity_results_class(@search_criteria.type)%>'>
+    <div style="float:left;width:556px; margin-bottom:4px;">
+      <h3 style="width:556px;font-size:14px" class="section_name">Things happening here</h3>
+    </div>
+    <div class="clear">&nbsp;</div>
+
+
+    <div style="padding:5px;margin-right:5px;width:135px;float:left;text-align:center;background-color:#EDEDED;">What</div>
+    <div style="padding:5px;margin-right:5px;width:135px;float:left;text-align:center;background-color:#EDEDED;">Where</div>
+    <div style="padding:5px;margin-right:5px;width:85px;float:left;text-align:center;background-color:#EDEDED;">When</div>
+    <div style="padding:5px;margin-right:5px;width:85px;float:left;text-align:center;background-color:#EDEDED;">Who</div>
+    <div style="padding:5px;width:46px;float:left;text-align:center;background-color:#EDEDED;">&nbsp;</div>
+    <div class="clear">&nbsp;</div>
+    <div id='activity_results'>Loading....</div>
+  </div>
+  <div class="clear">&nbsp;</div>
+
+  <!--simple-->
+  <div id='object_container' class='<%=search_object_results_class(@search_criteria.type)%>'>
     <div style="float:left;width:356px; margin-bottom:4px;margin-top:0px">
-			<h3 style="width:356px;font-size:14px" class="section_name"></h3>
-	</div>
-<div class='clear'></div>
-	<div id='object_results'>Loading....</div> 
-</div>
-<div class="clear">&nbsp;</div>
+      <h3 style="width:356px;font-size:14px" class="section_name"></h3>
+    </div>
+    <div class='clear'></div>
+    <div id='object_results'>Loading....</div>
+  </div>
+  <div class="clear">&nbsp;</div>
 
-<!--map-->
-<div id='big_map' style='overflow:hidden' class='<%=search_map_results_class(@search_criteria.type)%>'>
-<!--style='height:1px; overflow:hidden'-->
-<div style="float:left;width:556px; margin-bottom:4px;">
-		<h3 style="width:556px;font-size:14px" class="section_name">Heat Map</h3>
-</div>
-	<%= render :partial => 'maps/map' %>
-</div>
+  <!--map-->
+  <div id='big_map' style='overflow:hidden' class='<%=search_map_results_class(@search_criteria.type)%>'>
+    <!--style='height:1px; overflow:hidden'-->
+    <div style="float:left;width:556px; margin-bottom:4px;">
+      <h3 style="width:556px;font-size:14px" class="section_name">Heat Map</h3>
+    </div>
+    <%= render :partial => 'maps/map' %>
+  </div>
 <% end %>
 
 
@@ -76,115 +76,115 @@
 
 
 
-//todo: clean up this javascript
-$("#advanced_search_form").submit(function() {
-	error = false;
-	if($(this).attr('t')=="user_place_activity")
-	{
-	  var postcode = $('#postcode');
-	  postcode.removeClass('invalid');
-   	  regexString = /^([A-PR-UWYZ0-9][A-HK-Y0-9][AEHMNPRTVXY0-9]?[ABEHMNPRVWXY0-9]? {1,2}[0-9][ABD-HJLN-UW-Z]{2}|GIR 0AA)$/
-	  if ($('#distance').val() != 0 && (postcode.val() == '' || postcode.val() == 'Post code' || regexString.test(postcode.val().toUpperCase()) != true)) {
-		postcode.addClass('invalid');
-	    postcode.nextAll('span.error').text('Please enter a valid post code.');
-	    error = true;
-	  }
+  //todo: clean up this javascript
+  $("#advanced_search_form").submit(function() {
+    error = false;
+    if($(this).attr('t')=="user_place_activity")
+    {
+      var postcode = $('#postcode');
+      postcode.removeClass('invalid');
+      regexString = /^([A-PR-UWYZ0-9][A-HK-Y0-9][AEHMNPRTVXY0-9]?[ABEHMNPRVWXY0-9]? {1,2}[0-9][ABD-HJLN-UW-Z]{2}|GIR 0AA)$/
+      if ($('#distance').val() != 0 && (postcode.val() == '' || postcode.val() == 'Post code' || regexString.test(postcode.val().toUpperCase()) != true)) {
+        postcode.addClass('invalid');
+        postcode.nextAll('span.error').text('Please enter a valid post code.');
+        error = true;
+      }
     }
     if(!error) {
-	  $.ajax({
-	    type: "GET",
-	    url: $(this).attr('action'),
-	    data: $('#advanced_search').serialize(), //advanced_search,
-	    success: function(p) {
-		 $('#results').replaceWith(p);
-		$("#dialog").jqmAddTrigger('.add_to_favorites, .add_event, .add_activity');
-	    }
-	 });
+      $.ajax({
+        type: "GET",
+        url: $(this).attr('action'),
+        data: $('#advanced_search').serialize(), //advanced_search,
+        success: function(p) {
+          $('#results').replaceWith(p);
+          $("#dialog").jqmAddTrigger('.add_to_favorites, .add_event, .add_activity');
+        }
+      });
+    }
+    return false;
+  });
+
+  $("#people_link").click(function() {
+    $('#t').val('people');
+    $.ajax({
+      type: "GET",
+      url: "/search/people",
+      data: $('#advanced_search').serialize(),
+      success: function(p) {
+        $('#search_criteria').replaceWith(p);
+        toggle('people');
+        $.ajax({
+          type: "GET",
+          url: $(this).attr('action'),
+          data: $('#advanced_search').serialize(),
+          success: function(p) {
+            $('#results').replaceWith(p);
+            $("#dialog").jqmAddTrigger('.add_to_favorites, .add_event, .add_activity');
+          }
+        });
+
+      }
+    });
+	
+    return false;
+  });
+
+  $("#places_link").click(function() {
+    $('#t').val('places');
+    $.ajax({
+      type: "GET",
+      url: "/search/places",
+      data: $('#advanced_search').serialize(),
+      success: function(p) {
+        $('#search_criteria').replaceWith(p);
+        toggle('places');
+        $.ajax({
+          type: "GET",
+          url: $(this).attr('action'),
+          data: $('#advanced_search').serialize(),
+          success: function(p) {
+            $('#results').replaceWith(p);
+            $("#dialog").jqmAddTrigger('.add_to_favorites, .add_event, .add_activity');
+          }
+        });
+      }
+    });
+
+    return false;
+  });
+
+  $("#activities_link").click(function() {
+    $('#t').val('activities');
+    $.ajax({
+      type: "GET",
+      url: "/search/activities",
+      data: $('#advanced_search').serialize(),
+      success: function(p) {
+        $('#search_criteria').replaceWith(p);
+        toggle('activities');
+        $.ajax({
+          type: "GET",
+          url: $(this).attr('action'),
+          data:  $('#advanced_search').serialize(),
+          success: function(p) {
+            $('#results').replaceWith(p);
+            $("#dialog").jqmAddTrigger('.add_to_favorites, .add_event, .add_activity');
+          }
+        });
+
+
+      }
+    });
+
+    return false;
+  });
+
+  function toggle(t) {
+    $('#places_link').css("color", "#990000");
+    $('#people_link').css("color", "#990000");
+    $('#activities_link').css("color", "#990000");
+    $('#'+t+'_link').css("color", "#000000");
+	
   }
-  return false;
-});
-
-$("#people_link").click(function() {
-	$('#t').val('people');
-  $.ajax({
-    type: "GET",
-    url: "/search/people",
-    data: $('#advanced_search').serialize(),
-    success: function(p) {
-      $('#search_criteria').replaceWith(p);
-      toggle('people');
-	$.ajax({
-    type: "GET",
-    url: $(this).attr('action'),
-    data: $('#advanced_search').serialize(),
-    success: function(p) {
-	 $('#results').replaceWith(p);
-	$("#dialog").jqmAddTrigger('.add_to_favorites, .add_event, .add_activity');
-    }
-  });
-
-    }
-  });
-	
-  return false;
-});
-
-$("#places_link").click(function() {
-	$('#t').val('places');
-  $.ajax({
-    type: "GET",
-    url: "/search/places",
-     data: $('#advanced_search').serialize(),
-    success: function(p) {
-      $('#search_criteria').replaceWith(p);
-      toggle('places');
-	  $.ajax({
-		type: "GET",
-		url: $(this).attr('action'),
-		data: $('#advanced_search').serialize(),
-		success: function(p) {
-		$('#results').replaceWith(p);
-		$("#dialog").jqmAddTrigger('.add_to_favorites, .add_event, .add_activity');
-		}
-	   });
-    }
-  });
-
-  return false;
-});
-
-$("#activities_link").click(function() {
-	$('#t').val('activities');
-  $.ajax({
-    type: "GET",
-    url: "/search/activities",
-    data: $('#advanced_search').serialize(),
-    success: function(p) {
-      $('#search_criteria').replaceWith(p);
-      toggle('activities');
-	$.ajax({
-	    type: "GET",
-	    url: $(this).attr('action'),
-	   data:  $('#advanced_search').serialize(),
-	    success: function(p) {
-		 $('#results').replaceWith(p);
-		$("#dialog").jqmAddTrigger('.add_to_favorites, .add_event, .add_activity');
-	    }
-	  });
-
-
-    }
-  });
-
-  return false;
-});
-
-function toggle(t) {
-	$('#places_link').css("color", "#990000");
-	$('#people_link').css("color", "#990000");
-	$('#activities_link').css("color", "#990000");
-	$('#'+t+'_link').css("color", "#000000");
-	
-}
 
 </script>
