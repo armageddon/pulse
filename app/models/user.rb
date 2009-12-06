@@ -167,9 +167,9 @@ after_create :welcome_mail
     max_id = Place.find(:first, :order => "id DESC").id
     rand_set = (0..100).collect { rand(max_id.to_i) }
     if places.present?
-      Place.find(:all, :conditions => ['id not in (?) AND id in (?)', places.map(&:id), rand_set], :limit => 5 )
+      Place.paginate(:all, :conditions => ['id not in (?) AND id in (?)', places.map(&:id), rand_set],:limit=>10, :page=>1, :per_page=>11 )
     else
-      Place.find(:all, :conditions => ['id in (?)', rand_set], :limit => 5)
+      Place.paginate(:all, :conditions => ['id in (?)', rand_set],:limit=>10, :page=>1, :per_page=>11 )
     end
   end
 

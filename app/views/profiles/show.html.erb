@@ -7,7 +7,7 @@
     <h2>
     Here is <%= @user.first_name %>'s profile. Check out places <%= sex_to_s @user.sex, :male => 'he', :female => 'she' %> likes 
     and see if you have anything in common. If you like, <%= link_to "send #{sex_to_s @user} a message", account_message_path(@user) %>.
-    Or you can go <%= link_to "back to your matches", account_matches_path %>.
+    Or you can go <%= link_to "back to your matches", account_matches_path %>. Add more <%=  link_to 'activities', '#', 'data-href' => "/user_place_activities/new?view=new", :class => "add_activity" %> to refine or increase your matches
     </h2>
 <% else %>
 <h1>
