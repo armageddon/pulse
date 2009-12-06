@@ -70,7 +70,7 @@
       $('#place_criteria').css("display","none");
       $('#activity_criteria').css("display","none");
       $('#search_criteria_type').val(1);
-      $('#big_map').css("height","0px");
+      $('#big_map').css("display","none");
 
       $('#activity_container').css("display","none");
       $('#people_container').css("display","none");
@@ -93,7 +93,7 @@
       $('#place_criteria').css("display","block");
       $('#activity_criteria').css("display","block");
       $('#search_criteria_type').val(4);
-      $('#big_map').css('height','1px','overflow','hidden');
+      $('#big_map').css("display","none");
 
       $('#activity_container').css("display","block");
       $('#people_container').css("display","block");
@@ -117,8 +117,9 @@
       $('#place_criteria').css("display","block");
       $('#activity_criteria').css("display","block");
       $('#search_criteria_type').val(5);
-      $('#big_map').css("height","560px");
-
+      $('#big_map').css("display","block");
+	  map.checkResize();
+	
       $('#activity_container').css("display","none");
       $('#people_container').css("display","none");
       $('#object_container').css("display","none");

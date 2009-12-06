@@ -1014,12 +1014,11 @@ a{color:#bd0000;
 	}
 /* Map */
 .map_hide{
-	position:relative;
-	height:1px; 
-	overflow:hidden;}
+	display:hidden;
+}
 	
 .map_show{
-	height:100%;
+	display:block;
 	}
 	
 	.step_text {
