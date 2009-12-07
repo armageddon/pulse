@@ -1013,11 +1013,11 @@ a{color:#bd0000;
 	border-left:1px solid #666!important;
 	}
 /* Map */
-.map_hide{
-	display:hidden;
+.map_hide {
+	display:none;
 }
 	
-.map_show{
+.map_show {
 	display:block;
 	}
 	
