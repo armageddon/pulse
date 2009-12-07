@@ -6,7 +6,7 @@ class UserMatchesController < ApplicationController
     @places = current_user.suggested_places
     respond_to do |format|
       format.html { render }
-      format.js { render :partial => "shared_object_collections/object_collection", 
+      format.js { render :partial => "shared_object_collections/users_collection",
         :locals => { :collection => @matches }
       }
     end

@@ -10,9 +10,10 @@
     Or you can go <%= link_to "back to your matches", account_matches_path %>. Add more <%=  link_to 'activities', '#', 'data-href' => "/user_place_activities/new?view=new", :class => "add_activity" %> to refine or increase your matches
     </h2>
 <% else %>
-<h1>
-  This is your profile
-  </h1>
+<h2>
+  This is your profile. Add more <%=  link_to 'activities', '#', 'data-href' => "/user_place_activities/new?view=new", :class => "add_activity" %> to refine or increase your matches
+
+  </h2>
   <% end %>
 <% end %>
 
