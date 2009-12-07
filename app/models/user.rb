@@ -178,7 +178,7 @@ after_create :welcome_mail
   end
 
   def all_messages
-    Message.find(:all, :conditions => ['recipient_id = ? OR sender_id = ?', id, id], :order=>'created_at asc')
+    Message.find(:all, :conditions => ['recipient_id = ? OR sender_id = ?', id, id], :order=>'created_at DESC')
   end
 
   def upcoming_events
