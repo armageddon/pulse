@@ -90,6 +90,7 @@ $(document).ready(function() {
                     mustMatch: false,
                     scroll: true,
                     scrollHeight: 20,
+          
                     onItemSelect: function(e) {
                         var extra = $(e).attr('extra');
                         if (extra.length > 0) {
