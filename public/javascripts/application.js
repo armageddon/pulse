@@ -103,25 +103,21 @@ $(document).ready(function() {
 
     $(".remove_place_activity").live('click',function() {
         var link = $(this);
-        var frm = $(this).parents("form:first")[0];
+    
         $.ajax({
             type: "DELETE",
             url: "/user_place_activities/delete",
             data: {
-                "place_activity_id" : $(this).attr("place_activity_id")
+                "user_place_activity_id" : $(this).attr("user_place_activity_id")
                 },
             success: function(p) {
                 //need to determinw which page this comes from and remove if favorites
-                if((frm=='undefined')||(frm.id=='favorites'))
-                {
+
+   
                     link.parent().parent().removeClass('object');
                     link.parent().parent().replaceWith('');
-                }
-                else
-                {
-                    link.removeClass("remove_place");
-                    link.html('<img class=" tooltip" width="20" title="Add to favorites" src="/images/HPThumbUp.png" alt="Hpthumbup"/>');
-                }
+                
+                
             },
             error: function(p) {
                 alert("error");

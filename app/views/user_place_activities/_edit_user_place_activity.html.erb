@@ -1,55 +1,14 @@
 <div style="height:500px;font-size:14px">
-  <% form_for user_place_activity, :url => '/user_place_activities/new' do |f| %>
-
-    <% if view == "add_activity" %>
-      <h2>Add an activity</h2>
-      <%= hidden_field_tag 'activity_id', activity.id, :id => 'user_place_activity[activity_id]' %>
-      <%= image_tag(activity.icon.url(:thumb), :width => '30px', :height => '30px') %>
-      <%= activity.name %> <span style="font-size: .7em;"><%= activity.category %></span>
-      <div class="clear"></div>
-      <label  style="margin-top: 5px; color:#990000; float:left">Where do you like doing this?</label>
-      <% if place != nil %>
-        <%= hidden_field_tag 'place_id', place.id, :id => 'place_id' %>
-      <% else %>
-        <%= hidden_field_tag 'place_id', ANYWHERE_PLACE_ID,:id => 'place_id' %>
-      <% end %>
-      <%= text_field_tag :place_name,
-        (user_place_activity.place.present? ? user_place_activity.place.name : nil),
-        :class => "input_text", :disabled => false,
-        :size => 50,
-        "data-prefilled" => (user_place_activity.place.present? ? 'true' : 'false')
-    %>
-      <div class="clear"></div>
-    <% elsif  view == "add_place" %>
-      <h2><%=I18n.translate("Add_place_to_favorites")%></h2>
-      <%= image_tag(place.icon.url(:thumb), :width => '30px', :height => '30px') %>
-      <%= place.name %> <span style="font-size: .7em;"><%= place.neighborhood %></span>
-      <%= f.hidden_field :id %>
-      <%= hidden_field_tag 'place_id', place.id, :id => 'place_id' %>
-      <div class="clear"></div>
-      <div id="activity_category_select" style="margin-top:10px">
-        <label  style="margin-top: 5px; color:#990000;">What do you do here?</label>
-        <div class="clear"></div>
-        <%= render :partial => "shared/activity_select",  :locals => {:allow_any_activity => "1",:activity => nil,:activity_category => nil} %>
-      </div>
-      <div class="clear"></div>
-    <% elsif view == "add_place_activity" %>
-      <h2><%=I18n.translate("Add_place_to_favorites")%></h2>
-      <%= image_tag(place.icon.url(:thumb), :width => '30px', :height => '30px') %>
-      <%= hidden_field_tag 'activity_id', activity.id, :id => 'user_place_activity[activity_id]' %>
-      <%= activity.name %> <span style="font-size: .7em;"><%= activity.category %></span> at
-      <%= place.name %> <span style="font-size: .7em;"><%= place.neighborhood %></span>
-      <%= f.hidden_field :id %>
-      <%= hidden_field_tag 'place_id', place.id, :id => 'place_id' %>
-      <div class="clear"></div>
-    <%else%>
-      <h2>Add to favourites</h2>
-
+  <% form_for user_place_activity, :url => '/user_place_activities/update' do |f| %>
+      <% place = user_place_activity.place  %>
+		<%= hidden_field_tag 'user_place_activity_id', user_place_activity.id %>
+		<%= hidden_field_tag 'source', @source %>
 
       <div id="activity_category_select" style="margin-top:10px">
         <label  style="margin-top: 5px; color:#990000;">What do you like doing?</label>
         <div class="clear"></div>
-        <%= render :partial => "shared/activity_select",  :locals => {:allow_any_activity => "1",:activity => nil,:activity_category => nil} %>
+		<% activity_category = (user_place_activity.activity.activity_category_id == 0 ? nil : ActivityCategory.find(user_place_activity.activity.activity_category_id)) %>
+        <%= render :partial => "shared/activity_select",  :locals => {:activity => user_place_activity.activity ,:activity_category => activity_category, :allow_any_activity => "1",:activity_id => user_place_activity.activity_id} %>
       </div>
 
       <div class="clear"></div>
@@ -68,15 +27,13 @@
     %>
       <div class="clear"></div>
 
-    <% end %>
-
     <br />
 
     <div style="margin-top:10px; float:left">
       <label  style="margin-top: 5px; color:#990000; float:left">When do you do it?</label>
       <div class="clear"></div>
-      <%= drop_down('user_place_activity[day_of_week]', 'Monday', {:width => '130px'},dotw_options, 'Any day',0) %>
-      <%= drop_down('user_place_activity[time_of_day]', 'Early Mornings', {:width => '200px'},tod_options, 'Any time',0) %>
+      <%= drop_down('user_place_activity[day_of_week]', user_place_activity.day_of_week, {:width => '130px'},dotw_options, 'Any day',0) %>
+      <%= drop_down('user_place_activity[time_of_day]', user_place_activity.time_of_day, {:width => '200px'},tod_options, 'Any time',0) %>
     </div>
     <div class='clear'></div>
     <br />
@@ -84,7 +41,7 @@
     <div style="margin-top:10px">
       <label  style="margin-top: 5px; color:#990000; float:left">Why do you like this place?</label>
       <div class='clear'></div>
-      <%= text_area_tag('user_place_activity[description]',USER_PLACE_DESCRIPTION_TEXT, :rows => 2, :cols=>45,:class => "input_text word_count") %>
+      <%= text_area_tag('user_place_activity[description]',user_place_activity.description, :rows => 2, :cols=>45,:class => "input_text word_count") %>
     </div>
     <%= submit_button 'Save', :id => "new_activity", :plc_id => "34"%>
     <%= submit_button 'Cancel', :id => "cancel" %>
@@ -96,7 +53,7 @@
 
   $(document).ready(function() {
 
-	
+
 
 
 
@@ -150,8 +107,8 @@
         $("#dialog").jqmHide();
         return false;
       })
-    
-      $("#new_user_place_activity").submit(function() {
+
+      $('.edit_user_place_activity').submit(function() {
         if($('#user_place_activity_description').val() == "tell us why you socialise here and whether it's good for meeting people")
         {
           $('#user_place_activity_description').val("")
@@ -160,9 +117,11 @@
 
         $.ajax({
           type: "POST",
-          url: '/user_place_activities/add',
+          url: '/user_place_activities/update',
           data: $(this).serialize(),
           success: function(p) {
+			$('#user_place_activity_'+$("#user_place_activity_id").val()).replaceWith(p);
+			$("#dialog").jqmAddTrigger('.add_to_favorites, .add_place, .add_event, .add_activity, .invite_a_friend');
             $('#dialog').jqmHide();
           },
           error: function(p) {

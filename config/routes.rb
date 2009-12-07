@@ -67,7 +67,8 @@ ActionController::Routing::Routes.draw do |map|
   map.delete_place_activity '/user_place_activities/delete', :controller => 'user_place_activities', :action => 'destroy'
   map.favourite_place_activities 'user_place_activities/list', :controller => 'user_place_activities', :action=>'list'
   map.add_user_place_activity 'user_place_activities/add', :controller => 'user_place_activities', :action=>'create'
-
+  map.update_user_place_activity 'user_place_activities/update', :controller => 'user_place_activities', :action=>'update'
+   map.update_user_place_activity 'user_place_activities/edit', :controller => 'user_place_activities', :action=>'edit'
   #place_activities controller
   map.resources :place_activities
   map.place_activity_users '/place_activity/users', :controller => 'place_activities', :action => 'users'

@@ -4,7 +4,7 @@ class UserFavoritesController < ApplicationController
   def index
     @favorites = User.paginate(:joins=>"inner join user_favorites on user_favorites.friend_id = users.id", :conditions => "user_favorites.user_id = " + current_user.id.to_s,:page=>1,:per_page=>6)
     logger.debug('FAVORITES: ' + @favorites.length.to_s)
-    @user_place_activities = UserPlaceActivity.paginate(:select => "user_place_activities.place_activity_id,user_place_activities.day_of_week, user_place_activities.time_of_day, count(user_id) as users_count", :order => "count(user_id) DESC", :joins => "inner join users on users.id = user_place_activities.user_id ",:group => 'user_place_activities.place_activity_id,user_place_activities.day_of_week, user_place_activities.time_of_day', :conditions => 'user_id = ' + current_user.id.to_s, :page => params[:page], :per_page => 10, :order => "count(user_id) DESC")
+    @user_place_activities = UserPlaceActivity.paginate(:select => "user_place_activities.id,user_place_activities.place_activity_id,user_place_activities.day_of_week, user_place_activities.time_of_day", :order => "user_place_activities.created_at DESC", :joins => "inner join users on users.id = user_place_activities.user_id ", :conditions => 'user_id = ' + current_user.id.to_s, :page => params[:page], :per_page => 10)
     logger.debug('USERPLACEACTIVITIES: ' + @user_place_activities.length.to_s)
     @places = current_user.suggested_places
     @matches = current_user.matches(params[:page], 8)

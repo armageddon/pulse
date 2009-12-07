@@ -1,15 +1,24 @@
 
+
 <div style="float:left;">
   <% allow_any_activity ||= 0  %>
   <div id="activity_category" style="margin-top:10px">	
     <div class='fancy_select_parent' style="width: 330px;" id="activity_category_div">
-      <%= hidden_field_tag 'activity_category_id', "parent_value" %>
+	<% if activity_category == nil %>
+      <%= hidden_field_tag 'activity_category_id', 0 %>
+	<% else %>
+	 	<%= hidden_field_tag 'activity_category_id', activity_category.id %>
+	<% end %>
       <div class="fancy_select_target_parent" id="activity_category_target" style="width:300px">
-        <% if allow_any_activity != '1' %>
-          <%= ActivityCategory.all().first %>
-        <% else %>
-                  Any category
-        <% end %>
+		<% if activity_category  == nil%>
+       	    <% if allow_any_activity != '1' %>
+	          <%= ActivityCategory.all().first %>
+	        <% else %>
+	                  Any category
+	        <% end %>
+		<% else %>
+			<%=activity_category.description%>
+		<% end %>
       </div>
       <div class="fancy_select_options_parent" id="activity_category_options" style="width: 300px;">
         <% if allow_any_activity == '1' %>
@@ -24,27 +33,37 @@
   <div id="activity" style="margin-left:10px;">	
     <% first_activity_id = Activity.all(:conditions => "activity_category_id="+ ActivityCategory.first.id.to_s).first.id %>
     <div class='fancy_select_child' style="width: 250px;">
-      <% if allow_any_activity != '1' %>
-        <%= hidden_field_tag 'activity_id', first_activity_id, :id => 'activity_id' %>
-      <% else %>
-        <%= hidden_field_tag 'activity_id', ANYTHING_ACTIVITY_ID, :id => 'activity_id' %>
-      <% end %>
+		<% if @activity == nil %>
+      		<% if allow_any_activity != '1' %>
+		        <%= hidden_field_tag 'activity_id', first_activity_id, :id => 'activity_id' %>
+		      <% else %>
+		        <%= hidden_field_tag 'activity_id', ANYTHING_ACTIVITY_ID, :id => 'activity_id' %>
+		      <% end %>
+		<% else %>
+			<%= hidden_field_tag 'activity_id', @activity.id, :id => 'activity_id' %>
+		<% end %>
 
       <div class="fancy_select_target_child" id="activity_target">
+	<% if @activity == nil %>
         <% if allow_any_activity != '1' %>
           <%= Activity.all().first.name %>
         <% else %>
                                   Any activity
         <% end %>
+	<% else %>
+		<%= @activity.name %>
+	<% end %>
       </div>
       <div class="fancy_select_options_child" id="activity_options">
+
         <% if allow_any_activity == '1' %>
-          <p>Any activity<span class="hidden_value_parent"><%=ANYTHING_ACTIVITY_ID%></span></p>
-        <% else %>       
-          <% Activity.all(:conditions => "activity_category_id = '" + ActivityCategories.all().first.id.to_s).each do |l| %>
+          <p>Any activity<span class="hidden_value_child"><%=ANYTHING_ACTIVITY_ID%></span></p>
+		<% end %>
+		<% if activity_category!= nil && activity_category.id != 0 %>
+          <% Activity.all(:conditions => "activity_category_id = " + activity_category.id.to_s).each do |l| %>
             <p><%= l.name %><span class="hidden_value_child"><%= l.id %></span></p>
           <% end %>
-        <%end%>
+        <% end %>
       </div>
     </div>
   </div>
