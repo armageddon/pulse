@@ -15,7 +15,7 @@ class UserMessagesController < ApplicationController
   def index
     @places = current_user.suggested_places
     @matches = current_user.matches(params[:page], 8)
-    @messages = current_user.messages
+    @messages = current_user.messages.find(:all,:order=>'created_at desc')
     current_user.read_all_messages!
   end
 
