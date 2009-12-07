@@ -25,7 +25,8 @@
             	<%= text_field_tag 'search_criteria[keyword]', '', :class => "header_input_text" %>
 				<%= hidden_field_tag 'search_criteria_header[type]', '1', :class => "header_input_text" %>
 				<% if current_user!=nil%>
-					<%= hidden_field_tag 'search_criteria[sex_preference]', current_user.sex_preference, :class => "header_input_text" %>
+					<%= hidden_field_tag 'search_criteria[sp_1]',1, :class => "header_input_text" %>
+                                         <%= hidden_field_tag 'search_criteria[sp_2]',2, :class => "header_input_text" %>
 					<%= hidden_field_tag 'search_criteria[lower_age]', 1, :class => "header_input_text" %>
 					<%= hidden_field_tag 'search_criteria[upper_age]', 10, :class => "header_input_text" %>
 				<% end %>
