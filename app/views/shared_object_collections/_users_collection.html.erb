@@ -16,7 +16,7 @@
 			<% end %>
 		<% end %>
 
-		   <% reqpath = '/search/people' %>
+		   <% reqpath = '/account/matches' %>
 	
 	  	<%= link_to "See more #{pagination_name collection}", reqpath + '?page=' + collection.next_page.to_s + qstring, :class => "paginator" %>
 	<% end %>
