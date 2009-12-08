@@ -293,7 +293,23 @@
 
   function place_html(pl)
   {
-    return pl.name
+  	var s = '';
+	s += '<div style="float:left">'
+	s += '<img width="30px" height="30px" src="'+pl.icon_file_name+'" alt="7_thumb"/>'
+	s += '</div>'
+	s += '<div style="float:left">'
+	s += '<a style="padding-left:10px" href="/places/'+pl.id.toString()+'">'+pl.name+'</a>';
+	s += '<div class="clear"></div>'
+	s += '<span style="font-size:9px;padding-left:10px">'+ pl.address + ' ' + pl.neighborhood +'</span>';
+	s += '</div>'
+	s += '<div class="clear"></div>'
+	s += '<br />'
+	s += '<div style="float:left">'
+	s += pl.pa_count.toString() + ' things happening here'
+	s += '</div>'
+	
+	
+	return s;
   }
   function createMarker(point,html) {
     var marker = new GMarker(point,{ icon: dotIcon });
@@ -305,9 +321,7 @@
     GEvent.addListener(marker,"mouseover", function() {
       marker.openInfoWindowHtml(html);
     });
-    GEvent.addListener(marker,"mouseout", function() {
-      marker.closeInfoWindow();
-    });
+
 
     return marker;
   }
