@@ -162,15 +162,8 @@ after_create :welcome_mail
   end
 
   def suggested_places
-    # BIG HACK
-    # really, just look for places similar to places you have added
-    max_id = Place.find(:first, :order => "id DESC").id
-    rand_set = (0..100).collect { rand(max_id.to_i) }
-    if places.present?
-      Place.paginate(:all, :conditions => ['id not in (?) AND id in (?)', places.map(&:id), rand_set],:limit=>10, :page=>1, :per_page=>11 )
-    else
-      Place.paginate(:all, :conditions => ['id in (?)', rand_set],:limit=>10, :page=>1, :per_page=>11 )
-    end
+    Place.paginate(:select => 'places.*', :joins => 'inner join place_activities PA on PA.place_id = places.id inner join user_place_activities UPA on UPA.place_activity_id = PA.id where UPA.user_id <> ' + self.id.to_s,:page=>1,:per_page=>10)
+     
   end
 
   def suggested_activities
