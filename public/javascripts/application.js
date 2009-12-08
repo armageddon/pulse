@@ -62,7 +62,24 @@ $(document).ready(function() {
         })
         return false;
     })
-
+    $(".place_activity_people_favorite").live('click',function() {
+        var link = $(this);
+        $.ajax({
+            type: "POST",
+            url: "/account/favorites",
+            data: {
+                "friend_id" : $(this).attr("friend_id")
+                },
+            success: function(p) {
+                link.css("display","none");
+              
+                  },
+            error: function(p) {
+                alert("error");
+            }
+        })
+        return false;
+    })
     $(".profile_people_unfavorite").live('click',function() {
         var link = $(this);
         $.ajax({
