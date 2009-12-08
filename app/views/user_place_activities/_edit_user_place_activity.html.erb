@@ -122,7 +122,7 @@
           success: function(p) {
 			$('#user_place_activity_'+$("#user_place_activity_id").val()).replaceWith(p);
 			$("#dialog").jqmAddTrigger('.add_to_favorites, .add_place, .add_event, .add_activity, .invite_a_friend');
-			$("#dialog").html("Done!");
+			$("#dialog").html("<div style='text-align:centre'>Successfully edited this entry</div>");
 			$('#dialog').fadeTo(1000, 0, function() {
 			       $('#dialog').jqmHide();
 					$('#dialog').fadeTo(1,1);

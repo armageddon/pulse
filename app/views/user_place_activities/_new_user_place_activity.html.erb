@@ -164,8 +164,8 @@
           data: $(this).serialize(),
           success: function(p) {
             $("#dialog").jqmAddTrigger('.add_to_favorites, .add_place, .add_event, .add_activity, .invite_a_friend');
-			$("#dialog").html("Done!");
-			$('#dialog').fadeTo(1000, 0, function() {
+			$("#dialog").html("Successfully added to your profile");
+			$('#dialog').fadeTo(5000, 0, function() {
 			       $('#dialog').jqmHide();
 					$('#dialog').fadeTo(1,1);
 			     });
