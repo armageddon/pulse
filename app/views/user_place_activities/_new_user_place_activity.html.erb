@@ -163,7 +163,12 @@
           url: '/user_place_activities/add',
           data: $(this).serialize(),
           success: function(p) {
-            $('#dialog').jqmHide();
+            $("#dialog").jqmAddTrigger('.add_to_favorites, .add_place, .add_event, .add_activity, .invite_a_friend');
+			$("#dialog").html("Done!");
+			$('#dialog').fadeTo(1000, 0, function() {
+			       $('#dialog').jqmHide();
+					$('#dialog').fadeTo(1,1);
+			     });
           },
           error: function(p) {
             //todo: here display error message
