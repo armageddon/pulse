@@ -305,7 +305,14 @@
 	s += '<div class="clear"></div>'
 	s += '<br />'
 	s += '<div style="float:left">'
-	s += pl.pa_count.toString() + ' things happening here'
+	if(pl.pa_count > 1)
+	{
+		s += pl.pa_count.toString() + ' things happening here'
+	}
+	else
+	{
+		s += '1 thing happening here'
+	}
 	s += '</div>'
 	
 	
