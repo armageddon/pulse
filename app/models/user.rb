@@ -179,12 +179,6 @@ after_create :welcome_mail
   end
 
   def matches(page=0, per_page=8)
-    logger.debug(sex_preference)
-    logger.debug(sex)
-    logger.debug(age_preference)
-    logger.debug(age)
-    logger.debug(id)
-    
     if sex_preference!=nil && sex != nil && age_preference!=nil && sex != nil && age != nil
     @matches ||= User.paginate(:all, :conditions => [
       "sex = ? AND sex_preference = ? AND age in (?) AND age_preference in (?) AND id != ?",
@@ -195,7 +189,7 @@ after_create :welcome_mail
       id
     ], :include => [:places, :activities], :page => page, :per_page => per_page)
   else
-    @matches = {}
+    @matches = User.paginate(:all,:conditions=>"1 = 0",:limit => 0,:page=>1, :per_page=>1)
   end
     
   end
