@@ -185,7 +185,7 @@ after_create :welcome_mail
     logger.debug(age)
     logger.debug(id)
     
-    if(sex_preference!=nil && sex != nil && age_preference!=nil && sex != nil && age != nil
+    if sex_preference!=nil && sex != nil && age_preference!=nil && sex != nil && age != nil
     @matches ||= User.paginate(:all, :conditions => [
       "sex = ? AND sex_preference = ? AND age in (?) AND age_preference in (?) AND id != ?",
       sex_preference,
