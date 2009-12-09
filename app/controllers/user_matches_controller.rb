@@ -16,4 +16,6 @@ class UserMatchesController < ApplicationController
     @users = User.find(:all)
   end
   
+
+  
 end
