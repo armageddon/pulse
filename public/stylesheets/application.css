@@ -1,3 +1,10 @@
+textarea
+{
+	font-family:Arial;
+	font-size:13px;
+	padding:3px;
+	font-weight:normal;
+}
 
 .search_type_selected
 {
