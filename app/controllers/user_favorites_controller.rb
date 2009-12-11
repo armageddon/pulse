@@ -32,9 +32,10 @@ class UserFavoritesController < ApplicationController
 
   def create
     logger.debug("in user favourites create")
+    
     @favorite = current_user.user_favorites.build(:friend_id => params[:friend_id])
     respond_to do |format|
-      if @favorite.save
+      if params[:friend_id] != current_user.id.to_s && @favorite.save
         format.html do
           flash[:notice] = "You have added #{@favorite.place.name}"
           render :text => "made user fav"

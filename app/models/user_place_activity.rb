@@ -5,7 +5,7 @@ class UserPlaceActivity < ActiveRecord::Base
   belongs_to :place_activity
   
     validates_presence_of     :place_activity_id
-
+    validates_uniqueness_of   :user_id, :scope => [:place_id, :activity_id, :description, :day_of_week, :time_of_day, :place_activity_id], :message=>"You have already added this activity"
   
   #validates_uniqueness_of :user_id, :scope => [:place_id, :activity_id], :message => "You have already added this activity"
   fires :addeduserplaceactivity, :on => :create, :actor => :user, :subject => :self

@@ -86,6 +86,9 @@
       <div class='clear'></div>
       <%= text_area_tag('user_place_activity[description]',USER_PLACE_DESCRIPTION_TEXT, :rows => 2, :cols=>45,:class => "input_text word_count") %>
     </div>
+
+	<%= text_field_tag "activity_error","",:style => "display:none; width:500px; margin-top:10px; margin-bottom:10px" %>
+
     <%= submit_button 'Save', :id => "new_activity", :plc_id => "34"%>
     <%= submit_button 'Cancel', :id => "cancel" %>
 
@@ -165,13 +168,15 @@
           success: function(p) {
             $("#dialog").jqmAddTrigger('.add_to_favorites, .add_place, .add_event, .add_activity, .invite_a_friend');
 			$("#dialog").html("Successfully added to your profile");
-			$('#dialog').fadeTo(3000, 0.3, function() {
+			$('#dialog').fadeTo(2000, 0.1, function() {
 			       $('#dialog').jqmHide();
 					$('#dialog').fadeTo(1,1);
 			     });
           },
           error: function(p) {
-            //todo: here display error message
+             $('#activity_error').addClass('show');
+             $('#activity_error').addClass('invalid');
+             $('#activity_error').val(p.responseText);
           }
         })
 

@@ -33,7 +33,6 @@ class UserPlaceActivitiesController < ApplicationController
     @users = User.paginate(:select => "users.*", :joins => "inner join user_place_activities UPA on UPA.user_id = users.id  ", :conditions=>'place_id = ' +@place.id.to_s + ' and activity_id = ' + @activity.id.to_s, :page => params[:page], :per_page => 6)
     @user_place_activities = UserPlaceActivity.paginate(:conditions=>'place_id = ' +@place.id.to_s + ' and activity_id = ' + @activity.id.to_s, :page=>1,:per_page=>15)
     @user_place_activity_comments = UserPlaceActivity.paginate(:conditions=>'place_id = ' +@place.id.to_s + ' and activity_id = ' + @activity.id.to_s + ' and LENGTH(description) > 0', :page=>1,:per_page=>15)
-    logger.debug('SSSSSSSSSSSSSSSSSSSSSSSSSSSS' + @user_place_activity_comments.length.to_s)
   end
 
   def destroy
@@ -60,18 +59,24 @@ class UserPlaceActivitiesController < ApplicationController
       end
       @user_place_activity = current_user.user_place_activities.build(:description => params[:user_place_activity][:description], :place_id => params[:place_id], :activity_id => params[:activity_id], :day_of_week => params[:user_place_activity][:day_of_week], :time_of_day => params[:user_place_activity][:time_of_day]) 
       @user_place_activity.place_activity = place_activity
-      @user_place_activity.save
-      respond_to do |format|
-        format.html do
-          flash[:notice] = "You have added a user place activity, user activity and user place"
-          redirect_to account_places_path
+      if @user_place_activity.save
+        respond_to do |format|
+          format.html do
+            flash[:notice] = "You have added a user place activity, user activity and user place"
+            redirect_to account_places_path
+          end
+          format.js {render :partial => 'user_place_activity', :object => @user_place_activity  }
         end
-        format.js {render :partial => 'user_place_activity', :object => @user_place_activity  }
+      else
+           respond_to do |format|
+              format.html { render :action => :new}
+              format.js { render :text => 'You have already added this place or activity', :status=>500 }
+            end
       end
     else
       respond_to do |format|
         format.html { render :action => :new}
-        format.js { render :text => 'You have already added this place or activity' }
+        format.js { render :text => 'You must select either a place or an activity (or both)', :status=>500 }
       end
     end
   end
