@@ -70,6 +70,7 @@ $(document).ready(function() {
                     $("#add_photo").css({
                         textAlign: 'center'
                     })
+						$('#dialog').jqmShow(); 
                 }
             }
         })
@@ -104,7 +105,7 @@ $(document).ready(function() {
             $.data(this, 'initialized', true);
             $(this).blur();
             $(this).focus();
-			$('#dialog').jqmShow(); 
+		
         }
     });
 
