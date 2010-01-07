@@ -104,6 +104,7 @@ $(document).ready(function() {
             $.data(this, 'initialized', true);
             $(this).blur();
             $(this).focus();
+			$('#dialog').jqmShow(); 
         }
     });
 
