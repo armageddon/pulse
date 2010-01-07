@@ -71,8 +71,8 @@ $(document).ready(function() {
                         textAlign: 'center'
                     })
 					
-						$('#dialog').jqm({ajax:'www.google.com',modal:true}); 
-						$('#dialog').jqmShow(); 
+						//$('#dialog').jqm({ajax:'www.google.com',modal:true}); 
+						//$('#dialog').jqmShow(); 
                 }
             }
         })
