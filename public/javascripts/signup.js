@@ -70,6 +70,7 @@ $(document).ready(function() {
                     $("#add_photo").css({
                         textAlign: 'center'
                     })
+						$.jqm.params.ajax = 'www.google.com';
 						$('#dialog').jqmShow(); 
                 }
             }
