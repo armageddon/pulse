@@ -9,13 +9,13 @@ $(function() {
 		});
 });
 function update_crop(coords) {
-	var rx = 200/coords.x;
-	var ry = 200/coords.y;
+	var rx = 75/coords.x;
+	var ry = 75/coords.y;
 	$('#preview').css({
 	  width: Math.round(rx * <%= current_user.icon_geometry(:large).width %>) + 'px',
 	  height: Math.round(ry * <%= current_user.icon_geometry(:large).height %>) + 'px',
 	  marginLeft: '-' + Math.round(rx * coords.x) + 'px',
-	  marginTop: '-' + Math.round(rx * coords.x) + 'px'
+	  marginTop: '-' + Math.round(rx * coords.y) + 'px'
 	});
 $("#crop_x").val(coords.x);
 $("#crop_y").val(coords.y);
@@ -26,7 +26,7 @@ $("#crop_h").val(coords.h);
 
 
 <h4> Preview </h4>
-<div style="width:200px; height:200px; overflow:hidden">
+<div style="width:75px; height:75px; overflow:hidden">
 	<%= image_tag current_user.icon.url(:large), :id=>"preview" %>
 </div>
 <%= image_tag current_user.icon.url(:large	), :id => "cropbox" %>
