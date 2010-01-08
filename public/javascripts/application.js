@@ -13,7 +13,11 @@ $(document).ready(function() {
         });
         $("#dialog").jqmAddTrigger('.add_to_favorites, .add_place, .add_event, .add_activity, .invite_a_friend');
     }
-
+    $('#user_submit').live('click',function() {
+	   	$('#dialog').jqm({ajax:'/icon_crop',modal:true}); 
+		$('#dialog').jqmShow();
+	return false;
+	});
     $(document).ajaxSend(function(event, request, settings) {
         if (typeof(AUTH_TOKEN) == "undefined") return;
         settings.data = settings.data || "";

@@ -1,0 +1,40 @@
+
+<script type="text/javascript" charset="utf-8">
+$(function() {
+	$("#cropbox").Jcrop({
+		onChange: update_crop,
+		onSelect: update_crop,
+		setSelect: [0,0,500,500],
+		aspectRatio: 1
+		});
+});
+function update_crop(coords) {
+	var rx = 100/coords.x;
+	var ry = 100/coords.y;
+	$('#preview').css({
+	  width: Math.round(rx * <%= current_user.icon_geometry(:profile).width %>) + 'px',
+	  height: Math.round(ry * <%= current_user.icon_geometry(:profile).height %>) + 'px',
+	  marginLeft: '-' + Math.round(rx * coords.x) + 'px',
+	  marginTop: '-' + Math.round(rx * coords.x) + 'px'
+	});
+$("#crop_x").val(coords.x);
+$("#crop_y").val(coords.y);
+$("#crop_w").val(coords.w);
+$("#crop_h").val(coords.h);	
+}
+</script>
+
+
+<h4> Preview </h4>
+<div style="width:200px; height:200px; overflow:hidden">
+	<%= image_tag current_user.icon.url(:large), :id=>"preview" %>
+</div>
+<%= image_tag current_user.icon.url(:large	), :id => "cropbox" %>
+<% form_for current_user do |f| %>
+  <% for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
+    <%= f.hidden_field attribute, :id => attribute %>
+  <% end %>
+  <p><%= f.submit "Crop" %></p>
+<% end %>
+
+

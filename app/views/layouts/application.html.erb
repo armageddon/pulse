@@ -9,9 +9,8 @@
     <%= stylesheet_link_tag %w(jqModal application ) %>
     <%= javascript_include_tag 	"jquery-1.3.2", 'jquery.form.js', 'jqModal', 'jquery.autocomplete.js', 'jquery.charcounter.js', 'application', 'signup' %>
     <%= javascript_tag "var AUTH_TOKEN = #{form_authenticity_token.inspect};" %>
-  
-
-</head>
+    <%= yield(:head) %>
+  </head>
   <body>
     <%= hidden_field_tag "googlecode", googlecode(request.url) %>
 	<div id="dialog" style="display: none;" class="jqmWindow"></div>
@@ -26,7 +25,7 @@
 				<%= hidden_field_tag 'search_criteria_header[type]', '1', :class => "header_input_text" %>
 				<% if current_user!=nil%>
 					<%= hidden_field_tag 'search_criteria[sp_1]',1, :class => "header_input_text" %>
-                                         <%= hidden_field_tag 'search_criteria[sp_2]',2, :class => "header_input_text" %>
+                    <%= hidden_field_tag 'search_criteria[sp_2]',2, :class => "header_input_text" %>
 					<%= hidden_field_tag 'search_criteria[lower_age]', 1, :class => "header_input_text" %>
 					<%= hidden_field_tag 'search_criteria[upper_age]', 10, :class => "header_input_text" %>
 				<% end %>

@@ -5,6 +5,7 @@ include UsersHelper
 
 fires :newuser, :on => :create, :actor => :self
 after_create :welcome_mail
+after_update :reprocess_icon, :if => :cropping?
 
   define_index do
     indexes username
@@ -55,9 +56,10 @@ after_create :welcome_mail
   include Authorization::AasmRoles
 
   has_attached_file :icon, 
-        :styles => { :thumb => "75x75#", :profile => "200x200#" }, 
+        :styles => { :thumb => "75x75#", :profile => "200x200#", :large => "600x600>" }, 
         :url => "/:class/:attachment/:id/:style_:filename",
-        :default_url => "/images/:style/missing.png"
+        :default_url => "/images/:style/missing.png",
+        :processors => [:cropper]
 
   belongs_to :location
   has_many :user_place_activities
@@ -105,11 +107,21 @@ after_create :welcome_mail
   # anything else you want your user to change should be added here.
   attr_accessible  :username, :email, :first_name, :password, :password_confirmation, :timezone, :description, :age, :age_preference, :sex, :sex_preference, :cell, :location_id, :icon, :dob, :postcode, :lat, :long
   attr_accessor :login
+  attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
 
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   # uff.  this is really an authorization, not authentication routine.
   # We really need a Dispatch Chain here or something.
   # This will also let us return a human error message.
+  def cropping?
+    !crop_x.blank? && !crop_y.blank? && !crop_w.blank? && !crop_h.blank?
+  end
+  
+  def icon_geometry(style = :original)
+    @geometry ||={}
+    @geometry[style] ||= Paperclip::Geometry.from_file(icon.path(style))
+  end
+  
   def self.authenticate(login, password)
     return nil if login.blank? || password.blank?
     u = find_in_state :first, :active, :conditions => ["username = ? OR email = ?", login.downcase, login.downcase] # need to get the salt
@@ -405,6 +417,10 @@ after_create :welcome_mail
     @message = @pulse_user.sent_messages.build({:recipient_id=>self.id,:subject=>@subject,:body=>@body})
     @message.save
     
+  end
+  private 
+  def reprocess_icon
+    icon.reprocess!
   end
   
   protected

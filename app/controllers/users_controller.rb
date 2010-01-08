@@ -184,14 +184,22 @@ class UsersController < ApplicationController
     @user.destroy
     redirect_to login_path
   end
-
+  def icon_crop
+    respond_to do |format|
+     format.js { render :partial => "users/icon_crop"}
+     end
+  end
   protected
 
   def access_denied
-    render :template => "sessions/new", :layout => false
+    
+      render :template => "sessions/new", :layout => false
+    
   end
 
   def find_user
     @user = User.find(params[:id])
   end
+  
+  
 end

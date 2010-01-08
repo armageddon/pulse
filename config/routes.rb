@@ -25,6 +25,8 @@ ActionController::Routing::Routes.draw do |map|
   map.user_place_activities '/account/place_activities' , :controller => 'users', :action => 'place_activity_list'
   map.favorite_people 'favorites/people', :controller => 'users', :action => 'favorites_list'
   map.update '/update', :controller => "users", :action => 'update'
+  map.crop '/crop', :controller => "users", :action => 'crop'
+  map.icon_crop '/icon_crop', :controller => "users", :action => 'icon_crop'
   map.resource :account, :controller => "users" do |u|
     u.resources :favorites, :controller => "user_favorites"
     u.resources :pictures, :controller => "user_pictures"
