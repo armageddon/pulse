@@ -12,8 +12,8 @@ function update_crop(coords) {
 	var rx = 100/coords.x;
 	var ry = 100/coords.y;
 	$('#preview').css({
-	  width: Math.round(rx * <%= current_user.icon_geometry(:profile).width %>) + 'px',
-	  height: Math.round(ry * <%= current_user.icon_geometry(:profile).height %>) + 'px',
+	  width: Math.round(rx * <%= current_user.icon_geometry(:large).width %>) + 'px',
+	  height: Math.round(ry * <%= current_user.icon_geometry(:large).height %>) + 'px',
 	  marginLeft: '-' + Math.round(rx * coords.x) + 'px',
 	  marginTop: '-' + Math.round(rx * coords.x) + 'px'
 	});
