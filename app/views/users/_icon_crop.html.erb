@@ -9,8 +9,8 @@ $(function() {
 		});
 });
 function update_crop(coords) {
-	var rx = 100/coords.x;
-	var ry = 100/coords.y;
+	var rx = 200/coords.x;
+	var ry = 200/coords.y;
 	$('#preview').css({
 	  width: Math.round(rx * <%= current_user.icon_geometry(:large).width %>) + 'px',
 	  height: Math.round(ry * <%= current_user.icon_geometry(:large).height %>) + 'px',
