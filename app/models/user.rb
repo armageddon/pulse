@@ -113,6 +113,9 @@ after_update :reprocess_icon, :if => :cropping?
   # uff.  this is really an authorization, not authentication routine.
   # We really need a Dispatch Chain here or something.
   # This will also let us return a human error message.
+  
+  
+
   def cropping?
     !crop_x.blank? && !crop_y.blank? && !crop_w.blank? && !crop_h.blank?
   end

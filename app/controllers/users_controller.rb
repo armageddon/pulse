@@ -66,6 +66,11 @@ class UsersController < ApplicationController
   def create
     logout_keeping_session!
     @user = User.new(params[:user])
+    @user.sex ||= 2
+    @user.age ||= 5
+    @user.sex_preference ||= 1
+    @user.age_preference ||= 5
+    
     if params[:user][:postcode] != nil 
       geocoder = Graticule.service(:google).new "ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog"
       location = geocoder.locate('london ' + params[:user][:postcode])
