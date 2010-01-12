@@ -33,7 +33,7 @@ $("#crop_h").val(Math.round(coords.h * ratio));
 <%= image_tag current_user.icon.url(:large	), :id => "cropbox" %>
 <% form_for current_user do |f| %>
   <% for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
-    <%= f.hidden_field attribute, :id => attribute %>
+    <%= f.text_field attribute, :id => attribute %>
   <% end %>
   <p><%= f.submit "Crop" %></p>
 <% end %>
