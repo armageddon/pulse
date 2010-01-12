@@ -15,7 +15,7 @@ function update_crop(coords) {
 	  width: Math.round(rx * <%= current_user.icon_geometry(:large).width %>) + 'px',
 	  height: Math.round(ry * <%= current_user.icon_geometry(:large).height %>) + 'px',
 	  marginLeft: '-' + Math.round(rx * coords.x) + 'px',
-	  marginTop: '-' + Math.round(rx * coords.y) + 'px'
+	  marginTop: '-' + Math.round(ry * coords.y) + 'px'
 	});
 	var ratio = <%= current_user.icon_geometry(:original).width %> / <%= current_user.icon_geometry(:large).width %>;
 $("#crop_x").val(Math.round(coords.x * ratio));

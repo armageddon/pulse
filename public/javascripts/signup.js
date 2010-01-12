@@ -53,7 +53,7 @@ $(document).ready(function() {
         //$('#upload_container').hide();
         }
     });
-
+    
     $("#user_icon").change(function(e) {
         $('#add_photo').css('background','#F1F3F6 url(/images/loadercircles.gif) no-repeat scroll center center');
         $('#add_photo').html('Please wait - your photo may take up to a minute to load......');
@@ -71,7 +71,7 @@ $(document).ready(function() {
                         textAlign: 'center'
                     })
 					
-						//$('#dialog').jqm({ajax:'www.google.com',modal:true}); 
+						//$('#dialog').jqm({ajax:'/crop',modal:true}); 
 						//$('#dialog').jqmShow(); 
                 }
             }
