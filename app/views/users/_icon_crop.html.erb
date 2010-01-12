@@ -18,10 +18,10 @@ function update_crop(coords) {
 	  marginTop: '-' + Math.round(ry * coords.y) + 'px'
 	});
 	var ratio = <%= current_user.icon_geometry(:original).width %> / <%= current_user.icon_geometry(:large).width %>;
-$("#crop_x").val(Math.round(coords.x * ratio));
-$("#crop_y").val(Math.round(coords.y * ratio));
-$("#crop_w").val(Math.round(coords.w * ratio));
-$("#crop_h").val(Math.round(coords.h * ratio));
+$("#crop_x").val(coords.x );
+$("#crop_y").val(coords.y );
+$("#crop_w").val(coords.w);
+$("#crop_h").val(coords.h);
 }
 </script>
 
