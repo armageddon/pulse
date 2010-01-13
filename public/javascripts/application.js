@@ -18,7 +18,7 @@ $(document).ready(function() {
 		$('#dialog').jqmShow();
 	return false;
 	});
-	$('#crop_form').submit(function() {
+	$('#photo_crop').submit(function() {
 		alert('crop');
 	});
 	
