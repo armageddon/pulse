@@ -33,7 +33,7 @@ $("#crop_h").val(coords.h);
 </div>
 
 <%= image_tag current_user.icon.url(:large), :id => "cropbox" %>
-<% form_for current_user, :url => account_path,:html => { :multipart => true } do |f| %>
+<% form_for current_user, :url => '/update',:html => { :multipart => true } do |f| %>
   <%= f.hidden_field 'true', :id => 'iframe' %>
   <% for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
     <%= f.text_field attribute, :id => attribute %>
