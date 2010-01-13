@@ -18,6 +18,10 @@ $(document).ready(function() {
 		$('#dialog').jqmShow();
 	return false;
 	});
+	$('#crop_form').submit(function() {
+		alert('crop');
+	});
+	
     $(document).ajaxSend(function(event, request, settings) {
         if (typeof(AUTH_TOKEN) == "undefined") return;
         settings.data = settings.data || "";
