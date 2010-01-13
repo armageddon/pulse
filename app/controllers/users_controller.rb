@@ -120,11 +120,13 @@ class UsersController < ApplicationController
     if params[:iframe]=="true"
       logger.info(:params)
       
-      current_user.update_attributes(params[:user])
+      
       current_user.crop_w = params[:crop_w]
       current_user.crop_h = params[:crop_h]
       current_user.crop_x = params[:crop_x] 
-      current_user.crop_y = params[:crop_y] 
+      current_user.crop_y = params[:crop_y]
+      current_user.update_attributes(params[:user])
+       current_user.save
       logger.info(current_user.crop_w)
       logger.info(current_user.crop_h)
       logger.info(current_user.crop_x)
