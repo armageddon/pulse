@@ -191,7 +191,7 @@ class UsersController < ApplicationController
   end
   def icon_crop
     respond_to do |format|
-     format.js { render :partial => "users/icon_crop"}
+     format.js { render :partial => "users/icon_crop", :locals => {:user => current_user}}
      end
   end
   protected
