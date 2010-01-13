@@ -118,7 +118,7 @@ after_update :reprocess_icon, :if => :cropping?
 
   def cropping?
     logger.info('cropping')
-    logger.info((!crop_x.blank? && !crop_y.blank? && !crop_w.blank? && !crop_h.blank?).to_s)
+    logger.info(!crop_x.blank? && !crop_y.blank? && !crop_w.blank? && !crop_h.blank?)
     !crop_x.blank? && !crop_y.blank? && !crop_w.blank? && !crop_h.blank?
   end
   
