@@ -119,6 +119,10 @@ class UsersController < ApplicationController
     @user_place_activity = UserPlaceActivity.new
     if params[:iframe]=="true"
       current_user.update_attributes(params[:user])
+      current_user.crop_w = params[:crop_w]
+      current_user.crop_h = params[:crop_h]
+      current_user.crop_x = params[:crop_x] 
+      current_user.crop_y = params[:crop_y] 
       respond_to do |format|
         format.html { render :text => current_user.icon.url(:profile) }
         format.js { render :text => current_user.icon.url + "js"}
