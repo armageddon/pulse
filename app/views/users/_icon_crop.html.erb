@@ -18,6 +18,8 @@ function update_crop(coords) {
 	  marginTop: '-' + Math.round(ry * coords.y) + 'px'
 	});
 	var ratio = <%= current_user.icon_geometry(:original).width %> / <%= current_user.icon_geometry(:large).width %>;
+	$("#width").val(<%= current_user.icon_geometry(:large).width %>);
+	$("#height").val(<%= current_user.icon_geometry(:large).height %>);
 $("#crop_x").val(coords.x );
 $("#crop_y").val(coords.y );
 $("#crop_w").val(coords.w);
@@ -30,6 +32,8 @@ $("#crop_h").val(coords.h);
 <div style="width:75px; height:75px; overflow:hidden">
 	<%= image_tag current_user.icon.url(:large), :id=>"preview" %>
 </div>
+<%= label_tag '', :id => 'width' %>
+<%= label_tag '', :id => 'height' %>
 <%= image_tag current_user.icon.url(:large	), :id => "cropbox" %>
 <% form_for current_user do |f| %>
   <% for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
