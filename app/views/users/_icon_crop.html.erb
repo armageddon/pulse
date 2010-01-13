@@ -33,7 +33,7 @@ $("#crop_h").val(coords.h);
 </div>
 
 <%= image_tag @user.icon.url(:large), :id => "cropbox" %>
-<% form_for @user do |f| %>
+<% form_for(@user, :url=>'/update') do |f| %>
   <% for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
     <%= f.text_field attribute, :id => attribute %>
   <% end %>
