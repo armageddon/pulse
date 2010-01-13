@@ -20,6 +20,7 @@ $(document).ready(function() {
 	});
 	$('#photo_crop').submit(function() {
 		alert('crop');
+		return false;
 	});
 	
     $(document).ajaxSend(function(event, request, settings) {
