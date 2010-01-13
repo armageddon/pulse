@@ -13,7 +13,7 @@ $(document).ready(function() {
         });
         $("#dialog").jqmAddTrigger('.add_to_favorites, .add_place, .add_event, .add_activity, .invite_a_friend');
     }
-    $('#user_submit').live('click',function() {
+    $('#crop').live('click',function() {
 	   	$('#dialog').jqm({ajax:'/icon_crop',modal:true}); 
 		$('#dialog').jqmShow();
 	return false;
