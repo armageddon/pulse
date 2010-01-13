@@ -33,7 +33,7 @@ $("#crop_h").val(coords.h);
 </div>
 
 <%= image_tag current_user.icon.url(:large), :id => "cropbox" %>
-<% form_tag "/update", :multipart => true, :target => "image_crop", :id => "photo_crop" do%>
+<% form_tag "/update", :multipart => true, :name => "photo_crop", :id => "photo_crop" do%>
   <%= hidden_field_tag 'iframe', 'true' %>
   <% for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
     <%= hidden_field_tag attribute, :id => attribute %>
