@@ -29,11 +29,11 @@ $("#crop_h").val(coords.h);
 
 <h4> Preview </h4>
 <div style="width:75px; height:75px; overflow:hidden">
-	<%= image_tag @user.icon.url(:large), :id=>"preview" %>
+	<%= image_tag current_user.icon.url(:large), :id=>"preview" %>
 </div>
 
-<%= image_tag @user.icon.url(:large), :id => "cropbox" %>
-<% form_for(@user, :url=>'/update') do |f| %>
+<%= image_tag current_user.icon.url(:large), :id => "cropbox" %>
+<% form_for current_user, :url => account_path, :html => { :multipart => true } do |f| %>
   <% for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
     <%= f.text_field attribute, :id => attribute %>
   <% end %>
