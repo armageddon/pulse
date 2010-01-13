@@ -38,7 +38,7 @@ $("#crop_h").val(coords.h);
   <% for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
     <%= hidden_field_tag attribute, :id => attribute %>
   <% end %>
-  <p><%= submit_button('Crop')%></p>
+  <p><%= submit_button('Crop',:id => 'Crop')%></p>
 <% end %>
 
 
