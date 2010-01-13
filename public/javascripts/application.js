@@ -20,6 +20,16 @@ $(document).ready(function() {
 	});
 	$('#cropp').live('click',function() {
 		alert('crop');
+		$("#photo_crop").ajaxSubmit({
+            iframe: true,
+            extraData: {
+                'iframe': 'true'
+            },
+            dataType: "js",
+            success: function(response) {
+                alert('success');
+            }
+        })
 		return false;
 	});
 	
