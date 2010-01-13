@@ -32,8 +32,8 @@ $("#crop_h").val(coords.h);
 <div style="width:75px; height:75px; overflow:hidden">
 	<%= image_tag current_user.icon.url(:large), :id=>"preview" %>
 </div>
-<%= label_tag '', :id => 'width' %>
-<%= label_tag '', :id => 'height' %>
+<%= text_field_tag 'width', :id => 'width' %>
+<%= text_field_tag 'height', :id => 'height' %>
 <%= image_tag current_user.icon.url(:large	), :id => "cropbox" %>
 <% form_for current_user do |f| %>
   <% for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
