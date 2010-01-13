@@ -423,6 +423,7 @@ after_update :reprocess_icon, :if => :cropping?
   end
   private 
   def reprocess_icon
+    logger.debug('reprocess_icon')
     icon.reprocess!
   end
   
