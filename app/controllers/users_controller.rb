@@ -125,12 +125,14 @@ class UsersController < ApplicationController
       current_user.crop_h = params[:crop_h]
       current_user.crop_x = params[:crop_x] 
       current_user.crop_y = params[:crop_y]
+      logger.info(current_user.crop_w)
+          logger.info(current_user.crop_h)
+          logger.info(current_user.crop_x)
+          logger.info(current_user.crop_y)
+      
       current_user.update_attributes(params[:user])
       
-      logger.info(current_user.crop_w)
-      logger.info(current_user.crop_h)
-      logger.info(current_user.crop_x)
-      logger.info(current_user.crop_y)
+      logger.info('after update')
       
       
       
