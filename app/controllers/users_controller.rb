@@ -130,6 +130,7 @@ class UsersController < ApplicationController
           logger.info(current_user.crop_x)
           logger.info(current_user.crop_y)
       
+      logger.info('before update')
       current_user.update_attributes(params[:user])
       
       logger.info('after update')
