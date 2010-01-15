@@ -114,7 +114,17 @@ after_update :reprocess_icon, :if => :cropping?
   # We really need a Dispatch Chain here or something.
   # This will also let us return a human error message.
   
-  
+  def self.find_by_email_and_login(email, username)
+    x = User.find(:all,:conditions => {:email => email, :username => username})
+    if x.length != 0
+      logger.debug('not nill')
+      logger.debug(x)
+      x[0]
+    else
+      logger.debug('false')
+      false
+    end
+  end
 
   def cropping?
     logger.info('cropping')

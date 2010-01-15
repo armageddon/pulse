@@ -90,6 +90,13 @@ ActionController::Routing::Routes.draw do |map|
   map.activity_users '/activity/users', :controller => 'activities', :action => 'users'
   map.activity_user_place_activities '/activity/user_place_activities', :controller => 'activities', :action => 'user_place_activities'
   
+  #passwords controller
+  map.newpassword 'passwords/create',  :controller => 'passwords', :action=>'create'
+  map.newpassword 'passwords/new',  :controller => 'passwords', :action=>'new'
+  map.passwords_message 'passwords/message', :controller => 'passwords', :action=>'message'
+  map.passwords 'passwords',  :controller => 'passwords', :action=>'update'
+  map.resources :passwords
+  map.resources :users, :has_one => [:password]
   
   #profiles controller
   map.user_user_place_activities '/users/user_place_activities', :controller=>'profiles', :action=>'user_place_activities'

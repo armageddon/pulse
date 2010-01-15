@@ -65,10 +65,14 @@
         <%= text_field_tag 'login', @login, :class => "input_text", :value => "Username", :size => "10" %>
         <%= password_field_tag 'password', nil, :size => "10", :class => "input_text", :style => "display: none;" %>
         <input type="text" class="input_text" size="10" value="Password" id="password_holder"/>
+	
         <%= submit_button "GO", :class=> 'submit_text', :type =>'submit'%>
+		<div style ='font-size:9px' >
+	       <%= link_to "Forgot Password?", :controller=>'passwords', :action=>"new", :id=>'new_password'%>
+	    </div>
         <% end %>
-        
-        <% form_tag redeem_path, :id => 'redeem_form', :style => "display: none;" do -%>
+		
+		<% form_tag redeem_path, :id => 'redeem_form', :style => "display: none;" do -%>
           Please enter your invitation code:
           <%= text_field_tag 'invite_code', nil, :class => "input_text", :value => "Invite Code", :size => "10" %>
           <%= submit_button "GO", :class =>'submit'  %>
@@ -101,6 +105,9 @@
       }
     });
     
+
+
+
     $('#password_holder').focus(function() {
       $(this).hide();
       $('#password').show();

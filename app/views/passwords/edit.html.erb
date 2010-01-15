@@ -1,0 +1,25 @@
+<div class="column_header">
+  <span>
+    <h2>Change Password</h2>
+  </span>
+</div>
+<div class="form_container">
+    <%= error_messages_for :user %>
+    <% form_for :user, :url => passwords_path, :html => { :method => :put } do |f| %>
+		<div class="form_row">
+          	<label for="password" style="margin-top: 5px; color:#990000;">Old password</label><br />
+			<%= password_field_tag 'old_password', nil, :class => 'input_text' %>
+		</div>
+		<div class="form_row">
+          	<label for="password" style="margin-top: 5px; color:#990000;">New password</label><br />
+          	<%= f.password_field :password, :class => 'input_text' %>
+		</div>
+		<div class="form_row">
+          	<label for="password_confirmation" style="margin-top: 5px; color:#990000;">Confirm new password</label><br />
+          	<%= f.password_field :password_confirmation, :class => 'input_text' %>
+		</div>
+		<div class="submit_row">
+          	<%= f.submit "Update", :class => "submit" %> &nbsp; &nbsp;<%= link_to 'Cancel', edit_account_path, :class => "submit" %>
+		</div>
+    <% end %>
+</div>

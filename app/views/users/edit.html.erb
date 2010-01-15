@@ -145,8 +145,12 @@
     <%= f.file_field :icon %>
   </div>
 
-  <br>
+  <br />
 
+
+<%= link_to "Change Password", :controller=>'passwords', :action=>"edit", :id=>'change_password' %>
+<br />
+<br />
   <%= submit_button('Save') %>
 
 <% end %>

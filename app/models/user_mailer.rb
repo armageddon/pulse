@@ -11,6 +11,12 @@ class UserMailer < ActionMailer::Base
     @body[:url]  = "http://hellopulse.com/"
   end
 
+  def new_password(user, new_password)
+      setup_email(user)
+      @subject    += 'Your new password'
+      @body[:new_password]  = new_password
+    end
+  
   protected
     def setup_email(user)
       @recipients  = "#{user.email}"
