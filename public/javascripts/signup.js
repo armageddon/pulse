@@ -262,11 +262,43 @@ $(document).ready(function() {
         var password_confirm = $('#user_password_confirmation');
         var email = $('#user_email');
         var location = $('#user_location_id');
+		var day = $('#day');
+		var month = $('#month');
+		var year = $('#year');
+		
+		
+		
         var error = false;
 
         $('.invalid').removeClass('invalid');
         $('span.error').text('');
 
+		if (day.val() == 'Day' || day.val() == '' )
+		{
+			error = true;
+			$('#dob_error').text('Enter a valid date of birth');
+			day.addClass('invalid');
+		}
+		if (month.val() == 'Month' || day.val() == '' )
+		{
+			error = true;
+			$('#dob_error').text('Enter a valid date of birth');
+			month.addClass('invalid');
+		}
+		if (year.val() == 'Year' || day.val() == '' )
+		{
+			error = true;
+			$('#dob_error').text('Enter a valid date of birth');
+			year.addClass('invalid');
+		}
+		if (day.val() == 'Month')
+		{
+			error = true;
+		}
+		if (day.val() == 'Year')
+		{
+			error = true;
+		}
         if (email.val() == '' || email.val() == 'Email address') {
             email.addClass('invalid');
 
@@ -323,8 +355,8 @@ $(document).ready(function() {
             postcode.next().text('Please enter a valid post code.');
             error = true;
         };
-
         if (error) {
+
             return false;
         } else {
             $('.error').text('');

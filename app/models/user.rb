@@ -308,7 +308,7 @@ after_update :reprocess_icon, :if => :cropping?
     
   end
   #todo: these should be in a helper - need to move the calcs into the model by overriding the acriverecord update
-  def get_age_option_from_age(age)
+  def self.get_age_option_from_age(age)
     logger.debug("age" + age.to_s())
     if age < 20
       User::Age::COLLEGE
@@ -335,7 +335,7 @@ after_update :reprocess_icon, :if => :cropping?
     end
   end
 
-  def get_age_option_from_dob(dob)
+  def self.get_age_option_from_dob(dob)
     logger.debug(dob)
     age = (DateTime.now.year - dob.year) + ((DateTime.now.month - dob.month) + ((DateTime.now.day - dob.day) < 0 ? -1 : 0) < 0 ? -1 : 0)
     logger.debug("age" + age.to_s())

@@ -82,6 +82,8 @@ class UsersController < ApplicationController
         params[:user][:long] = longitude
       end
     end
+    params[:user][:dob] = Date.new(params[:year].to_i(),params[:month].to_i(),params[:day].to_i())
+    params[:user][:age] = User.get_age_option_from_dob(params[:user][:dob])
     @user.location_id = 1;
     @user.postcode = @user.postcode.upcase
     @user.register! if @user && @user.valid?
@@ -143,8 +145,10 @@ class UsersController < ApplicationController
         format.js { render :text => current_user.icon.url + "js"}
       end
     else
-      params[:user][:dob] = Date.new(params[:year].to_i(),params[:month].to_i(),params[:day].to_i())
-      params[:user][:age] = current_user.get_age_option_from_dob(params[:user][:dob])
+      if params[:year] != nil && params[:month] != nil && params[:year] != nil
+        params[:user][:dob] = Date.new(params[:year].to_i(),params[:month].to_i(),params[:day].to_i())
+        params[:user][:age] = User.get_age_option_from_dob(params[:user][:dob])
+      end
       geocoder = Graticule.service(:google).new "ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog"
       logger.debug(params[:user][:postcode])
       if   params[:user][:postcode] != nil

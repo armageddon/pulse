@@ -70,48 +70,7 @@
         <%= text_field_tag 'user[email]', @user.email || 'Email address', :class => 'input_text' %>
         <span class="error"></span>
       </div>
-      <div><div style='padding-top:10px;'>
-          <label  class='sign_up_label'>Post Code</label>&nbsp;&nbsp; <label  style="font-size:10px">We are currently only accepting UK postcodes but will be coming to your city soon</label>
-        </div>
-        <div class="clear"></div>
-        <%= text_field_tag 'user[postcode]', @user.postcode || 'Post code', :class => 'input_text' %>
-        <span class="error"></span>
-      </div>
-      <div>
-        <%= submit_button 'Save', :height => "20px", :width => "70px", :style => "margin-top:10px" %>
-      </div>
-    <% end %>
-  </div>
-</div>
-<div id="step_2" class="step" style="display: none;" >
-  <div id="step_2_container">
-    <div id="upload_container" style="display: none;">
-      <% form_tag "/update", :multipart => true, :target => "image_upload", :id => "photo_upload" do%>
-        <%= file_field(:user , :icon, :style => "position: absolute;")%>
-      <% end %>
-    </div>
-
-    <div id="add_photo">Add photo</div>
-    <% form_tag '/account/', :method => "put", :id => "details_update" do %>
-      <div>
-        <label  style="margin-top: 10px; color:#990000;">Description</label>
-        <div id="description_panel">
-          <%= text_area_tag 'user[description]', 'Give us a line that sums you up', :rows=>2, :cols=>45,:id => "user_description", :class => "word_count" %>
-        </div>
-      </div>
-      <div style="clear:both;"> </div>
-      <div style='padding-top:10px;'>
-        <label  style="margin-top: 5px; color:#990000;">Your gender</label>
-        <div class='fancy_select'>
-          <%= hidden_field_tag 'user[sex]' %>
-          <div class="fancy_select_target">Select a gender</div>
-          <div class="fancy_select_options">
-            <p>Male <span class="hidden_value"><%= User::Sex::MALE %></span></p>
-            <p>Female <span class="hidden_value"><%= User::Sex::FEMALE %></span></p>
-          </div>
-        </div>
-      </div>
-      <div style="clear:both;"> </div>
+	<div style="clear:both;"> </div>
       <div style='padding-top:10px;'>
         <label  style="margin-top: 5px; color:#990000;">Date of Birth</label>
         <div style="clear:both;"> </div>
@@ -154,7 +113,51 @@
             </div>
           </div>
         </span>
+		<span id='dob_error' class="error"></span>
       </div>
+	<div style="clear:both;"> </div>
+      <div><div style='padding-top:10px;'>
+          <label  class='sign_up_label'>Post Code</label>&nbsp;&nbsp; <label  style="font-size:10px">We are currently only accepting UK postcodes but will be coming to your city soon</label>
+        </div>
+        <div class="clear"></div>
+        <%= text_field_tag 'user[postcode]', @user.postcode || 'Post code', :class => 'input_text' %>
+        <span class="error"></span>
+      </div>
+      <div>
+        <%= submit_button 'Save', :height => "20px", :width => "70px", :style => "margin-top:10px" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+<div id="step_2" class="step" style="display: none;" >
+  <div id="step_2_container">
+    <div id="upload_container" style="display: none;">
+      <% form_tag "/update", :multipart => true, :target => "image_upload", :id => "photo_upload" do%>
+        <%= file_field(:user , :icon, :style => "position: absolute;")%>
+      <% end %>
+    </div>
+
+    <div id="add_photo">Add photo</div>
+    <% form_tag '/account/', :method => "put", :id => "details_update" do %>
+      <div>
+        <label  style="margin-top: 10px; color:#990000;">Description</label>
+        <div id="description_panel">
+          <%= text_area_tag 'user[description]', 'Give us a line that sums you up', :rows=>2, :cols=>45,:id => "user_description", :class => "word_count" %>
+        </div>
+      </div>
+      <div style="clear:both;"> </div>
+      <div style='padding-top:10px;'>
+        <label  style="margin-top: 5px; color:#990000;">Your gender</label>
+        <div class='fancy_select'>
+          <%= hidden_field_tag 'user[sex]' %>
+          <div class="fancy_select_target">Select a gender</div>
+          <div class="fancy_select_options">
+            <p>Male <span class="hidden_value"><%= User::Sex::MALE %></span></p>
+            <p>Female <span class="hidden_value"><%= User::Sex::FEMALE %></span></p>
+          </div>
+        </div>
+      </div>
+      
       <div style="clear:both;"> </div>
       <div style='padding-top:10px;'>
         <label  style="margin-top: 5px; color:#990000;">Gender preference</label>
