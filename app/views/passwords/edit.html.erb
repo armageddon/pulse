@@ -18,8 +18,13 @@
           	<label for="password_confirmation" style="margin-top: 5px; color:#990000;">Confirm new password</label><br />
           	<%= f.password_field :password_confirmation, :class => 'input_text' %>
 		</div>
+		<% if flash[:notice] %>
+		      <div class="error"><%= flash[:notice] %></div><br />
+		<% end %>
+		<br />
 		<div class="submit_row">
           	<%= f.submit "Update", :class => "submit" %> &nbsp; &nbsp;<%= link_to 'Cancel', edit_account_path, :class => "submit" %>
 		</div>
+		
     <% end %>
 </div>

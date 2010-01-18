@@ -55,6 +55,7 @@ class PasswordsController < ApplicationController
       if @user.authenticated?(old_password) && @user.save
         format.html { redirect_to user_path(@user) }
       else
+        flash[:notice] =  "Please ensure you enter your current password and that your new passwords match"
         format.html { render :action => 'edit' }
       end
     end
