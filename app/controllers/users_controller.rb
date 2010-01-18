@@ -83,6 +83,7 @@ class UsersController < ApplicationController
       end
     end
     params[:user][:dob] = Date.new(params[:year].to_i(),params[:month].to_i(),params[:day].to_i())
+    @user.dob = params[:user][:dob]
     params[:user][:age] = User.get_age_option_from_dob(params[:user][:dob])
     @user.location_id = 1;
     @user.postcode = @user.postcode.upcase
