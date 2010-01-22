@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100121163612) do
+ActiveRecord::Schema.define(:version => 20100122105002) do
 
   create_table "activities", :force => true do |t|
     t.string   "name"
@@ -255,6 +255,7 @@ ActiveRecord::Schema.define(:version => 20100121163612) do
     t.float    "lat"
     t.float    "long"
     t.integer  "status",                                  :default => 1
+    t.integer  "c",                                       :default => 1
   end
 
 end
