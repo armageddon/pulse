@@ -22,9 +22,9 @@
 	Admin: <%=u.admin %><br />
 
 	Happening count: <%= u.user_place_activities.count %><br />
-	Sent Mail count:<%= Message.find(:all, :conditions => ['sender_id = ?', u.id]).count %><br />
-	Received Mail count:<%= Message.find(:all, :conditions => ['recipient_id = ?', u.id]).count %><br />
-	Has favourites: <%= u.friends.count %><br />
+	Sent Mail count:<%= Message.find(:all, :conditions => ['sender_id = ?', u.id]).length %><br />
+	Received Mail count:<%= Message.find(:all, :conditions => ['recipient_id = ?', u.id]).length %><br />
+	Has favourites: <%= u.friends.length %><br />
 	Hidden:<%= u.status !=1 %> <br />
 	</div>
 	<%= link_to image_tag("Cancel.png", :style=>'width:40px;margin-top:5px;',:class => " tooltip ", :id => "delete_user", :user_id => u.id, :title => "Delete"), '#' %>
