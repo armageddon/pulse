@@ -1,0 +1,59 @@
+
+<%= stylesheet_link_tag %w(jqModal application ) %>	
+<%= javascript_include_tag 	"jquery-1.3.2", 'jquery.form.js', 'jqModal', 'jquery.autocomplete.js', 'jquery.charcounter.js', 'application', 'signup' %>
+
+<h1>HelloPulse User Administration </h1>
+<br />
+
+<% User.find(:all).each do |u| %>
+	<div style='height:200px;width:200px;float:left'>
+	
+	<%= link_to image_tag(u.icon.url(:profile), :class=>"profile_image"), u, {:popup =>
+	true} %>
+	</div> 
+	<div style='width:300px;height:200px;float:left;margin-left:100px'>
+	<h2><%= u.first_name %></h2> 
+	<h3 style='margin-bottom:5px'><%= u.description %></h3>
+	
+	Gender: <%=pretty_gender u.sex %><br />
+	Age: <%=pretty_age u.age %><br />
+	Gender Pref: <%=pretty_gender u.sex_preference %><br />
+	Age Pref: <%=pretty_age u.age_preference %><br />
+	Admin: <%=u.admin %><br />
+
+	Happening count: <%= u.user_place_activities.count %><br />
+	Sent Mail count:<%= Message.find(:all, :conditions => ['sender_id = ?', u.id]).count %><br />
+	Received Mail count:<%= Message.find(:all, :conditions => ['recipient_id = ?', u.id]).count %><br />
+	Has favourites: <%= u.friends.count %><br />
+	Hidden:<%= u.status !=1 %> <br />
+	</div>
+	<%= link_to image_tag("Cancel.png", :style=>'width:40px;margin-top:5px;',:class => " tooltip ", :id => "delete_user", :user_id => u.id, :title => "Delete"), '#' %>
+	
+	<div style="clear:both;"> </div>
+	<br />
+<% end %>
+
+
+<script type="text/javascript" charset="utf-8">
+$(function() {
+	$('#delete_user').live('click',function(){
+		$.ajax({
+            type: "POST",
+            url: '/admin_delete',
+            data: {"id" : $(this).attr("user_id")},
+            success: function(p) {
+                alert(p);
+  
+
+            },
+            error: function(p)
+            {
+                alert(p);
+            }
+        })
+        return false;
+	});
+		
+});
+
+</script>

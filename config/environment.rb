@@ -48,7 +48,7 @@ if Rails.env == "production"
 else
   GOOGLE_MAPS_API_KEY = 'ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog'
 end
-HELLOPULSE_USER_ID = 32
+
 if Rails.env == "production"
   HELLOPULSE_USER_ID = 209
 else

@@ -13,6 +13,7 @@ after_update :reprocess_icon, :if => :cropping?
     indexes email
     has sex
     has age
+    has status
     # indexes places.name, :as => "places"
     # indexes activities.name, :as => "activities"
   end
@@ -357,7 +358,7 @@ after_update :reprocess_icon, :if => :cropping?
     use_place_location = search_criteria[2]
     use_activity = search_criteria[3]
     conditions = search_criteria[4]
-    
+    conditions += " and users.status = 1"
     if !use_activity && !use_place_location #just user (gender sex)
       @results = User.paginate(:all, :conditions => conditions, :page => params[:page], :per_page => 6)
     end
@@ -387,8 +388,8 @@ after_update :reprocess_icon, :if => :cropping?
       use_place_location = search_criteria[2]
       use_activity = search_criteria[3]
       conditions = search_criteria[4]
-      conditions += " and PA.place_id = " + place_id.to_s + " and PA.activity_id = " + activity_id.to_s
-    
+      conditions += " and PA.place_id = " + place_id.to_s + " and PA.activity_id = " + activity_id.to_s + " and users.status = 1"
+      
       if !use_activity && !use_place_location #just user (gender sex)
         @results = User.paginate(:select => "distinct  users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username", :conditions => conditions,:joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join place_activities PA on PA.id = UPA.place_activity_id", :page => 1, :per_page => 3)
       end
@@ -414,7 +415,7 @@ after_update :reprocess_icon, :if => :cropping?
     logger.info(search_criteria.ages)
     logger.info(search_criteria.sex_preferences)
     logger.info(params[:search_criteria][:keyword])
-    @results = User.search(params[:search_criteria][:keyword], :conditions => {:age => search_criteria.ages , :sex => search_criteria.sex_preferences},  :page=>params[:page], :per_page=>14)
+    @results = User.search(params[:search_criteria][:keyword], :conditions => {:status => 1, :age => search_criteria.ages , :sex => search_criteria.sex_preferences},  :page=>params[:page], :per_page=>14)
     return @results
   end
 

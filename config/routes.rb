@@ -17,6 +17,8 @@ ActionController::Routing::Routes.draw do |map|
   map.map_places '/search/map', :controller => 'search', :action => 'map_places'
    
   #users controller
+  map.admin_delete '/admin_delete', :controller => 'users', :action => 'admin_delete'
+  map.user_admin '/user_admin', :controller => 'users', :action => 'admin'
   map.register '/register', :controller => 'users', :action => 'create'
   map.signup '/signup', :controller => 'users', :action => 'new'
   map.redeem  '/redeem', :controller => "users", :action => 'redeem'

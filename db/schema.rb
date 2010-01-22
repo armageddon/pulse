@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091126215345) do
+ActiveRecord::Schema.define(:version => 20100121163612) do
 
   create_table "activities", :force => true do |t|
     t.string   "name"
@@ -20,7 +20,6 @@ ActiveRecord::Schema.define(:version => 20091126215345) do
     t.string   "icon_content_type"
     t.string   "icon_file_size"
     t.string   "icon_updated_at"
-    t.string   "place_id"
     t.string   "activity_group_name"
     t.string   "category"
     t.integer  "activity_category_id"
@@ -77,34 +76,33 @@ ActiveRecord::Schema.define(:version => 20091126215345) do
   end
 
   create_table "ldc", :force => true do |t|
-    t.string  "LDC_ID",             :limit => 512
-    t.string  "b_NameFull",         :limit => 512
-    t.string  "ad_Building_Unit",   :limit => 512
-    t.string  "ad_Building",        :limit => 512
-    t.string  "ad_Building_careof", :limit => 512
-    t.string  "ad_StreetNumber",    :limit => 512
-    t.string  "ad_Street",          :limit => 512
-    t.string  "ad_Zip",             :limit => 512
-    t.string  "area_name",          :limit => 512
-    t.string  "ad_City",            :limit => 512
-    t.string  "ad_county",          :limit => 512
-    t.string  "bus_telephone",      :limit => 512
-    t.string  "website_name",       :limit => 512
-    t.string  "b_multipleID",       :limit => 512
-    t.string  "b_multipleName",     :limit => 512
-    t.string  "cat_ID1",            :limit => 512
-    t.string  "cat_Name1",          :limit => 512
-    t.string  "cat_ID2",            :limit => 512
-    t.string  "cat_Name2",          :limit => 512
-    t.string  "transport_name",     :limit => 512
-    t.string  "transport_carrier",  :limit => 512
-    t.text    "export_description"
-    t.string  "feature_names",      :limit => 512
-    t.string  "feature_price",      :limit => 512
-    t.boolean "exclude",                           :default => false
+    t.string "LDC_ID",             :limit => 512
+    t.string "b_NameFull",         :limit => 512
+    t.string "ad_Building_Unit",   :limit => 512
+    t.string "ad_Building",        :limit => 512
+    t.string "ad_Building_careof", :limit => 512
+    t.string "ad_StreetNumber",    :limit => 512
+    t.string "ad_Street",          :limit => 512
+    t.string "ad_Zip",             :limit => 512
+    t.string "area_name",          :limit => 512
+    t.string "ad_City",            :limit => 512
+    t.string "ad_county",          :limit => 512
+    t.string "bus_telephone",      :limit => 512
+    t.string "website_name",       :limit => 512
+    t.string "b_multipleID",       :limit => 512
+    t.string "b_multipleName",     :limit => 512
+    t.string "cat_ID1",            :limit => 512
+    t.string "cat_Name1",          :limit => 512
+    t.string "cat_ID2",            :limit => 512
+    t.string "cat_Name2",          :limit => 512
+    t.string "transport_name",     :limit => 512
+    t.string "transport_carrier",  :limit => 512
+    t.text   "export_description"
+    t.string "feature_names",      :limit => 512
+    t.string "feature_price",      :limit => 512
   end
 
-  add_index "ldc", ["id"], :name => "idx_id"
+  add_index "ldc", ["id"], :name => "idx_ldc_id"
 
   create_table "locations", :force => true do |t|
     t.string "name"
@@ -158,7 +156,6 @@ ActiveRecord::Schema.define(:version => 20091126215345) do
     t.boolean  "attempted_s3_upload",    :default => false
     t.string   "category"
     t.boolean  "exclude",                :default => false
-    t.string   "postcode"
     t.integer  "place_category_id"
   end
 
@@ -209,10 +206,10 @@ ActiveRecord::Schema.define(:version => 20091126215345) do
 
   create_table "user_place_activities", :force => true do |t|
     t.integer  "user_id"
-    t.integer  "place_id"
     t.integer  "activity_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "place_id"
     t.string   "description"
     t.integer  "place_activity_id"
     t.integer  "time_of_day"
@@ -257,6 +254,7 @@ ActiveRecord::Schema.define(:version => 20091126215345) do
     t.string   "postcode"
     t.float    "lat"
     t.float    "long"
+    t.integer  "status",                                  :default => 1
   end
 
 end

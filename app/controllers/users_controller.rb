@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   include Graticule
   # Protect these actions behind an admin login
   # before_filter :admin_required, :only => [:suspend, :unsuspend, :destroy, :purge]
-  before_filter :find_user, :only => [:suspend, :unsuspend, :destroy, :purge]
+  before_filter :find_user, :only => [:suspend, :unsuspend, :destroy, :purge, :admin_delete]
   before_filter :login_required, :except => [:redeem, :create]
 
   def place_activity_list
@@ -204,6 +204,10 @@ class UsersController < ApplicationController
     redirect_to login_path
   end
 
+  def admin_delete
+    
+      
+  end
   def destroy
     @user.delete!
     redirect_to login_path
@@ -218,10 +222,20 @@ class UsersController < ApplicationController
      format.js { render :partial => "users/icon_crop", :locals => {:user => current_user}}
      end
   end
+  
+
+  
+  def admin
+    if current_user.admin
+      render :template => "users/admin", :layout => false
+    else
+      redirect_to login_path
+    end
+  end
+  
   protected
 
   def access_denied
-    
       render :template => "sessions/new", :layout => false
     
   end
