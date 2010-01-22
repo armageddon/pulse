@@ -21,7 +21,7 @@
 	Age Pref: <%=pretty_age u.age_preference %><br />
 	Admin: <%=u.admin %><br />
 
-	Happening count: <%= u.user_place_activities.count %><br />
+	Happening count: <%= u.user_place_activities.length %><br />
 	Sent Mail count:<%= Message.find(:all, :conditions => ['sender_id = ?', u.id]).length %><br />
 	Received Mail count:<%= Message.find(:all, :conditions => ['recipient_id = ?', u.id]).length %><br />
 	Has favourites: <%= u.friends.length %><br />
