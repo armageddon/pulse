@@ -107,6 +107,10 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :profiles, :except => :show
   map.user "/profiles/:id", :controller => "profiles", :action => "show"
   
+   ActionController::Routing::Routes.draw do |map|  
+   map.simple_captcha '/simple_captcha/:action', :controller => 'simple_captcha'  
+   end
+  
   map.resource :session
   map.root :controller => "sessions", :action => "new"
 
