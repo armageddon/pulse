@@ -1,3 +1,4 @@
+<% if User.exists?(message.sender) %>
 <div class="clear"></div>
 <div class="object">
   <div class="icon">
@@ -23,3 +24,6 @@
   <div class="clear"></div>
 </div>
   <div class="clear"></div>
+<% else %>
+ This message has been deleted
+<% end %>

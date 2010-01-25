@@ -1,7 +1,9 @@
 <% if (object.event_type == 'addeduserplaceactivity' && UserPlaceActivity.exists?(object.subject_id)) || object.event_type == 'newuser' %>   
 
 <div class="object" id="<%= dom_id object %>">
+	<% if User.exists?(object.actor_id) %>
  	<% user = User.find(object.actor_id)%>
+	
   	<div class="icon" style="margin-right:10px">
 		<%= link_to image_tag(User.find(object.actor_id).icon.url(:thumb), :width => '45px', :height => '45px'), User.find(object.actor_id) %>
 	</div>
@@ -42,6 +44,7 @@
 		<div class="clear"></div>
   	</div>
  	<div class="clear"></div>
+	<% end %>
 </div>
 <% end %>
 <div class="clear"></div>

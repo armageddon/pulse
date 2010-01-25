@@ -4,6 +4,7 @@ class UsersController < ApplicationController
   # before_filter :admin_required, :only => [:suspend, :unsuspend, :destroy, :purge]
   before_filter :find_user, :only => [:suspend, :unsuspend, :destroy, :purge, :admin_delete]
   before_filter :login_required, :except => [:redeem, :create]
+  #skip_before_filter :verify_authenticity_token, :only => :admin_delete
 
   def place_activity_list
     @user_place_activities = UserPlaceActivity.paginate(:all, :conditions => 'user_id = ' + current_user.id.to_s, :page=> params[:page], :per_page=>10)
@@ -205,7 +206,29 @@ class UsersController < ApplicationController
   end
 
   def admin_delete
-    
+    logger.info('sdsdsd')
+    if current_user.admin
+      if @user != nil
+        #need to delete all messages to/from this user
+        @user.all_messages.each do |m|
+          m.destroy
+        end
+        #need to delete user_place_activities from this user
+        @user.user_place_activities.each do |u|
+          u.destroy
+        end
+        #need to delete all timeline events from this user
+  
+       @user.destroy
+      end
+     respond_to do |format|
+        format.js { render :text => "deleted"}
+      end
+    else
+      respond_to do |format|
+          format.js { render :text => "cannot delete this user"}
+      end
+    end
       
   end
   def destroy
@@ -226,10 +249,11 @@ class UsersController < ApplicationController
 
   
   def admin
+    logger.debug('sdsd')
     if current_user.admin
       render :template => "users/admin", :layout => false
     else
-      redirect_to login_path
+      render :text => 'you are not authorised'
     end
   end
   
