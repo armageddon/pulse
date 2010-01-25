@@ -218,6 +218,7 @@ class UsersController < ApplicationController
           u.destroy
         end
         #need to delete all timeline events from this user
+        
   
        @user.destroy
       end

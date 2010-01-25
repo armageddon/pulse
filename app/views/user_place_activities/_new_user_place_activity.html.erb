@@ -75,8 +75,8 @@
     <div style="margin-top:10px; float:left">
       <label  style="margin-top: 5px; color:#990000; float:left">When do you do it?</label>
       <div class="clear"></div>
-      <%= drop_down('user_place_activity[day_of_week]', 'Monday', {:width => '130px'},dotw_options, 'Any day',0) %>
-      <%= drop_down('user_place_activity[time_of_day]', 'Early Mornings', {:width => '200px'},tod_options, 'Any time',0) %>
+      <%= std_drop_down('user_place_activity[day_of_week]', 'Monday', {:width => '130px'},dotw_options, 'Any day',0) %>
+      <%= std_drop_down('user_place_activity[time_of_day]', 'Early Mornings', {:width => '200px'},tod_options, 'Any time',0) %>
     </div>
     <div class='clear'></div>
     <br />

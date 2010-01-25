@@ -194,8 +194,8 @@ after_update :reprocess_icon, :if => :cropping?
     first_name
   end
 
-  def suggested_places
-    Place.paginate(:select => 'places.*', :joins => 'inner join place_activities PA on PA.place_id = places.id inner join user_place_activities UPA on UPA.place_activity_id = PA.id where UPA.user_id <> ' + self.id.to_s,:page=>1,:per_page=>10)
+  def suggested_places(page=1, per_page=10)
+    Place.paginate(:select => 'distinct places.*', :conditions => ' places.id != 1 and UPA.user_id <> ' + self.id.to_s, :joins => 'inner join place_activities PA on PA.place_id = places.id inner join user_place_activities UPA on UPA.place_activity_id = PA.id ',:page=>page,:per_page=>per_page)
      
   end
 

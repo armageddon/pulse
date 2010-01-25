@@ -194,6 +194,10 @@ $(document).ready(function() {
         $(this).children('.fancy_select_options').show();
     });
 
+	$('.std_dd').live('change',function() {
+		$(this).prev().val($(this).selected().val());
+	});
+
     $('.fancy_select_options p').live('mouseover',function() {
         $(this).addClass('hover');
     }).live('mouseout',function() {

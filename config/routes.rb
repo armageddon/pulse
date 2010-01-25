@@ -17,6 +17,7 @@ ActionController::Routing::Routes.draw do |map|
   map.map_places '/search/map', :controller => 'search', :action => 'map_places'
    
   #users controller
+
   map.admin_delete '/admin_delete', :controller => 'users', :action => 'admin_delete'
   map.user_admins '/user_admins', :controller => 'users', :action => 'admin'
   map.register '/register', :controller => 'users', :action => 'create'
@@ -29,6 +30,7 @@ ActionController::Routing::Routes.draw do |map|
   map.update '/update', :controller => "users", :action => 'update'
   map.crop '/crop', :controller => "users", :action => 'crop'
   map.icon_crop '/icon_crop', :controller => "users", :action => 'icon_crop'
+  map.suggested_places '/account/suggested_places', :controller => 'user_matches', :action => 'suggested_places'
   map.resource :account, :controller => "users" do |u|
     u.resources :favorites, :controller => "user_favorites"
     u.resources :pictures, :controller => "user_pictures"
@@ -101,7 +103,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :users, :has_one => [:password]
   
   #profiles controller
-  map.user_user_place_activities '/users/user_place_activities', :controller=>'profiles', :action=>'user_place_activities'
+  map.user_user_place_activities '/profile_user_place_activities', :controller=>'profiles', :action=>'user_place_activities'
   map.resources :profiles, :except => :show
   map.user "/profiles/:id", :controller => "profiles", :action => "show"
   

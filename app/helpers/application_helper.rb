@@ -23,22 +23,22 @@ module ApplicationHelper
   end
   
   def std_drop_down(name, value, html_options, select_options, default_target = "Any", default_value = "", id="")
+    logger.debug('VALUE=' + value.to_s)
     opts = ""
-    target = ""
     if default_value != ""
-       opts += "<p>" + default_target + "<span class='hidden_value'>" + default_value.to_s + "</span></p>"
+       opts += "<option value=0>" + default_target + "</option>"
     end
     select_options.each do |opt|
-      opts += "<option value='" + opt[0] + "'>" + opt[1].to_s + "</option>"
-      target = opt[0] if opt[1].to_s == value.to_s
+      if(opt[1].to_s == value.to_s)
+        opts += "<option selected = 'true' value='" + opt[1].to_s + "'>" + opt[0].to_s + "</option>"
+      else
+        opts += "<option value='" + opt[1].to_s + "'>" + opt[0].to_s + "</option>"
+      end
     end
-    target = default_target if target.length==0
-    %Q(<select  style="margin-top: 0px; width:#{html_options[:width]}; float:left">
-        #{hidden_field_tag name, value}
+    %Q(#{hidden_field_tag name, value}
+    <select  class="std_dd" style="margin-top: 0px; width:#{html_options[:width]}; float:left">
   	    #{opts}     
   	  </select>)
-
-
   end
 
 
