@@ -66,31 +66,38 @@ class UsersController < ApplicationController
 
   def create
     logout_keeping_session!
-    @user = User.new(params[:user])
-    @user.sex ||= 2
-    @user.age ||= 5
-    @user.sex_preference ||= 1
-    @user.age_preference ||= 5
     
-    if params[:user][:postcode] != nil 
-      geocoder = Graticule.service(:google).new "ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog"
-      location = geocoder.locate('london ' + params[:user][:postcode])
-      latitude, longitude = location.coordinates
-      if latitude != nil && longitude != nil
-        @user.lat = latitude
-        @user.long = longitude
-        params[:user][:lat] = latitude
-        params[:user][:long] = longitude
+    @user = User.new(params[:user])
+      if(simple_captcha_valid?)
+      @user.sex ||= 2
+      @user.age ||= 5
+      @user.sex_preference ||= 1
+      @user.age_preference ||= 5
+      if params[:user][:postcode] != nil 
+        geocoder = Graticule.service(:google).new "ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog"
+        location = geocoder.locate('london ' + params[:user][:postcode])
+        latitude, longitude = location.coordinates
+        if latitude != nil && longitude != nil
+          @user.lat = latitude
+          @user.long = longitude
+          params[:user][:lat] = latitude
+          params[:user][:long] = longitude
+        end
       end
+      params[:user][:dob] = Date.new(params[:year].to_i(),params[:month].to_i(),params[:day].to_i())
+      @user.dob = params[:user][:dob]
+      params[:user][:age] = User.get_age_option_from_dob(params[:user][:dob])
+      @user.location_id = 1;
+      @user.postcode = @user.postcode.upcase
+      simple_captcha_valid?
+      @user.register! if @user && @user.valid?
+      success = @user && @user.valid?
+      @user.age 
+      logger.debug('Success ' + success.to_s)
+    else
+      success = false
+      @user.errors.add("You failed to enter a valid Captcha code - please try again");
     end
-    params[:user][:dob] = Date.new(params[:year].to_i(),params[:month].to_i(),params[:day].to_i())
-    @user.dob = params[:user][:dob]
-    params[:user][:age] = User.get_age_option_from_dob(params[:user][:dob])
-    @user.location_id = 1;
-    @user.postcode = @user.postcode.upcase
-    @user.register! if @user && @user.valid?
-    success = @user && @user.valid?
-    @user.age 
     respond_to do |format|
       if success && @user.errors.empty?
         # DEBUG

@@ -123,10 +123,11 @@
         <%= text_field_tag 'user[postcode]', @user.postcode || 'Post code', :class => 'input_text' %>
         <span class="error"></span>
       </div>
+<br />
+		<label  style="font-size:10px">Are you human? Please enter the text from the image below </label>
 		<div>
-			<%  if Rails.env == "production" %>
-			<%= show_simple_captcha %>  
-			<% end %>
+			<%= show_simple_captcha(:label => " ") %>  
+			<span class="error"></span>
 		</div>
       <div>
         <%= submit_button 'Save', :height => "20px", :width => "70px", :style => "margin-top:10px" %>

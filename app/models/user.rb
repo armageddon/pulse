@@ -2,7 +2,7 @@ require 'digest/sha1'
 
 class User < ActiveRecord::Base
 include UsersHelper
-
+apply_simple_captcha 
 fires :newuser, :on => :create, :actor => :self
 after_create :welcome_mail
 after_update :reprocess_icon, :if => :cropping?
@@ -106,7 +106,7 @@ after_update :reprocess_icon, :if => :cropping?
   # HACK HACK HACK -- how to do attr_accessible from here?
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
-  attr_accessible  :username, :email, :first_name, :password, :password_confirmation, :timezone, :description, :age, :age_preference, :sex, :sex_preference, :cell, :location_id, :icon, :dob, :postcode, :lat, :long
+  attr_accessible :captcha, :captcha_key, :username, :email, :first_name, :password, :password_confirmation, :timezone, :description, :age, :age_preference, :sex, :sex_preference, :cell, :location_id, :icon, :dob, :postcode, :lat, :long
   attr_accessor :login
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
 

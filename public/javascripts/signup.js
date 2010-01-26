@@ -413,6 +413,9 @@ $(document).ready(function() {
                                     username_error = true;
                                 }
                                 break;
+							default:
+								$('#simple_captcha').addClass('invalid');
+								$('#simple_captcha').next().text("You entered the code incorrectly. Please try again");
                         }
                     })
                 }
