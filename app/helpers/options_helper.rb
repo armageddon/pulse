@@ -1,5 +1,19 @@
 module OptionsHelper
 
+  def gender_preference_options
+    [
+      ["Male", User::Sex::MALE],
+      ["Female", User::Sex::FEMALE],
+      ["Both", User::Sex::BOTH]
+    ]
+  end
+  
+  def gender_options
+    [
+      ["Male", User::Sex::MALE],
+      ["Female", User::Sex::FEMALE]
+    ]
+  end
   def age_options
     [
       ["Early twenties", User::Age::EARLY_TWENTIES],
@@ -25,6 +39,35 @@ module OptionsHelper
       ["Saturday", 6],
       ["Sunday", 7]
     ]
+  end
+  
+  def day_options
+    days =  Array.new
+    (1..31).each do|m|
+      days.push([m,m])
+    end
+    days
+  end
+  
+  def month_options
+    months =  Array.new
+    i=0;
+    Date::MONTHNAMES.each do |m|
+      
+      if m != nil
+        i+=1;
+        months.push([m,i])
+      end 
+    end
+    months 
+  end
+  
+  def year_options
+    years =  Array.new
+    (DateTime.now.year-18).downto(DateTime.now.year - 70).each do|m|
+      years.push([m,m])
+    end
+    years
   end
   
   def dotw(day_of_week)
@@ -90,4 +133,14 @@ end
     end 
     return options
   end
+  
+  def activity_options(activity_category_id)
+    options = Array.new
+    Activity.find(:all, :conditions => 'activity_category_id = ' + activity_category_id.to_s).each do |opt|
+      options << [opt.description.to_s,opt.id.to_s]
+    end
+    options
+  end
+    
+    
 end

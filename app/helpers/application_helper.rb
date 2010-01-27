@@ -22,7 +22,7 @@ module ApplicationHelper
   	</div>)
   end
   
-  def std_drop_down(name, value, html_options, select_options, default_target = "Any", default_value = "", id="")
+  def std_drop_down(name, value, html_options, select_options, default_target = "Any", default_value = "", id="", select_id = "")
     logger.debug('VALUE=' + value.to_s)
     opts = ""
     if default_value != ""
@@ -36,7 +36,7 @@ module ApplicationHelper
       end
     end
     %Q(#{hidden_field_tag name, value}
-    <select  class="std_dd" style="margin-top: 0px; width:#{html_options[:width]}; float:left">
+    <select  id = "#{select_id}" class="std_dd" style="margin-top: 0px; margin-left:#{html_options[:leftmargin]};font-size:12px;height:23px;width:#{html_options[:width]}; float:left">
   	    #{opts}     
   	  </select>)
   end

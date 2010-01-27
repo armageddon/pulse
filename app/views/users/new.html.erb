@@ -76,42 +76,9 @@
         <div style="clear:both;"> </div>
         <%= hidden_field_tag 'user[dob]' %>
         <span>
-          <div class='fancy_select', style="width:40px; float:left">
-          <%= hidden_field_tag 'day' %>
-               <div class="fancy_select_target">
-              Day
-            </div>
-            <div class="fancy_select_options" , style="width:40px">
-            <% (1..31).each do|m|%>
-                   <p><%=m%> <span class="hidden_value"><%= m %></span></p>
-                   <% end %>
-            </div>
-          </div>
-          <div class='fancy_select', style="width:86px; float:left">
-          <%= hidden_field_tag 'month' %>
-               <div class="fancy_select_target">
-              Month
-            </div>
-            <div class="fancy_select_options", style="width:86px">
-            <% i = 0 %>
-            <% Date::MONTHNAMES.each do|m|%>
-
-                   <p><%=m%> <span class="hidden_value"><%= i %></span></p>
-                     <% i+=1 %>
-                   <% end %>
-            </div>
-          </div>
-          <div class='fancy_select' , style="width:50px; float:left">
-          <%= hidden_field_tag 'year' %>
-               <div class="fancy_select_target" >
-              Year
-            </div>
-            <div class="fancy_select_options" , style="width:50px">
-            <% (DateTime.now.year-18).downto(DateTime.now.year - 100) do|m|%>
-                   <p><%=m%> <span class="hidden_value"><%= m %></span></p>
-                   <% end %>
-            </div>
-          </div>
+			<%= std_drop_down('day', 0, {:width => '60px'},day_options, 'Day', 0) %>
+			<%= std_drop_down('month', 0, {:width => '86px'},month_options, 'Month', 0) %>
+			<%= std_drop_down('year', 0, {:width => '70px'},year_options, 'Year', 0) %>
         </span>
 		<span id='dob_error' class="error"></span>
       </div>
@@ -123,7 +90,7 @@
         <%= text_field_tag 'user[postcode]', @user.postcode || 'Post code', :class => 'input_text' %>
         <span class="error"></span>
       </div>
-<br />
+		<br />
 		<label  style="font-size:10px">Are you human? Please enter the text from the image below </label>
 		<div>
 			<%= show_simple_captcha(:label => " ") %>  
@@ -153,42 +120,20 @@
       </div>
       <div style="clear:both;"> </div>
       <div style='padding-top:10px;'>
-        <label  style="margin-top: 5px; color:#990000;">Your gender</label>
-        <div class='fancy_select'>
-          <%= hidden_field_tag 'user[sex]' %>
-          <div class="fancy_select_target">Select a gender</div>
-          <div class="fancy_select_options">
-            <p>Male <span class="hidden_value"><%= User::Sex::MALE %></span></p>
-            <p>Female <span class="hidden_value"><%= User::Sex::FEMALE %></span></p>
-          </div>
-        </div>
-      </div>
-      
-      <div style="clear:both;"> </div>
-      <div style='padding-top:10px;'>
-        <label  style="margin-top: 5px; color:#990000;">Gender preference</label>
-        <div class='fancy_select'>
-          <%= hidden_field_tag 'user[sex_preference]' %>
-          <div class="fancy_select_target" id='user_gender_preference_target'>Looking for</div>
-          <div class="fancy_select_options">
-            <p>Male <span class="hidden_value"><%= User::Sex::MALE %></span></p>
-            <p>Female <span class="hidden_value"><%= User::Sex::FEMALE %></span></p>
-            <p>Both <span class="hidden_value"><%= User::Sex::BOTH %></span></p>
-          </div>
-        </div>
-      </div>
-      <div style='padding-top:10px;'>
-        <label  style="margin-top: 5px; color:#990000;">Age preference</label>
-        <div class='fancy_select'>
-          <%= hidden_field_tag 'user[age_preference]' %>
-          <div class="fancy_select_target" id="user_age_preference_target">Around the age</div>
-          <div class="fancy_select_options">
-            <% age_options.each do |op| %>
-              <p><%= op[0] %> <span class="hidden_value"><%= op[1] %></span></p>
-            <% end %>
-          </div>
-        </div>
-      </div>
+        <label  style="margin-top: 5px; color:#990000;">Your gender</label><br />
+		<%= std_drop_down('user[sex]', 0, {:width => '150px'},gender_options, 'Select a gender', 0) %>
+	  </div>
+	  <div style="clear:both;"> </div>
+	  <div style='padding-top:10px;'>
+	  	<label  style="margin-top: 5px; color:#990000;">Looking for</label><br />
+		<%= std_drop_down('user[sex_preference]', 0, {:width => '150px'},gender_preference_options, 'Gender preference', 0) %>
+	  </div>
+	  <div style="clear:both;"> </div>
+	  <div style='padding-top:10px;'>
+	  	<label  style="margin-top: 5px; color:#990000;">Age preference</label><br />
+		<%= std_drop_down('user[age_preference]', 0, {:width => '150px'},age_options, 'Around the age', 0) %>
+	  </div>
+	<br />
       <div class="image_submit; padding-top:10px">
         <%= submit_button "Save info", :height => "20px", :width => "70px" %>
       </div>

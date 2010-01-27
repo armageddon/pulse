@@ -265,40 +265,30 @@ $(document).ready(function() {
 		var day = $('#day');
 		var month = $('#month');
 		var year = $('#year');
-		
-		
-		
         var error = false;
 
         $('.invalid').removeClass('invalid');
         $('span.error').text('');
 
-		if (day.val() == 'Day' || day.val() == '' )
+		if (day.val() == 0 || day.val() == '' )
 		{
 			error = true;
 			$('#dob_error').text('Enter a valid date of birth');
 			day.addClass('invalid');
 		}
-		if (month.val() == 'Month' || day.val() == '' )
+		if (month.val() == 0 || day.val() == '' )
 		{
 			error = true;
 			$('#dob_error').text('Enter a valid date of birth');
 			month.addClass('invalid');
 		}
-		if (year.val() == 'Year' || day.val() == '' )
+		if (year.val() == 0 || day.val() == '' )
 		{
 			error = true;
 			$('#dob_error').text('Enter a valid date of birth');
 			year.addClass('invalid');
 		}
-		if (day.val() == 'Month')
-		{
-			error = true;
-		}
-		if (day.val() == 'Year')
-		{
-			error = true;
-		}
+		
         if (email.val() == '' || email.val() == 'Email address') {
             email.addClass('invalid');
 

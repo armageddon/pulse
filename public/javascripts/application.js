@@ -13,11 +13,13 @@ $(document).ready(function() {
         });
         $("#dialog").jqmAddTrigger('.add_to_favorites, .add_place, .add_event, .add_activity, .invite_a_friend');
     }
+
     $('#crop').live('click',function() {
 	   	$('#dialog').jqm({ajax:'/icon_crop',modal:true}); 
 		$('#dialog').jqmShow();
 	return false;
 	});
+	
 	$('#cropp').live('click',function() {
 		alert('crop');
 		$("#photo_crop").ajaxSubmit({
@@ -81,7 +83,8 @@ $(document).ready(function() {
         })
         return false;
     })
-    $(".place_activity_people_favorite").live('click',function() {
+    
+	$(".place_activity_people_favorite").live('click',function() {
         var link = $(this);
         $.ajax({
             type: "POST",
@@ -99,7 +102,8 @@ $(document).ready(function() {
         })
         return false;
     })
-    $(".profile_people_unfavorite").live('click',function() {
+    
+	$(".profile_people_unfavorite").live('click',function() {
         var link = $(this);
         $.ajax({
             type: "DELETE",
@@ -209,4 +213,21 @@ $(document).ready(function() {
         return false;
     });
 
+	$('#activity_category_select').live('change',function() {
+	$.ajax({
+        type: "GET",
+        dataType: "json",
+        url: "/search/activity_list",
+        data: { "activity_category_id" : $('#activity_category_id').val() },
+        success: function(p) {
+	 		var options = "";
+			for(i=0;i<p.length;i++)
+	        {
+				options += '<option value=' + p[i].activity.id + '>'+p[i].activity.name + '</option>';
+	 		}
+			$('#activity_select').html(options);
+			$('#activity_id').val(p[0].activity.id);
+        }
+      })
+	});
   });

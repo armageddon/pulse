@@ -20,6 +20,7 @@
         "data-prefilled" => (user_place_activity.place.present? ? 'true' : 'false')
     %>
       <div class="clear"></div>
+
     <% elsif  view == "add_place" %>
       <h2><%=I18n.translate("Add_place_to_favorites")%></h2>
       <%= image_tag(place.icon.url(:thumb), :width => '30px', :height => '30px') %>
@@ -33,6 +34,7 @@
         <%= render :partial => "shared/activity_select",  :locals => {:allow_any_activity => "1",:activity => nil,:activity_category => nil} %>
       </div>
       <div class="clear"></div>
+
     <% elsif view == "add_place_activity" %>
       <h2><%=I18n.translate("Add_place_to_favorites")%></h2>
       <%= image_tag(place.icon.url(:thumb), :width => '30px', :height => '30px') %>
@@ -46,11 +48,14 @@
       <h2>Add to favourites</h2>
 
 
-      <div id="activity_category_select" style="margin-top:10px">
+      <div id="activity_category_div" style="margin-top:10px">
         <label  style="margin-top: 5px; color:#990000;">What do you like doing?</label>
         <div class="clear"></div>
-        <%= render :partial => "shared/activity_select",  :locals => {:allow_any_activity => "1",:activity => nil,:activity_category => nil} %>
-      </div>
+        	<%= std_drop_down('activity_category_id', 0, {:width => '223px'},activity_category_options, 'Any category', 0, 'activity_category_hidden','activity_category_select') %><br />
+			<div class="clear"></div>
+			<%= std_drop_down('activity_id', 0, {:width => '223px', :leftmargin => '15px'},gender_options, 'Any activity', 0, 'activity_hidden', 'activity_select' ) %><br />
+			<div class="clear"></div>
+ 		</div>
 
       <div class="clear"></div>
       <label  style="margin-top: 5px; color:#990000; float:left">Where do you like doing it?</label>
