@@ -64,9 +64,12 @@ module OptionsHelper
   
   def year_options
     years =  Array.new
-    ((DateTime.now.year-18).downto(DateTime.now.year - 70)).each do |m|
-      years.push([m,m])
-    end
+    maxyear = DateTime.now.year-18
+    minyear = DateTime.now.year - 70
+    maxyear.downto(minyear) { |m| years.push([m,m]) }
+     
+
+
     years
   end
   
