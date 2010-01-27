@@ -67,9 +67,6 @@ module OptionsHelper
     maxyear = DateTime.now.year-18
     minyear = DateTime.now.year - 70
     maxyear.downto(minyear) { |m| years.push([m,m]) }
-     
-
-
     years
   end
   

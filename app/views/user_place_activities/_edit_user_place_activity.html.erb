@@ -4,7 +4,7 @@
 		<%= hidden_field_tag 'user_place_activity_id', user_place_activity.id %>
 		<%= hidden_field_tag 'source', @source %>
 
-      <div id="activity_category_select" style="margin-top:10px">
+      <div id="activity_category_div" style="margin-top:10px">
         <label  style="margin-top: 5px; color:#990000;">What do you like doing?</label>
         <div class="clear"></div>
 		<% activity_category = (user_place_activity.activity.activity_category_id == 0 ? nil : ActivityCategory.find(user_place_activity.activity.activity_category_id)) %>
