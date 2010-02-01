@@ -22,13 +22,13 @@ class UserMailer < ActionMailer::Base
    @subject   += 'You have received a mail from'  + User.find(sender).first_name
    @body[:sender]  = sender
    @body[:recipient] = recipient
-   @body[:url] = account_messages_path
+   @body[:url] = 'http://hellopulse.com' + account_messages_path
   end
   protected
     def setup_email(user)
       @recipients  = "#{user.email}"
       @from        = "admin@hellopulse.com"
-      @subject     = "HELLOPULSE"
+      @subject     = "HELLOPULSE "
       @sent_on     = Time.now
       @body[:user] = user
     end
