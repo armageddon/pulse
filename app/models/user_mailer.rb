@@ -16,7 +16,14 @@ class UserMailer < ActionMailer::Base
       @subject    += 'Your new password'
       @body[:new_password]  = new_password
     end
-  
+
+  def message_received(recipient, sender)
+    setup_email(User.find(recipient))
+   @subject   += 'You have received a mail from'  + User.find(sender).first_name
+   @body[:sender]  = sender
+   @body[:recipient] = recipient
+   @body[:url] = account_messages_path
+  end
   protected
     def setup_email(user)
       @recipients  = "#{user.email}"

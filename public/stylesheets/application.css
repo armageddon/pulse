@@ -1,3 +1,11 @@
+
+.std_dd
+{
+    font-size:12px;
+    height:23px;
+    margin-bottom:5px;
+}
+
 textarea
 {
 	font-family:Arial;
@@ -108,7 +116,7 @@ th, td {
 #container {
   width: 940px;
   margin: 0 auto;
-  font-size: .7em;
+  
 }
 
 #header {
@@ -308,10 +316,11 @@ a, a:active {
 }
 
 .input_text {
-  padding: 4px;
+  padding: 3px;
   border: 1px solid #f1f3f6;
   background-color: #f1f3f6;
   color: #666;
+  margin-bottom:5px;
 }
 
 #manage_place {
@@ -586,7 +595,7 @@ table.calendar td a.active {
   border: 1px solid #f1f3f6;
   background-color: #f1f3f6;
   color: #666;
-  width: 400px;
+  width: 260px;
 }
 
 .section_header {
@@ -1035,12 +1044,14 @@ a{
 	/*Sign up*/
 	.sign_up_label {
 		color:#990000;
-		margin-bottom: 5px;
-		margin-top: 10px;
+		margin-bottom: 3px;
+	
+                float:left;
 	}
 	.sign_up_text {
 		color:#990000;
 		margin-bottom: 12px;
+                float:left;
 	}
 	#add_photo {
 	  width: 200px;
@@ -1051,6 +1062,8 @@ a{
 	  font-size: 1.3em;
 	  background: #f1f3f6 url(/images/add_photo.gif) center no-repeat;
 	  cursor: pointer;
+          margin-left:30px;
+          margib-bottom:5px;
 	}
 
 	#add_photo_button {

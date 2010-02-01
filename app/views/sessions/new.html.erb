@@ -1,103 +1,116 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-	<title>HelloPulse - bringing together like-minded singles</title>
-	<meta name="HelloPulse" CONTENT="A new site for bringing together like-minded singles" />
-  <%= stylesheet_link_tag %w(960 reset ) %>
-  <%= javascript_include_tag "jquery-1.3.2" %>
-  
-  <style type="text/css" media="screen">
-    * { font-family: Verdana, Serif !important;}
-    a, a:visited, a:active { color: #990000; text-decoration: none;}
-    #stock { margin-top: 90px; position: relative;}
-    #logo { position: absolute; top: 195px; left: -20px; }
-    #copy { font-size: 1.6em; }
-    #more { font-size: .7em; margin-top: 30px;}
-    .input_text { font-size: .8em; padding: 4px; border: none; background-color: #f1f3f6; color: #666;}
-    #go { vertical-align: middle;}
-    #hello { margin-bottom: 0px;}
-    #session_form { }
-    #errors { font-size: .5em; text-align: right;}
-    /* REQUIRED BUTTON STYLES: */	
+  <head>
+    <title>HelloPulse - bringing together like-minded singles</title>
+    <meta name="HelloPulse" CONTENT="A new site for bringing together like-minded singles" />
+    <%= stylesheet_link_tag %w(960 reset application) %>
+    <%= javascript_include_tag "jquery-1.3.2", 'application' %>
 
-	
-   	.submit{
-	padding:2px!important;
-	Background-color:#bf1212!important;
-	border:2px solid #9f1111!important;
-	color:#fff!important;
-	margin:3px;
-	margin-bottom:10px;
-	Font-weight:700!important;
-	Font-family:arial!important;
-	background-image:none;}
+    <style type="text/css" media="screen">
 
-    @media screen and (-webkit-min-device-pixel-ratio:0) {
-    	/* Safari and Google Chrome only - fix margins */
-    	button span {
-    		margin-top: -1px;
-    	}
-    }
-    
+      a, a:visited, a:active { color: #990000; text-decoration: none;}
+      #stock { margin-top: 30px; position: relative;}
+      #logo { position: absolute; top: 230px; left: -20px; }
 
-    
-  </style>
-</head>
+      #more { font-size: 14px; margin-top:15px;margin-bottom:10px}
+      .input_text { font-size: .8em; padding: 4px; border: none; background-color: #f1f3f6; color: #666;}
+      #go { vertical-align: middle;}
+      #hello { margin-bottom: 0px;}
+      #session_form { }
+      #errors { font-size: .5em; text-align: right;}
+      /* REQUIRED BUTTON STYLES: */
 
-<body>
-  
-  <div id="container" class="container_16">
-    <div class="grid_16" id="stock">
-      <%= image_tag "feature-pannel.jpg" %>
-      <div id="logo">
-        <%= image_tag "logo.png" %>
+
+      .submit_reg{
+        padding:2px!important;
+        Background-color:#bf1212!important;
+
+        color:#fff!important;
+        margin:3px;
+        margin-bottom:10px;
+        font-size:23px;
+        Font-weight:700!important;
+        Font-family:arial!important;
+        background-image:none;}
+
+      @media screen and (-webkit-min-device-pixel-ratio:0) {
+        /* Safari and Google Chrome only - fix margins */
+        button span {
+          margin-top: -1px;
+        }
+      }
+
+
+
+    </style>
+  </head>
+
+  <body>
+
+    <div id="container" class="container_16">
+
+      <div class="grid_16" id="stock">
+        <div style="float:right; margin-right:20px">
+          <% form_tag session_path , :id => 'session_form' do -%>
+            <div>
+              <span style="font-size:14px">Members login:</span>
+              <span style="font-size:14px"><%= text_field_tag 'login', @login, :class => "input_text", :value => "Username", :size => "10" %></span>
+              <span style="font-size:14px"><%= password_field_tag 'password', nil, :size => "10", :class => "input_text", :style => "display: none;" %></span>
+              <span style="font-size:14px"><input type="text" class="input_text" size="10" value="Password" id="password_holder"/></span>
+              <%= submit_button "GO", :class=> 'submit', :type =>'submit'%><br />
+            </div>
+            <div style="float:right; margin-bottom:5px">
+              <%= link_to "Forgot Password?", :controller=>'passwords', :action=>"new", :id=>'new_password'%>
+            </div>
+          <% end %>
+        </div>
+        <%= image_tag "feature-pannel.jpg" %>
+        <div id="logo">
+          <%= image_tag "logo.png" %>
+        </div>
+      </div>
+
+      <div class="clear"></div>
+
+      <div class="" style="padding-left:180px;width:740px;float:left;padding;margin-left:10px;margin-right:10px;" id="">
+        <p id="hello" style="font-size:25px;margin-top:10px"> Welcome to HelloPulse... the place for singles to meet out and about in London</p>
+
+
+
+
+        <% if flash[:error] %>
+          <p id="errors" style="font-size:13px;margin-right:20px;height:23px">
+            <%= flash[:error] %>
+          </p>
+        <% end %>
+        <div style="width:520px;float:left">
+          <div style="margin-bottom:10px; font-size:17px;margin-top:15px">Recent activity on HelloPulse</div>
+          <%= render :partial => "shared_object_collections/feed_collection", :locals => {:collection => @updates} %>
+        </div>
+        <div style="float:right; margin-right:70px;margin-top:50px;width:130px" class="submit_reg">
+          <span style="font-size:23px;margin-left:10px;">New?</span>
+         
+          <br />
+          <% form_tag redeem_path, :id => 'redeem_form' do -%>
+            <%= submit_button "Join here", :class =>'submit_reg'  %>
+          <% end %>
+        </div>
       </div>
     </div>
-    
-    <div class="clear"></div>
-    
-    <div class="grid_13 omega prefix_3" id="copy">
-      <p id="hello"> Welcome to HelloPulse. </p>
-        <% form_tag session_path , :id => 'session_form' do -%>
-        Have an account? Sign in:
-        <%= text_field_tag 'login', @login, :class => "input_text", :value => "Username", :size => "10" %>
-        <%= password_field_tag 'password', nil, :size => "10", :class => "input_text", :style => "display: none;" %>
-        <input type="text" class="input_text" size="10" value="Password" id="password_holder"/>
-	
-        <%= submit_button "GO", :class=> 'submit_text', :type =>'submit'%>
-		<div style ='font-size:9px' >
-	       <%= link_to "Forgot Password?", :controller=>'passwords', :action=>"new", :id=>'new_password'%>
-	    </div>
-        <% end %>
-		
-		<% form_tag redeem_path, :id => 'redeem_form', :style => "display: none;" do -%>
-          Please enter your invitation code:
-          <%= text_field_tag 'invite_code', nil, :class => "input_text", :value => "Invite Code", :size => "10" %>
-          <%= submit_button "GO", :class =>'submit'  %>
-        <% end %>
 
-      <% if flash[:error] %>        
-        <p id="errors">
-          <%= flash[:error] %>
-        </p>
-      <% end %>
-        
-      <p id="more"><%= link_to "Redeem an invitation", "#", :id => "redeem" %> <%= link_to "Login in", "#", :id => "show_login", :style => "display: none;" %> or <%= link_to "find out more", '/about' %></p>
-    </div>
-  </div>
-</body>
+  </body>
 </html>
 
 <script type="text/javascript" charset="utf-8">
   $(document).ready(function() {
     
     $('#login, #invite_code').focus(function() {
-      <%# password failure/autocomplete %>
-      <% if @login.present? %>      
+<%# password failure/autocomplete %>
+<% if @login.present? %>      
         $.data(this, 'clicked', true);
-      <% end %>
+<% end %>
     
       if (!$.data(this, 'clicked')) {
         $(this).val('');
@@ -116,7 +129,7 @@
     
     $('#redeem, #show_login').click(function() {
       $('#redeem, #show_login').toggle();
-      $("#session_form, #redeem_form").toggle();
+     
       return false;
     })
     

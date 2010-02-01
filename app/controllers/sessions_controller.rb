@@ -3,8 +3,11 @@ class SessionsController < ApplicationController
   
   def new
     if logged_in?
-      return redirect_to(:controller => "users", :action => "show") 
+      return redirect_to(:controller => "users", :action => "show")
+    else
+      @updates = TimelineEvent.paginate( :page=>1, :conditions=>"icon_file_name is not  null",:joins=>"INNER JOIN users on users.id = timeline_events.actor_id",:per_page => 5, :order => 'created_at DESC')
     end
+
   end
 
   def create
@@ -36,7 +39,7 @@ class SessionsController < ApplicationController
     redirect_back_or_default('/')
   end
 
-protected
+  protected
   # Track failed login attempts
   def note_failed_signin
     flash[:error] = "Couldn't log you in as '#{params[:login]}'"

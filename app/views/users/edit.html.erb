@@ -1,8 +1,6 @@
 
 <div class="column_header">
-  <span>
-    <h2>Edit details</h2>
-  </span>
+   <h2>Edit details</h2>
 </div>
 <% form_for current_user, :url => account_path, :html => { :multipart => true } do |f| %>
   <p>
@@ -46,26 +44,35 @@
     <% end %>
   <% end %>
 
-	
-	<label style="margin-top: 10px;">Your gender</label>
-	<div class="clear"></div>
-	<%= std_drop_down('user[sex]', current_user.sex, {:width => '150px'},gender_options, 'Select a gender', '') %><br />
-	<label style="margin-top: 10px;">Looking for</label>
-	<div class="clear"></div>
-	<%= std_drop_down('user[sex_preference]', current_user.sex_preference , {:width => '150px'},gender_preference_options, 'Gender preference', '') %><br />
-	<label style="margin-top: 10px;">Age preference</label>
-	<div class="clear"></div>
-	<%= std_drop_down('user[age_preference]', current_user.age_preference, {:width => '150px'},age_options, 'Around the age', '') %><br />
 
-	<label style="margin-top: 10px;">Date of Birth</label>
-	<div class="clear"></div>
-	<span>
-		<%= std_drop_down('day', current_user.dob.day, {:width => '60px'},day_options, 'Day', '') %>
-		<%= std_drop_down('month', current_user.dob.month, {:width => '86px'},month_options, 'Month', '') %>
-		<%= std_drop_down('year', current_user.dob.year, {:width => '70px'},year_options, 'Year', '') %>
-    </span>
-<br />
+  <label style="margin-top: 10px;">Your gender</label>
+  <div class="clear"></div>
+  <%= std_drop_down('user[sex]', current_user.sex, {:width => '150px'},gender_options, 'Select a gender', '') %><br />
+  <label style="margin-top: 10px;">Looking for</label>
+  <div class="clear"></div>
+  <%= std_drop_down('user[sex_preference]', current_user.sex_preference , {:width => '150px'},gender_preference_options, 'Gender preference', '') %><br />
+  <label style="margin-top: 10px;">Age preference</label>
+  <div class="clear"></div>
+  <%= std_drop_down('user[age_preference]', current_user.age_preference, {:width => '150px'},age_options, 'Around the age', '') %><br />
+
+  <label style="margin-top: 10px;">Date of Birth</label>
+  <div class="clear"></div>
+  <span>
+    <%= std_drop_down('day', current_user.dob.day, {:width => '60px'},day_options, 'Day', '') %>
+    <%= std_drop_down('month', current_user.dob.month, {:width => '86px'},month_options, 'Month', '') %>
+    <%= std_drop_down('year', current_user.dob.year, {:width => '70px'},year_options, 'Year', '') %>
+  </span>
+
+  <label style="margin-top: 10px;">Your Height</label>
+  <div class="clear"></div>
+  <%= std_drop_down('feet', current_user.feet, {:width => '40px'},feet_options, ' ', '0') %>  feet &nbsp;<%= std_drop_down('inches', current_user.inches, {:width => '50px'},inches_options, ' ', '-1') %>  inches<br />
+
+  <label style="margin-top: 10px;">Your Build</label>
+  <div class="clear"></div>
+  <%= std_drop_down('user[body_type]', current_user.body_type, {:width => '150px'},body_type_options, 'Not specified', '0') %><br />
+  <br />
   <div style="clear:left;"> </div>
+
 
   <br />
 
@@ -77,9 +84,9 @@
   <br />
 
 
-<%= link_to "Change Password", :controller=>'passwords', :action=>"edit", :id=>'change_password' %>
-<br />
-<br />
+  <%= link_to "Change Password", :controller=>'passwords', :action=>"edit", :id=>'change_password' %>
+  <br />
+  <br />
   <%= submit_button('Save') %>
 
 <% end %>

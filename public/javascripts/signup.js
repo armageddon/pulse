@@ -121,9 +121,9 @@ $(document).ready(function() {
         var error = false;
         $('#activity_error').removeClass("show");
         $('#activity_error').removeClass("hidden_value");
-        if($('#user_place_activity[description]').val() == "tell us why you socialise here and whether it's good for meeting people" )
+        if($('#user_place_activity_description').val() == "tell us why you socialise here and whether it's good for meeting people" )
         {
-            $('#user_place_activity[description]').val("");
+            $('#user_place_activity_description').val("");
         }
         // if($('#user_place_activity[description]').val() == "tell us why you socialise here and whether it's good for meeting people" ||
         //     $('#user_place_activity[description]').val() == ''

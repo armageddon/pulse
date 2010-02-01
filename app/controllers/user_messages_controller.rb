@@ -27,6 +27,7 @@ class UserMessagesController < ApplicationController
   end
 
   def update
+    logger.debug("Message update")
     @message = current_user.sent_messages.build(params[:message].merge(:recipient_id => @other_user.id))
     respond_to do |format|
       if @message.save

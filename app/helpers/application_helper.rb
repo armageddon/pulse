@@ -36,7 +36,7 @@ module ApplicationHelper
       end
     end
     %Q(#{hidden_field_tag name, value}
-    <select  id = "#{select_id}" class="std_dd" style="margin-top: 0px; margin-left:#{html_options[:leftmargin]};font-size:12px;height:23px;width:#{html_options[:width]}; float:left">
+    <select  id = "#{select_id}" class="std_dd" style="margin-left:#{html_options[:leftmargin]};width:#{html_options[:width]};float:#{html_options[:float]}; ">
   	    #{opts}     
   	  </select>)
   end
@@ -102,7 +102,12 @@ module ApplicationHelper
   end
   
   def submit_button(text, options={})
-    %Q(<button class="submit" id="#{options[:id]}" type="submit"style="#{options[:style]}" 
+     if options[:class] == "" or options[:class] == nil
+       c =  'submit'
+     else
+       c =options[:class]
+     end
+    %Q(<button  id="#{options[:id]}" class="#{c}" type="submit"style="#{options[:style]}"
       ><span class="submit_text">#{text}</span>
     </button>)
   end

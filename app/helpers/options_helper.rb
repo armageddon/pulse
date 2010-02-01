@@ -1,17 +1,44 @@
 module OptionsHelper
 
+  def body_type_options
+    [
+      ["Slim",User::Body::SLIM],
+      ["Average",User::Body::AVERAGE],
+      ["Curvaceous",User::Body::CURVACEOUS],
+      ["Well Built",User::Body::WELL_BUILT],
+      ["Athletic",User::Body::ATHLETIC],
+      ["Fuller",User::Body::FULLER]
+    ]
+  end
+  def feet_options
+    [
+       ["3", 3],
+      ["4", 4],
+      ["5", 5],
+      ["6", 6],
+       ["7", 7]
+    ]
+  end
+
+  def inches_options
+     inches =  Array.new
+    (0..12).each do|m|
+      inches.push([m,m])
+    end
+    inches
+  end
   def gender_preference_options
     [
-      ["Male", User::Sex::MALE],
-      ["Female", User::Sex::FEMALE],
+      ["Men", User::Sex::MALE],
+      ["Women", User::Sex::FEMALE],
       ["Both", User::Sex::BOTH]
     ]
   end
   
   def gender_options
     [
-      ["Male", User::Sex::MALE],
-      ["Female", User::Sex::FEMALE]
+      ["Man", User::Sex::MALE],
+      ["Woman", User::Sex::FEMALE]
     ]
   end
   def age_options
@@ -72,28 +99,28 @@ module OptionsHelper
   
   def dotw(day_of_week)
     case day_of_week
-      when 0 then "Any day"
-      when 1 then "Monday"
-      when 2 then "Tuesday"
-      when 3 then "Wednesday"
-      when 4 then "Thursday"
-      when 5 then "Friday"
-      when 6 then "Saturday"
-      when 7 then "Sunday"
-     end
-end
-    def tod(time_of_day)
-      case time_of_day
-        when 0 then "Any Time"
-        when 1 then "Early Mornings"
-        when 2 then "Mid Mornings"
-        when 3 then "Late Mornings"
-        when 4 then "Midday"
-        when 5 then "Afternoons"
-        when 6 then "Late Afternoons"
-        when 7 then "Evenings"
-        when 8 then "Late Nights"
-       end
+    when 0 then "Any day"
+    when 1 then "Monday"
+    when 2 then "Tuesday"
+    when 3 then "Wednesday"
+    when 4 then "Thursday"
+    when 5 then "Friday"
+    when 6 then "Saturday"
+    when 7 then "Sunday"
+    end
+  end
+  def tod(time_of_day)
+    case time_of_day
+    when 0 then "Any Time"
+    when 1 then "Early Mornings"
+    when 2 then "Mid Mornings"
+    when 3 then "Late Mornings"
+    when 4 then "Midday"
+    when 5 then "Afternoons"
+    when 6 then "Late Afternoons"
+    when 7 then "Evenings"
+    when 8 then "Late Nights"
+    end
   end  
   
   def tod_options

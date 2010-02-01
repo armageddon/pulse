@@ -44,6 +44,7 @@ doc\:plugins\:graticule=Generate documentation for the graticule plugin
 doc\:plugins\:later_dude=Generate documentation for the later_dude plugin
 doc\:plugins\:paperclip=Generate documentation for the paperclip plugin
 doc\:plugins\:restful_authentication=Generate documentation for the restful_authentication plugin
+doc\:plugins\:simple_captcha=Generate documentation for the simple_captcha plugin
 doc\:plugins\:thinking-sphinx=Generate documentation for the thinking-sphinx plugin
 doc\:plugins\:timeline_fu=Generate documentation for the timeline_fu plugin
 doc\:plugins\:twelve_hour_time=Generate documentation for the twelve_hour_time plugin
@@ -85,6 +86,8 @@ rails\:update\:scripts=Add new scripts to the application script/ directory
 rails_env=
 routes=Print out all defined routes in match order, with names.
 secret=Generate a crytographically secure secret key. This is typically used to generate a secret for cookie sessions.
+simple_captcha\:setup=Set up the plugin SimpleCaptcha for rails >= 2.0
+simple_captcha\:setup_old=Set up the plugin SimpleCaptcha for rails < 2.0
 staging\:sync=
 stats=Report code statistics (KLOCs, etc) from the application
 test=Run all unit, functional and integration tests
