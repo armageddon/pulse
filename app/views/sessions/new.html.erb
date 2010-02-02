@@ -24,13 +24,13 @@
 
 
       .submit_reg{
-        padding:2px!important;
-        Background-color:#bf1212!important;
-
+        padding:7px!important;
+        Background-color:#9F1111!important;
+        width:145px;
         color:#fff!important;
         margin:3px;
         margin-bottom:10px;
-        font-size:23px;
+        font-size:20px;
         Font-weight:700!important;
         Font-family:arial!important;
         background-image:none;}
@@ -85,16 +85,16 @@
             <%= flash[:error] %>
           </p>
         <% end %>
-        <div style="width:520px;float:left">
+        <div style="width:520px;float:left; margin-top:20px;">
           <div style="margin-bottom:10px; font-size:17px;margin-top:15px">Recent activity on HelloPulse</div>
           <%= render :partial => "shared_object_collections/feed_collection", :locals => {:collection => @updates} %>
         </div>
-        <div style="float:right; margin-right:50px;margin-top:0px;width:150px" >
-          <span style="font-size:14px;margin-left:0px;">New to HelloPulse?</span>
+        <div style="float:right; margin-right:0px;margin-top:35px;width:160px" >
+          <div style="font-size:17px;margin-left:3px;margin-bottom:5px">New to HelloPulse?</div>
          
-          <br />
+          
           <% form_tag redeem_path, :id => 'redeem_form' do -%>
-            <%= submit_button "Join here", :class =>'submit_reg'  %>
+            <%= submit_button "Join Here", :class =>'submit_reg'  %>
           <% end %>
         </div>
       </div>
