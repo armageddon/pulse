@@ -31,7 +31,10 @@
       <div id="activity_category_select" style="margin-top:10px">
         <label  style="margin-top: 5px; color:#990000;">What do you do here?</label>
         <div class="clear"></div>
-        <%= render :partial => "shared/activity_select",  :locals => {:allow_any_activity => "1",:activity => nil,:activity_category => nil} %>
+        <%= std_drop_down('activity_category_id', 0, {:width => '223px'},activity_category_options, 'Any category', 0, 'activity_category_hidden','activity_category_select') %><br />
+        <div class="clear"></div>
+        <%= std_drop_down('activity_id', 0, {:width => '223px', :leftmargin => '15px'},gender_options, 'Any activity', 0, 'activity_hidden', 'activity_select' ) %><br />
+        <div class="clear"></div>
       </div>
       <div class="clear"></div>
 
@@ -51,11 +54,11 @@
       <div id="activity_category_div" style="margin-top:10px">
         <label  style="margin-top: 5px; color:#990000;">What do you like doing?</label>
         <div class="clear"></div>
-        	<%= std_drop_down('activity_category_id', 0, {:width => '223px'},activity_category_options, 'Any category', 0, 'activity_category_hidden','activity_category_select') %><br />
-			<div class="clear"></div>
-			<%= std_drop_down('activity_id', 0, {:width => '223px', :leftmargin => '15px'},gender_options, 'Any activity', 0, 'activity_hidden', 'activity_select' ) %><br />
-			<div class="clear"></div>
- 		</div>
+        <%= std_drop_down('activity_category_id', 0, {:width => '223px'},activity_category_options, 'Any category', 0, 'activity_category_hidden','activity_category_select') %><br />
+        <div class="clear"></div>
+        <%= std_drop_down('activity_id', 0, {:width => '223px', :leftmargin => '15px'},gender_options, 'Any activity', 0, 'activity_hidden', 'activity_select' ) %><br />
+        <div class="clear"></div>
+      </div>
 
       <div class="clear"></div>
       <label  style="margin-top: 5px; color:#990000; float:left">Where do you like doing it?</label>
@@ -92,7 +95,7 @@
       <%= text_area_tag('user_place_activity[description]',USER_PLACE_DESCRIPTION_TEXT, :rows => 2, :cols=>45,:class => "input_text word_count") %>
     </div>
 
-	<%= text_field_tag "activity_error","",:style => "display:none; width:500px; margin-top:10px; margin-bottom:10px" %>
+    <%= text_field_tag "activity_error","",:style => "display:none; width:500px; margin-top:10px; margin-bottom:10px" %>
 
     <%= submit_button 'Save', :id => "new_activity", :plc_id => "34"%>
     <%= submit_button 'Cancel', :id => "cancel" %>
@@ -172,16 +175,16 @@
           data: $(this).serialize(),
           success: function(p) {
             $("#dialog").jqmAddTrigger('.add_to_favorites, .add_place, .add_event, .add_activity, .invite_a_friend');
-			$("#dialog").html("Successfully added to your profile");
-			$('#dialog').fadeTo(2000, 0.1, function() {
-			       $('#dialog').jqmHide();
-					$('#dialog').fadeTo(1,1);
-			     });
+            $("#dialog").html("Successfully added to your profile");
+            $('#dialog').fadeTo(2000, 0.1, function() {
+              $('#dialog').jqmHide();
+              $('#dialog').fadeTo(1,1);
+            });
           },
           error: function(p) {
-             $('#activity_error').addClass('show');
-             $('#activity_error').addClass('invalid');
-             $('#activity_error').val(p.responseText);
+            $('#activity_error').addClass('show');
+            $('#activity_error').addClass('invalid');
+            $('#activity_error').val(p.responseText);
           }
         })
 
