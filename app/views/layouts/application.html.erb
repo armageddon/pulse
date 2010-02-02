@@ -4,8 +4,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<meta name="HelloPulse" content="A new site for bringing together like-minded singles" />
+    <meta name="HelloPulse" content="A new site for bringing together like-minded singles" />
     <title>HelloPulse</title>
+    <link rel="shortcut icon" href="/images/favicon.ico" />
     <%= stylesheet_link_tag %w(jqModal application ) %>
     <%= javascript_include_tag 	"jquery-1.3.2", 'jquery.form.js', 'jqModal', 'jquery.autocomplete.js', 'jquery.charcounter.js', 'application', 'signup' %>
     <%= javascript_tag "var AUTH_TOKEN = #{form_authenticity_token.inspect};" %>
@@ -13,51 +14,51 @@
   </head>
   <body>
     <%= hidden_field_tag "googlecode", googlecode(request.url) %>
-	<div id="dialog" style="display: none;" class="jqmWindow"></div>
-	
+    <div id="dialog" style="display: none;" class="jqmWindow"></div>
+
     <div id="nav">
-      	<ul id="top-nav" >
-        	<%= nav_links %>
-      	</ul>
-	 	<div id="search-box" >
-          	<% form_tag '/search/nav?search_criteria_header[type]=1', :method => "get" do  %>
-            	<%= text_field_tag 'search_criteria[keyword]', '', :class => "header_input_text" %>
-				<%= hidden_field_tag 'search_criteria_header[type]', '1', :class => "header_input_text" %>
-				<% if current_user!=nil%>
-					<%= hidden_field_tag 'search_criteria[sp_1]',1, :class => "header_input_text" %>
-                    <%= hidden_field_tag 'search_criteria[sp_2]',2, :class => "header_input_text" %>
-					<%= hidden_field_tag 'search_criteria[lower_age]', 1, :class => "header_input_text" %>
-					<%= hidden_field_tag 'search_criteria[upper_age]', 10, :class => "header_input_text" %>
-				<% end %>
-            	<button id="search" class="header_submit" style="" type="submit"></button>
-          	<% end %>
-     	</div>
-     	<div class="clear"></div>
+      <ul id="top-nav" >
+        <%= nav_links %>
+      </ul>
+      <div id="search-box" >
+        <% form_tag '/search/nav?search_criteria_header[type]=1', :method => "get" do  %>
+          <%= text_field_tag 'search_criteria[keyword]', '', :class => "header_input_text" %>
+          <%= hidden_field_tag 'search_criteria_header[type]', '1', :class => "header_input_text" %>
+          <% if current_user!=nil%>
+            <%= hidden_field_tag 'search_criteria[sp_1]',1, :class => "header_input_text" %>
+            <%= hidden_field_tag 'search_criteria[sp_2]',2, :class => "header_input_text" %>
+            <%= hidden_field_tag 'search_criteria[lower_age]', 1, :class => "header_input_text" %>
+            <%= hidden_field_tag 'search_criteria[upper_age]', 10, :class => "header_input_text" %>
+          <% end %>
+          <button id="search" class="header_submit" style="" type="submit"></button>
+        <% end %>
+      </div>
+      <div class="clear"></div>
     </div>
     <div id="header">
       <%= link_to image_tag("header_logo.png", :alt=>"HelloPulse", :id=>"logo" ,:height=>"173", :width=>"314"), account_path %>
       <div id="header-banner"><%= yield :message %></div>
     </div>
 
-	<!--Main Content Starts Here -->
+    <!--Main Content Starts Here -->
 
-	<div id="main_container">
-        <div id="left" class="column_container">
-		   
-          <%= render :partial => "shared/user_sidebar" %>
-        </div>
-        <div id="middle" class="column_container">
+    <div id="main_container">
+      <div id="left" class="column_container">
 
-	
-          <%= yield %>
-        </div>
-        <div id="right" class="column_container">
-          <%= render :partial => "shared/map" %>
-        </div>
-	</div>
-	<div class="clear">&nbsp;</div>
-	<div id="main_footer">
-    	<%= render :partial => "shared/footer" %>
+        <%= render :partial => "shared/user_sidebar" %>
+      </div>
+      <div id="middle" class="column_container">
+
+
+        <%= yield %>
+      </div>
+      <div id="right" class="column_container">
+        <%= render :partial => "shared/map" %>
+      </div>
+    </div>
+    <div class="clear">&nbsp;</div>
+    <div id="main_footer">
+      <%= render :partial => "shared/footer" %>
     </div>
     <script type="text/javascript">
       var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
