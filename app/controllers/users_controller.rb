@@ -57,7 +57,7 @@ class UsersController < ApplicationController
     @user_place_activity = UserPlaceActivity.new
     logout_keeping_session!
     
-    
+ 
       @user = User.new
       render :action => :new
 
@@ -281,6 +281,8 @@ class UsersController < ApplicationController
   protected
 
   def access_denied
+     @updates = TimelineEvent.paginate( :page=>1, :conditions=>"icon_file_name is not  null",:joins=>"INNER JOIN users on users.id = timeline_events.actor_id",:per_page => 5, :order => 'created_at DESC')
+
     render :template => "sessions/new", :layout => false
     
   end
