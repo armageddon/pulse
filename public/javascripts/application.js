@@ -213,7 +213,7 @@ $(document).ready(function() {
         return false;
     });
 
-	$('#activity_category_select').live('change',function() {
+	$('#activity_category_select').live('click',function() {
 	$.ajax({
         type: "GET",
         dataType: "json",
