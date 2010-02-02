@@ -198,7 +198,7 @@ $(document).ready(function() {
         $(this).children('.fancy_select_options').show();
     });
 
-	$('.std_dd').live('change',function() {
+	$('.std_dd').live('click',function() {
 		$(this).prev().val($(this).selected().val());
 	});
 
