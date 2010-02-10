@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :test3s
+
   
   #maps controller
   map.map '/map',  :controller => 'maps', :action => 'index'
@@ -81,9 +83,11 @@ ActionController::Routing::Routes.draw do |map|
   map.place_activity_user_place_activities '/place_activity/user_place_activities', :controller => 'place_activities', :action => 'user_place_activities'
   
   #places_controller
+  map.place_autocomplete_new '/places/autocomplete_new', :controller => 'places', :action => 'autocomplete_new'
   map.resources :places, :collection => { :autocomplete => :get } do |p|
     p.resources :pictures, :controller => "place_pictures"
   end
+
   map.place_users '/place/users', :controller => 'places', :action => 'users'
   map.place_user_place_activities '/place/user_place_activities', :controller => 'places', :action => 'user_place_activities'
   
@@ -91,8 +95,10 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :activities, :collection => { :autocomplete => :get } do |a|
     a.resources :pictures, :controller => "activity_pictures"
   end
+  map.test_new 'new_test', :controller=>'activities', :action => 'new_test'
   map.activity_users '/activity/users', :controller => 'activities', :action => 'users'
   map.activity_user_place_activities '/activity/user_place_activities', :controller => 'activities', :action => 'user_place_activities'
+  map.activity_places '/activity/activity_places',  :controller => 'activities', :action => 'activity_places'
   
   #passwords controller
   map.newpassword 'passwords/create',  :controller => 'passwords', :action=>'create'
@@ -107,7 +113,9 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :profiles, :except => :show
   map.user "/profiles/:id", :controller => "profiles", :action => "show"
   
-   ActionController::Routing::Routes.draw do |map|  
+   ActionController::Routing::Routes.draw do |map|
+  map.resources :test3s
+  
    map.simple_captcha '/simple_captcha/:action', :controller => 'simple_captcha'  
    end
   

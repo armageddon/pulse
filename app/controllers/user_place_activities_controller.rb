@@ -1,6 +1,44 @@
 class UserPlaceActivitiesController < ApplicationController
   before_filter :login_required
 
+  def new_user_place_activity
+    activity_id = params[:activity_id].to_i
+    activity_name =params[:activity_name]
+    place_id = params[:place_id].to_i
+    if activity_id == -1
+      logger.debug('act id IS -1 - crating activity')
+      @activity = Activity.new
+      @activity.name = activity_name
+      @activity.activity_category_id = 1
+      @activity.save
+      activity_id = @activity.id
+    end
+     place_activity = PlaceActivity.find(:first,:conditions=>['place_id = ? and activity_id = ?',place_id, activity_id])
+      if place_activity == nil
+        place_activity = PlaceActivity.new(:activity_id => activity_id, :place_id => place_id)
+        place_activity.save
+      end
+    @user_place_activity = current_user.user_place_activities.build(:description => params[:description], :place_id => place_id, :activity_id => activity_id, :day_of_week =>0, :time_of_day => 0)
+    @user_place_activity.place_activity = place_activity
+    if @user_place_activity.save
+      respond_to do |format|
+        format.html do
+          flash[:notice] = "You have added a user place activity, user activity and user place"
+          redirect_to account_places_path
+        end
+        format.js {render :text => 'added'  }
+      end
+    else
+
+      logger.debug(@user_place_activity.errors.full_messages)
+      respond_to do |format|
+        format.html { render :action => :new}
+        format.js { render :text => 'You have already added this place or activity', :status=>500 }
+      end
+    end
+  end
+
+
   def index
     @activities = current_user.activities
   end
@@ -37,7 +75,7 @@ class UserPlaceActivitiesController < ApplicationController
 
   def destroy
 
-      UserPlaceActivity.find(params[:user_place_activity_id]).delete
+    UserPlaceActivity.find(params[:user_place_activity_id]).delete
   
     respond_to do |format|
       format.html { render :text => "deleted places"}
@@ -68,10 +106,10 @@ class UserPlaceActivitiesController < ApplicationController
           format.js {render :partial => 'user_place_activity', :object => @user_place_activity  }
         end
       else
-           respond_to do |format|
-              format.html { render :action => :new}
-              format.js { render :text => 'You have already added this place or activity', :status=>500 }
-            end
+        respond_to do |format|
+          format.html { render :action => :new}
+          format.js { render :text => 'You have already added this place or activity', :status=>500 }
+        end
       end
     else
       respond_to do |format|

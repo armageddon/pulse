@@ -34,5 +34,12 @@ class PlacesController < ApplicationController
     results = @places.map {|p| "#{p.name}"+" <span style='font-size:9px'>#{p.neighborhood}</span>|#{p.id}"}.join("\n")
     render :text => results
   end
+ def autocomplete_new
+   logger.debug('sdssd')
+    @places = Place.find(:all,:order => "name", :conditions => ["name like ? ", "#{params[:q]}%"])
+     results = @places.map {|p| "<span class='place_dd' id = #{p.id} >#{p.name}</span><span style ='font-size:10px'></span><br />"}.join("")
 
+
+    render :text => results
+  end
 end
