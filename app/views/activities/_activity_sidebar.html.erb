@@ -8,7 +8,7 @@
   <%= image_tag(@activity.icon.url(:profile), :class=>"profile_image") %>
 </div>
 <% if current_user.admin? %>
-  <div id="manage_pictures"><%= link_to "Manage activity pictures", activity_pictures_path(@activity) %></div>
+
 <% end %>
 
 <ul id="do_things">

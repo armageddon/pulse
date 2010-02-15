@@ -20,6 +20,7 @@
         "data-prefilled" => (user_place_activity.place.present? ? 'true' : 'false')
     %>
       <div class="clear"></div>
+
     <% elsif  view == "add_place" %>
       <h2><%=I18n.translate("Add_place_to_favorites")%></h2>
       <%= image_tag(place.icon.url(:thumb), :width => '30px', :height => '30px') %>
@@ -30,9 +31,13 @@
       <div id="activity_category_select" style="margin-top:10px">
         <label  style="margin-top: 5px; color:#990000;">What do you do here?</label>
         <div class="clear"></div>
-        <%= render :partial => "shared/activity_select",  :locals => {:allow_any_activity => "1"} %>
+        <%= std_drop_down('activity_category_id', 0, {:width => '223px'},activity_category_options, 'Any category', 0, 'activity_category_hidden','activity_category_select') %><br />
+        <div class="clear"></div>
+        <%= std_drop_down('activity_id', 0, {:width => '223px', :leftmargin => '15px'},[], 'Any activity', 0, 'activity_hidden', 'activity_select' ) %><br />
+        <div class="clear"></div>
       </div>
       <div class="clear"></div>
+
     <% elsif view == "add_place_activity" %>
       <h2><%=I18n.translate("Add_place_to_favorites")%></h2>
       <%= image_tag(place.icon.url(:thumb), :width => '30px', :height => '30px') %>
@@ -46,10 +51,13 @@
       <h2>Add to favourites</h2>
 
 
-      <div id="activity_category_select" style="margin-top:10px">
+      <div id="activity_category_div" style="margin-top:10px">
         <label  style="margin-top: 5px; color:#990000;">What do you like doing?</label>
         <div class="clear"></div>
-        <%= render :partial => "shared/activity_select",  :locals => {:allow_any_activity => "1"} %>
+        <%= std_drop_down('activity_category_id', 0, {:width => '223px'},activity_category_options, 'Any category', 0, 'activity_category_hidden','activity_category_select') %><br />
+        <div class="clear"></div>
+        <%= std_drop_down('activity_id', 0, {:width => '223px', :leftmargin => '15px'},[], 'Any activity', 0, 'activity_hidden', 'activity_select' ) %><br />
+        <div class="clear"></div>
       </div>
 
       <div class="clear"></div>
@@ -75,8 +83,8 @@
     <div style="margin-top:10px; float:left">
       <label  style="margin-top: 5px; color:#990000; float:left">When do you do it?</label>
       <div class="clear"></div>
-      <%= drop_down('user_place_activity[day_of_week]', 'Monday', {:width => '130px'},dotw_options, 'Any day',0) %>
-      <%= drop_down('user_place_activity[time_of_day]', 'Early Mornings', {:width => '200px'},tod_options, 'Any time',0) %>
+      <%= std_drop_down('user_place_activity[day_of_week]', 'Monday', {:width => '130px'},dotw_options, 'Any day',0) %>
+      <%= std_drop_down('user_place_activity[time_of_day]', 'Early Mornings', {:width => '200px'},tod_options, 'Any time',0) %>
     </div>
     <div class='clear'></div>
     <br />
@@ -86,6 +94,9 @@
       <div class='clear'></div>
       <%= text_area_tag('user_place_activity[description]',USER_PLACE_DESCRIPTION_TEXT, :rows => 2, :cols=>45,:class => "input_text word_count") %>
     </div>
+
+    <%= text_field_tag "activity_error","",:style => "display:none; width:500px; margin-top:10px; margin-bottom:10px" %>
+
     <%= submit_button 'Save', :id => "new_activity", :plc_id => "34"%>
     <%= submit_button 'Cancel', :id => "cancel" %>
 
@@ -163,10 +174,17 @@
           url: '/user_place_activities/add',
           data: $(this).serialize(),
           success: function(p) {
-            $('#dialog').jqmHide();
+            $("#dialog").jqmAddTrigger('.add_to_favorites, .add_place, .add_event, .add_activity, .invite_a_friend');
+            $("#dialog").html("Successfully added to your profile");
+            $('#dialog').fadeTo(2000, 0.1, function() {
+              $('#dialog').jqmHide();
+              $('#dialog').fadeTo(1,1);
+            });
           },
           error: function(p) {
-            //todo: here display error message
+            $('#activity_error').addClass('show');
+            $('#activity_error').addClass('invalid');
+            $('#activity_error').val(p.responseText);
           }
         })
 

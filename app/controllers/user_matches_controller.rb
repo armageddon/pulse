@@ -16,4 +16,13 @@ class UserMatchesController < ApplicationController
     @users = User.find(:all)
   end
   
+  def suggested_places
+    @places = current_user.suggested_places(params[:page] , 10)
+     respond_to do |format|
+        format.js { render :partial => "shared_object_collections/object_collection",
+          :locals => { :collection => @places }
+        }
+      end
+  end
+  
 end

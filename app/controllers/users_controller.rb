@@ -1,9 +1,11 @@
 class UsersController < ApplicationController
   include Graticule
+  require 'pp'
   # Protect these actions behind an admin login
   # before_filter :admin_required, :only => [:suspend, :unsuspend, :destroy, :purge]
-  before_filter :find_user, :only => [:suspend, :unsuspend, :destroy, :purge]
+  before_filter :find_user, :only => [:suspend, :unsuspend, :destroy, :purge, :admin_delete]
   before_filter :login_required, :except => [:redeem, :create]
+  #skip_before_filter :verify_authenticity_token, :only => :admin_delete
 
   def place_activity_list
     @user_place_activities = UserPlaceActivity.paginate(:all, :conditions => 'user_id = ' + current_user.id.to_s, :page=> params[:page], :per_page=>10)
@@ -25,6 +27,7 @@ class UsersController < ApplicationController
       format.js { render :partial => "shared_object_collections/object_collection", :locals => {:collection => @places}}
     end
   end
+
   #todo: where is this called
   def user_place_activities
     @activities = current_user.activities;
@@ -54,41 +57,61 @@ class UsersController < ApplicationController
     @user_place_activity = UserPlaceActivity.new
     logout_keeping_session!
     
-    if params[:invite_code] == "pulse12345"
+ 
       @user = User.new
       render :action => :new
-    else
-      flash[:error] = "Sorry, we were unable to locate that invitation code."
-      redirect_to '/'
-    end
+
   end
 
   def create
     logout_keeping_session!
     @user = User.new(params[:user])
-    if params[:user][:postcode] != nil 
-      geocoder = Graticule.service(:google).new "ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog"
-      location = geocoder.locate('london ' + params[:user][:postcode])
-      latitude, longitude = location.coordinates
-      if latitude != nil && longitude != nil
-        @user.lat = latitude
-        @user.long = longitude
-        params[:user][:lat] = latitude
-        params[:user][:long] = longitude
+    if(simple_captcha_valid?)
+      @user.sex ||= 2
+      @user.age ||= 5
+      @user.sex_preference ||= 1
+      @user.age_preference ||= 5
+      logger.debug('sdsdsd')
+      logger.debug(params[:feet])
+       logger.debug(params[:inches])
+      cm = ((params[:feet].to_i * 12) +params[:inches].to_i ) * 2.54
+     @user.height = cm
+      if params[:user][:postcode] != nil 
+        geocoder = Graticule.service(:google).new "ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog"
+        location = geocoder.locate('london ' + params[:user][:postcode])
+        latitude, longitude = location.coordinates
+        if latitude != nil && longitude != nil
+          @user.lat = latitude
+          @user.long = longitude
+          params[:user][:lat] = latitude
+          params[:user][:long] = longitude
+        end
       end
+      params[:user][:dob] = Date.new(params[:year].to_i(),params[:month].to_i(),params[:day].to_i())
+      @user.dob = params[:user][:dob]
+      params[:user][:age] = User.get_age_option_from_dob(params[:user][:dob])
+      @user.location_id = 1;
+      @user.postcode = @user.postcode.upcase
+      simple_captcha_valid?
+      @user.register! if @user && @user.valid?
+      success = @user && @user.valid?
+      logger.debug('errors' )
+      logger.debug(pp @user.errors)
+      @user.age 
+      logger.debug('Success ' + success.to_s)
+    else
+      logger.debug('captcha failed')
+      success = false
+      @user.errors.add("You failed to enter a valid Captcha code - please try again");
     end
-    @user.location_id = 1;
-    @user.postcode = @user.postcode.upcase
-    @user.register! if @user && @user.valid?
-    success = @user && @user.valid?
-    @user.age 
     respond_to do |format|
+      logger.debug('asdasdasdasd')
       if success && @user.errors.empty?
         # DEBUG
         @user.activate!
         session[:user_id] = @user.id
         format.html {
-          redirect_to user_path
+          redirect_to :action=>'photos'
           flash[:notice] = "Thanks for signing up!  We're sending you an email with your activation code."
         }
         format.js {
@@ -109,18 +132,43 @@ class UsersController < ApplicationController
     @user = current_user
   end
 
+  def photos
+    render :text => 'sdsd'
+  end
+
   def update
     
     @user_place_activity = UserPlaceActivity.new
     if params[:iframe]=="true"
+      logger.info(:params)
+      
+      
+      current_user.crop_w = params[:crop_w]
+      current_user.crop_h = params[:crop_h]
+      current_user.crop_x = params[:crop_x] 
+      current_user.crop_y = params[:crop_y]
+      logger.info(current_user.crop_w)
+      logger.info(current_user.crop_h)
+      logger.info(current_user.crop_x)
+      logger.info(current_user.crop_y)
+      
+      logger.info('before update')
       current_user.update_attributes(params[:user])
+      
+      logger.info('after update')
+      
+      
+      
+      
       respond_to do |format|
         format.html { render :text => current_user.icon.url(:profile) }
         format.js { render :text => current_user.icon.url + "js"}
       end
     else
-      params[:user][:dob] = Date.new(params[:year].to_i(),params[:month].to_i(),params[:day].to_i())
-      params[:user][:age] = current_user.get_age_option_from_dob(params[:user][:dob])
+      if params[:year] != nil && params[:month] != nil && params[:year] != nil
+        params[:user][:dob] = Date.new(params[:year].to_i(),params[:month].to_i(),params[:day].to_i())
+        params[:user][:age] = User.get_age_option_from_dob(params[:user][:dob])
+      end
       geocoder = Graticule.service(:google).new "ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog"
       logger.debug(params[:user][:postcode])
       if   params[:user][:postcode] != nil
@@ -133,6 +181,8 @@ class UsersController < ApplicationController
           params[:user][:long] = longitude
         end
       end
+      cm = ((params[:feet].to_i * 12) +params[:inches].to_i ) * 2.54
+     current_user.height = cm
       respond_to do |format|
         logger.debug(params[:user]);
         if current_user.update_attributes(params[:user])
@@ -175,6 +225,34 @@ class UsersController < ApplicationController
     redirect_to login_path
   end
 
+  def admin_delete
+    logger.info('sdsdsd')
+    if current_user.admin
+      if @user != nil
+        #need to delete all messages to/from this user
+        @user.all_messages.each do |m|
+          m.destroy
+        end
+        #need to delete user_place_activities from this user
+        @user.user_place_activities.each do |u|
+          u.destroy
+        end
+        #need to delete all timeline events from this user
+        
+  
+        @user.destroy
+      end
+      respond_to do |format|
+        format.js { render :text => "deleted"}
+      end
+    else
+      respond_to do |format|
+        format.js { render :text => "cannot delete this user"}
+      end
+    end
+      
+  end
+
   def destroy
     @user.delete!
     redirect_to login_path
@@ -185,13 +263,33 @@ class UsersController < ApplicationController
     redirect_to login_path
   end
 
+  def icon_crop
+    respond_to do |format|
+      format.js { render :partial => "users/icon_crop", :locals => {:user => current_user}}
+    end
+  end
+  
+  def admin
+    logger.debug('sdsd')
+    if current_user.admin
+      render :template => "users/admin", :layout => false
+    else
+      render :text => 'you are not authorised'
+    end
+  end
+  
   protected
 
   def access_denied
+     @updates = TimelineEvent.paginate( :page=>1, :conditions=>"icon_file_name is not  null",:joins=>"INNER JOIN users on users.id = timeline_events.actor_id",:per_page => 5, :order => 'created_at DESC')
+
     render :template => "sessions/new", :layout => false
+    
   end
 
   def find_user
     @user = User.find(params[:id])
   end
+  
+
 end

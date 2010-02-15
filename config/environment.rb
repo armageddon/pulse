@@ -49,6 +49,12 @@ else
   GOOGLE_MAPS_API_KEY = 'ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog'
 end
 
+if Rails.env == "production"
+  HELLOPULSE_USER_ID = 209
+else
+  HELLOPULSE_USER_ID = 32
+end
+
 ANYTHING_ACTIVITY_ID = 159;
 ANYWHERE_PLACE_ID=1;
 USER_PLACE_DESCRIPTION_TEXT = "tell us why you socialise here and whether it's good for meeting people"

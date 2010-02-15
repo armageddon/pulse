@@ -1,0 +1,50 @@
+<% content_for :c3 do %>
+  &nbsp;		
+<% end %>
+<% content_for :c1 do %>
+  &nbsp;	
+<% end %>
+<% content_for :message do %>
+ <h2>Enter your username and email address - your new password will be emailed to you.</h2>
+<% end %>
+<div class="column_header">
+  <span>
+    <h2>Reset Password</h2>
+  </span>
+</div>
+
+
+<div class="form_container">
+	<% form_for(:password, :url => '/passwords/create') do |f| %>
+
+	<div class="form_row">
+    	<label for="login" style="margin-top: 5px; color:#990000;">Username</label><br />
+    	<%= text_field_tag 'login','',:class => 'input_text' %>
+	</div>
+	<div class="form_row">
+    	<label for="email" style="margin-top: 5px; color:#990000;">Email</label><br />
+    	<%= text_field_tag 'email','', :class => 'input_text'%>
+	</div>
+	
+	<br />
+	<% if flash[:notice] %>
+	      <div class="error"><%= flash[:notice] %></div><br />
+	    <% end %>
+	<div class="submit_row">
+    	<%= submit_button 'Send Password', :id => "send_password" %>&nbsp; &nbsp;<%= link_to 'Cancel', edit_account_path, :class => "submit" %>
+	</div>
+    <% end %>
+</div>
+
+
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function() {
+    
+    $('#send_password').click(function() {
+
+    });
+    
+
+    
+  });
+</script>

@@ -1,4 +1,0 @@
-class UserPlaceActivityComment < Comment
-  
-  
-end

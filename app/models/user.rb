@@ -1,10 +1,11 @@
 require 'digest/sha1'
 
 class User < ActiveRecord::Base
-include UsersHelper
-
-fires :newuser, :on => :create, :actor => :self
-after_create :welcome_mail
+  include UsersHelper
+  apply_simple_captcha
+  fires :newuser, :on => :create, :actor => :self
+  after_create :welcome_mail
+  after_update :reprocess_icon, :if => :cropping?
 
   define_index do
     indexes username
@@ -12,21 +13,41 @@ after_create :welcome_mail
     indexes email
     has sex
     has age
+    has status
     # indexes places.name, :as => "places"
     # indexes activities.name, :as => "activities"
   end
+  class Body
+    def Body.add_item(key,value)
+      @hash ||= {}
+      @hash[key]=value
+    end
+    def Body.const_missing(key)
+      @hash[key]
+    end
+    def Body.each
+      @hash.each {|key,value| yield(key,value)}
+    end
+    Body.add_item :SLIM,1
+    Body.add_item :AVERAGE ,2
+    Body.add_item :CURVACEOUS, 3
+    Body.add_item :WELL_BUILT, 4
+    Body.add_item :ATHLETIC, 5
+    Body.add_item :FULLER, 6
+  end
+
 
   class Age
    
     def Age.add_item(key,value)
-        @hash ||= {}
-        @hash[key]=value
+      @hash ||= {}
+      @hash[key]=value
     end
     def Age.const_missing(key)
-        @hash[key]
+      @hash[key]
     end   
     def Age.each
-        @hash.each {|key,value| yield(key,value)}
+      @hash.each {|key,value| yield(key,value)}
     end
     Age.add_item :COLLEGE,1
     Age.add_item :EARLY_TWENTIES ,2
@@ -55,9 +76,10 @@ after_create :welcome_mail
   include Authorization::AasmRoles
 
   has_attached_file :icon, 
-        :styles => { :thumb => "75x75#", :profile => "200x200#" }, 
-        :url => "/:class/:attachment/:id/:style_:filename",
-        :default_url => "/images/:style/missing.png"
+    :styles => { :thumb => "75x75#", :profile => "200x200#", :large => "600x600>" },
+    :url => "/:class/:attachment/:id/:style_:filename",
+    :default_url => "/images/:style/missing.png",
+    :processors => [:cropper]
 
   belongs_to :location
   has_many :user_place_activities
@@ -91,8 +113,8 @@ after_create :welcome_mail
   validates_length_of       :email,       :within => 6..100 #r@a.wk
   validates_format_of       :email,       :with => Authentication.email_regex, :message => Authentication.bad_email_message
   
- # validates_presence_of     :description
- # validates_length_of       :description,  :maximum => 250
+  # validates_presence_of     :description
+  # validates_length_of       :description,  :maximum => 250
   
   validates_inclusion_of    :sex_preference, :in => [Sex::MALE, Sex::FEMALE, Sex::BOTH], :allow_blank => true
   validates_inclusion_of    :sex, :in => [Sex::MALE, Sex::FEMALE], :allow_blank => true
@@ -103,13 +125,50 @@ after_create :welcome_mail
   # HACK HACK HACK -- how to do attr_accessible from here?
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
-  attr_accessible  :username, :email, :first_name, :password, :password_confirmation, :timezone, :description, :age, :age_preference, :sex, :sex_preference, :cell, :location_id, :icon, :dob, :postcode, :lat, :long
+  attr_accessible :height, :body_type, :captcha, :captcha_key, :username, :email, :first_name, :password, :password_confirmation, :timezone, :description, :age, :age_preference, :sex, :sex_preference, :cell, :location_id, :icon, :dob, :postcode, :lat, :long
   attr_accessor :login
+  attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
 
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   # uff.  this is really an authorization, not authentication routine.
   # We really need a Dispatch Chain here or something.
   # This will also let us return a human error message.
+
+  def feet
+    (height * 0.39 / 12 ).truncate
+  end
+
+  def inches
+    (height * 0.39 % 12 ).truncate
+  end
+  def self.find_by_email_and_login(email, username)
+    x = User.find(:all,:conditions => {:email => email, :username => username})
+    if x.length != 0
+      logger.debug('not nill')
+      logger.debug(x)
+      x[0]
+    else
+      logger.debug('false')
+      false
+    end
+  end
+
+  def cropping?
+    logger.info('cropping')
+    logger.info(!crop_x.blank? && !crop_y.blank? && !crop_w.blank? && !crop_h.blank?)
+    logger.info(crop_x)
+    logger.info(crop_y)
+    logger.info(crop_w)
+    logger.info(crop_h)  
+    
+    !crop_x.blank? && !crop_y.blank? && !crop_w.blank? && !crop_h.blank?
+  end
+  
+  def icon_geometry(style = :original)
+    @geometry ||={}
+    @geometry[style] ||= Paperclip::Geometry.from_file(icon.path(style))
+  end
+  
   def self.authenticate(login, password)
     return nil if login.blank? || password.blank?
     u = find_in_state :first, :active, :conditions => ["username = ? OR email = ?", login.downcase, login.downcase] # need to get the salt
@@ -144,13 +203,13 @@ after_create :welcome_mail
 
   def preferred_users
     User.find(:all, :conditions => [
-      "sex = ? AND sex_preference = ? AND age in (?) AND age_preference in (?) AND id != ?",
-      sex_preference,
-      sex,
-      [age_preference - 1, age_preference, age_preference + 1],
-      [age - 1, age, age + 1],
-      id
-    ], :include => [:favorites, :activities])
+        "sex = ? AND sex_preference = ? AND age in (?) AND age_preference in (?) AND id != ?",
+        sex_preference,
+        sex,
+        [age_preference - 1, age_preference, age_preference + 1],
+        [age - 1, age, age + 1],
+        id
+      ], :include => [:favorites, :activities])
   end
 
   def to_param
@@ -161,16 +220,9 @@ after_create :welcome_mail
     first_name
   end
 
-  def suggested_places
-    # BIG HACK
-    # really, just look for places similar to places you have added
-    max_id = Place.find(:first, :order => "id DESC").id
-    rand_set = (0..100).collect { rand(max_id.to_i) }
-    if places.present?
-      Place.paginate(:all, :conditions => ['id not in (?) AND id in (?)', places.map(&:id), rand_set],:limit=>10, :page=>1, :per_page=>11 )
-    else
-      Place.paginate(:all, :conditions => ['id in (?)', rand_set],:limit=>10, :page=>1, :per_page=>11 )
-    end
+  def suggested_places(page=1, per_page=10)
+    Place.paginate(:select => 'distinct places.*', :conditions => ' places.id != 1 and UPA.user_id <> ' + self.id.to_s, :joins => 'inner join place_activities PA on PA.place_id = places.id inner join user_place_activities UPA on UPA.place_activity_id = PA.id ',:page=>page,:per_page=>per_page)
+     
   end
 
   def suggested_activities
@@ -178,7 +230,7 @@ after_create :welcome_mail
   end
 
   def all_messages
-    Message.find(:all, :conditions => ['recipient_id = ? OR sender_id = ?', id, id], :order=>'created_at desc')
+    Message.find(:all, :conditions => ['recipient_id = ? OR sender_id = ?', id, id], :order=>'created_at DESC')
   end
 
   def upcoming_events
@@ -186,21 +238,19 @@ after_create :welcome_mail
   end
 
   def matches(page=0, per_page=8)
-    logger.debug(sex_preference)
-    logger.debug(sex)
-    logger.debug(age_preference)
-    logger.debug(age)
-    logger.debug(id)
+    if sex_preference!=nil && sex != nil && age_preference!=nil && sex != nil && age != nil
+      @matches ||= User.paginate(:all, :conditions => [
+          "sex = ? AND sex_preference = ? AND age in (?) AND age_preference in (?) AND id != ?",
+          sex_preference,
+          sex,
+          [age_preference - 1, age_preference, age_preference + 1],
+          [age - 1, age, age + 1],
+          id
+        ], :include => [:places, :activities], :page => page, :per_page => per_page)
+    else
+      @matches = User.paginate(:all,:conditions=>"1 = 0",:limit => 0,:page=>1, :per_page=>1)
+    end
     
-    
-    @matches ||= User.paginate(:all, :conditions => [
-      "sex = ? AND sex_preference = ? AND age in (?) AND age_preference in (?) AND id != ?",
-      sex_preference,
-      sex,
-      [age_preference - 1, age_preference, age_preference + 1],
-      [age - 1, age, age + 1],
-      id
-    ], :include => [:places, :activities], :page => page, :per_page => per_page)
   end
   
   # This is the a second, more complex, version of the matche-selection algorithm. It can be swapped in for
@@ -221,7 +271,7 @@ after_create :welcome_mail
         WHERE favorites.place_id in (#{places.map(&:id).join(',')})
         AND favorites.user_id = users.id
         GROUP BY users.id
-      ")
+        ")
     end
     
     if activities.empty?
@@ -247,86 +297,116 @@ after_create :welcome_mail
         WHERE categories.id in (#{place_cats.join(',')})
         GROUP BY categories.id, users.id
       ))
-    end
-
-    matched_user_ids = users_by_place.select {|u| u.place_count.to_i >= 2 } |
-      activity_users.select {|u| u.all_points.to_f >= 8.5 } |
-      activity_users.select {|u| u.activity_count.to_i >= 2 } |
-      cat_users.select {|u| u.count.to_i > 2 } |
-      (users_by_place.select {|u| u.place_count.to_i >= 2 } & cat_users.select {|u| u.count.to_i >= 1 } ) |
-      (activity_users.select {|u| u.activity_count.to_i >= 2 } & cat_users.select {|u| u.count.to_i >= 1 } ) |
-      (activity_users.select {|u| u.activity_count.to_i >= 1 } & users_by_place.select {|u| u.place_count.to_i >= 1 })
-
-    return [] if matched_user_ids.empty?
-
-      User.find(:all, :conditions => ["sex = ? AND sex_preference = ? AND age = ? AND age_preference = ? AND id != ? AND id IN (?)",self.sex_preference,self.sex,self.age_preference, self.age,self.id,matched_user_ids.map(&:id)])
   end
+
+  matched_user_ids = users_by_place.select {|u| u.place_count.to_i >= 2 } |
+  activity_users.select {|u| u.all_points.to_f >= 8.5 } |
+  activity_users.select {|u| u.activity_count.to_i >= 2 } |
+  cat_users.select {|u| u.count.to_i > 2 } |
+  (users_by_place.select {|u| u.place_count.to_i >= 2 } & cat_users.select {|u| u.count.to_i >= 1 } ) |
+  (activity_users.select {|u| u.activity_count.to_i >= 2 } & cat_users.select {|u| u.count.to_i >= 1 } ) |
+  (activity_users.select {|u| u.activity_count.to_i >= 1 } & users_by_place.select {|u| u.place_count.to_i >= 1 })
+
+  return [] if matched_user_ids.empty?
+
+  User.find(:all, :conditions => ["sex = ? AND sex_preference = ? AND age = ? AND age_preference = ? AND id != ? AND id IN (?)",self.sex_preference,self.sex,self.age_preference, self.age,self.id,matched_user_ids.map(&:id)])
+end
   
-  def matches_v3
+def matches_v3
     
-  end
+end
 
-  def unread_count
-    @unread_count ||= messages.count(:conditions => "read_at IS NULL")
-  end
+def unread_count
+  @unread_count ||= messages.count(:conditions => "read_at IS NULL")
+end
 
-  def read_all_messages!
-    messages.update_all(["read_at = ?", Time.now], { :read_at => nil})
-  end
+def read_all_messages!
+  messages.update_all(["read_at = ?", Time.now], { :read_at => nil})
+end
 
-  def has_user_place_activity(user_place_activity)
-    result = false
-    user_place_activities.each do |upa|
-      if upa.place_id == user_place_activity.place_id && upa.activity_id == user_place_activity.activity_id
-        result = true
-      end
-    end
-    result
-    
-  end
-  #todo: these should be in a helper - need to move the calcs into the model by overriding the acriverecord update
-  def get_age_option_from_age(age)
-    logger.debug("age" + age.to_s())
-    if age < 20
-      User::Age::COLLEGE
-    elsif age <24
-      User::Age::EARLY_TWENTIES
-    elsif age<27
-      User::Age::MID_TWENTIES
-    elsif age<30
-      User::Age::LATE_TWENTIES
-    elsif age<34
-      User::Age::EARLY_THIRTIES
-    elsif age<37
-      User::Age::MID_THIRTIES
-    elsif age<40
-      User::Age::LATE_THIRTIES
-    elsif age<44
-      User::Age::EARLY_FORTIES
-    elsif age<47
-      User::Age::MID_FORTIES
-    elsif age<50
-      User::Age::LATE_FORTIES  
-    else
-      User::Age::OLDER
+def has_user_place_activity(user_place_activity)
+  result = false
+  user_place_activities.each do |upa|
+    if upa.place_id == user_place_activity.place_id && upa.activity_id == user_place_activity.activity_id
+      result = true
     end
   end
-
-  def get_age_option_from_dob(dob)
-    logger.debug(dob)
-    age = (DateTime.now.year - dob.year) + ((DateTime.now.month - dob.month) + ((DateTime.now.day - dob.day) < 0 ? -1 : 0) < 0 ? -1 : 0)
-    logger.debug("age" + age.to_s())
-    ageopt = get_age_option_from_age(age)
-    logger.debug(ageopt)
-    ageopt
+  result
     
+end
+#todo: these should be in a helper - need to move the calcs into the model by overriding the acriverecord update
+def self.get_age_option_from_age(age)
+  logger.debug("age" + age.to_s())
+  if age < 20
+    User::Age::COLLEGE
+  elsif age <24
+    User::Age::EARLY_TWENTIES
+  elsif age<27
+    User::Age::MID_TWENTIES
+  elsif age<30
+    User::Age::LATE_TWENTIES
+  elsif age<34
+    User::Age::EARLY_THIRTIES
+  elsif age<37
+    User::Age::MID_THIRTIES
+  elsif age<40
+    User::Age::LATE_THIRTIES
+  elsif age<44
+    User::Age::EARLY_FORTIES
+  elsif age<47
+    User::Age::MID_FORTIES
+  elsif age<50
+    User::Age::LATE_FORTIES
+  else
+    User::Age::OLDER
   end
+end
 
-  def self.search_users_advanced(params, current_user)
-    #this is repeated in other objects - refactor
+def self.get_age_option_from_dob(dob)
+  logger.debug(dob)
+  age = (DateTime.now.year - dob.year) + ((DateTime.now.month - dob.month) + ((DateTime.now.day - dob.day) < 0 ? -1 : 0) < 0 ? -1 : 0)
+  logger.debug("age" + age.to_s())
+  ageopt = get_age_option_from_age(age)
+  logger.debug(ageopt)
+  ageopt
+    
+end
+
+def self.search_users_advanced(params, current_user)
+  #this is repeated in other objects - refactor
+  search_criteria = SearchCriteria.new(params,current_user).conditions
+  logger.debug("conditions")
+  logger.debug(search_criteria)
+
+  results = {}
+  use_age = search_criteria[0]
+  use_gender = search_criteria[1]
+  use_place_location = search_criteria[2]
+  use_activity = search_criteria[3]
+  conditions = search_criteria[4]
+  conditions += " and users.status = 1"
+  if !use_activity && !use_place_location #just user (gender sex)
+    @results = User.paginate(:all, :conditions => conditions, :page => params[:page], :per_page => 6)
+  end
+  if !use_activity && use_place_location
+    @results = User.paginate(:select => "users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join place_activities PA on PA.id = UPA.place_activity_id inner join places on PA.place_id = places.id", :conditions => conditions, :page => params[:page], :per_page => 6)
+  end
+  if use_activity && !use_place_location
+    @results = User.paginate(:select => "users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join place_activities PA on PA.id = UPA.place_activity_id inner join activities on PA.activity_id = activities.id", :conditions => conditions,:page => params[:page], :per_page => 6)
+  end
+  if use_activity && use_place_location
+    @results = User.paginate(:select => "users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join place_activities PA on PA.id = UPA.place_activity_id inner join places on PA.place_id = places.id inner join activities on PA.activity_id = activities.id", :conditions => conditions,:page => params[:page], :per_page => 6)
+  end
+  return @results
+end
+
+#todo: take place_activity out of user_place_activity??
+def self.search_users_pictures(params, current_user, place_id, activity_id)
+  #this is repeated in other objects - refactor
+  if params[:search_criteria] == nil
+    @results = User.paginate(:select => "distinct users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join place_activities PA on PA.id = UPA.place_activity_id inner join places on PA.place_id = places.id inner join activities on PA.activity_id = activities.id", :conditions => ' places.id = ' +place_id.to_s + ' and activities.id = ' + activity_id.to_s,:page => params[:page], :per_page => 3)
+  else
     search_criteria = SearchCriteria.new(params,current_user).conditions
-    logger.debug("conditions")
-    logger.debug(search_criteria)
 
     results = {}
     use_age = search_criteria[0]
@@ -334,71 +414,40 @@ after_create :welcome_mail
     use_place_location = search_criteria[2]
     use_activity = search_criteria[3]
     conditions = search_criteria[4]
-    
+    conditions += " and PA.place_id = " + place_id.to_s + " and PA.activity_id = " + activity_id.to_s + " and users.status = 1"
+      
     if !use_activity && !use_place_location #just user (gender sex)
-      @results = User.paginate(:all, :conditions => conditions, :page => params[:page], :per_page => 6)
+      @results = User.paginate(:select => "distinct  users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username", :conditions => conditions,:joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join place_activities PA on PA.id = UPA.place_activity_id", :page => 1, :per_page => 3)
     end
     if !use_activity && use_place_location
-      @results = User.paginate(:select => "users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join place_activities PA on PA.id = UPA.place_activity_id inner join places on PA.place_id = places.id", :conditions => conditions, :page => params[:page], :per_page => 6)
+      @results = User.paginate(:select => "distinct   users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join place_activities PA on PA.id = UPA.place_activity_id inner join places on PA.place_id = places.id", :conditions => conditions, :page => params[:page], :per_page => 3)
     end
     if use_activity && !use_place_location
-      @results = User.paginate(:select => "users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join place_activities PA on PA.id = UPA.place_activity_id inner join activities on PA.activity_id = activities.id", :conditions => conditions,:page => params[:page], :per_page => 6) 
+      @results = User.paginate(:select => "distinct   users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join place_activities PA on PA.id = UPA.place_activity_id inner join activities on PA.activity_id = activities.id", :conditions => conditions,:page => params[:page], :per_page => 3)
     end
     if use_activity && use_place_location
-      @results = User.paginate(:select => "users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join place_activities PA on PA.id = UPA.place_activity_id inner join places on PA.place_id = places.id inner join activities on PA.activity_id = activities.id", :conditions => conditions,:page => params[:page], :per_page => 6) 
-    end 
-    return @results
-  end
-
-  #todo: take place_activity out of user_place_activity??
-  def self.search_users_pictures(params, current_user, place_id, activity_id)
-    #this is repeated in other objects - refactor
-    if params[:search_criteria] == nil
-      @results = User.paginate(:select => "distinct users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join place_activities PA on PA.id = UPA.place_activity_id inner join places on PA.place_id = places.id inner join activities on PA.activity_id = activities.id", :conditions => ' places.id = ' +place_id.to_s + ' and activities.id = ' + activity_id.to_s,:page => params[:page], :per_page => 3) 
-    else
-      search_criteria = SearchCriteria.new(params,current_user).conditions
-
-      results = {}
-      use_age = search_criteria[0]
-      use_gender = search_criteria[1]
-      use_place_location = search_criteria[2]
-      use_activity = search_criteria[3]
-      conditions = search_criteria[4]
-      conditions += " and PA.place_id = " + place_id.to_s + " and PA.activity_id = " + activity_id.to_s
-    
-      if !use_activity && !use_place_location #just user (gender sex)
-        @results = User.paginate(:select => "distinct  users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username", :conditions => conditions,:joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join place_activities PA on PA.id = UPA.place_activity_id", :page => 1, :per_page => 3)
-      end
-      if !use_activity && use_place_location
-        @results = User.paginate(:select => "distinct   users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join place_activities PA on PA.id = UPA.place_activity_id inner join places on PA.place_id = places.id", :conditions => conditions, :page => params[:page], :per_page => 3)
-      end
-      if use_activity && !use_place_location
-        @results = User.paginate(:select => "distinct   users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join place_activities PA on PA.id = UPA.place_activity_id inner join activities on PA.activity_id = activities.id", :conditions => conditions,:page => params[:page], :per_page => 3) 
-      end
-      if use_activity && use_place_location
-        @results = User.paginate(:select => "distinct   users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join place_activities PA on PA.id = UPA.place_activity_id inner join places on PA.place_id = places.id inner join activities on PA.activity_id = activities.id", :conditions => conditions,:page => params[:page], :per_page => 3) 
-      end 
+      @results = User.paginate(:select => "distinct   users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username",:group => 'users.id, users.first_name, users.icon_file_name,users.icon_updated_at, username', :joins => "inner join user_place_activities UPA on UPA.user_id = users.id inner join place_activities PA on PA.id = UPA.place_activity_id inner join places on PA.place_id = places.id inner join activities on PA.activity_id = activities.id", :conditions => conditions,:page => params[:page], :per_page => 3)
     end
-    return @results
   end
+  return @results
+end
   
-  def self.search_users_simple(params, current_user)
-    #this is repeated in other objects - refactor
-    search_criteria = SearchCriteria.new(params,current_user)
-    #@results = User.search(params[:search_criteria][:keyword],:conditions => , :page => params[:page], :per_page => 6)
+def self.search_users_simple(params, current_user)
+  #this is repeated in other objects - refactor
+  search_criteria = SearchCriteria.new(params,current_user)
+  #@results = User.search(params[:search_criteria][:keyword],:conditions => , :page => params[:page], :per_page => 6)
     
-    logger.info('Sphinx people criteria')
-    logger.info(search_criteria.ages)
-    logger.info(search_criteria.sex_preferences)
-    logger.info(params[:search_criteria][:keyword])
-    @results = User.search(params[:search_criteria][:keyword], :conditions => {:age => search_criteria.ages , :sex => search_criteria.sex_preferences},  :page=>params[:page], :per_page=>14)
-    return @results
-  end
+  logger.info('Sphinx people criteria')
+  logger.info(search_criteria.ages)
+  logger.info(search_criteria.sex_preferences)
+  logger.info(params[:search_criteria][:keyword])
+  @results = User.search(params[:search_criteria][:keyword], :conditions => {:status => 1, :age => search_criteria.ages , :sex => search_criteria.sex_preferences},  :page=>params[:page], :per_page=>14)
+  return @results
+end
 
-
-  def welcome_mail
-    @subject = "Welcome to Pulse!"
-    @body = "
+def welcome_mail
+  @subject = "Welcome to Pulse!"
+  @body = "
     Hello!<br /> 
 <br /> 
     Thanks so much for checking out HelloPulse – the next generation site for bringing like-minded single people together.  We’re currently testing the site and really appreciate your feedback.  <br /> 
@@ -410,15 +459,23 @@ after_create :welcome_mail
     Happy searching.<br /> 
 <br /> 
     The HelloPulse Team<br /> "
-    @pulse_user = User.find(32)
-    @message = @pulse_user.sent_messages.build({:recipient_id=>self.id,:subject=>@subject,:body=>@body})
-    @message.save
+  @pulse_user = User.find(HELLOPULSE_USER_ID)
+  @message = @pulse_user.sent_messages.build({:recipient_id=>self.id,:subject=>@subject,:body=>@body})
+  @message.save
     
-  end
+end
+
+private 
+
+def reprocess_icon
+  logger.info('reprocess_icon')
+  icon.reprocess!
+end
   
-  protected
-   def make_activation_code
-         self.deleted_at = nil
-         self.activation_code = self.class.make_token
-   end
+protected
+
+def make_activation_code
+  self.deleted_at = nil
+  self.activation_code = self.class.make_token
+end
 end

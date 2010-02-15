@@ -100,6 +100,46 @@ module UsersHelper
     
   end
 
+  def pretty_gender(gender)
+    case gender
+    when User::Sex::FEMALE
+      "Female"
+    when User::Sex::MALE
+      "Male"
+      when User::Sex::BOTH
+        "Both"
+    end
+  end
+  def pretty_age(age)
+    case age
+    when User::Age::COLLEGE
+      "College"
+    when User::Age::EARLY_TWENTIES
+      "Early Twenties"
+    when User::Age::MID_TWENTIES
+      "Mid Twenties"
+    when User::Age::LATE_TWENTIES
+      "Late Twenties"
+    when User::Age::EARLY_THIRTIES
+      "Early Thirties"
+    when User::Age::MID_THIRTIES
+      "Mid Thirties"
+    when User::Age::LATE_THIRTIES
+      "Late Thirties"
+    when User::Age::EARLY_FORTIES
+      "Early Forties"
+    when User::Age::MID_FORTIES
+      "Mid Forties"
+    when User::Age::LATE_FORTIES
+      "Late Forties"
+    when User::Age::OLDER
+      "Older"
+    end
+ end
+    
+  
+  
+  
   
   
   

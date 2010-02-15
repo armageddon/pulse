@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :test3s
+
   
   #maps controller
   map.map '/map',  :controller => 'maps', :action => 'index'
@@ -17,6 +19,9 @@ ActionController::Routing::Routes.draw do |map|
   map.map_places '/search/map', :controller => 'search', :action => 'map_places'
    
   #users controller
+
+  map.admin_delete '/admin_delete', :controller => 'users', :action => 'admin_delete'
+  map.user_admins '/user_admins', :controller => 'users', :action => 'admin'
   map.register '/register', :controller => 'users', :action => 'create'
   map.signup '/signup', :controller => 'users', :action => 'new'
   map.redeem  '/redeem', :controller => "users", :action => 'redeem'
@@ -25,6 +30,9 @@ ActionController::Routing::Routes.draw do |map|
   map.user_place_activities '/account/place_activities' , :controller => 'users', :action => 'place_activity_list'
   map.favorite_people 'favorites/people', :controller => 'users', :action => 'favorites_list'
   map.update '/update', :controller => "users", :action => 'update'
+  map.crop '/crop', :controller => "users", :action => 'crop'
+  map.icon_crop '/icon_crop', :controller => "users", :action => 'icon_crop'
+  map.suggested_places '/account/suggested_places', :controller => 'user_matches', :action => 'suggested_places'
   map.resource :account, :controller => "users" do |u|
     u.resources :favorites, :controller => "user_favorites"
     u.resources :pictures, :controller => "user_pictures"
@@ -67,16 +75,19 @@ ActionController::Routing::Routes.draw do |map|
   map.delete_place_activity '/user_place_activities/delete', :controller => 'user_place_activities', :action => 'destroy'
   map.favourite_place_activities 'user_place_activities/list', :controller => 'user_place_activities', :action=>'list'
   map.add_user_place_activity 'user_place_activities/add', :controller => 'user_place_activities', :action=>'create'
-
+  map.update_user_place_activity 'user_place_activities/update', :controller => 'user_place_activities', :action=>'update'
+   map.update_user_place_activity 'user_place_activities/edit', :controller => 'user_place_activities', :action=>'edit'
   #place_activities controller
   map.resources :place_activities
   map.place_activity_users '/place_activity/users', :controller => 'place_activities', :action => 'users'
   map.place_activity_user_place_activities '/place_activity/user_place_activities', :controller => 'place_activities', :action => 'user_place_activities'
   
   #places_controller
+  map.place_autocomplete_new '/places/autocomplete_new', :controller => 'places', :action => 'autocomplete_new'
   map.resources :places, :collection => { :autocomplete => :get } do |p|
     p.resources :pictures, :controller => "place_pictures"
   end
+
   map.place_users '/place/users', :controller => 'places', :action => 'users'
   map.place_user_place_activities '/place/user_place_activities', :controller => 'places', :action => 'user_place_activities'
   
@@ -84,14 +95,29 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :activities, :collection => { :autocomplete => :get } do |a|
     a.resources :pictures, :controller => "activity_pictures"
   end
+  map.test_new 'new_test', :controller=>'activities', :action => 'new_test'
   map.activity_users '/activity/users', :controller => 'activities', :action => 'users'
   map.activity_user_place_activities '/activity/user_place_activities', :controller => 'activities', :action => 'user_place_activities'
+  map.activity_places '/activity/activity_places',  :controller => 'activities', :action => 'activity_places'
   
+  #passwords controller
+  map.newpassword 'passwords/create',  :controller => 'passwords', :action=>'create'
+  map.newpassword 'passwords/new',  :controller => 'passwords', :action=>'new'
+  map.passwords_message 'passwords/message', :controller => 'passwords', :action=>'message'
+  map.passwords 'passwords',  :controller => 'passwords', :action=>'update'
+  map.resources :passwords
+  map.resources :users, :has_one => [:password]
   
   #profiles controller
-  map.user_user_place_activities '/users/user_place_activities', :controller=>'profiles', :action=>'user_place_activities'
+  map.user_user_place_activities '/profile_user_place_activities', :controller=>'profiles', :action=>'user_place_activities'
   map.resources :profiles, :except => :show
   map.user "/profiles/:id", :controller => "profiles", :action => "show"
+  
+   ActionController::Routing::Routes.draw do |map|
+  map.resources :test3s
+  
+   map.simple_captcha '/simple_captcha/:action', :controller => 'simple_captcha'  
+   end
   
   map.resource :session
   map.root :controller => "sessions", :action => "new"

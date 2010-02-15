@@ -1,3 +1,4 @@
+<% if User.exists?(object.user) %>
 <div class="object" id="<%= dom_id object %>">
 
 	<div class="place_icon" style="width:41px;float:left;margin-right:5px;">
@@ -23,3 +24,4 @@
 	</div>	 
 	<div class="clear"></div>
 </div>
+<% end %>

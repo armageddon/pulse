@@ -157,11 +157,11 @@ class SearchController < ApplicationController
     logger.debug('NAAAAAAAAAAAAAAAAAAAAAAAAVafterselect')
     case list[0][0]
     when Place
-      params[:search_criteria][:type] = 2
+      params[:search_criteria][:type] = "2"
     when Activity
-      params[:search_criteria][:type] = 3
+      params[:search_criteria][:type] = "3"
     when User
-      params[:search_criteria][:type] = 1
+      params[:search_criteria][:type] = "1"
     end
     @search_criteria = SearchCriteria.new(params, current_user)
     render :template=> "search/index"  

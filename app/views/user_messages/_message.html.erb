@@ -1,19 +1,12 @@
+<% if User.exists?(message.sender) %>
 <div class="clear"></div>
 <div class="object">
   <div class="icon">
-    <% if action_name == 'index' %>
-      <%= link_to image_tag(message.sender.icon.url(:thumb), :width => '45px', :height => '45px'), account_message_path(message.sender) %> 
-    <% else %>
-      <%= image_tag(message.sender.icon.url(:thumb), :width => '45px', :height => '45px') %>
-    <% end %>
+      <%= link_to image_tag(message.sender.icon.url(:thumb), :width => '45px', :height => '45px'), message.sender %> 
   </div>
   <div class="info message_body">
     <h5>
-      <% if action_name == 'index' -%>
-        <%= link_to message.sender.first_name, account_message_path(message.sender) -%>
-      <% else -%>
-        <%= message.sender.first_name -%>
-      <% end %>
+        <%= link_to message.sender.first_name, message.sender -%>
     </h5>
     <span class="message_sent"><%= time_ago_in_words message.created_at %> ago</span>
     <div class="message_content">
@@ -23,8 +16,7 @@
 
   <div class="actions">
     <% if action_name == 'index' %>
-      <%= link_to image_tag("HPMailOpen.png", :width=>20,:class => " tooltip ", :title => "View Thread"), account_message_path(message.sender) %> 
-      &nbsp;<%= link_to image_tag("HPMail.png", :width=>20,:class => " tooltip ", :title => "Reply"), account_message_path(message.sender, :anchor => "reply") %>
+    <%= link_to image_tag("HPMail.png", :width=>20,:class => " tooltip ", :title => "Reply"), account_message_path(message.sender, :anchor => "reply") %>
     <% end %>
     &nbsp;
   </div>
@@ -32,3 +24,6 @@
   <div class="clear"></div>
 </div>
   <div class="clear"></div>
+<% else %>
+ This message has been deleted
+<% end %>

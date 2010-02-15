@@ -53,7 +53,7 @@ $(document).ready(function() {
         //$('#upload_container').hide();
         }
     });
-
+    
     $("#user_icon").change(function(e) {
         $('#add_photo').css('background','#F1F3F6 url(/images/loadercircles.gif) no-repeat scroll center center');
         $('#add_photo').html('Please wait - your photo may take up to a minute to load......');
@@ -70,6 +70,9 @@ $(document).ready(function() {
                     $("#add_photo").css({
                         textAlign: 'center'
                     })
+					
+						//$('#dialog').jqm({ajax:'/crop',modal:true}); 
+						//$('#dialog').jqmShow(); 
                 }
             }
         })
@@ -90,6 +93,7 @@ $(document).ready(function() {
                     mustMatch: false,
                     scroll: true,
                     scrollHeight: 20,
+          
                     onItemSelect: function(e) {
                         var extra = $(e).attr('extra');
                         if (extra.length > 0) {
@@ -103,6 +107,7 @@ $(document).ready(function() {
             $.data(this, 'initialized', true);
             $(this).blur();
             $(this).focus();
+		
         }
     });
 
@@ -116,9 +121,9 @@ $(document).ready(function() {
         var error = false;
         $('#activity_error').removeClass("show");
         $('#activity_error').removeClass("hidden_value");
-        if($('#user_place_activity[description]').val() == "tell us why you socialise here and whether it's good for meeting people" )
+        if($('#user_place_activity_description').val() == "tell us why you socialise here and whether it's good for meeting people" )
         {
-            $('#user_place_activity[description]').val("");
+            $('#user_place_activity_description').val("");
         }
         // if($('#user_place_activity[description]').val() == "tell us why you socialise here and whether it's good for meeting people" ||
         //     $('#user_place_activity[description]').val() == ''
@@ -257,11 +262,33 @@ $(document).ready(function() {
         var password_confirm = $('#user_password_confirmation');
         var email = $('#user_email');
         var location = $('#user_location_id');
+		var day = $('#day');
+		var month = $('#month');
+		var year = $('#year');
         var error = false;
 
         $('.invalid').removeClass('invalid');
         $('span.error').text('');
 
+		if (day.val() == 0 || day.val() == '' )
+		{
+			error = true;
+			$('#dob_error').text('Enter a valid date of birth');
+			day.addClass('invalid');
+		}
+		if (month.val() == 0 || day.val() == '' )
+		{
+			error = true;
+			$('#dob_error').text('Enter a valid date of birth');
+			month.addClass('invalid');
+		}
+		if (year.val() == 0 || day.val() == '' )
+		{
+			error = true;
+			$('#dob_error').text('Enter a valid date of birth');
+			year.addClass('invalid');
+		}
+		
         if (email.val() == '' || email.val() == 'Email address') {
             email.addClass('invalid');
 
@@ -318,8 +345,8 @@ $(document).ready(function() {
             postcode.next().text('Please enter a valid post code.');
             error = true;
         };
-
         if (error) {
+
             return false;
         } else {
             $('.error').text('');
@@ -376,6 +403,9 @@ $(document).ready(function() {
                                     username_error = true;
                                 }
                                 break;
+							default:
+								$('#simple_captcha').addClass('invalid');
+								$('#simple_captcha').next().text("You entered the code incorrectly. Please try again");
                         }
                     })
                 }

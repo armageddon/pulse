@@ -1,0 +1,38 @@
+<% content_for :c3 do %>
+  &nbsp;		
+<% end %>
+<% content_for :c1 do %>
+  &nbsp;	
+<% end %>
+<% content_for :message do %>
+ <h2>You have successfully reset your password</h2>
+<% end %>
+<div class="column_header">
+  <span>
+    <h2>Reset password</h2>
+  </span>
+</div>
+
+
+<div class="form_container">
+	Your new password has been sent to your email address. Please check your email inbox.
+	<br />
+	<br />
+	<div class="submit_row">
+    <%= link_to 'OK', edit_account_path, :class => "submit" %>
+	</div>
+    
+</div>
+
+
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function() {
+    
+    $('#send_password').click(function() {
+
+    });
+    
+
+    
+  });
+</script>

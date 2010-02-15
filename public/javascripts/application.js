@@ -14,6 +14,27 @@ $(document).ready(function() {
         $("#dialog").jqmAddTrigger('.add_to_favorites, .add_place, .add_event, .add_activity, .invite_a_friend');
     }
 
+    $('#crop').live('click',function() {
+	   	$('#dialog').jqm({ajax:'/icon_crop',modal:true}); 
+		$('#dialog').jqmShow();
+	return false;
+	});
+	
+	$('#cropp').live('click',function() {
+		alert('crop');
+		$("#photo_crop").ajaxSubmit({
+            iframe: true,
+            extraData: {
+                'iframe': 'true'
+            },
+            dataType: "js",
+            success: function(response) {
+                alert('success');
+            }
+        })
+		return false;
+	});
+	
     $(document).ajaxSend(function(event, request, settings) {
         if (typeof(AUTH_TOKEN) == "undefined") return;
         settings.data = settings.data || "";
@@ -62,8 +83,27 @@ $(document).ready(function() {
         })
         return false;
     })
-
-    $(".profile_people_unfavorite").live('click',function() {
+    
+	$(".place_activity_people_favorite").live('click',function() {
+        var link = $(this);
+        $.ajax({
+            type: "POST",
+            url: "/account/favorites",
+            data: {
+                "friend_id" : $(this).attr("friend_id")
+                },
+            success: function(p) {
+                link.css("display","none");
+              
+                  },
+            error: function(p) {
+                alert("error");
+            }
+        })
+        return false;
+    })
+    
+	$(".profile_people_unfavorite").live('click',function() {
         var link = $(this);
         $.ajax({
             type: "DELETE",
@@ -103,25 +143,21 @@ $(document).ready(function() {
 
     $(".remove_place_activity").live('click',function() {
         var link = $(this);
-        var frm = $(this).parents("form:first")[0];
+    
         $.ajax({
             type: "DELETE",
             url: "/user_place_activities/delete",
             data: {
-                "place_activity_id" : $(this).attr("place_activity_id")
+                "user_place_activity_id" : $(this).attr("user_place_activity_id")
                 },
             success: function(p) {
                 //need to determinw which page this comes from and remove if favorites
-                if((frm=='undefined')||(frm.id=='favorites'))
-                {
+
+   
                     link.parent().parent().removeClass('object');
                     link.parent().parent().replaceWith('');
-                }
-                else
-                {
-                    link.removeClass("remove_place");
-                    link.html('<img class=" tooltip" width="20" title="Add to favorites" src="/images/HPThumbUp.png" alt="Hpthumbup"/>');
-                }
+                
+                
             },
             error: function(p) {
                 alert("error");
@@ -162,6 +198,10 @@ $(document).ready(function() {
         $(this).children('.fancy_select_options').show();
     });
 
+	$('.std_dd').live('click',function() {
+		$(this).prev().val($(this).selected().val());
+	});
+
     $('.fancy_select_options p').live('mouseover',function() {
         $(this).addClass('hover');
     }).live('mouseout',function() {
@@ -173,4 +213,21 @@ $(document).ready(function() {
         return false;
     });
 
+	$('#activity_category_select').live('click',function() {
+	$.ajax({
+        type: "GET",
+        dataType: "json",
+        url: "/search/activity_list",
+        data: { "activity_category_id" : $('#activity_category_id').val() },
+        success: function(p) {
+	 		var options = "";
+			for(i=0;i<p.length;i++)
+	        {
+				options += '<option value=' + p[i].activity.id + '>'+p[i].activity.name + '</option>';
+	 		}
+			$('#activity_select').html(options);
+			$('#activity_id').val(p[0].activity.id);
+        }
+      })
+	});
   });

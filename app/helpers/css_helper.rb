@@ -40,14 +40,7 @@ module CssHelper
        else ''
      end
   end
-  
-  
-  
-  
-  
-  
-  
-  
+
   def search_keyword_class(search_type)
     case search_type.to_s
       when "1" then 'criteria_show'

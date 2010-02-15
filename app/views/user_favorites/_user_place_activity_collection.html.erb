@@ -15,7 +15,7 @@
 		<% end %>
 	<% end %>
 	<% qstring += "&type="+collection.first.class.to_s.tableize %>
-
+	<% reqpath = '/favorites/user_place_activities' %>
   	<%= link_to "See more #{pagination_name collection}", reqpath + '?page=' + collection.next_page.to_s + qstring, :class => "paginator" %>
 
 <% end %>

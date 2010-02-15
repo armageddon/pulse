@@ -1,41 +1,37 @@
 <% content_for :c3 do %>
   <%= render :partial => "shared/mini_dashboard" %>
-<br />
-  <%= render :partial => "shared/message" %>	
+  <br />
+  <%= render :partial => "shared/message" %>
 <% end %>
 
 <% content_for :message do %>
-<h2>
-    Hello <%= current_user.first_name %>, welcome back to HelloPulse. 
+  <h2>
+    Hello <%= current_user.first_name %>, welcome back to HelloPulse.
     <% if current_user.unread_count > 0 %>
-    You've received <%= link_to "#{current_user.unread_count} new messages", account_messages_path  %> and your 
+      You've received <%= link_to "#{current_user.unread_count} new messages", account_messages_path  %> and your
     <% else %>
-    Your 
+      Your
     <% end %>
     profile has been viewed by <%= current_user.profile_views %> <%= current_user.profile_views == 1 ? 'person' : 'people' %>.
     <br />
     Add more <%=  link_to 'activities', '#', 'data-href' => "/user_place_activities/new?view=new", :class => "add_activity" %> to refine or increase your matches
-</h2>
+  </h2>
 <% end %>
 
-
-
 <div class="column_header">
-      <span>
-      	<h2>Home</h2>
-      </span>
+  <h2>Home</h2>
 </div>
 
 <div style="float:left;width:556px; margin-bottom:4px;">
-		<h3 style="width:556px;font-size:14px" class="section_name">Click on the map to find people and places</h3>
+  <h3 style="width:556px;font-size:14px" class="section_name">Click on the map to find people and places</h3>
 </div>
 <div class='clear'></div>
 <div id='small_map' style="margin-bottom:10px">
-<%= render :partial => "maps/small_map", :locals => {:collection => @updates} %>
+  <%= render :partial => "maps/small_map", :locals => {:collection => @updates} %>
 </div>
 
 <div style="float:left;width:556px; margin-bottom:4px;">
-		<h3 style="width:556px;font-size:14px" class="section_name">Activity feed</h3>
+  <h3 style="width:556px;font-size:14px" class="section_name">Activity feed</h3>
 </div>
 
 <%= render :partial => "shared_object_collections/feed_collection", :locals => {:collection => @updates} %>

@@ -1,0 +1,44 @@
+
+<script type="text/javascript" charset="utf-8">
+$(function() {
+	$("#cropbox").Jcrop({
+		onChange: update_crop,
+		onSelect: update_crop,
+		setSelect: [0,0,500,500],
+		aspectRatio: 1
+		});
+});
+function update_crop(coords) {
+	var rx = 75/coords.w;
+	var ry = 75/coords.h;
+	$('#preview').css({
+	  width: Math.round(rx * <%= current_user.icon_geometry(:large).width %>) + 'px',
+	  height: Math.round(ry * <%= current_user.icon_geometry(:large).height %>) + 'px',
+	  marginLeft: '-' + Math.round(rx * coords.x) + 'px',
+	  marginTop: '-' + Math.round(ry * coords.y) + 'px'
+	});
+	var ratio = <%= current_user.icon_geometry(:original).width %> / <%= current_user.icon_geometry(:large).width %>;
+
+$("#crop_x").val(coords.x );
+$("#crop_y").val(coords.y );
+$("#crop_w").val(coords.w);
+$("#crop_h").val(coords.h);
+}
+</script>
+
+
+<h4> Preview </h4>
+<div style="width:75px; height:75px; overflow:hidden">
+	<%= image_tag current_user.icon.url(:large), :id=>"preview" %>
+</div>
+
+<%= image_tag current_user.icon.url(:large), :id => "cropbox" %>
+<% form_tag "/update", :multipart => true, :name => "photo_crop", :id => "photo_crop" do%>
+  <%= hidden_field_tag 'iframe', 'true' %>
+  <% for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
+    <%= hidden_field_tag attribute, :id => attribute %>
+  <% end %>
+  <p><%= submit_button('Crop',:id => 'cropp')%></p>
+<% end %>
+
+
