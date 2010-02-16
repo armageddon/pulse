@@ -5,7 +5,7 @@
   &nbsp;
 <% end %>
 <% content_for :message do %>
-    <h2>We do not have an account linked to your Facebook account. Enter your Hellopulse username and password below to link the accounts, or create a new user for thois facebook account</h2>
+    <h2>We do not have an account linked to your Facebook account. Enter your Hellopulse username and password below to link the accounts, or create a new user for this facebook account</h2>
 <% end %>
 
 <div class="column_header">
@@ -14,7 +14,7 @@
 
 
  <% form_tag '/account/do_link' , :id => 'session_form' do -%>
-          
+     
               <span style="font-size:14px">Username</span>
               <span style="font-size:14px"><%= text_field_tag 'login', @login, :class => "input_text", :value => "Username", :size => "10" %></span><br />
               <span style="font-size:14px">Password</span>

@@ -1,0 +1,78 @@
+ .itemhover {
+    background-color:#B7B7B7 !important;
+    color:#232323 !important;
+  }
+  #activity_results ul, #place_results ul {
+    padding:0px;
+    margin:0px;
+    list-style-image:none;
+    list-style-position:outside;
+    list-style-type:none;
+  }
+  #activity_results ul li, #place_results ul li {
+    margin:0px;
+  }
+  #activity_results ul li a, #place_results ul li a {
+    display:block;
+    padding:2px;
+    text-decoration:none;
+  }
+
+  .result_item
+  {
+    color:black;
+    font-size:13px;
+  }
+  .place_hood
+  {
+    color:black;
+    font-size:11px;
+  }
+  #activity_results {
+    background-color:white;
+    border-color:-moz-use-text-color #999999 #999999;
+    border-style:none solid solid;
+    border-width:medium 1px 1px;
+    padding:3px;
+    position:absolute;
+    z-index:10;
+    width:200px;
+
+  }
+  #place_results  {
+    background-color:white;
+    border-color:-moz-use-text-color #999999 #999999;
+    border-style:none solid solid;
+    border-width:medium 1px 1px;
+    padding:3px;
+    position:absolute;
+    z-index:10;
+    width:300px;
+  }
+
+  #activity, #place {
+    float:left;
+  }
+  .activity_input {
+    border-color: #999999 #999999 #999999;
+    border-style:solid solid solid;
+    border-width:1px 1px 1px;
+    width:200px;
+    padding:3px;
+  }
+
+  .place_input {
+    border-color: #999999 #999999 #999999;
+    border-style:solid solid solid;
+    border-width:1px 1px 1px;
+    width:300px;
+    padding:3px;
+  }
+
+  .places_it {
+    border-color: #999999 #999999 #999999;
+    border-style:solid solid solid;
+    border-width:1px 1px 1px;
+    width:200px;
+    padding:3px;
+  }

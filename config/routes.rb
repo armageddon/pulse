@@ -73,6 +73,7 @@ map.link_page '/account/link', :controller => 'users', :action => 'link'
   map.user_activity_delete 'account/activities/delete', :controller => 'user_activities',  :action => 'destroy'
 
   #user_place_activities controller
+  map.user_place_activity '/user_place_activities/free', :controller => "user_place_activities", :action =>"free"
   map.user_place_activity '/user_place_activities', :controller => "user_place_activities", :action =>"show"
   map.delete_place_activity '/user_place_activities/delete', :controller => 'user_place_activities', :action => 'destroy'
   map.favourite_place_activities 'user_place_activities/list', :controller => 'user_place_activities', :action=>'list'

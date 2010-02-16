@@ -5,8 +5,10 @@ class UserPlaceActivitiesController < ApplicationController
     activity_id = params[:activity_id].to_i
     activity_name =params[:activity_name]
     place_id = params[:place_id].to_i
-    neighborhood = params[:hood]
+    neighborhood = params[:neighborhood]
     place_name = params[:place_name]
+    day_of_week = params[:day_of_week]
+    time_of_day = params[:time_of_day]
 
     if activity_id == -1
       logger.debug('act id IS -1 - creating activity')
@@ -30,7 +32,7 @@ class UserPlaceActivitiesController < ApplicationController
         place_activity = PlaceActivity.new(:activity_id => activity_id, :place_id => place_id)
         place_activity.save
       end
-    @user_place_activity = current_user.user_place_activities.build(:description => params[:description], :place_id => place_id, :activity_id => activity_id, :day_of_week =>0, :time_of_day => 0)
+    @user_place_activity = current_user.user_place_activities.build(:description => params[:description], :place_id => place_id, :activity_id => activity_id, :day_of_week =>day_of_week, :time_of_day => time_of_day)
     @user_place_activity.place_activity = place_activity
     if @user_place_activity.save
       respond_to do |format|
@@ -74,6 +76,13 @@ class UserPlaceActivitiesController < ApplicationController
       
     end
   end
+
+  def free
+    @user_place_activity = UserPlaceActivity.new
+     render :partial => "free_user_place_activity.html.erb", :locals => { :activity => @activity, :user_place_activity => @user_place_activity, :place => @place, :view => @view }
+  end
+
+
 
   def show
   
@@ -140,6 +149,7 @@ class UserPlaceActivitiesController < ApplicationController
       format.js { render :partial => "edit_user_place_activity.html.erb", :locals => { :user_place_activity => @user_place_activity} }
     end
   end
+
   def update
     source = params[:source]
     if !(params[:activity_id]==ANYTHING_ACTIVITY_ID.to_s && params[:place_id]==ANYWHERE_PLACE_ID.to_s)
