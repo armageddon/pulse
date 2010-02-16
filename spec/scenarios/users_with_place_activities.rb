@@ -24,6 +24,12 @@ class UsersWithPlaceActivities
     @dave.save!
   end
   
+  def laura
+    london
+    @laura = User.new( :username=>"laura", :first_name=>'laura', :last_name=>'laura', :email=>'laura@some.com', :location_id=>@london.id, :sex=>User::Sex::FEMALE, :sex_preference=>User::Sex::FEMALE, :password=>'password', :password_confirmation=>'password', :postcode=>'N11 3PY')
+    @laura.stub!(:welcome_mail)
+    @laura.save!
+  end
   
   def place_activities
     london
@@ -42,7 +48,7 @@ class UsersWithPlaceActivities
       Activity.new(:name=>"dancing")
     ].save!
     
-    @climbing_at_the_castle,@climbing_at_the_westway,@badminton_at_the_westway, 
+    @climbing_at_the_castle, @climbing_at_the_westway, @badminton_at_the_westway, 
     @drinking_at_the_brownswood, @drinking_at_the_bald_faced_stag, @dancing_at_the_disco = [
       PlaceActivity.new(:place=>@the_castle, :activity=>@climbing),
       PlaceActivity.new(:place=>@the_westway, :activity=>@climbing),
@@ -57,7 +63,6 @@ class UsersWithPlaceActivities
   
   def alice_with_four_place_activities
     [@climbing_at_the_westway, @badminton_at_the_westway, @drinking_at_the_bald_faced_stag, @dancing_at_the_disco ].each do |pa|
-      puts "pa = #{pa.inspect}"
       UserPlaceActivity.new(:place => pa.place, :activity=>pa.activity, :place_activity=>pa, :user=>@alice ).save
     end
   end
@@ -68,7 +73,11 @@ class UsersWithPlaceActivities
     end
   end
   
-  
+  def laura_with_activities
+    [@climbing_at_the_westway, @climbing_at_the_castle, @drinking_at_the_brownswood ].each do |pa|
+      UserPlaceActivity.new(:place => pa.place, :activity=>pa.activity, :place_activity=>pa, :user=>@laura ).save
+    end
+  end
   
   def alice_and_bob_with_two_out_of_four_place_activities_in_common
     alice
@@ -79,8 +88,18 @@ class UsersWithPlaceActivities
   end
   
   def alice_and_dave_with_nothing_in_common
+    alice
+    place_activities
     alice_with_four_place_activities
     dave
+  end
+  
+  def laura_has_place_activities_in_common_with_bob_but_doesnt_like_men
+    bob
+    laura
+    place_activities
+    bob_with_four_place_activities
+    laura_with_activities
   end
   
 end

@@ -54,7 +54,7 @@ module UserMatcher
           AND  (u1.sex & u2.sex_preference) > 0 AND (u1.sex_preference & u2.sex) > 0
       SQL
       r = ActiveRecord::Base.connection.execute sql
-      r.all_hashes[0]['pct_match'].to_f rescue nil
+      r.all_hashes[0]['pct_match'].to_f rescue 0.0
     end
     
   protected
