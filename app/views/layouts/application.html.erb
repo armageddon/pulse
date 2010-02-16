@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" xmlns:fb="http://www.facebook.com/2008/fbml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="HelloPulse" content="A new site for bringing together like-minded singles" />
@@ -10,9 +10,11 @@
     <%= stylesheet_link_tag %w(jqModal application ) %>
     <%= javascript_include_tag 	"jquery-1.3.2", 'jquery.form.js', 'jqModal', 'jquery.autocomplete.js', 'jquery.charcounter.js', 'application', 'signup' %>
     <%= javascript_tag "var AUTH_TOKEN = #{form_authenticity_token.inspect};" %>
+
     <%= yield(:head) %>
   </head>
   <body>
+
     <%= hidden_field_tag "googlecode", googlecode(request.url) %>
     <div id="dialog" style="display: none;" class="jqmWindow"></div>
 

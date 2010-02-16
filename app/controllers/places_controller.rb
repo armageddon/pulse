@@ -6,9 +6,9 @@ class PlacesController < ApplicationController
   end
   
   def show
-     @place =Place.find(params[:id])
-     @user_place_activities = @place.user_place_activities.paginate( :order=>'created_at DESC',:page=>1,:per_page=>10)
-     @users = @place.users.paginate(:all,:group => :user_id, :page => params[:page], :per_page => 6)
+    @place =Place.find(params[:id])
+    @user_place_activities = @place.user_place_activities.paginate( :order=>'created_at DESC',:page=>1,:per_page=>10)
+    @users = @place.users.paginate(:all,:group => :user_id, :page => params[:page], :per_page => 6)
   end
   
   def users
@@ -34,12 +34,23 @@ class PlacesController < ApplicationController
     results = @places.map {|p| "#{p.name}"+" <span style='font-size:9px'>#{p.neighborhood}</span>|#{p.id}"}.join("\n")
     render :text => results
   end
- def autocomplete_new
-   logger.debug('sdssd')
-    @places = Place.find(:all,:order => "name", :conditions => ["name like ? ", "#{params[:q]}%"])
-     results = @places.map {|p| "<span class='place_dd' id = #{p.id} >#{p.name}</span><span style ='font-size:10px'></span><br />"}.join("")
 
 
-    render :text => results
+  
+  def autocomplete_new
+    s = params[:q]
+    @places = Place.find(:all,:order => "name", :conditions => ["name like ? ", "#{s}%"])
+    place = Place.find(:all,:order => "name", :conditions => ["name = ? ", "#{s}"])
+    res = Array.new
+    if place.length==0
+      res << {:id=>-1,:name=>s,:count=>'add this'}
+    end
+    
+    @places.each do |p|
+      res << {:id=>p.id, :name=>p.name, :count=>0}
+    end
+    respond_to do |format|
+      format.js { render :json => res}
+    end
   end
 end

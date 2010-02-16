@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100201105518) do
+ActiveRecord::Schema.define(:version => 20100211115840) do
 
   create_table "activities", :force => true do |t|
     t.string   "name"
@@ -265,6 +265,8 @@ ActiveRecord::Schema.define(:version => 20100201105518) do
     t.integer  "c",                                       :default => 1
     t.integer  "height",                                  :default => 0
     t.integer  "body_type",                               :default => 0
+    t.integer  "fb_user_id",                :limit => 8
+    t.string   "email_hash"
   end
 
 end

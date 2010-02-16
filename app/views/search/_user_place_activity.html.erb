@@ -19,6 +19,7 @@
 		<% end %>
   </div>
   <div id='who' style="margin-right:5px;width:85px;float:left;">
+    <!-- todo: include all these in one query -->
 	<% users = User.search_users_pictures(params, current_user, object.place.id, object.activity.id) %>
     <%= render :partial  => "shared_objects/user_pictures", :collection => users %>
     <% if users.total_entries > 3 %>

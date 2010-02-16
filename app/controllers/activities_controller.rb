@@ -57,25 +57,31 @@ class ActivitiesController < ApplicationController
 
   def autocomplete
     s = params[:q]
-    logger.debug(s)
     @activities = Activity.find(:all,:select=>"activities.id, activities.name, activities.activity_category_id, count(activities.id) as UPA" ,:group=>"activities.id, activities.name, activities.activity_category_id",:joins => "left join user_place_activities UPA on UPA.activity_id = activities.id", :order => "name", :conditions => ["name like ? ", "%#{params[:q]}%"])
     activity = Activity.find(:all,:select=>"activities.id, activities.name, activities.activity_category_id, 0 as UPA",:conditions=>["name = ?","#{s}"])
-    results = ""
+    res = Array.new
     if activity.length==0
-
-      results =  "<span class='activity_dd' id = 0>"+s+"</span><span style ='font-size:10px'> (Add this)</span><br />"
+      res << {:id=>0,:name=>s,:count=>'add this'}
     end
-    # @activities = Activity.search(s)
-   
-    results += @activities.map {|p| "<span class='activity_dd' id = #{p.id} >#{p.name}</span><span style ='font-size:10px'> (#{p.UPA})</span><br />"}.join("")
-
-    render :text => results
+    @activities.each do |a|
+      res << {:id=>a.id, :name=>a.name, :count=>a.UPA}
+    end
+    respond_to do |format|
+      format.js { render :json => res}  #al - add json type as parameter here.
+    end 
   end
 
   def activity_places
     activity_id = params[:activity_id]
     @places = Place.find(:all,:select=>"places.id, places.name, count(UPA.id) as UPA", :group=>"places.id, places.name",:joins=>"inner join user_place_activities UPA on UPA.place_id = places.id",:conditions=>"UPA.activity_id = " + activity_id.to_s)
-    render :text => @places.map{ |p| "<span class='place_dd' id = #{p.id} >#{p.name}</span><span style ='font-size:10px'> (#{p.UPA})</span><br />"}.join("")
+    res = Array.new
+    
+    @places.each do |p|
+      res << {:id=>p.id, :name=>p.name, :count=>p.UPA}
+    end
+    res <<  {:id=>0, :name=>'or Search Places >>', :count=>''}
+    respond_to do |format|
+      format.js { render :json => res}  #al - add json type as parameter here.
+    end
   end
-
 end

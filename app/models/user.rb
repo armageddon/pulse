@@ -4,7 +4,8 @@ class User < ActiveRecord::Base
   include UsersHelper
   apply_simple_captcha
   fires :newuser, :on => :create, :actor => :self
-  after_create :welcome_mail
+  after_create :welcome_mail, :register_user_to_fb
+
   after_update :reprocess_icon, :if => :cropping?
 
   define_index do
@@ -38,7 +39,6 @@ class User < ActiveRecord::Base
 
 
   class Age
-   
     def Age.add_item(key,value)
       @hash ||= {}
       @hash[key]=value
@@ -60,8 +60,6 @@ class User < ActiveRecord::Base
     Age.add_item :MID_FORTIES, 9
     Age.add_item :LATE_FORTIES, 10
     Age.add_item :OLDER,11
-
-    
   end
 
   class Sex
@@ -125,9 +123,61 @@ class User < ActiveRecord::Base
   # HACK HACK HACK -- how to do attr_accessible from here?
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
-  attr_accessible :height, :body_type, :captcha, :captcha_key, :username, :email, :first_name, :password, :password_confirmation, :timezone, :description, :age, :age_preference, :sex, :sex_preference, :cell, :location_id, :icon, :dob, :postcode, :lat, :long
+  attr_accessible :fb_user_id, :email_hash, :height, :body_type, :captcha, :captcha_key, :username, :email, :first_name, :password, :password_confirmation, :timezone, :description, :age, :age_preference, :sex, :sex_preference, :cell, :location_id, :icon, :dob, :postcode, :lat, :long
   attr_accessor :login
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
+
+
+  ####FACEBOOK#####
+  #find the user in the database, first by the facebook user id and if that fails through the email hash
+def self.find_by_fb_user(fb_user)
+  User.find_by_fb_user_id(fb_user.uid) || User.find_by_email_hash(fb_user.email_hashes)
+end
+#Take the data returned from facebook and create a new user from it.
+#We don't get the email from Facebook and because a facebooker can only login through Connect we just generate a unique login name for them.
+#If you were using username to display to people you might want to get them to select one after registering through Facebook Connect
+def self.create_from_fb_connect(fb_user)
+  new_facebooker = User.new(:name => fb_user.name, :login => "facebooker_#{fb_user.uid}", :password => "", :email => "")
+  new_facebooker.fb_user_id = fb_user.uid.to_i
+  #We need to save without validations
+  new_facebooker.save(false)
+  new_facebooker.register_user_to_fb
+end
+
+#We are going to connect this user object with a facebook id. But only ever one account.
+def link_fb_connect(fb_user_id)
+  unless fb_user_id.nil?
+    #check for existing account
+    existing_fb_user = User.find_by_fb_user_id(fb_user_id)
+    #unlink the existing account
+    unless existing_fb_user.nil?
+      existing_fb_user.fb_user_id = nil
+      existing_fb_user.save(false)
+    end
+    #link the new one
+    self.fb_user_id = fb_user_id
+    save(false)
+  end
+end
+
+#The Facebook registers user method is going to send the users email hash and our account id to Facebook
+#We need this so Facebook can find friends on our local application even if they have not connect through connect
+#We hen use the email hash in the database to later identify a user from Facebook with a local user
+def register_user_to_fb
+  users = {:email => email, :account_id => id}
+  Facebooker::User.register([users])
+  self.email_hash = Facebooker::User.hash_email(email)
+  save(false)
+end
+
+def facebook_user?
+  return !fb_user_id.nil? && fb_user_id > 0
+end
+
+
+
+
+
 
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   # uff.  this is really an authorization, not authentication routine.

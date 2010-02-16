@@ -4,9 +4,39 @@ class UsersController < ApplicationController
   # Protect these actions behind an admin login
   # before_filter :admin_required, :only => [:suspend, :unsuspend, :destroy, :purge]
   before_filter :find_user, :only => [:suspend, :unsuspend, :destroy, :purge, :admin_delete]
-  before_filter :login_required, :except => [:redeem, :create]
+  before_filter :login_required, :except => [:redeem, :create, :link_user_accounts, :link]
   #skip_before_filter :verify_authenticity_token, :only => :admin_delete
 
+
+  #this needs to be sorted - if no fb user redirect to link account screen
+  def link_user_accounts
+    logger.debug('LLLLLLLLLink user account')
+    logger.debug(self.current_user.id)
+    if self.current_user.nil? || self.current_user.id==0
+      #register with fb
+      #either connect existing account
+      
+      #or go to create user
+      redirect_to('/account/link')
+      return
+      logger.debug('current user nil - link accounts')
+     # User.create_from_fb_connect(facebook_session.user)
+    else
+      logger.debug('connect_accounts')
+      #connect accounts
+    
+      #self.current_user.link_fb_connect(facebook_session.user.id) unless self.current_user.fb_user_id == facebook_session.user.id
+    end
+    redirect_to '/'
+  end
+
+  def link
+    logger.debug('LINKLINKLINK')
+    respond_to do |format|
+      format.html { render :template => "/users/link_facebook"}
+    end
+
+  end
   def place_activity_list
     @user_place_activities = UserPlaceActivity.paginate(:all, :conditions => 'user_id = ' + current_user.id.to_s, :page=> params[:page], :per_page=>10)
     respond_to do |format|
@@ -28,7 +58,6 @@ class UsersController < ApplicationController
     end
   end
 
-  #todo: where is this called
   def user_place_activities
     @activities = current_user.activities;
     respond_to do |format|
@@ -58,8 +87,8 @@ class UsersController < ApplicationController
     logout_keeping_session!
     
  
-      @user = User.new
-      render :action => :new
+    @user = User.new
+    render :action => :new
 
   end
 
@@ -73,10 +102,10 @@ class UsersController < ApplicationController
       @user.age_preference ||= 5
       logger.debug('sdsdsd')
       logger.debug(params[:feet])
-       logger.debug(params[:inches])
+      logger.debug(params[:inches])
       cm = ((params[:feet].to_i * 12) +params[:inches].to_i ) * 2.54
-     @user.height = cm
-      if params[:user][:postcode] != nil 
+      @user.height = cm
+      if params[:user][:postcode] != nil
         geocoder = Graticule.service(:google).new "ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog"
         location = geocoder.locate('london ' + params[:user][:postcode])
         latitude, longitude = location.coordinates
@@ -97,7 +126,7 @@ class UsersController < ApplicationController
       success = @user && @user.valid?
       logger.debug('errors' )
       logger.debug(pp @user.errors)
-      @user.age 
+      @user.age
       logger.debug('Success ' + success.to_s)
     else
       logger.debug('captcha failed')
@@ -141,25 +170,17 @@ class UsersController < ApplicationController
     @user_place_activity = UserPlaceActivity.new
     if params[:iframe]=="true"
       logger.info(:params)
-      
-      
       current_user.crop_w = params[:crop_w]
       current_user.crop_h = params[:crop_h]
-      current_user.crop_x = params[:crop_x] 
+      current_user.crop_x = params[:crop_x]
       current_user.crop_y = params[:crop_y]
       logger.info(current_user.crop_w)
       logger.info(current_user.crop_h)
       logger.info(current_user.crop_x)
       logger.info(current_user.crop_y)
-      
       logger.info('before update')
       current_user.update_attributes(params[:user])
-      
       logger.info('after update')
-      
-      
-      
-      
       respond_to do |format|
         format.html { render :text => current_user.icon.url(:profile) }
         format.js { render :text => current_user.icon.url + "js"}
@@ -182,7 +203,7 @@ class UsersController < ApplicationController
         end
       end
       cm = ((params[:feet].to_i * 12) +params[:inches].to_i ) * 2.54
-     current_user.height = cm
+      current_user.height = cm
       respond_to do |format|
         logger.debug(params[:user]);
         if current_user.update_attributes(params[:user])
@@ -238,8 +259,6 @@ class UsersController < ApplicationController
           u.destroy
         end
         #need to delete all timeline events from this user
-        
-  
         @user.destroy
       end
       respond_to do |format|
@@ -281,7 +300,7 @@ class UsersController < ApplicationController
   protected
 
   def access_denied
-     @updates = TimelineEvent.paginate( :page=>1, :conditions=>"icon_file_name is not  null",:joins=>"INNER JOIN users on users.id = timeline_events.actor_id",:per_page => 5, :order => 'created_at DESC')
+    @updates = TimelineEvent.paginate( :page=>1, :conditions=>"icon_file_name is not  null",:joins=>"INNER JOIN users on users.id = timeline_events.actor_id",:per_page => 5, :order => 'created_at DESC')
 
     render :template => "sessions/new", :layout => false
     

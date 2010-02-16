@@ -5,14 +5,26 @@ class UserPlaceActivitiesController < ApplicationController
     activity_id = params[:activity_id].to_i
     activity_name =params[:activity_name]
     place_id = params[:place_id].to_i
+    neighborhood = params[:hood]
+    place_name = params[:place_name]
+
     if activity_id == -1
-      logger.debug('act id IS -1 - crating activity')
+      logger.debug('act id IS -1 - creating activity')
       @activity = Activity.new
       @activity.name = activity_name
       @activity.activity_category_id = 1
       @activity.save
       activity_id = @activity.id
     end
+     if place_id == -1
+      logger.debug('plc id IS -1 - creating place')
+      @place = Place.new
+      @place.name = place_name
+      @place.neighborhood = neighborhood
+      @place.save
+      place_id = @place.id
+    end
+
      place_activity = PlaceActivity.find(:first,:conditions=>['place_id = ? and activity_id = ?',place_id, activity_id])
       if place_activity == nil
         place_activity = PlaceActivity.new(:activity_id => activity_id, :place_id => place_id)

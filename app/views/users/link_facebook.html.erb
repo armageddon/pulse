@@ -1,0 +1,54 @@
+<% content_for :c3 do %>
+  &nbsp;
+<% end %>
+<% content_for :c1 do %>
+  &nbsp;
+<% end %>
+<% content_for :message do %>
+    <h2>We do not have an account linked to your Facebook account. Enter your Hellopulse username and password below to link the accounts, or create a new user for thois facebook account</h2>
+<% end %>
+
+<div class="column_header">
+   <h2>Link your accounts</h2>
+</div>
+
+
+ <% form_tag '/account/do_link' , :id => 'session_form' do -%>
+          
+              <span style="font-size:14px">Username</span>
+              <span style="font-size:14px"><%= text_field_tag 'login', @login, :class => "input_text", :value => "Username", :size => "10" %></span><br />
+              <span style="font-size:14px">Password</span>
+              <span style="font-size:14px"><%= password_field_tag 'password', nil, :size => "10", :class => "input_text", :style => "display: none;" %></span>
+              <span style="font-size:14px"><input type="text" class="input_text" size="10" value="Password" id="password_holder"/></span><br />
+              <%= submit_button "GO", :class=> 'submit', :type =>'submit'%><br />
+      
+
+          <% end %>
+
+<script type="text/javascript" charset="utf-8">
+
+  $(document).ready(function() {
+
+    $('#login, #invite_code').focus(function() {
+<%# password failure/autocomplete %>
+<% if @login.present? %>
+        $.data(this, 'clicked', true);
+<% end %>
+
+      if (!$.data(this, 'clicked')) {
+        $(this).val('');
+        $.data(this, 'clicked', true);
+      }
+    });
+
+
+
+
+    $('#password_holder').focus(function() {
+      $(this).hide();
+      $('#password').show();
+      $('#password').focus();
+    });
+
+      });
+</script>

@@ -1,4 +1,29 @@
 <style type="text/css">
+  .itemhover {
+    background-color:#B7B7B7 !important;
+    color:#232323 !important;
+  }
+  #activity_results ul, #place_results ul {
+    padding:0px;
+    margin:0px;
+    list-style-image:none;
+    list-style-position:outside;
+    list-style-type:none;
+  }
+  #activity_results ul li, #place_results ul li {
+    margin:0px;
+  }
+  #activity_results ul li a, #place_results ul li a {
+    display:block;
+    padding:2px;
+    text-decoration:none;
+  }
+
+  .place_dd_search
+  {
+    font-weight:bold;
+  }
+
   #activity_results,#place_results  {
     background-color:white;
     border-color:-moz-use-text-color #999999 #999999;
@@ -10,20 +35,25 @@
     width:200px;
 
   }
-
   #activity, #place {
     float:left;
   }
-  .activity_input, .place_input
-  {
+  .activity_input {
     border-color: #999999 #999999 #999999;
     border-style:solid solid solid;
     border-width:1px 1px 1px;
     width:200px;
     padding:3px;
   }
-  .places_it
-  {
+   .place_input {
+    border-color: #999999 #999999 #999999;
+    border-style:solid solid solid;
+    border-width:1px 1px 1px;
+    width:300px;
+    padding:3px;
+  }
+
+  .places_it {
     border-color: #999999 #999999 #999999;
     border-style:solid solid solid;
     border-width:1px 1px 1px;
@@ -41,65 +71,78 @@
 <% content_for :message do %>
   <h2>Welcome to Hello Pulse. We are using technology to build a totally new experience in online dating. Please complete the info below to get access to the site. Don’t be shy.</h2>
 <% end %>
-
+<div class="column_header">
+  <h2>Add an activity</h2>
+</div>
 <% user_place_activity = UserPlaceActivity.new %>
 <div class="clear"></div>
 <div id ="happening"style="float:left">
   <div id='activity'>
     <%= hidden_field_tag 'activity_id', 0,:id => 'activity_id' %>
-    Activity<br/>
+    <label  style="margin-top: 5px; color:#990000;">What do you like doing?</label> <br />
     <%= text_field_tag :activity_name,
       (user_place_activity.place.present? ? user_place_activity.place.name : nil),
       :class => "activity_input", :disabled => false,
       :size => 50
   %>
-
-    <div id ="activity_results">
-
-
+    <div id ="activity_results" style="display:none">
     </div>
   </div>
   <div style="float:left">
     <br />
-    &nbsp;@&nbsp;
   </div>
-
-  <div id="place">
-    <%= hidden_field_tag 'place_id', 1,:id => 'place_id' %>
+  <div id="place" style="display:none">
+    <%= hidden_field_tag 'place_id', 0,:id => 'place_id' %>
     Place<br />
     <%= text_field_tag :place_nam,
       (user_place_activity.place.present? ? user_place_activity.place.name : nil),
       :class => "place_input", :disabled => false,
       :size => 50
   %>
-
-    <div id='place_results'>
-
+    <div id='place_results' style="display:none">
     </div>
+     <div id="new_place" style="width:230px;float:left;margin-top:10px;display:none">
+      <%= std_drop_down('hood', 0, {:width => '200px'},hood_options, 'Select a neighborhood', '0') %>
+  </div>
   </div>
   <br />
+  
+  <div style="margin-top:30px">
+    <span id="add_error" class="error"></span>
+  </div>
   <br />
   <div style="float:left;margin-top:20px">
-   <%= text_area_tag('description',USER_PLACE_DESCRIPTION_TEXT, :rows => 2, :cols=>45,:class => "input_text word_count") %>
+    <%= text_area_tag('description',USER_PLACE_DESCRIPTION_TEXT, :rows => 2, :cols=>45,:class => "input_text word_count") %>
   </div>
   <div class="clear"></div>
   <%= submit_button 'Add', :enabled=>'true', :id => 'add_activity', :height => "30px", :width => "30px", :style => "margin-top:10px;margin-left:10px; font-size:14px" %>
-
 </div>
 <div class="clear"></div>
+
 <script type="text/javascript" charset="utf-8">
   $(document).ready(function() {
-    
-    function formatResult(row) {
-      return row.replace("<span style='font-size:9px'>","").replace("</span>","");
-    }
-
-    function formatRows(results){
-      return results;
-    }
-
+    var resultsArray;
+    var selectedActivity;
+    var selectedActivityIndex;
+    var selectedPlace;
+    var selectedPlaceIndex;
+    var currentPlaceSelection;
+    var currentSelection = 0;
     var search_timeout = undefined;
-    $("#activity_name").bind('keyup',function(){
+    var place_search_timeout = undefined;
+
+    //events bindings
+    $("#activity_name").bind('keyup',function(e){
+      if(e.keyCode == 40)
+      {
+        navigate('down');
+        return false;
+      }
+      if(e.keyCode == 38)
+      {
+        navigate('up');
+        return false;
+      }
       if($("#activity_name").val().length<= 2) return false;
       if(search_timeout != undefined) {
         clearTimeout(search_timeout);
@@ -109,26 +152,22 @@
         search_timeout = undefined;
         $.ajax({
           type: "GET",
+          dataType: 'json',
           url: '/activities/autocomplete',
           data: {
             "q" : $('#activity_name').val()
           },
           success: function(p) {
-            $('#activity_results').html(formatRows(p));
+            displayActivities(p);
           },
           error: function(p) {
-            $('#activity_error').addClass('show');
-            $('#activity_error').addClass('invalid');
-            $('#activity_error').val(p.responseText);
+            alert('An error occured');
           }
         })
-      }, 200);
+      }, 500);
     });
 
-    var place_search_timeout = undefined;
-    $("#place_nam").bind('keyup',function(){
-
-
+    $("#place_nam").bind('keyup',function(e){
       if($("#place_nam").val().length<= 2) return false;
       if(search_timeout != undefined) {
         clearTimeout(place_search_timeout);
@@ -138,12 +177,16 @@
         place_search_timeout = undefined;
         $.ajax({
           type: "GET",
+          dataType: 'json',
           url: '/places/autocomplete_new',
           data: {
             "q" : $('#place_nam').val()
           },
           success: function(p) {
-            $('#place_results').html(formatRows(p));
+            $('#place_results').css('display','block');
+            resultsPlaceArray = p;
+            $('#place_results').html(formatPlaceRows(p));
+            bindPlaceHover()
           },
           error: function(p) {
             $('#activity_error').addClass('show');
@@ -154,29 +197,49 @@
       }, 500);
     });
 
+    $('#activity_name').bind('blur',function(){
 
+    });
+
+    $('#happening').bind('blur',function(){
+      alert('blur');
+    });
 
     $('.activity_dd').live('click',function(){
+      currentSelection  = $("#activity_results ul li").index(this)
+      setSelected(currentSelection);
       var act_id = $(this).attr('id');
       if(act_id == 0)
       {
         $('#activity_id').val(-1);
+        $('#activity_results').css('display','none');
       }
       else
       {
-        $('#activity_id').val($(this).attr('id'));  
+        $('#activity_id').val($(this).attr('id'));
       }
-      $('#activity_name').val($(this).html())
-      $('#activity_results').html('');
+      
+      $('#activity_name').val(getActivityFromID(act_id).name)
       $('#place_results').html('');
+      $('#place_nam').val('');
       $.ajax({
         type: "GET",
+        dataType: 'json',
         url: '/activity/activity_places',
         data: {
-          "activity_id" : $(this).attr('id')
+          "activity_id" : act_id
         },
         success: function(p) {
-          $('#place_results').html(formatRows(p));
+          if(p.length >1)
+          {
+            displayPopularPlaces(p);
+          }
+          else
+          {
+            displaySearchPlaces();
+          }
+          resultsPlaceArray = p;
+          bindPlaceHover();
         },
         error: function(p) {
           $('#activity_error').addClass('show');
@@ -187,19 +250,43 @@
     });
 
     $('.place_dd').live('click',function(){
-      $('#place_nam').val($(this).html())
-      $('#place_id').val($(this).attr('id'))
+      currentPlaceSelection  = $("#place_results ul li").index(this);
+      setPlaceSelected(currentPlaceSelection);
+      var plc_id = $(this).attr('id');
+      alert(plc_id);
+      if(plc_id==0)
+      {
+        displaySearchPlaces();
+        $('#place_results').css('display','none');
+         $('#activity_results').css('display','none');
+        $('#place_results').html('');
+
+        return false;
+      }
+       if(plc_id==-1)
+      {
+        $('#place_results').css('display','none');
+        $('#new_place').css('display','block');
+        $('#place_id').val(-1);
+        return false;
+      }
+
+      $('#place_nam').css('display','block');
+      $('#place_nam').val(getPlaceFromID(plc_id).name);
+      $('#place_id').val(plc_id);
+      $('#place_results').css('display','none');
+      $('#activity_results').css('display','none');
       $('#place_results').html('');
     });
 
-
     $('#place_nam').live('click',function(){
+      $('#place_id').val(0);
       $(this).val('');
     });
 
-$('#description').live('click',function(){
-   $(this).val('');
-});
+    $('#description').live('click',function(){
+      $(this).val('');
+    });
 
     $('#activity_name').live('click',function(){
       $(this).val('');
@@ -207,18 +294,23 @@ $('#description').live('click',function(){
       $('#place_results').html('');
     });
 
-
-
     $('#add_activity').live('click',function(){
       //if activity id = 0 add activity and get activity id
       //then add UPA
+      $('#add_error').html('');
       var error = false;
       if($('#activity_id').val() == 0)
       {
         error = true;
+        $('#add_error').html('Please ensure you have selected an activity ')
         return false;
       }
-
+      if($('#place_id').val() == 0)
+      {
+        error = true;
+        $('#add_error').html('Please ensure you have selected a place ')
+        return false;
+      }
       $.ajax({
         type: "POST",
         url: "/user_place_activities/new_user_place_activity",
@@ -226,7 +318,9 @@ $('#description').live('click',function(){
           "activity_id" : $('#activity_id').val(),
           "activity_name" : $('#activity_name').val(),
           "place_id" :  $('#place_id').val(),
-          "description" : $('#description').val()
+          "description" : $('#description').val(),
+          "place_name" :  $('#place_nam').val(),
+          "neighborhood" :  $('#hood').val()
         },
         success: function(p) {
           alert('added');
@@ -235,11 +329,171 @@ $('#description').live('click',function(){
           alert("error");
         }
       });
-
-
       return false;
-
     });
+
+
+    //methods
+
+
+    function bindHover() {
+      $("#activity_results ul li a").hover(function () {
+        currentSelection = $("#activity_results ul li a").index(this)
+        setSelected(currentSelection);
+      }, function() {
+        $("#activity_results ul li a").removeClass("itemhover");
+        currentUrl = '';
+      }
+    );
+    }
+
+    function bindPlaceHover()  {
+      $("#place_results ul li a").hover( function () {
+        currentPlaceSelection = $("#place_results ul li a").index(this)
+        setPlaceSelected(currentPlaceSelection);
+      }, function() {
+        $("#place_results ul li a").removeClass("itemhover");
+        currentUrl = '';
+      }
+    );
+    }
+
+    function setSelected(index) {
+      $("#activity_results ul li a").removeClass("itemhover");
+      $("#activity_results ul li a").eq(index).addClass("itemhover");
+    }
+
+    function setPlaceSelected(index) {
+      $("#place_results ul li a").removeClass("itemhover");
+      $("#place_results ul li a").eq(index).addClass("itemhover");
+    }
+    
+    function formatActivityRows(results) {
+      var html = '<ul>';
+      for (var i = 0; i<results.length;i++)
+      {
+        html += '<li class="activity_dd" id='+ results[i].id +'><a>' + results[i].name + '&nbsp;(<span style="font-size:10px">' + results[i].count + ')</span></a></li>';
+      }
+      html += '</ul>';
+      return html;
+    }
+
+    function formatPlaceRows(results) {
+      var html = '<ul>';
+      var place_class = 'place_dd'; 
+      for (var i = 0; i<results.length;i++)
+        if(results[i].id!=0)
+      {
+        html += '<li class=' + place_class+ ' id='+ results[i].id +'><a>' + results[i].name + '&nbsp;(<span style="font-size:10px">' + results[i].count + ')</span></a></li>';
+      }
+      else
+      {
+        html += '<li class=' + place_class+ ' style="font-weight:bold" id='+ results[i].id +'><a>' + results[i].name + '&nbsp;<span style="font-size:10px">' + results[i].count + '</span></a></li>';
+      }
+      html += '</ul>';
+      return html;
+    }
+
+    function navigate(direction)
+    {
+      // Check if any of the menu items is selected
+      if($("#activity_results ul li .itemhover").size() == 0) {
+        currentSelection = -1;
+      }
+      if(direction == 'up' && currentSelection != -1) {
+        if(currentSelection != 0) {
+          currentSelection--;
+        }
+      } else if (direction == 'down') {
+        if(currentSelection != $("#activity_results ul li").size() -1) {
+          currentSelection++;
+        }
+      }
+      setSelected(currentSelection);
+    }
+    
+    function navigatePlaces(direction)          
+    {
+      // Check if any of the menu items is selected
+      if($("#place_results ul li .itemhover").size() == 0) {
+        currentPlaceSelection = -1;
+      }
+      if(direction == 'up' && currentPlaceSelection != -1) {
+        if(currentPlaceSelection != 0) {
+          currentPlaceSelection--;
+        }
+      } else if (direction == 'down') {
+        if(currentPlaceSelection != $("#place_results ul li").size() -1) {
+          currentPlaceSelection++;
+        }
+      }
+      setPlaceSelected(currentPlaceSelection);
+    }
+
+    function displayActivities(activities)
+    {
+      //display loading
+      resultsArray = activities;
+      $('#place_nam').css('display','none');
+      $('#activity_results').css('display','block');
+      $('#activity_results').css('overflow','auto');
+      $('#activity_results').css('max-height','200px');
+      $('#activity_results').html(formatActivityRows(activities));
+      bindHover();
+
+      for(var i = 0; i < $("#activity_results ul li a").size(); i++) {
+        $("#activity_results ul li a").eq(i).data("number", i);
+      }
+    }
+    
+    function displaySearchPlaces()
+    {
+      $('#place_results').css('margin-top','0px');
+      $('#place').css('display','block');
+      $('#place').css('margin-left','10px');
+      $('#place_nam').css('display','block');
+      $('#place_results').css('max-height','300px');
+      $('#place_results').css('overflow','auto');
+    }
+
+    function displayPopularPlaces(places)
+    {
+      $('#place_nam').css('display','none');
+      $('#place').css('display','block');
+      $('#place').css('margin-left','0px');
+      $('#place_results').css('display','block');
+      $('#place_results').css('border','1px');
+      $('#place_results').css('border-style','solid');
+      $('#place_results').css('border-color','#999999');
+      $('#place_results').css('margin-top','10px');
+      $('#place_results').html(formatPlaceRows(places));
+    }
+
+    function getActivityFromID(id)
+    {
+      var selItem;
+      for (var i = 0; i<resultsArray.length;i++)
+      {
+        if(resultsArray[i].id == id)
+        {
+          selItem = resultsArray[i];
+        }
+      }
+      return selItem;
+    }
+
+    function getPlaceFromID(id)
+    {
+      var selItem;
+      for (var i = 0; i<resultsPlaceArray.length;i++)
+      {
+        if(resultsPlaceArray[i].id == id)
+        {
+          selItem = resultsPlaceArray[i];
+        }
+      }
+      return selItem;
+    }
   });
 
 </script>

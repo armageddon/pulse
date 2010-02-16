@@ -1,13 +1,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" xmlns:fb="http://www.facebook.com/2008/fbml">
   <head>
     <title>HelloPulse - bringing together like-minded singles</title>
     <meta name="HelloPulse" CONTENT="A new site for bringing together like-minded singles" />
     <link rel="shortcut icon" href="/images/favicon.ico" />
     <%= stylesheet_link_tag %w( reset application) %>
     <%= javascript_include_tag "jquery-1.3.2", 'application' %>
+    <%= javascript_include_tag :defaults%>
 
     <style type="text/css" media="screen">
 
@@ -50,6 +51,8 @@
   </head>
 
   <body>
+<%= fb_connect_javascript_tag %>
+<%= init_fb_connect "XFBML", :js=>:jquery%>
 
     <div id="container" class="container_16">
 
@@ -63,8 +66,13 @@
               <span style="font-size:14px"><input type="text" class="input_text" size="10" value="Password" id="password_holder"/></span>
               <%= submit_button "GO", :class=> 'submit', :type =>'submit'%><br />
             </div>
+
+          
+
            <div class="clear">&nbsp;</div>
             <div style="float:right; margin-bottom:5px">
+              <%= fb_login_button('window.location = "/account/link_user_accounts";')%>
+              &nbsp;&nbsp;&nbsp;
               <%= link_to "Forgot Password?", :controller=>'passwords', :action=>"new", :id=>'new_password'%>
             </div>
           <% end %>

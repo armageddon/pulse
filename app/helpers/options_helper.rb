@@ -152,6 +152,14 @@ module OptionsHelper
     end 
     return options
   end
+
+  def hood_options
+      options = Array.new
+    Place.find(:all, :select=>'distinct neighborhood  ',:conditions=>"neighborhood <> ''",:order => "neighborhood").each do |op|
+      options << [op.neighborhood ,op.neighborhood ]
+    end
+    return options
+  end
   
   def activity_category_options
     options = Array.new

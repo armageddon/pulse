@@ -1,5 +1,8 @@
-class SearchCriteria < ActiveRecord::Base
-
+class SearchCriteria 
+#al - method returns rails default logger.
+  def logger
+    RAILS_DEFAULT_LOGGER
+  end
   
   attr_reader :keyword, :sex, :sex_preference,:sex_preferences 
   attr_reader :ages, :upper_age, :lower_age
@@ -184,79 +187,4 @@ class SearchCriteria < ActiveRecord::Base
     return [@sex_condition.length>0, @age_condition.length>0, @place_location_condition.length>0, @activity_category_condition.length>0, conditions.chomp(" and ")]
   end
 
-
-
- 
-
-  def low_lat
-    @low_lat 
-  end
-  def high_lat 
-    @high_lat 
-  end 
-  def low_long 
-    @low_long 
-  end
-  def high_long 
-    @high_long 
-  end
-
-
-
-  def age_condition 
-    @age_condition
-  end
-  def sex_condition
-    @sex_condition
-  end
-
-
-  def type
-     @type
-   end
-
-
-  def keyword
-    @keyword
-  end
-  
-  def sex
-    @sex
-  end
-  
-  def upper_age
-    @upper_age
-  end
-  
-  def lower_age
-    @lower_age
-  end
-  
-  def distance
-     @distance 
-  end
-   
-  def place_category
-     @place_category
-  end
-  
-  def activity_category
-     @activity_category
-  end
-  
-  def ages
-    @ages
-  end
-    
-  def activity_categories
-    @activity_categories
-  end
-  
-  def sex_preferences 
-    @sex_preferences 
-  end
-  
-  def postcode
-    @postcode
-  end
 end

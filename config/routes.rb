@@ -19,7 +19,9 @@ ActionController::Routing::Routes.draw do |map|
   map.map_places '/search/map', :controller => 'search', :action => 'map_places'
    
   #users controller
-
+  map.linker '/account/do_link' , :controller => 'sessions', :action=>'link'
+map.link_page '/account/link', :controller => 'users', :action => 'link'
+ map.link_user_accounts '/account/link_user_accounts', :controller => 'users', :action => 'link_user_accounts'
   map.admin_delete '/admin_delete', :controller => 'users', :action => 'admin_delete'
   map.user_admins '/user_admins', :controller => 'users', :action => 'admin'
   map.register '/register', :controller => 'users', :action => 'create'
@@ -77,6 +79,7 @@ ActionController::Routing::Routes.draw do |map|
   map.add_user_place_activity 'user_place_activities/add', :controller => 'user_place_activities', :action=>'create'
   map.update_user_place_activity 'user_place_activities/update', :controller => 'user_place_activities', :action=>'update'
    map.update_user_place_activity 'user_place_activities/edit', :controller => 'user_place_activities', :action=>'edit'
+   map.new_user_place_activity '/user_place_activities/new_user_place_activity',  :controller => 'user_place_activities', :action=>'new_user_place_activity'
   #place_activities controller
   map.resources :place_activities
   map.place_activity_users '/place_activity/users', :controller => 'place_activities', :action => 'users'
@@ -95,6 +98,10 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :activities, :collection => { :autocomplete => :get } do |a|
     a.resources :pictures, :controller => "activity_pictures"
   end
+
+
+
+
   map.test_new 'new_test', :controller=>'activities', :action => 'new_test'
   map.activity_users '/activity/users', :controller => 'activities', :action => 'users'
   map.activity_user_place_activities '/activity/user_place_activities', :controller => 'activities', :action => 'user_place_activities'

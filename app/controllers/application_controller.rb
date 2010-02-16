@@ -5,8 +5,11 @@ class ApplicationController < ActionController::Base
   include SimpleCaptcha::ControllerHelpers 
   helper :all # include all helpers, all the time
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
-  include AuthenticatedSystem
 
+
+  before_filter :set_facebook_session
+  helper_method :facebook_session
+ include AuthenticatedSystem
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
   
