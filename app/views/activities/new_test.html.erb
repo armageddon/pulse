@@ -193,9 +193,7 @@
             bindPlaceHover()
           },
           error: function(p) {
-            $('#activity_error').addClass('show');
-            $('#activity_error').addClass('invalid');
-            $('#activity_error').val(p.responseText);
+            alert('an error occurred')
           }
         })
       }, 500);

@@ -36,7 +36,7 @@
 		  		<%= link_to image_tag("HPThumbUp.png", :width=>20,:class => " tooltip ", :title => I18n.translate("Add_to_favorites")), '#', 'data-href' => "/user_place_activities/new?activity_id="+pa.activity_id.to_s+"&place_id="+pa.place_id.to_s+"&view=add_place_activity", :class => "add_activity" %>
                                
                         <%  elsif  logged_in?    %>
-                                <%= link_to image_tag("pencil-small.png", :width=>20,:class => " tooltip ", :title => "Edit"), '#', 'data-href' => "/user_place_activities/edit?source=user_favorites&id="+object.id.to_s, :class => "add_activity" %>
+                                <%= link_to image_tag("new_edit.png", :width=>20,:class => " tooltip ", :title => "Edit"), '#', 'data-href' => "/user_place_activities/edit?source=user_favorites&id="+object.id.to_s, :class => "add_activity" %>
                                 <%= link_to image_tag("Cancel.png", :style=>'width:20px;margin-top:5px;',:class => " tooltip ", :title => I18n.translate("Remove_from_favorites")), '/user_place_activities/delete',:user_place_activity_id=>object.id, :class => "remove_place_activity" %>
 			<%  end %> 
 
