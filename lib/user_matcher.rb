@@ -29,13 +29,15 @@
 module UserMatcher
     
     def self.matches_for( user, entity_type, limit )
-      User.find( :all,
+      matches = User.find( :all,
         :select => 'users.*, 100.0 * (v1_dot_v2 / (user1_mod * user2_mod) ) AS pct_match',
         :conditions => ['T.user_id = ? AND (users.sex & ?) > 0 AND (users.sex_preference & ?) > 0', user.id, user.sex_preference, user.sex],
         :limit => limit,
         :order => 'pct_match DESC',
         :joins => "INNER JOIN (#{vector_space(entity_type)}) T ON T.user2_id = users.id"
           )
+      matches.each{ |m| m.pct_match = m.pct_match.to_f }
+      matches
     end
     
     def self.pct_match( user1_id, user2_id, entity_type )

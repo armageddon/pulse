@@ -17,6 +17,13 @@ class UsersWithPlaceActivities
     @bob.save!
   end
   
+  def charlotte
+    london 
+    @charlotte = User.new( :username=>"charlotte", :first_name=>'charlotte', :last_name=>'charlotte', :email=>'charlotte@some.com', :location_id=>@london.id, :sex=>User::Sex::FEMALE, :sex_preference=>User::Sex::BOTH, :password=>'password', :password_confirmation=>'password', :postcode=>'EC2A 3HJ')
+    @charlotte.stub!(:welcome_mail)
+    @charlotte.save!
+  end
+  
   def dave
     london
     @dave = User.new( :username=>"dave", :first_name=>'dave', :last_name=>'david', :email=>'dave@some.com', :location_id=>@london.id, :sex=>User::Sex::MALE, :sex_preference=>User::Sex::BOTH, :password=>'password', :password_confirmation=>'password', :postcode=>'N11 3PY')
@@ -74,10 +81,17 @@ class UsersWithPlaceActivities
   end
   
   def laura_with_activities
-    [@climbing_at_the_westway, @climbing_at_the_castle, @drinking_at_the_brownswood ].each do |pa|
+    [@climbing_at_the_westway, @climbing_at_the_castle, @drinking_at_the_brownswood, @dancing_at_the_disco ].each do |pa|
       UserPlaceActivity.new(:place => pa.place, :activity=>pa.activity, :place_activity=>pa, :user=>@laura ).save
     end
   end
+  
+  def charlottes_activities
+    [ @drinking_at_the_bald_faced_stag, @dancing_at_the_disco ].each do |pa|
+      UserPlaceActivity.new(:place => pa.place, :activity=>pa.activity, :place_activity=>pa, :user=>@charlotte ).save
+    end
+  end
+  
   
   def alice_and_bob_with_two_out_of_four_place_activities_in_common
     alice
@@ -99,6 +113,19 @@ class UsersWithPlaceActivities
     laura
     place_activities
     bob_with_four_place_activities
+    laura_with_activities
+  end
+  
+  def everyone_with_activities
+    alice
+    bob
+    charlotte
+    dave
+    laura
+    place_activities
+    alice_with_four_place_activities
+    bob_with_four_place_activities
+    charlottes_activities
     laura_with_activities
   end
   
