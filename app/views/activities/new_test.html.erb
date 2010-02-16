@@ -93,7 +93,7 @@
   </div>
   <div id="place" style="display:none">
     <%= hidden_field_tag 'place_id', 0,:id => 'place_id' %>
-    Place<br />
+    <label  id="place_label" style="margin-top: 5px; color:#990000;">What do you like doing?</label> <br />
     <%= text_field_tag :place_nam,
       (user_place_activity.place.present? ? user_place_activity.place.name : nil),
       :class => "place_input", :disabled => false,
@@ -133,6 +133,7 @@
 
     //events bindings
     $("#activity_name").bind('keyup',function(e){
+
       if(e.keyCode == 40)
       {
         navigate('down');
@@ -143,7 +144,10 @@
         navigate('up');
         return false;
       }
-      if($("#activity_name").val().length<= 2) return false;
+      if($("#activity_name").val().length<= 2)
+        {
+          return false;
+        }
       if(search_timeout != undefined) {
         clearTimeout(search_timeout);
       }
@@ -213,6 +217,8 @@
       {
         $('#activity_id').val(-1);
         $('#activity_results').css('display','none');
+        displaySearchPlaces();
+        return false;
       }
       else
       {
@@ -253,7 +259,7 @@
       currentPlaceSelection  = $("#place_results ul li").index(this);
       setPlaceSelected(currentPlaceSelection);
       var plc_id = $(this).attr('id');
-      alert(plc_id);
+
       if(plc_id==0)
       {
         displaySearchPlaces();
@@ -265,6 +271,7 @@
       }
        if(plc_id==-1)
       {
+        $('#activity_results').css('display','none');
         $('#place_results').css('display','none');
         $('#new_place').css('display','block');
         $('#place_id').val(-1);
@@ -290,6 +297,9 @@
 
     $('#activity_name').live('click',function(){
       $(this).val('');
+       $("#place").css('display','none');
+            $("#place_results").css('display','none');
+            $("#place_nam").val('');
       $('#activity_id').val(0);
       $('#place_results').html('');
     });
@@ -372,7 +382,7 @@
       var html = '<ul>';
       for (var i = 0; i<results.length;i++)
       {
-        html += '<li class="activity_dd" id='+ results[i].id +'><a>' + results[i].name + '&nbsp;(<span style="font-size:10px">' + results[i].count + ')</span></a></li>';
+        html += '<li class="activity_dd" id='+ results[i].id +'><a>' + results[i].name + '&nbsp;<span style="font-size:10px">(' + results[i].count + ')</span></a></li>';
       }
       html += '</ul>';
       return html;
@@ -382,14 +392,16 @@
       var html = '<ul>';
       var place_class = 'place_dd'; 
       for (var i = 0; i<results.length;i++)
-        if(results[i].id!=0)
+        if(results[i].id==0||results[i].id==-1)
       {
-        html += '<li class=' + place_class+ ' id='+ results[i].id +'><a>' + results[i].name + '&nbsp;(<span style="font-size:10px">' + results[i].count + ')</span></a></li>';
-      }
+         html += '<li class=' + place_class+ ' style="font-weight:bold" id='+ results[i].id +'><a>' + results[i].name + '&nbsp;<span style="font-size:10px">' + results[i].count + '</span></a></li>';
+
+            }
       else
       {
-        html += '<li class=' + place_class+ ' style="font-weight:bold" id='+ results[i].id +'><a>' + results[i].name + '&nbsp;<span style="font-size:10px">' + results[i].count + '</span></a></li>';
-      }
+        html += '<li class=' + place_class+ ' id='+ results[i].id +'><a>' + results[i].name + '&nbsp;<span style="font-size:10px">(' + results[i].count + ')</span></a></li>';
+
+         }
       html += '</ul>';
       return html;
     }
@@ -448,6 +460,8 @@
     
     function displaySearchPlaces()
     {
+      $('#place_label').html('Search for a place or add a new place');
+       $('#place_results').css('display','none');
       $('#place_results').css('margin-top','0px');
       $('#place').css('display','block');
       $('#place').css('margin-left','10px');
@@ -458,6 +472,7 @@
 
     function displayPopularPlaces(places)
     {
+        $('#place_label').html('Select a popular place or click search to find other places');
       $('#place_nam').css('display','none');
       $('#place').css('display','block');
       $('#place').css('margin-left','0px');

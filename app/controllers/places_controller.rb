@@ -43,11 +43,11 @@ class PlacesController < ApplicationController
     place = Place.find(:all,:order => "name", :conditions => ["name = ? ", "#{s}"])
     res = Array.new
     if place.length==0
-      res << {:id=>-1,:name=>s,:count=>'add this'}
+      res << {:id=>-1,:name=>s,:count=>'add this place', :neighborhood=>''}
     end
     
     @places.each do |p|
-      res << {:id=>p.id, :name=>p.name, :count=>0}
+      res << {:id=>p.id, :name=>p.name, :count=>0, :neighborhood=>p.neighborhood}
     end
     respond_to do |format|
       format.js { render :json => res}

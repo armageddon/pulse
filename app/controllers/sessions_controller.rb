@@ -26,7 +26,8 @@ class SessionsController < ApplicationController
       self.current_user = user
       new_cookie_flag = (params[:remember_me] == "1")
       handle_remember_cookie! new_cookie_flag
-
+      logger.info('session')
+       logger.info(facebook_session.user.uid)
       self.current_user.fb_user_id = facebook_session.user.uid
       logger.debug(p facebook_session)
       self.current_user.save
