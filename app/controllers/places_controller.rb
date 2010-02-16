@@ -39,7 +39,7 @@ class PlacesController < ApplicationController
   
   def autocomplete_new
     s = params[:q]
-    @places = Place.find(:all,:order => "name", :conditions => ["name like ? ", "#{s}%"])
+    @places = Place.find(:all,:order => "name", :limit=>"50",:conditions => ["name like ? ", "#{s}%"])
     place = Place.find(:all,:order => "name", :conditions => ["name = ? ", "#{s}"])
     res = Array.new
     if place.length==0

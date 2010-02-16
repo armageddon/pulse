@@ -19,12 +19,17 @@
     text-decoration:none;
   }
 
-  .place_dd_search
+  .result_item
   {
-    font-weight:bold;
+    color:black;
+    font-size:13px;
   }
-
-  #activity_results,#place_results  {
+  .place_hood
+  {
+    color:black;
+    font-size:11px;
+  }
+  #activity_results {
     background-color:white;
     border-color:-moz-use-text-color #999999 #999999;
     border-style:none solid solid;
@@ -35,6 +40,19 @@
     width:200px;
 
   }
+  #place_results  {
+    background-color:white;
+    border-color:-moz-use-text-color #999999 #999999;
+    border-style:none solid solid;
+    border-width:medium 1px 1px;
+    padding:3px;
+    position:absolute;
+    z-index:10;
+    width:300px;
+
+  }
+
+
   #activity, #place {
     float:left;
   }
@@ -45,7 +63,7 @@
     width:200px;
     padding:3px;
   }
-   .place_input {
+  .place_input {
     border-color: #999999 #999999 #999999;
     border-style:solid solid solid;
     border-width:1px 1px 1px;
@@ -101,12 +119,12 @@
   %>
     <div id='place_results' style="display:none">
     </div>
-     <div id="new_place" style="width:230px;float:left;margin-top:10px;display:none">
+    <div id="new_place" style="width:230px;float:left;margin-top:10px;display:none">
       <%= std_drop_down('hood', 0, {:width => '200px'},hood_options, 'Select a neighborhood', '0') %>
-  </div>
+    </div>
   </div>
   <br />
-  
+
   <div style="margin-top:30px">
     <span id="add_error" class="error"></span>
   </div>
@@ -145,9 +163,9 @@
         return false;
       }
       if($("#activity_name").val().length<= 2)
-        {
-          return false;
-        }
+      {
+        return false;
+      }
       if(search_timeout != undefined) {
         clearTimeout(search_timeout);
       }
@@ -222,7 +240,6 @@
       {
         $('#activity_id').val($(this).attr('id'));
       }
-      
       $('#activity_name').val(getActivityFromID(act_id).name)
       $('#place_results').html('');
       $('#place_nam').val('');
@@ -246,9 +263,7 @@
           bindPlaceHover();
         },
         error: function(p) {
-          $('#activity_error').addClass('show');
-          $('#activity_error').addClass('invalid');
-          $('#activity_error').val(p.responseText);
+          alert('an error occured');
         }
       })
     });
@@ -262,12 +277,12 @@
       {
         displaySearchPlaces();
         $('#place_results').css('display','none');
-         $('#activity_results').css('display','none');
+        $('#activity_results').css('display','none');
         $('#place_results').html('');
 
         return false;
       }
-       if(plc_id==-1)
+      if(plc_id==-1)
       {
         $('#activity_results').css('display','none');
         $('#place_results').css('display','none');
@@ -295,9 +310,9 @@
 
     $('#activity_name').live('click',function(){
       $(this).val('');
-       $("#place").css('display','none');
-            $("#place_results").css('display','none');
-            $("#place_nam").val('');
+      $("#place").css('display','none');
+      $("#place_results").css('display','none');
+      $("#place_nam").val('');
       $('#activity_id').val(0);
       $('#place_results').html('');
     });
@@ -380,7 +395,7 @@
       var html = '<ul>';
       for (var i = 0; i<results.length;i++)
       {
-        html += '<li class="activity_dd" id='+ results[i].id +'><a>' + results[i].name + '&nbsp;<span style="font-size:10px">(' + results[i].count + ')</span></a></li>';
+        html += '<li class="activity_dd" id='+ results[i].id +'><a class="result_item">' + results[i].name + '&nbsp;<span style="font-size:10px">(' + results[i].count + ')</span></a></li>';
       }
       html += '</ul>';
       return html;
@@ -392,14 +407,12 @@
       for (var i = 0; i<results.length;i++)
         if(results[i].id==0||results[i].id==-1)
       {
-         html += '<li class=' + place_class+ ' style="font-weight:bold" id='+ results[i].id +'><a>' + results[i].name + '&nbsp;<span style="font-size:10px">' + results[i].count + '</span></a></li>';
-
-            }
+        html += '<li class=' + place_class+ ' style="font-weight:bold" id='+ results[i].id +'><a class="result_item">' + results[i].name + '&nbsp;<span style="font-size:10px">' + results[i].count + '</span></a></li>';
+      }
       else
       {
-        html += '<li class=' + place_class+ ' id='+ results[i].id +'><a>' + results[i].name + '&nbsp;<span style="font-size:10px">(' + results[i].count + ')</span></a></li>';
-
-         }
+        html += '<li class=' + place_class+ ' id='+ results[i].id +'><a class="result_item">' + results[i].name + '&nbsp;<span class="place_hood">'+ results[i].neighborhood +'</span>&nbsp;<span style="font-size:10px">(' + results[i].count + ')</span></a></li>';
+      }
       html += '</ul>';
       return html;
     }
@@ -459,7 +472,7 @@
     function displaySearchPlaces()
     {
       $('#place_label').html('Search for a place or add a new place');
-       $('#place_results').css('display','none');
+      $('#place_results').css('display','none');
       $('#place_results').css('margin-top','0px');
       $('#place').css('display','block');
       $('#place').css('margin-left','10px');
@@ -470,7 +483,7 @@
 
     function displayPopularPlaces(places)
     {
-        $('#place_label').html('Select a popular place or click search to find other places');
+      $('#place_label').html('Select a popular place or click search to find other places');
       $('#place_nam').css('display','none');
       $('#place').css('display','block');
       $('#place').css('margin-left','0px');

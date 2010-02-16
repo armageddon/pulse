@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100211115840) do
+ActiveRecord::Schema.define(:version => 20100216133536) do
 
   create_table "activities", :force => true do |t|
     t.string   "name"
@@ -160,6 +160,7 @@ ActiveRecord::Schema.define(:version => 20100211115840) do
   end
 
   add_index "places", ["import_id"], :name => "idx_import_id"
+  add_index "places", ["name"], :name => "index_places_on_name"
 
   create_table "simple_captcha_data", :force => true do |t|
     t.string   "key",        :limit => 40
