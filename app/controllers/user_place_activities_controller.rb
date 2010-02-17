@@ -1,6 +1,10 @@
 class UserPlaceActivitiesController < ApplicationController
   before_filter :login_required
 
+
+
+
+
   def new_user_place_activity
     activity_id = params[:activity_id].to_i
     activity_name =params[:activity_name]
@@ -40,7 +44,7 @@ class UserPlaceActivitiesController < ApplicationController
           flash[:notice] = "You have added a user place activity, user activity and user place"
           redirect_to account_places_path
         end
-        format.js {render :text => 'added'  }
+        format.js {render :partial => 'user_place_activity', :object => @user_place_activity  }
       end
     else
 
@@ -58,7 +62,6 @@ class UserPlaceActivitiesController < ApplicationController
   end
 
   def new
-    
     @view = params[:view]
     @view ||= ""
     if params[:activity_id].present?
@@ -67,7 +70,6 @@ class UserPlaceActivitiesController < ApplicationController
     if params[:place_id].present?
       @place = Place.find(params[:place_id])
     end
-
     @user_place_activity = UserPlaceActivity.new(:place_id => params[:place_id], :activity_id => params[:activity_id], :place_activity_id => params[:place_activity_id])
     @type = params[:type]
     respond_to do |format|
@@ -81,8 +83,6 @@ class UserPlaceActivitiesController < ApplicationController
     @user_place_activity = UserPlaceActivity.new
      render :partial => "free_user_place_activity.html.erb", :locals => { :activity => @activity, :user_place_activity => @user_place_activity, :place => @place, :view => @view }
   end
-
-
 
   def show
   
@@ -106,8 +106,6 @@ class UserPlaceActivitiesController < ApplicationController
   end
 
   def create
-    logger.debug('UPA CREATE!!!!!!!!!!!!!!!!!'+params[:activity_id])
-    logger.debug('UPA CREATE!!!!!!!!!!!!!!!!!'+params[:place_id])
     if !(params[:activity_id]==ANYTHING_ACTIVITY_ID.to_s && params[:place_id]==ANYWHERE_PLACE_ID.to_s)
       @activity = Activity.find(params[:activity_id])
       @place = Place.find(params[:place_id]) 

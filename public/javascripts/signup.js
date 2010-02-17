@@ -78,6 +78,9 @@ $(document).ready(function() {
         })
     });
 
+
+
+//NEED TO PULL THIS OUT
     $('#place_name').focus(function() {
         if ( !$.data(this, 'initialized') ) {
             $(this).val('');
@@ -111,6 +114,7 @@ $(document).ready(function() {
         }
     });
 
+
     $("#finished").click(function() {
         window.location="/account";
         return false;
@@ -138,8 +142,6 @@ $(document).ready(function() {
             $('#activity_error').val("You need to select a place or an activity");
             error = true
         }
-
-
         if (error) {
             return false;
         }
@@ -155,7 +157,6 @@ $(document).ready(function() {
                         $('#user_place_activities').html('');
                     }
                     $('#user_place_activities').append(p);
-                    //reset activity
                     $('#parent_value').val(0);
                     $('#activity_category_target').text("Any category");
                     $('#activity_id').val(159);
@@ -187,6 +188,11 @@ $(document).ready(function() {
         return false;
     })
 
+
+
+
+
+
     $('#pa_name').focus(function() {
         if ($(this).val() == 'Add a place or activity') {
             $(this).val('');
@@ -202,6 +208,10 @@ $(document).ready(function() {
             $(this).text('');
         }
     });
+
+//************************************************************************************
+
+
 
     $('#user_description').focus(function() {
         if ($(this).val() == 'Give us a line that sums you up') {

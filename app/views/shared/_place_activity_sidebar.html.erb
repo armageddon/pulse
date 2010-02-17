@@ -36,7 +36,7 @@ $(document).ready(function() {
      type: "POST",
      url: target,
      success: function() { $("#remove_place").hide() && $("#add_place").show() },
-     data: { "_method": "delete", },
+     data: { "_method": "delete" },
    });
    return false;
  });

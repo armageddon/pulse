@@ -1,66 +1,87 @@
 <form autocomplete="off">
-  <div style="height:400px;font-size:14px">
-    <% form_for user_place_activity, :url => '/user_place_activities/new' do |f| %>
+  <% upa_type ||= 'add' %>
+  <%= hidden_field_tag 'upa_type', upa_type %>
+  <div >
+    <% user_place_activity = UserPlaceActivity.new %>
+    <h2>Add a new activity to  your favourites</h2>
+    <br />
 
-      <h2>Add a new activity to  your favourites</h2>
+    <div class="clear"></div>
+    <div id ="happening"style="float:left">
+      <div id='activity'>
+        <%= hidden_field_tag 'activity_id', 0,:id => 'activity_id' %>
+        <label  style="margin-top: 5px; color:#990000;">What do you like doing?</label> <br />
+        <%= text_field_tag :activity_name,
+          (user_place_activity.place.present? ? user_place_activity.place.name : nil),
+          :class => "activity_input", :disabled => false,
+          :size => 50
+      %>
+        <div id ="activity_results" style="display:none">
+        </div>
+      </div>
+      <div style="float:left">
+        <br />
+      </div>
+      <div id="place" style="display:none">
+        <%= hidden_field_tag 'place_id', 0,:id => 'place_id' %>
+        <label  id="place_label" style="margin-top: 5px; color:#990000;">What do you like doing?</label> <br />
+        <%= text_field_tag :place_nam,
+          (user_place_activity.place.present? ? user_place_activity.place.name : nil),
+          :class => "place_input", :disabled => false,
+          :size => 50
+      %>
+        <div id='place_results' style="display:none">
+        </div>
+        <div id="new_place" style="width:230px;float:left;margin-top:10px;display:none">
+          <%= std_drop_down('hood', 0, {:width => '200px'},hood_options, 'Select a neighborhood', '0') %>
+        </div>
+      </div>
       <br />
 
-      <div class="clear"></div>
-      <div id ="happening"style="float:left">
-        <div id='activity'>
-          <%= hidden_field_tag 'activity_id', 0,:id => 'activity_id' %>
-          <label  style="margin-top: 5px; color:#990000;">What do you like doing?</label> <br />
-          <%= text_field_tag :activity_name,
-            (user_place_activity.place.present? ? user_place_activity.place.name : nil),
-            :class => "activity_input", :disabled => false,
-            :size => 50
-        %>
-          <div id ="activity_results" style="display:none">
-          </div>
-        </div>
-        <div style="float:left">
-          <br />
-        </div>
-        <div id="place" style="display:none">
-          <%= hidden_field_tag 'place_id', 0,:id => 'place_id' %>
-          <label  id="place_label" style="margin-top: 5px; color:#990000;">What do you like doing?</label> <br />
-          <%= text_field_tag :place_nam,
-            (user_place_activity.place.present? ? user_place_activity.place.name : nil),
-            :class => "place_input", :disabled => false,
-            :size => 50
-        %>
-          <div id='place_results' style="display:none">
-          </div>
-          <div id="new_place" style="width:230px;float:left;margin-top:10px;display:none">
-            <%= std_drop_down('hood', 0, {:width => '200px'},hood_options, 'Select a neighborhood', '0') %>
-          </div>
-        </div>
-        <br />
-
-        <div style="margin-top:10px; float:left">
-          <label  style="margin-top: 5px; color:#990000; float:left">When do you do it?</label>
-          <div class="clear"></div>
-          <%= std_drop_down('day_of_week', 'Monday', {:width => '130px'},dotw_options, 'Any day',0) %>
-          <%= std_drop_down('time_of_day', 'Early Mornings', {:width => '200px'},tod_options, 'Any time',0) %>
-        </div>
-        <div class='clear'></div>
-
-
-        <div style="margin-top:5px">
-          <span id="add_error" class="error"></span>
-        </div>
-
-        <div style="float:left;margin-top:10px">
-          <%= text_area_tag('description',USER_PLACE_DESCRIPTION_TEXT, :rows => 2, :cols=>45,:class => "input_text word_count") %>
-        </div>
+      <div style="margin-top:10px; float:left">
+        <label  style="margin-top: 5px; color:#990000; float:left">When do you do it?</label>
         <div class="clear"></div>
-        <%= submit_button 'Add', :enabled=>'true', :id => 'add_activity' %>
-        <%= submit_button 'Cancel', :id => "cancel" %>
+        <%= std_drop_down('day_of_week', 'Monday', {:width => '130px'},dotw_options, 'Any day',0,'','dowdd') %>
+        <%= std_drop_down('time_of_day', 'Early Mornings', {:width => '200px'},tod_options, 'Any time',0,'','toddd') %>
+      </div>
+      <div class='clear'></div>
+
+      <div style="margin-top:5px">
+        <span id="add_error" class="error"></span>
+      </div>
+
+      <div style="float:left;margin-top:10px">
+        <%= text_area_tag('description',USER_PLACE_DESCRIPTION_TEXT, :rows => 2, :cols=>45,:class => "input_text word_count") %>
       </div>
       <div class="clear"></div>
+      <%= submit_button 'Add', :enabled=>'true', :id => 'add_activity_template' %>
 
+      <% if upa_type!='reg' %>
+        <%= submit_button 'Cancel', :id => "cancel"%>
+      <% end%>
+    </div>
+    <div class="clear"></div>
 
+    <% if upa_type=='reg' %>
+      <div class="clear"></div>
+      <div id="activities_container" style="float:left; margin-top:10px;">
+        <div class="clear"></div>
+        <div style="float:left;width:556px; margin-bottom:4px;">
+          <h3 style="width:556px;font-size:14px" class="section_name">Your activities</h3>
+        </div>
+        <div class="clear">&nbsp;</div>
+        <div style="padding:5px;margin-right:5px;width:155px;float:left;text-align:center;background-color:#EDEDED;">What</div>
+        <div style="padding:5px;margin-right:5px;width:155px;float:left;text-align:center;background-color:#EDEDED;">Where</div>
+        <div style="padding:5px;margin-right:5px;width:85px;float:left;text-align:center;background-color:#EDEDED;">When</div>
+        <div style="padding:5px;margin-right:5px;width:93px;float:left;text-align:center;background-color:#EDEDED;">Who</div>
+
+        <div id="user_place_activities" style="float:left; margin-top:5px">
+          Please add some activities
+        </div>
+      </div>
     <% end %>
+
+
 
   </div>
 </form>
@@ -173,6 +194,8 @@
       $('#activity_name').val(getActivityFromID(act_id).name)
       $('#place_results').html('');
       $('#place_nam').val('');
+
+
       $.ajax({
         type: "GET",
         dataType: 'json',
@@ -247,62 +270,94 @@
       $('#place_results').html('');
     });
 
+    $("#cancel").click(function() {
+      $("#dialog").jqmHide();
+      return false;
+    })
 
+    $('#add_activity_template').live('click',function(){
 
-<% if request.xhr? %>
-      $("#cancel").click(function() {
-        $("#dialog").jqmHide();
+      //if activity id = 0 add activity and get activity id
+      //then add UPA
+      $('#add_error').html('');
+      var error = false;
+      if($('#activity_id').val() == 0)
+      {
+        error = true;
+        $('#add_error').html('Please ensure you have selected an activity ')
         return false;
-      })
-
-      $('#add_activity').live('click',function(){
-        //if activity id = 0 add activity and get activity id
-        //then add UPA
-        $('#add_error').html('');
-        var error = false;
-        if($('#activity_id').val() == 0)
-        {
-          error = true;
-          $('#add_error').html('Please ensure you have selected an activity ')
-          return false;
-        }
-        if($('#place_id').val() == 0)
-        {
-          error = true;
-          $('#add_error').html('Please ensure you have selected a place ')
-          return false;
-        }
-        $.ajax({
-          type: "POST",
-          url: "/user_place_activities/new_user_place_activity",
-          data: {
-            "activity_id" : $('#activity_id').val(),
-            "activity_name" : $('#activity_name').val(),
-            "place_id" :  $('#place_id').val(),
-            "description" : $('#description').val(),
-            "place_name" :  $('#place_nam').val(),
-            "neighborhood" :  $('#hood').val(),
-            "time_of_day" : $('#time_of_day').val(),
-            "day_of_week" : $('#day_of_week').val()
-          },
-          success: function(p) {
-            $("#dialog").jqmAddTrigger('.add_to_favorites, .add_place, .add_event, .add_activity, .invite_a_friend');
-            $("#dialog").html("Successfully added to your profile");
-            $('#dialog').fadeTo(2000, 0.1, function() {
-              $('#dialog').jqmHide();
-              $('#dialog').fadeTo(1,1);
-            });
-          },
-          error: function(p) {
-            alert("error");
+      }
+      if($('#place_id').val() == 0)
+      {
+        error = true;
+        $('#add_error').html('Please ensure you have selected a place ')
+        return false;
+      }
+      $.ajax({
+        type: "POST",
+        url: "/user_place_activities/new_user_place_activity",
+        data: {
+          "activity_id" : $('#activity_id').val(),
+          "activity_name" : $('#activity_name').val(),
+          "place_id" :  $('#place_id').val(),
+          "description" : $('#description').val(),
+          "place_name" :  $('#place_nam').val(),
+          "neighborhood" :  $('#hood').val(),
+          "time_of_day" : $('#time_of_day').val(),
+          "day_of_week" : $('#day_of_week').val()
+        },
+        success: function(p) {
+          var type = $('#upa_type').val();
+          switch(type)
+          {
+            case 'reg' : reg_success(p);
+              break;
+            case 'add' : add_success(p);
+              break;
           }
-        });
-        return false;
+        },
+        error: function(p) {
+          alert("error");
+        }
       });
-<%end%>
-
+      return false;
+    });
+      
     //methods
 
+    function reset()
+    {
+      $("#place").css('display','none');
+      $('#activity_results').css('display','none');
+      $('#activity_name').val('');
+      $('#place_id').val(0);
+      $('#activity_id').val(0);
+      $('#day_of_week').val(0);
+      $('#time_of_day').val(0);
+      $('#dowdd').val('0');
+      $('#toddd').val('0');
+      $('#description').val('');
+    }
+
+    function reg_success(p)
+    {
+      if($('#user_place_activities').html().indexOf("Please add some activities") >= 0)
+      {
+        $('#user_place_activities').html('');
+      }
+      $('#user_place_activities').append(p);
+      reset();
+    }
+
+    function add_success(p)
+    {
+      $("#dialog").jqmAddTrigger('.add_to_favorites, .add_place, .add_event, .add_activity, .invite_a_friend');
+      $("#dialog").html("Successfully added to your profile");
+      $('#dialog').fadeTo(2000, 0.1, function() {
+        $('#dialog').jqmHide();
+        $('#dialog').fadeTo(1,1);
+      });
+    }
 
     function bindHover() {
       $("#activity_results ul li a").hover(function () {
@@ -465,54 +520,5 @@
       }
       return selItem;
     }
-
-
-
-
-
-
-<% if request.xhr? %>
-      $("#cancel").click(function() {
-        $("#dialog").jqmHide();
-        return false;
-      })
-
-      $("#new_user_place_activity").submit(function() {
-        if($('#user_place_activity_description').val() == "tell us why you socialise here and whether it's good for meeting people")
-        {
-          $('#user_place_activity_description').val("")
-        }
-        var place_id = $("#place_id").val();
-
-        $.ajax({
-          type: "POST",
-          url: '/user_place_activities/add',
-          data: $(this).serialize(),
-          success: function(p) {
-            $("#dialog").jqmAddTrigger('.add_to_favorites, .add_place, .add_event, .add_activity, .invite_a_friend');
-            $("#dialog").html("Successfully added to your profile");
-            $('#dialog').fadeTo(2000, 0.1, function() {
-              $('#dialog').jqmHide();
-              $('#dialog').fadeTo(1,1);
-            });
-          },
-          error: function(p) {
-            $('#activity_error').addClass('show');
-            $('#activity_error').addClass('invalid');
-            $('#activity_error').val(p.responseText);
-          }
-        })
-
-        var place_div = $("#place_"+place_id);
-        var a = place_div.children(".actions").children("a");
-        a.removeClass('add_place');
-        a.addClass('remove_place');
-        a.html('<img class=" tooltip " width="20" title="Remove from favorites" src="/images/HPThumbDown.png" alt="HpthumbDown"/>');
-        return false;
-      });
-<% end %>
-
-
-
   });
 </script>

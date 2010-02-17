@@ -12,62 +12,10 @@
   <h2>Add an activity</h2>
 </div>
 
-
-
-
-
-
 <% user_place_activity = UserPlaceActivity.new %>
-<div class="clear"></div>
-<div id ="happening"style="float:left">
-  <div id='activity'>
-    <%= hidden_field_tag 'activity_id', 0,:id => 'activity_id' %>
-    <label  style="margin-top: 5px; color:#990000;">What do you like doing?</label> <br />
-    <%= text_field_tag :activity_name,
-      (user_place_activity.place.present? ? user_place_activity.place.name : nil),
-      :class => "activity_input", :disabled => false,
-      :size => 50
-  %>
-    <div id ="activity_results" style="display:none">
-    </div>
-  </div>
-  <div style="float:left">
-    <br />
-  </div>
-  <div id="place" style="display:none">
-    <%= hidden_field_tag 'place_id', 0,:id => 'place_id' %>
-    <label  id="place_label" style="margin-top: 5px; color:#990000;">What do you like doing?</label> <br />
-    <%= text_field_tag :place_nam,
-      (user_place_activity.place.present? ? user_place_activity.place.name : nil),
-      :class => "place_input", :disabled => false,
-      :size => 50
-  %>
-    <div id='place_results' style="display:none">
-    </div>
-    <div id="new_place" style="width:230px;float:left;margin-top:10px;display:none">
-      <%= std_drop_down('hood', 0, {:width => '200px'},hood_options, 'Select a neighborhood', '0') %>
-    </div>
-  </div>
-  <br />
+<%= render :partial => '/users/activities'  , :locals=> {:user_place_activity => UserPlaceActivity.new}%>
 
-   <div style="margin-top:10px; float:left">
-      <label  style="margin-top: 5px; color:#990000; float:left">When do you do it?</label>
-      <div class="clear"></div>
-      <%= std_drop_down('day_of_week', 'Monday', {:width => '130px'},dotw_options, 'Any day',0) %>
-      <%= std_drop_down('time_of_day', 'Early Mornings', {:width => '200px'},tod_options, 'Any time',0) %>
-    </div>
-    <div class='clear'></div>
-    <br />
 
-  <div style="margin-top:30px">
-    <span id="add_error" class="error"></span>
-  </div>
-  <br />
-  <div style="float:left;margin-top:20px">
-    <%= text_area_tag('description',USER_PLACE_DESCRIPTION_TEXT, :rows => 2, :cols=>45,:class => "input_text word_count") %>
-  </div>
-  <div class="clear"></div>
-  <%= submit_button 'Add', :enabled=>'true', :id => 'add_activity', :height => "30px", :width => "30px", :style => "margin-top:10px;margin-left:10px; font-size:14px" %>
-</div>
-<div class="clear"></div>
-
+    <div style="float:left;">
+        <%= submit_button("Finish", :id=> "finished") %>
+      </div>

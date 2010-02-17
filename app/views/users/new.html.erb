@@ -9,9 +9,7 @@
 <% end %>
 
 <div class="column_header">
-  <span>
     <h2 id="step_header">Sign Up&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span id="signup_header_step1" style="font-size:16px;font-weight:bold">Step 1</span> &nbsp;>&nbsp; <span  id="signup_header_step2">Step 2</span>&nbsp;>&nbsp; <span  id="signup_header_step3">Step 3</span></h2>
-  </span>
 </div>
 
 <div id="step_container">
@@ -90,7 +88,7 @@
 
 
       <div style="clear:both;"> </div>
-      
+
       <div style="clear:both;width:555px">
         <div id="step_1_text" class = "step_desc" >
           <h3>And give us some information about yourself and who you are looking for</h3>
@@ -149,89 +147,11 @@
 <div id="step_3" class="step" style="display: none; ">
   <div id="step_3_container">
 
+    <%= render :partial => '/users/activities'  , :locals=> {:user_place_activity => UserPlaceActivity.new}%>
+    <div style="float:left;">
+      <%= submit_button("Finish", :id=> "finished") %>
+    </div>
 
-    <% form_tag('/account/activities', :id => "pa_select") do    %>
-      <% user_place_activity = UserPlaceActivity.new %>
-      <label  style="margin-top: 5px; color:#990000;">What do you enjoy doing?</label>
-      <div class="clear"></div>
-      <div style="float:left;">
-
-        <div id="activity_category_div" style="margin-top:10px">
-          <label  style="margin-top: 5px; color:#990000;">What do you like doing?</label>
-          <div class="clear"></div>
-          <%= std_drop_down('activity_category_id', 0, {:width => '223px'},activity_category_options, 'Any category', 0, 'activity_category_hidden','activity_category_select') %><br />
-          <div class="clear"></div>
-          <%= std_drop_down('activity_id', 0, {:width => '223px', :leftmargin => '15px'},[], 'Any activity', 0, 'activity_hidden', 'activity_select' ) %><br />
-          <div class="clear"></div>
-        </div>
-      </div>
-      <br />
-      <br />
-      <div class="clear"></div>
-      <div style="float:left; margin-top:15px">
-        <label  style="margin-top: 5px; color:#990000;">Where do you like doing it?</label>
-        <div class="clear"></div>
-
-        <%= hidden_field_tag 'place_id', ANYWHERE_PLACE_ID, :id => 'place_id' %>
-        <%= text_field_tag :place_name,
-          (user_place_activity.place.present? ? user_place_activity.place.name : nil),
-          :class => "input_text", :disabled => user_place_activity.place.present?,
-          :size => 50,
-          "data-prefilled" => (user_place_activity.place.present? ? 'true' : 'false')
-      %>
-        <div class='clear'></div>
-        <div style="margin-top:10px; float:left">
-          <label  style="margin-top: 5px; color:#990000;">When do you do it?</label>
-          <div class="clear"></div>
-          <%= std_drop_down('user_place_activity[day_of_week]', '0', {:width => '130px',:id=>'day_of_week'},dotw_options, 'Any day',0) %>&nbsp;
-          <div style="width:10px;float:left;">&nbsp;</div>
-          <%= std_drop_down('user_place_activity[time_of_day]', '0', {:width => '200px',:id=>'time_of_day'},tod_options, 'Any time',0) %>
-
-
-        </div>
-
-        <div class="clear"></div>
-        <div style="margin-top:10px; float:left; margin-top:15px">
-          <label style="margin-top: 5px; color:#990000;">Why do you like this place?</label>
-          <div class="clear"></div>
-          <%= text_area_tag('user_place_activity[description]',USER_PLACE_DESCRIPTION_TEXT, :rows => 2, :cols=>60,:class => "input_text word_count") %>
-        </div>
-
-      </div>
-      <div class="clear"></div>
-      <%= text_field_tag "activity_error","",:style => "display:none; width:250px" %>
-      <div class="clear"></div>
-      <div class="image_submit" style="float:left">
-        <div  style="float:left;">
-          <%= submit_button ("Add activity") %>
-        </div>
-
-      </div>
-      <div class="clear"></div>
-      <div id="activities_container" style="float:left; margin-top:10px;">
-        <div class="clear"></div>
-
-
-
-        <div style="float:left;width:556px; margin-bottom:4px;">
-          <h3 style="width:556px;font-size:14px" class="section_name">Your activities</h3>
-        </div>
-        <div class="clear">&nbsp;</div>
-
-
-        <div style="padding:5px;margin-right:5px;width:155px;float:left;text-align:center;background-color:#EDEDED;">What</div>
-        <div style="padding:5px;margin-right:5px;width:155px;float:left;text-align:center;background-color:#EDEDED;">Where</div>
-        <div style="padding:5px;margin-right:5px;width:85px;float:left;text-align:center;background-color:#EDEDED;">When</div>
-        <div style="padding:5px;margin-right:5px;width:93px;float:left;text-align:center;background-color:#EDEDED;">Who</div>
-
-        <div id="user_place_activities" style="float:left; margin-top:5px">
-          Please add some activities
-        </div>
-      </div>
-      <div style="float:left;">
-        <%= submit_button("Finish", :id=> "finished") %>
-      </div>
-    <% end %>
   </div>
 </div>
 
