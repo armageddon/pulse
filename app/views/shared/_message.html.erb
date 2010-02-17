@@ -7,5 +7,5 @@
 <% if current_user.icon.url == '/images/original/missing.png' %>
 	 Add a profile picture to increase  your visibility! 
 <% else %>
-	Add more <%=  link_to 'activities', '#', 'data-href' => "/user_place_activities/new?view=new", :class => "add_activity" %> to refine or increase your matches
+	Add more <%=  link_to 'activities', '#', 'data-href' => "/user_place_activities/free?view=new", :class => "add_activity" %> to refine or increase your matches
 <% end %>

@@ -20,7 +20,7 @@
     <li><%= link_to "SEARCH", :controller=>'search', :action=>"search_criteria", :id=>'find_people_link' , :t => "people" %></li>
     <li><%= link_to "EDIT YOUR INFO", edit_account_path %></li>
 	<li><%= link_to "VIEW YOUR PROFILE", profile_path(current_user)%></li>
-	<li><%= link_to "ADD AN ACTIVITY", '#', 'data-href' => "/user_place_activities/new", :id => "add_place_activity", :class => "add_to_favorites"  %></li> 
+	<li><%= link_to "ADD AN ACTIVITY", '#', 'data-href' => "/user_place_activities/free", :id => "add_place_activity", :class => "add_to_favorites"  %></li>
     <li><%= link_to "INVITE A FRIEND", '#', 'data-href' => new_account_invitation_path, :class => "invite_a_friend" %></li>
   </ul>
 
