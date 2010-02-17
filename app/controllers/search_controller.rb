@@ -46,7 +46,7 @@ class SearchController < ApplicationController
       format.js do
         @users = User.search_users_simple(params, current_user)
         if @users == nil || @users.length == 0
-          render :text=>"<div style='width:500px' id='activity_results'>No results returned</div>"
+          render :text=>"<div style='width:500px' id='activity_results_div'>No results returned</div>"
         else
           render :partial => 'shared_object_collections/users_collection', :locals => { :collection => @users },  :content_type => "text/html"
         end
@@ -72,7 +72,7 @@ class SearchController < ApplicationController
         @user_place_activities = UserPlaceActivity.search_user_place_activities(params, current_user)
        
         if  @user_place_activities == nil || @user_place_activities.length == 0
-          render :text=>"<div style='width:500px' id='activity_results'>No results returned</div>"
+          render :text=>"<div style='width:500px' id='activity_results_div'>No results returned</div>"
         else
           render :partial => 'user_place_activity_collection', :locals => { :collection => @user_place_activities },  :content_type => "text/html"
         end
