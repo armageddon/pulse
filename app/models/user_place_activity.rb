@@ -1,4 +1,6 @@
 class UserPlaceActivity < ActiveRecord::Base
+  require 'twitter'
+  
   belongs_to :user
   belongs_to :activity
   belongs_to :place
