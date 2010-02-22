@@ -37,6 +37,7 @@ class UsersController < ApplicationController
     end
 
   end
+
   def place_activity_list
     @user_place_activities = UserPlaceActivity.paginate(:all, :conditions => 'user_id = ' + current_user.id.to_s, :page=> params[:page], :per_page=>10)
     respond_to do |format|

@@ -1,6 +1,2 @@
 
- 
-  <%= render :partial => '/user_place_activities/free_user_place_activity', :locals=>{:upa_type => 'reg'} %>
-
-  
-
+  <%= render :partial => '/user_place_activities/free_user_place_activity', :locals=>{:upa_type => 'edit', :add_type=>'both',:user_place_activity=>UserPlaceActivity.find(:first)} %>

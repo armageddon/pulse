@@ -1,5 +1,13 @@
+
+
 module CssHelper
   
+def upa_both_class(add_type)
+  case add_type
+  when "both" then 'criteria_show'
+  end
+end
+
   def search_people_results_class(search_type)
     case search_type.to_s
        when "1" then 'criteria_hide'

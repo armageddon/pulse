@@ -1,48 +1,76 @@
 <form autocomplete="off">
   <% upa_type ||= 'add' %>
-  <%= hidden_field_tag 'upa_type', upa_type %>
-  <div >
-    <% user_place_activity = UserPlaceActivity.new %>
-    <h2>Add a new activity to  your favourites</h2>
-    <br />
+  <% add_type ||= 'both' %>
 
-    <div class="clear"></div>
-    <div id ="happening"style="float:left">
-      <div id='activity'>
-        <%= hidden_field_tag 'activity_id', 0,:id => 'activity_id' %>
-        <label  style="margin-top: 5px; color:#990000;">What do you like doing?</label> <br />
-        <%= text_field_tag :activity_name,
-          (user_place_activity.place.present? ? user_place_activity.place.name : nil),
-          :class => "activity_input", :disabled => false,
-          :size => 50
-      %>
-        <div id ="activity_results" style="display:none">
+  <% activity_id = user_place_activity.activity.id if user_place_activity.activity.present?   %>
+  <% place_id =user_place_activity.place.id if user_place_activity.place.present?  %>
+
+  <%place_id ||= 0%>
+  <%activity_id ||= 0%>
+  <%  user_place_activity ||= UserPlaceActivity.new %>
+  <%= hidden_field_tag 'upa_type', upa_type %>
+  <%= hidden_field_tag 'add_type', add_type %>
+  <%= hidden_field_tag 'user_place_activity_id', user_place_activity.id %>
+  <%= hidden_field_tag 'activity_id', activity_id,:id => 'activity_id' %>
+  <%= hidden_field_tag 'place_id', place_id,:id => 'place_id' %>
+
+  <div >
+    <div id ="happening" style="float:left">
+      <%if add_type == 'both'%>
+        <div id="add_activity_and_place">
+          <% if upa_type=='edit'  %>
+          <h2>Edit this activity</h2>
+          <%else%>
+          <h2>Add a new activity to your favourites</h2>
+          <%end%>
+          <br />
+          <div id='activity'>
+            <label  style="margin-top: 5px; color:#990000;">What do you like doing?</label> <br />
+            <%= text_field_tag :activity_name,(user_place_activity.activity.present? ? user_place_activity.activity.name : nil),   :class => "activity_input", :disabled => false,  :size => 50%>
+            <div id ="activity_results" style="display:none">
+            </div>
+          </div>
+          <div style="float:left">
+            <br />
+          </div>
+          <div id="place" style="<%= ' display:none' unless upa_type == 'edit' %>">
+            <label  id="place_label" style="margin-top: 5px; color:#990000;">Where do you like doing it?</label> <br />
+            <%= text_field_tag :place_nam, (user_place_activity.place.present? ? user_place_activity.place.name : nil), :class => "place_input", :disabled => false, :size => 50%>
+            <div id='place_results' style="display:none">
+            </div>
+            <div id="new_place" style="width:230px;float:left;margin-top:10px;display:none">
+              <%= std_drop_down('hood', 0, {:width => '200px'},hood_options, 'Select a neighborhood', '0') %>
+            </div>
+          </div>
         </div>
-      </div>
-      <div style="float:left">
-        <br />
-      </div>
-      <div id="place" style="display:none">
-        <%= hidden_field_tag 'place_id', 0,:id => 'place_id' %>
-        <label  id="place_label" style="margin-top: 5px; color:#990000;">What do you like doing?</label> <br />
-        <%= text_field_tag :place_nam,
-          (user_place_activity.place.present? ? user_place_activity.place.name : nil),
-          :class => "place_input", :disabled => false,
-          :size => 50
-      %>
-        <div id='place_results' style="display:none">
+      <%end%>
+
+      <%if add_type == 'activity'%>
+        <div id="add_activity">
+          <h2>What do you like doing here?</h2>
+          <%= text_field_tag :activity_name,(user_place_activity.place.present? ? user_place_activity.place.name : nil),   :class => "activity_input", :disabled => false,  :size => 50%>
+          <div id ="activity_results" style="display:none">
+          </div>
         </div>
-        <div id="new_place" style="width:230px;float:left;margin-top:10px;display:none">
-          <%= std_drop_down('hood', 0, {:width => '200px'},hood_options, 'Select a neighborhood', '0') %>
+      <%end%>
+
+      <%if add_type == 'place'%>
+        <div id="add_place" >
+          <h2>Where do you like doing this?</h2>
+          <%= text_field_tag :place_nam, (user_place_activity.place.present? ? user_place_activity.place.name : nil), :class => "place_input", :disabled => false, :size => 50%>
+          <div id='place_results' style="display:none">
+          </div>
         </div>
-      </div>
-      <br />
+      <%end%>
+
+
+      <div class="clear"></div>
 
       <div style="margin-top:10px; float:left">
         <label  style="margin-top: 5px; color:#990000; float:left">When do you do it?</label>
         <div class="clear"></div>
-        <%= std_drop_down('day_of_week', 'Monday', {:width => '130px'},dotw_options, 'Any day',0,'','dowdd') %>
-        <%= std_drop_down('time_of_day', 'Early Mornings', {:width => '200px'},tod_options, 'Any time',0,'','toddd') %>
+        <%= std_drop_down('day_of_week', user_place_activity.day_of_week||0, {:width => '130px'},dotw_options, 'Any day',0,'','dowdd') %>
+        <%= std_drop_down('time_of_day', user_place_activity.time_of_day||0, {:width => '200px'},tod_options, 'Any time',0,'','toddd') %>
       </div>
       <div class='clear'></div>
 
@@ -51,10 +79,10 @@
       </div>
 
       <div style="float:left;margin-top:10px">
-        <%= text_area_tag('description',USER_PLACE_DESCRIPTION_TEXT, :rows => 2, :cols=>45,:class => "input_text word_count") %>
+        <%= text_area_tag('description', user_place_activity.description || USER_PLACE_DESCRIPTION_TEXT, :rows => 2, :cols=>45,:class => "input_text word_count") %>
       </div>
       <div class="clear"></div>
-      <%= submit_button 'Add', :enabled=>'true', :id => 'add_activity_template' %>
+      <%= submit_button upa_type == 'add' ? 'Add' : 'Save', :enabled=>'true', :id => 'add_activity_template' %>
 
       <% if upa_type!='reg' %>
         <%= submit_button 'Cancel', :id => "cancel"%>
@@ -80,9 +108,6 @@
         </div>
       </div>
     <% end %>
-
-
-
   </div>
 </form>
 
@@ -184,41 +209,44 @@
       {
         $('#activity_id').val(-1);
         $('#activity_results').css('display','none');
-        displaySearchPlaces();
+        if($('#add_type').val()=='both')  displaySearchPlaces();
         return false;
       }
       else
       {
         $('#activity_id').val($(this).attr('id'));
+        if($('#add_type').val()!='both')  $('#activity_results').css('display','none');
       }
+
       $('#activity_name').val(getActivityFromID(act_id).name)
-      $('#place_results').html('');
-      $('#place_nam').val('');
-
-
-      $.ajax({
-        type: "GET",
-        dataType: 'json',
-        url: '/activity/activity_places',
-        data: {
-          "activity_id" : act_id
-        },
-        success: function(p) {
-          if(p.length >1)
-          {
-            displayPopularPlaces(p);
+      if($('#add_type').val()=='both')
+      {
+        $('#place_results').html('');
+        $('#place_nam').val('');
+        $.ajax({
+          type: "GET",
+          dataType: 'json',
+          url: '/activity/activity_places',
+          data: {
+            "activity_id" : act_id
+          },
+          success: function(p) {
+            if(p.length >1)
+            {
+              displayPopularPlaces(p);
+            }
+            else
+            {
+              displaySearchPlaces();
+            }
+            resultsPlaceArray = p;
+            bindPlaceHover();
+          },
+          error: function(p) {
+            alert('an error occured');
           }
-          else
-          {
-            displaySearchPlaces();
-          }
-          resultsPlaceArray = p;
-          bindPlaceHover();
-        },
-        error: function(p) {
-          alert('an error occured');
-        }
-      })
+        });
+      }
     });
 
     $('.place_dd').live('click',function(){
@@ -276,7 +304,6 @@
     })
 
     $('#add_activity_template').live('click',function(){
-
       //if activity id = 0 add activity and get activity id
       //then add UPA
       $('#add_error').html('');
@@ -297,6 +324,7 @@
         type: "POST",
         url: "/user_place_activities/new_user_place_activity",
         data: {
+          "user_place_activity_id" : $('#user_place_activity_id').val(),
           "activity_id" : $('#activity_id').val(),
           "activity_name" : $('#activity_name').val(),
           "place_id" :  $('#place_id').val(),
@@ -314,6 +342,8 @@
               break;
             case 'add' : add_success(p);
               break;
+              case 'edit' : edit_success(p);
+                break;
           }
         },
         error: function(p) {
@@ -359,6 +389,16 @@
       });
     }
 
+    function edit_success(p)
+    {
+      $('#user_place_activity_'+$("#user_place_activity_id").val()).replaceWith(p);
+      $("#dialog").jqmAddTrigger('.add_to_favorites, .add_place, .add_event, .add_activity, .invite_a_friend');
+      $("#dialog").html("Successfully updated");
+      $('#dialog').fadeTo(2000, 0.1, function() {
+        $('#dialog').jqmHide();
+        $('#dialog').fadeTo(1,1);
+      });
+    }
     function bindHover() {
       $("#activity_results ul li a").hover(function () {
         currentSelection = $("#activity_results ul li a").index(this)

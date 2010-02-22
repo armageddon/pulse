@@ -1,11 +1,8 @@
 class UserPlaceActivitiesController < ApplicationController
   before_filter :login_required
 
-
-
-
-
   def new_user_place_activity
+    user_place_activity_id = params[:user_place_activity_id].to_i
     activity_id = params[:activity_id].to_i
     activity_name =params[:activity_name]
     place_id = params[:place_id].to_i
@@ -22,7 +19,7 @@ class UserPlaceActivitiesController < ApplicationController
       @activity.save
       activity_id = @activity.id
     end
-     if place_id == -1
+    if place_id == -1
       logger.debug('plc id IS -1 - creating place')
       @place = Place.new
       @place.name = place_name
@@ -31,13 +28,27 @@ class UserPlaceActivitiesController < ApplicationController
       place_id = @place.id
     end
 
-     place_activity = PlaceActivity.find(:first,:conditions=>['place_id = ? and activity_id = ?',place_id, activity_id])
-      if place_activity == nil
-        place_activity = PlaceActivity.new(:activity_id => activity_id, :place_id => place_id)
-        place_activity.save
-      end
-    @user_place_activity = current_user.user_place_activities.build(:description => params[:description], :place_id => place_id, :activity_id => activity_id, :day_of_week =>day_of_week, :time_of_day => time_of_day)
+    place_activity = PlaceActivity.find(:first,:conditions=>['place_id = ? and activity_id = ?',place_id, activity_id])
+    if place_activity == nil
+      place_activity = PlaceActivity.new(:activity_id => activity_id, :place_id => place_id)
+      place_activity.save
+    end
+
+
+    if user_place_activity_id == 0
+      @user_place_activity = current_user.user_place_activities.build(:description => params[:description], :place_id => place_id, :activity_id => activity_id, :day_of_week =>day_of_week, :time_of_day => time_of_day)
+    else
+      @user_place_activity = UserPlaceActivity.find(user_place_activity_id)
+      @user_place_activity.place_id = place_id
+      @user_place_activity.activity_id = activity_id
+      @user_place_activity.day_of_week =  day_of_week
+      @user_place_activity.time_of_day = time_of_day
+      @user_place_activity.description       = params[:description]
+    end
     @user_place_activity.place_activity = place_activity
+
+
+
     if @user_place_activity.save
       respond_to do |format|
         format.html do
@@ -47,7 +58,6 @@ class UserPlaceActivitiesController < ApplicationController
         format.js {render :partial => 'user_place_activity', :object => @user_place_activity  }
       end
     else
-
       logger.debug(@user_place_activity.errors.full_messages)
       respond_to do |format|
         format.html { render :action => :new}
@@ -55,7 +65,6 @@ class UserPlaceActivitiesController < ApplicationController
       end
     end
   end
-
 
   def index
     @activities = current_user.activities
@@ -81,11 +90,10 @@ class UserPlaceActivitiesController < ApplicationController
 
   def free
     @user_place_activity = UserPlaceActivity.new
-     render :partial => "free_user_place_activity.html.erb", :locals => { :activity => @activity, :user_place_activity => @user_place_activity, :place => @place, :view => @view }
+    render :partial => "free_user_place_activity.html.erb", :locals => { :activity => @activity, :user_place_activity => @user_place_activity, :place => @place, :view => @view }
   end
 
   def show
-  
     @user_place_activity=UserPlaceActivity.find(params[:id])
     @place = @user_place_activity.place
     @activity = @user_place_activity.activity
@@ -95,13 +103,10 @@ class UserPlaceActivitiesController < ApplicationController
   end
 
   def destroy
-
     UserPlaceActivity.find(params[:user_place_activity_id]).delete
-  
     respond_to do |format|
       format.html { render :text => "deleted places"}
       format.js { render :text => "deleted places" }
-      
     end
   end
 
@@ -144,7 +149,7 @@ class UserPlaceActivitiesController < ApplicationController
     @source = params[:source]
     respond_to do |format|
       format.html { render }
-      format.js { render :partial => "edit_user_place_activity.html.erb", :locals => { :user_place_activity => @user_place_activity} }
+      format.js { render :partial => "free_user_place_activity.html.erb", :locals => { :user_place_activity => @user_place_activity, :upa_type => 'edit'} }
     end
   end
 
