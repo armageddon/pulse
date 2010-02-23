@@ -1,5 +1,6 @@
 class UserPlaceActivity < ActiveRecord::Base
   require 'twitter'
+  require 'ping_fm'
   
   belongs_to :user
   belongs_to :activity
@@ -13,14 +14,24 @@ class UserPlaceActivity < ActiveRecord::Base
   fires :addeduserplaceactivity, :on => :create, :actor => :user, :subject => :self
   #todo - when does create fire - on new or on save?
 
-  after_create :tweet
+  after_create :tweet, :ping
 
-
+  def ping
+    begin
+      PingFM.user_post("status", User.find(self.user_id).first_name + ' added ' + Activity.find(self.activity_id).name + ' at ' +Place.find(self.place_id).name)
+    rescue
+      logger.error('Ping failed')
+    end
+  end
 
   def tweet
-    httpauth = Twitter::HTTPAuth.new('HelloPulse', 'dating001')
-    client = Twitter::Base.new(httpauth)
-    client.update(User.find(self.user_id).first_name + ' added ' + Activity.find(self.activity_id).name + ' at ' +Place.find(self.place_id).name )
+    begin
+      httpauth = Twitter::HTTPAuth.new('HelloPulse', 'dating001')
+      client = Twitter::Base.new(httpauth)
+      client.update(User.find(self.user_id).first_name + ' added ' + Activity.find(self.activity_id).name + ' at ' +Place.find(self.place_id).name )
+    rescue
+      logger.error('Tweet failed')
+    end
   end
 
   def self.search_user_place_activities(params, current_user)
