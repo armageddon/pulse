@@ -18,7 +18,7 @@ class UserPlaceActivity < ActiveRecord::Base
 
   def ping
     begin
-      PingFM.user_post("status", User.find(self.user_id).first_name + ' added ' + Activity.find(self.activity_id).name + ' at ' +Place.find(self.place_id).name)
+      PingFM.user_post("status", User.find(self.user_id).first_name + ' added ' + Activity.find(self.activity_id).name + ' at ' +Place.find(self.place_id).name+ ' : ' + self.description)
     rescue
       logger.error('Ping failed')
     end
@@ -26,9 +26,9 @@ class UserPlaceActivity < ActiveRecord::Base
 
   def tweet
     begin
-      httpauth = Twitter::HTTPAuth.new('HelloPulse', 'dating001')
-      client = Twitter::Base.new(httpauth)
-      client.update(User.find(self.user_id).first_name + ' added ' + Activity.find(self.activity_id).name + ' at ' +Place.find(self.place_id).name )
+      #httpauth = Twitter::HTTPAuth.new('HelloPulse', 'dating001')
+      #client = Twitter::Base.new(httpauth)
+      #client.update(User.find(self.user_id).first_name + ' added ' + Activity.find(self.activity_id).name + ' at ' +Place.find(self.place_id).name+ ' : ' + self.description )
     rescue
       logger.error('Tweet failed')
     end
