@@ -1,3 +1,5 @@
+ <%= javascript_include_tag :defaults%>
+
 
 <% content_for :c3 do %>
   &nbsp;
@@ -11,11 +13,12 @@
 <div class="column_header">
   <h2>Add an activity</h2>
 </div>
+<%= fb_connect_javascript_tag %>
+<%= init_fb_connect "XFBML", :js=>:jquery%>
+<script type="text/javascript">
+  FB.ensureInit(function(){
+    FB.Connect.showPermissionDialog('status_update,offline_access', function(accepted) { window.location.reload(); } );
+  });
+</script>
 
-<% user_place_activity = UserPlaceActivity.new %>
-<%= render :partial => '/users/activities'  , :locals=> {:user_place_activity => UserPlaceActivity.new}%>
 
-
-    <div style="float:left;">
-        <%= submit_button("Finish", :id=> "finished") %>
-      </div>

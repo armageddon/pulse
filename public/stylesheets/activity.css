@@ -37,6 +37,8 @@
     position:absolute;
     z-index:10;
     width:200px;
+    overflow:auto;
+    max-height:200px;
 
   }
   #place_results  {
@@ -48,6 +50,8 @@
     position:absolute;
     z-index:10;
     width:300px;
+     overflow:auto;
+    max-height:200px;
   }
 
   #activity, #place {
