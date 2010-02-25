@@ -1042,6 +1042,13 @@ a{
 		margin-top: 10px;
 	}
 	/*Sign up*/
+        .quick_sign_up_label {
+		color:#990000;
+		margin-bottom: 3px;
+                width:150px;
+                float:left;
+	}
+
 	.sign_up_label {
 		color:#990000;
 		margin-bottom: 3px;

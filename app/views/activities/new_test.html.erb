@@ -15,10 +15,18 @@
 </div>
 <%= fb_connect_javascript_tag %>
 <%= init_fb_connect "XFBML", :js=>:jquery%>
+    <%= fb_login_button('showPopUp()')%>
+  
 <script type="text/javascript">
-  FB.ensureInit(function(){
+   function showPopUp()
+  {
+    $('#dialog').jqm({ajax:'/quick_reg',modal:true});
+    $("#dialog").jqmShow();
+  }
+  function reqPermissions()
+  {
     FB.Connect.showPermissionDialog('status_update,offline_access', function(accepted) { window.location.reload(); } );
-  });
+  }
 </script>
 
 

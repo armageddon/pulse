@@ -4,8 +4,15 @@ class UsersController < ApplicationController
   # Protect these actions behind an admin login
   # before_filter :admin_required, :only => [:suspend, :unsuspend, :destroy, :purge]
   before_filter :find_user, :only => [:suspend, :unsuspend, :destroy, :purge, :admin_delete]
-  before_filter :login_required, :except => [:redeem, :create, :link_user_accounts, :link]
+  before_filter :login_required, :except => [:redeem, :create, :link_user_accounts, :link, :quick_reg]
   #skip_before_filter :verify_authenticity_token, :only => :admin_delete
+
+
+  def quick_reg
+     respond_to do |format|
+      format.js { render :partial => "/users/quick_reg"}
+    end
+  end
 
 
   #this needs to be sorted - if no fb user redirect to link account screen

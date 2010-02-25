@@ -19,6 +19,7 @@ ActionController::Routing::Routes.draw do |map|
   map.map_places '/search/map', :controller => 'search', :action => 'map_places'
    
   #users controller
+  map.quick_reg '/quick_reg', :controller=>'users', :action=>'quick_reg'
   map.linker '/account/do_link' , :controller => 'sessions', :action=>'link'
 map.link_page '/account/link', :controller => 'users', :action => 'link'
  map.link_user_accounts '/account/link_user_accounts', :controller => 'users', :action => 'link_user_accounts'
