@@ -20,6 +20,8 @@
 
 
   <%= submit_button 'post', :id=>'post' %>
+  <%= render :partial => '/user_place_activities/free_user_place_activity', :locals=>{:upa_type => 'reg', :add_type=>'both',:user_place_activity=>UserPlaceActivity.new} %>
+ 
 <script type="text/javascript">
 
 
@@ -27,7 +29,7 @@
     var actionLinks = [{ "text": "Check them out!", "href": "http://www.hellopulse.com"}];
     var attachment = {'media': [{'type':'image',   'src':'http://bit.ly/AJTnf',   'href':'http://bit.ly/hifZk'}]};
 
-    alert(FB.Connect.streamPublish('9 singles added Rosy Yoga on HelloPulse!', attachment, null,100000807720563,null,null,true));
+    alert(FB.Connect.streamPublish('9 singles added Rosy Yoga on HelloPulse!', attachment, actionLinks,100000807720563,null,null,true));
 
   });
 
