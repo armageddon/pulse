@@ -44,7 +44,13 @@ class SessionsController < ApplicationController
 
   end
 
+ def activity_user
+   @code = params[:code]||0
+   logger.debug(@code)
+    render :template => 'sessions/new' , :locals=>{:code => @code}
+ end
 
+ 
   def create
     logout_keeping_session!
     user = User.authenticate(params[:login], params[:password])

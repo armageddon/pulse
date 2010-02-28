@@ -49,6 +49,7 @@ map.link_page '/account/link', :controller => 'users', :action => 'link'
   #sessions controller
   map.logout '/logout', :controller => 'sessions', :action => 'destroy'
   map.login '/login', :controller => 'sessions', :action => 'new'
+  map.activity_user '/activity_user', :controller => 'sessions', :action=>'activity_user'
 
   #user_messages controller
   map.inbox '/account/inbox', :controller => 'user_messages', :action => 'index'

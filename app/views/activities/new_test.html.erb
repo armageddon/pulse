@@ -15,9 +15,22 @@
 </div>
 <%= fb_connect_javascript_tag %>
 <%= init_fb_connect "XFBML", :js=>:jquery%>
-    <%= fb_login_button('showPopUp()')%>
-  
+    <%= fb_login_button('reqPermissions()')%>
+
+
+
+  <%= submit_button 'post', :id=>'post' %>
 <script type="text/javascript">
+
+
+  $('#post').live('click', function(){
+    var actionLinks = [{ "text": "Check them out!", "href": "http://www.hellopulse.com"}];
+    var attachment = {'media': [{'type':'image',   'src':'http://bit.ly/AJTnf',   'href':'http://bit.ly/hifZk'}]};
+
+    alert(FB.Connect.streamPublish('9 singles added Rosy Yoga on HelloPulse!', attachment, null,100000807720563,null,null,true));
+
+  });
+
    function showPopUp()
   {
     $('#dialog').jqm({ajax:'/quick_reg',modal:true});
@@ -25,7 +38,7 @@
   }
   function reqPermissions()
   {
-    FB.Connect.showPermissionDialog('status_update,offline_access', function(accepted) { window.location.reload(); } );
+    FB.Connect.showPermissionDialog("status_update,offline_access,publish_stream", function(perms) { alert(perms);},true );
   }
 </script>
 

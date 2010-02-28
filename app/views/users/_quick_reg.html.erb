@@ -1,7 +1,7 @@
     <% @user = User.new %>
 
     <% form_for @user, :url => account_path do |f| %>
-  <div style="overflow:auto; max-height:400px">
+  <div style="overflow:auto; max-height:450px">
     <div style="margin-bottom:15px"">
          <h2>Hello  <%=facebook_session.user.name %>!!! </h2>
       <h3>Please confirm the following details and click Register to become a member!</h3>
@@ -77,8 +77,14 @@
         <label  class='quick_sign_up_label'>My Build</label> <%= std_drop_down('user[body_type]', 0, {:width => '150px'},body_type_options, 'Not specified', '0') %><br />
         <span class="error"></span>
         <div class="clear"></div>
+          <label  class='quick_sign_up_label'>About me</label
+
+          <%= text_area_tag 'user[description]', 'Give us a line that sums you up', :rows=>2, :cols=>30,:id => "quick_reg_user_description", :class => "word_count" %>
+
+
       </div>
 
+  
       
 
 

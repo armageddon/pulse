@@ -597,7 +597,13 @@ table.calendar td a.active {
   color: #666;
   width: 260px;
 }
-
+#quick_reg_user_description {
+  padding: 4px;
+  border: 1px solid #f1f3f6;
+  background-color: #f1f3f6;
+  color: #666;
+  width: 200px;
+}
 .section_header {
   border-bottom: 1px solid #ccc;
   margin-bottom: 10px;
