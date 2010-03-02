@@ -49,6 +49,8 @@ class SessionsController < ApplicationController
    logger.debug(@code)
     render :template => 'sessions/new' , :locals=>{:code => @code}
  end
+
+
  def partner
     render :template => 'sessions/partner' 
  end
@@ -56,6 +58,7 @@ class SessionsController < ApplicationController
  
   def create
     logout_keeping_session!
+    logger.debug('EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE')
     user = User.authenticate(params[:login], params[:password])
     if user
       # Protects against session fixation attacks, causes request forgery
@@ -67,6 +70,7 @@ class SessionsController < ApplicationController
       handle_remember_cookie! new_cookie_flag
       account_path
       flash[:notice] = "Logged in successfully"
+      logger.debug('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW')
       redirect_to root_path
     else
       note_failed_signin

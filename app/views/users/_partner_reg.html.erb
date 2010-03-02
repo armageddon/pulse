@@ -65,6 +65,7 @@
 
     $("#register_partner").click(function() {
       alert('about to register');
+      alert($(this).attr('action'));
       $.ajax({
         type: "POST",
         url: $(this).attr('action'),

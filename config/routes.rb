@@ -19,6 +19,7 @@ ActionController::Routing::Routes.draw do |map|
   map.map_places '/search/map', :controller => 'search', :action => 'map_places'
    
   #users controller
+  map.partner_new 'users/partner_new', :controller=>'users', :action=>'partner_new'
   map.quick_reg '/quick_reg', :controller=>'users', :action=>'quick_reg'
   map.partner_reg '/partner_reg', :controller=>'users', :action=>'partner_reg'
   map.linker '/account/do_link' , :controller => 'sessions', :action=>'link'
@@ -48,7 +49,7 @@ map.link_page '/account/link', :controller => 'users', :action => 'link'
   end
   
   #sessions controller
-  map.session '/partner', :controller=>'sessions', :action => 'partner'
+  map.partner '/partner', :controller=>'sessions', :action => 'partner'
   map.logout '/logout', :controller => 'sessions', :action => 'destroy'
   map.login '/login', :controller => 'sessions', :action => 'new'
   map.activity_user '/activity_user', :controller => 'sessions', :action=>'activity_user'
