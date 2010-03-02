@@ -1,6 +1,6 @@
-    <% @user = User.new %>
+<% @user = User.new %>
 
-    <% form_for @user, :url => account_path do |f| %>
+<% form_for @user, :url => account_path do |f| %>
   <div style="overflow:auto; max-height:450px">
     <div style="margin-bottom:15px"">
          <h2>Hello  <%=facebook_session.user.name %>!!! </h2>
@@ -12,86 +12,86 @@
     <div style="float:left; width:400px; margin-left:10px">
       <label  class='quick_sign_up_label'>First name</label>
       <%= text_field_tag 'user[first_name]', facebook_session.user.first_name || 'First name', :class => 'input_text' %>
-       <span class="error"></span>
-        <div class="clear"></div>
-        
+      <span class="error"></span>
+      <div class="clear"></div>
+
       <label class='quick_sign_up_label'>Username</label>
-        <%= text_field_tag 'user[username]', @user.username || "Username", :class => 'input_text' %>
-        <span class="error"></span>
-        <div class="clear"></div>
+      <%= text_field_tag 'user[username]', @user.username || "Username", :class => 'input_text' %>
+      <span class="error"></span>
+      <div class="clear"></div>
 
       <label  class='quick_sign_up_label'>Password</label>
-        <%= text_field_tag 'password_holder', 'Password', :class => 'input_text' %>
-        <%= f.password_field :password, :class => 'input_text', :style => 'display: none;' %>
-        <span class="error"></span>
-        <div class="clear"></div>
+      <%= text_field_tag 'password_holder', 'Password', :class => 'input_text' %>
+      <%= f.password_field :password, :class => 'input_text', :style => 'display: none;' %>
+      <span class="error"></span>
+      <div class="clear"></div>
 
-        <label  class='quick_sign_up_label'>Password confirmation</label>
-        <%= text_field_tag 'password_confirmation_holder', 'Password confirmation', :class => 'input_text' %>
-        <%= f.password_field :password_confirmation, :class => 'input_text', :style => 'display: none;' %>
-        <span class="error"></span>
-        <div class="clear"></div>
+      <label  class='quick_sign_up_label'>Password confirmation</label>
+      <%= text_field_tag 'password_confirmation_holder', 'Password confirmation', :class => 'input_text' %>
+      <%= f.password_field :password_confirmation, :class => 'input_text', :style => 'display: none;' %>
+      <span class="error"></span>
+      <div class="clear"></div>
 
-         <label  class='quick_sign_up_label'>Email address</label>
+      <label  class='quick_sign_up_label'>Email address</label>
 
-        <%= text_field_tag 'user[email]', @user.email || 'Email address', :class => 'input_text' %>
-        <span class="error"></span>
-        <div class="clear"></div>
+      <%= text_field_tag 'user[email]', @user.email || 'Email address', :class => 'input_text' %>
+      <span class="error"></span>
+      <div class="clear"></div>
 
-        <label  class='quick_sign_up_label'>Date of Birth</label>
-        
-        <%= hidden_field_tag 'user[dob]' %>
-        <span>
-          <%= std_drop_down('day', 0, {:width => '60px'},day_options, 'Day', 0) %>
-          <%= std_drop_down('month', 0, {:width => '86px'},month_options, 'Month', 0) %>
-          <%= std_drop_down('year', 0, {:width => '70px'},year_options, 'Year', 0) %>
-        </span>
-        <span id='dob_error' class="error"></span>
-        <div class="clear"></div>
+      <label  class='quick_sign_up_label'>Date of Birth</label>
 
-        <label  class='quick_sign_up_label'>Post Code</label>
- 
-        <%= text_field_tag 'user[postcode]', @user.postcode || 'Post code', :class => 'input_text' %>
-        <span class="error"></span>
-        <div class="clear"></div>
+      <%= hidden_field_tag 'user[dob]' %>
+      <span>
+        <%= std_drop_down('day', 0, {:width => '60px'},day_options, 'Day', 0) %>
+        <%= std_drop_down('month', 0, {:width => '86px'},month_options, 'Month', 0) %>
+        <%= std_drop_down('year', 0, {:width => '70px'},year_options, 'Year', 0) %>
+      </span>
+      <span id='dob_error' class="error"></span>
+      <div class="clear"></div>
 
-          <label  class='quick_sign_up_label'>Gender</label>
-          <%= std_drop_down('user[sex]', 1, {:width => '90px'},gender_options, '', '') %>
-          <span class="error"></span>
-        <div class="clear"></div>
-        
-          <label  class='quick_sign_up_label'>Looking For</label>
-    <%= std_drop_down('user[sex_preference]', 2, {:width => '90px'},gender_preference_options, '', '') %>
-           <span class="error"></span>
-        <div class="clear"></div>
+      <label  class='quick_sign_up_label'>Post Code</label>
 
-         <label  class='quick_sign_up_label'>Age Preference</label>
-    <%= std_drop_down('user[age_preference]', 1, {:width => '120px'},age_options, '', '') %> <br />
- <span class="error"></span>
-        <div class="clear"></div>
+      <%= text_field_tag 'user[postcode]', @user.postcode || 'Post code', :class => 'input_text' %>
+      <span class="error"></span>
+      <div class="clear"></div>
 
-       <label  class='quick_sign_up_label'> My Height</label> <%= std_drop_down('feet', 0, {:width => '40px'},feet_options, ' ', '0') %>  feet &nbsp;<%= std_drop_down('inches', -1, {:width => '50px'},inches_options, ' ', '-1') %>  inches<br />
-        <span class="error"></span>
-        <div class="clear"></div>
+      <label  class='quick_sign_up_label'>Gender</label>
+      <%= std_drop_down('user[sex]', 1, {:width => '90px'},gender_options, '', '') %>
+      <span class="error"></span>
+      <div class="clear"></div>
 
-        <label  class='quick_sign_up_label'>My Build</label> <%= std_drop_down('user[body_type]', 0, {:width => '150px'},body_type_options, 'Not specified', '0') %><br />
-        <span class="error"></span>
-        <div class="clear"></div>
-          <label  class='quick_sign_up_label'>About me</label
+      <label  class='quick_sign_up_label'>Looking For</label>
+      <%= std_drop_down('user[sex_preference]', 2, {:width => '90px'},gender_preference_options, '', '') %>
+      <span class="error"></span>
+      <div class="clear"></div>
 
-          <%= text_area_tag 'user[description]', 'Give us a line that sums you up', :rows=>2, :cols=>30,:id => "quick_reg_user_description", :class => "word_count" %>
+      <label  class='quick_sign_up_label'>Age Preference</label>
+      <%= std_drop_down('user[age_preference]', 1, {:width => '120px'},age_options, '', '') %> <br />
+      <span class="error"></span>
+      <div class="clear"></div>
 
+      <label  class='quick_sign_up_label'> My Height</label> <%= std_drop_down('feet', 0, {:width => '40px'},feet_options, ' ', '0') %>  feet &nbsp;<%= std_drop_down('inches', -1, {:width => '50px'},inches_options, ' ', '-1') %>  inches<br />
+      <span class="error"></span>
+      <div class="clear"></div>
 
-      </div>
+      <label  class='quick_sign_up_label'>My Build</label> <%= std_drop_down('user[body_type]', 0, {:width => '150px'},body_type_options, 'Not specified', '0') %><br />
+      <span class="error"></span>
+      <div class="clear"></div>
+      <label  class='quick_sign_up_label'>About me</label
 
-  
-      
+      <%= text_area_tag 'user[description]', 'Give us a line that sums you up', :rows=>2, :cols=>30,:id => "quick_reg_user_description", :class => "word_count" %>
 
 
     </div>
-      <div class="clear"></div>
-      <%= submit_button 'Cancel', :id => "cancel"%>
-      <%= submit_button 'Register', :id => "register"%>
+
+
+
+
 
   </div>
-  <% end%>
+  <div class="clear"></div>
+  <%= submit_button 'Cancel', :id => "cancel"%>
+  <%= submit_button 'Register', :id => "register"%>
+
+  
+<% end%>

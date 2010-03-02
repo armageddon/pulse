@@ -20,6 +20,7 @@ ActionController::Routing::Routes.draw do |map|
    
   #users controller
   map.quick_reg '/quick_reg', :controller=>'users', :action=>'quick_reg'
+  map.partner_reg '/partner_reg', :controller=>'users', :action=>'partner_reg'
   map.linker '/account/do_link' , :controller => 'sessions', :action=>'link'
 map.link_page '/account/link', :controller => 'users', :action => 'link'
  map.link_user_accounts '/account/link_user_accounts', :controller => 'users', :action => 'link_user_accounts'
@@ -47,6 +48,7 @@ map.link_page '/account/link', :controller => 'users', :action => 'link'
   end
   
   #sessions controller
+  map.session '/partner', :controller=>'sessions', :action => 'partner'
   map.logout '/logout', :controller => 'sessions', :action => 'destroy'
   map.login '/login', :controller => 'sessions', :action => 'new'
   map.activity_user '/activity_user', :controller => 'sessions', :action=>'activity_user'
@@ -98,6 +100,7 @@ map.link_page '/account/link', :controller => 'users', :action => 'link'
   map.place_user_place_activities '/place/user_place_activities', :controller => 'places', :action => 'user_place_activities'
   
   #activity_controller
+  map.activity_partner 'activities/partner' , :controller=>'activities', :action=>'partner'
   map.resources :activities, :collection => { :autocomplete => :get } do |a|
     a.resources :pictures, :controller => "activity_pictures"
   end

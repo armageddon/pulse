@@ -7,9 +7,7 @@
 <div id="profile_image">
   <%= image_tag(@activity.icon.url(:profile), :class=>"profile_image") %>
 </div>
-<% if current_user.admin? %>
 
-<% end %>
 
 <ul id="do_things">
   <li><%= link_to "SEARCH", :controller=>'search'%></li>

@@ -1,5 +1,20 @@
 class ActivitiesController < ApplicationController
 
+
+  def partner
+    logger.debug('partner')
+    logger.debug(params[:code])
+    #work out code
+    @activity = Activity.find(:first,:conditions=>{:auth_code => params[:code], :admin_user_id => nil }) if params[:code] != nil
+    if @activity == nil
+      render :text => 'The login code you provided does not match one in our system. Please try again'
+    else
+      @users = @activity.users.paginate(:all,:group => :user_id, :page => params[:page], :per_page => 6)
+      @user_place_activities = @activity.user_place_activities.paginate(:order=>'created_at DESC',:page=>1,:per_page=>10)
+      render :template => 'activities/show', :locals => {:activity => @activity, :auth_code =>params[:code] }
+    end
+  end
+
   def show
     @activity =Activity.find(params[:id])
     @user_place_activities = @activity.user_place_activities.paginate(:order=>'created_at DESC',:page=>1,:per_page=>10)

@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   # Protect these actions behind an admin login
   # before_filter :admin_required, :only => [:suspend, :unsuspend, :destroy, :purge]
   before_filter :find_user, :only => [:suspend, :unsuspend, :destroy, :purge, :admin_delete]
-  before_filter :login_required, :except => [:redeem, :create, :link_user_accounts, :link, :quick_reg]
+  before_filter :login_required, :except => [:redeem, :create, :link_user_accounts, :link, :quick_reg, :partner_reg]
   #skip_before_filter :verify_authenticity_token, :only => :admin_delete
 
 
@@ -13,7 +13,11 @@ class UsersController < ApplicationController
       format.js { render :partial => "/users/quick_reg"}
     end
   end
-
+ def partner_reg
+     respond_to do |format|
+      format.js { render :partial => "/users/partner_reg"}
+    end
+  end
 
   #this needs to be sorted - if no fb user redirect to link account screen
   def link_user_accounts
@@ -143,6 +147,53 @@ class UsersController < ApplicationController
     end
     respond_to do |format|
       logger.debug('asdasdasdasd')
+      if success && @user.errors.empty?
+        # DEBUG
+        @user.activate!
+        session[:user_id] = @user.id
+        format.html {
+          redirect_to :action=>'photos'
+          flash[:notice] = "Thanks for signing up!  We're sending you an email with your activation code."
+        }
+        format.js {
+          session[:user_id] = @user.id
+          render :nothing => true
+        }
+      else
+        format.html {
+          render :action => 'new', :layout => false
+        }
+        format.js { render :json => @user.errors, :status => 500,  :layout => false }
+      end
+    end
+  end
+
+    def partner_new
+    logout_keeping_session!
+    @user = User.new(params[:user])
+    logger.debug('QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ')
+    if(simple_captcha_valid?)
+      @user.sex ||= 2
+      @user.age ||= 5
+      @user.sex_preference ||= 1
+      @user.age_preference ||= 5
+      @user.height = 100
+      @user.dob = '20000101'.to_date
+      @user.location_id = 1;
+      @user.postcode = @user.postcode.upcase
+      simple_captcha_valid?
+      @user.register! if @user && @user.valid?
+      success = @user && @user.valid?
+      logger.debug('errors' )
+      logger.debug(pp @user.errors)
+      @user.age
+      logger.debug('Success ' + success.to_s)
+    else
+      logger.debug('captcha failed')
+      success = false
+      @user.errors.add("You failed to enter a valid Captcha code - please try again");
+    end
+    respond_to do |format|
       if success && @user.errors.empty?
         # DEBUG
         @user.activate!

@@ -1,6 +1,14 @@
 <% content_for :c1 do %>
   <%= render :partial => "activity_sidebar" %>
 <% end %>
+<%= fb_connect_javascript_tag %>
+<%= init_fb_connect "XFBML", :js=>:jquery%>
+
+<% content_for :message do %>
+  <%if auth_code != nil  %>
+  You have been invited to link this activity to your Facebook Page. You will be asked to grant Hellopulse permission to publish to your activity stream, and to give us offline access so we can publish updates to your page. Please click <%= fb_login_button('reqPermissions()')%> to continue
+<%end%>
+<%end%>
 
 <div class="column_header">
       <span>
@@ -31,3 +39,25 @@
 	<div class="clear"></div>
 <%= render :partial => 'user_place_activity_collection' , :locals => {:collection => @user_place_activities}%>
 </div>
+
+<script type="text/javascript">
+
+
+  $('#post').live('click', function(){
+    var actionLinks = [{ "text": "Check them out!", "href": "http://www.hellopulse.com"}];
+    var attachment = {'media': [{'type':'image',   'src':'http://bit.ly/AJTnf',   'href':'http://bit.ly/hifZk'}]};
+
+    alert(FB.Connect.streamPublish('9 singles added Rosy Yoga on HelloPulse!', attachment, actionLinks,100000807720563,null,null,true,350077551773));
+
+  });
+
+   function showReg()
+  {
+    $('#dialog').jqm({ajax:'/partner_reg',modal:true});
+    $("#dialog").jqmShow();
+  }
+  function reqPermissions()
+  {
+    FB.Connect.showPermissionDialog("status_update,offline_access,publish_stream", function(perms) { showReg();},true );
+  }
+</script>

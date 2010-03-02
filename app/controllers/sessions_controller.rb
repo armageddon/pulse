@@ -49,6 +49,9 @@ class SessionsController < ApplicationController
    logger.debug(@code)
     render :template => 'sessions/new' , :locals=>{:code => @code}
  end
+ def partner
+    render :template => 'sessions/partner' 
+ end
 
  
   def create

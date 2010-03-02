@@ -51,30 +51,18 @@
   </head>
 
   <body>
-<%= fb_connect_javascript_tag %>
-<%= init_fb_connect "XFBML", :js=>:jquery%>
 
     <div id="container" class="container_16">
 
       <div class="grid_16" id="stock">
         <div style="float:right; margin-right:20px">
           <% form_tag session_path , :id => 'session_form' do -%>
-            <div style="float:right; width=700px">
-              <span style="font-size:14px">Members login:</span>
-              <span style="font-size:14px"><%= text_field_tag 'login', @login, :class => "input_text", :value => "Username", :size => "10" %></span>
-              <span style="font-size:14px"><%= password_field_tag 'password', nil, :size => "10", :class => "input_text", :style => "display: none;" %></span>
-              <span style="font-size:14px"><input type="text" class="input_text" size="10" value="Password" id="password_holder"/></span>
-              <%= submit_button "GO", :class=> 'submit', :type =>'submit'%><br />
-            </div>
 
-          
+
+
 
            <div class="clear">&nbsp;</div>
-            <div style="float:right; margin-bottom:5px">
-              <%= fb_login_button('window.location = "/account/link_user_accounts";')%>
-              &nbsp;&nbsp;&nbsp;
-              <%= link_to "Forgot Password?", :controller=>'passwords', :action=>"new", :id=>'new_password'%>
-            </div>
+
           <% end %>
         </div>
         <%= image_tag "feature-pannel.jpg" %>
@@ -86,26 +74,26 @@
       <div class="clear"></div>
 
       <div class="" style="padding-left:180px;width:740px;float:left;padding;margin-left:10px;margin-right:10px;" id="">
-        <p id="hello" style="font-size:25px;margin-top:10px"> Welcome to HelloPulse... the place for singles to meet out and about in London</p>
+        <p id="hello" style="font-size:25px;margin-top:10px"> Welcome to HelloPulse partner login page</p><br />
+        <p id="hello1" style="font-size:20px;margin-top:10px"> As a valued partner we will promote your business to our members - socially mobile and influencial singles</p>
 
+        <br />
 
-
+        
 
         <% if flash[:error] %>
           <p id="errors" style="font-size:13px;margin-right:20px;height:23px">
             <%= flash[:error] %>
           </p>
         <% end %>
-        <div style="width:520px;float:left; margin-top:20px;">
-          <div style="margin-bottom:10px; font-size:17px;margin-top:15px">Recent activity on HelloPulse</div>
-          <%= render :partial => "shared_object_collections/feed_collection", :locals => {:collection => @updates} %>
-        </div>
-        <div style="float:right; margin-right:0px;margin-top:35px;width:160px" >
-          <div style="font-size:17px;margin-left:3px;margin-bottom:5px">New to HelloPulse?</div>
-         
-          
-          <% form_tag redeem_path, :id => 'redeem_form' do -%>
-            <%= submit_button "Join Here", :class =>'submit_reg'  %>
+       
+        <div style="float:left; margin-right:0px;margin-top:35px">
+          <div style="font-size:17px;margin-left:3px;margin-bottom:5px">Please enter your login code here: </div>
+
+
+          <% form_tag 'activities/partner', :id => 'redeem_form' do -%>
+            <%= text_field_tag 'code', '', :class => "input_text", :value => "", :size => "10" %>
+            <%= submit_button "Register", :class =>'submit'  %>
           <% end %>
         </div>
       </div>
@@ -117,29 +105,21 @@
   </body>
 </html>
 
-
-<script type="text/javascript">
-      try {
-        var pageTracker = _gat._getTracker("<%= googlecode(request.url) %>");
-        pageTracker._trackPageview();
-      } catch(err) {}
-    </script>
-
 <script type="text/javascript" charset="utf-8">
   $(document).ready(function() {
-    
+
     $('#login, #invite_code').focus(function() {
 <%# password failure/autocomplete %>
-<% if @login.present? %>      
+<% if @login.present? %>
         $.data(this, 'clicked', true);
 <% end %>
-    
+
       if (!$.data(this, 'clicked')) {
         $(this).val('');
         $.data(this, 'clicked', true);
       }
     });
-    
+
 
 
 
@@ -148,12 +128,19 @@
       $('#password').show();
       $('#password').focus();
     });
-    
+
     $('#redeem, #show_login').click(function() {
       $('#redeem, #show_login').toggle();
-     
+
       return false;
     })
-    
+
   });
 </script>
+
+<script type="text/javascript">
+      try {
+        var pageTracker = _gat._getTracker("<%= googlecode(request.url) %>");
+        pageTracker._trackPageview();
+      } catch(err) {}
+    </script>

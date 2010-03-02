@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100216133536) do
+ActiveRecord::Schema.define(:version => 20100301131333) do
 
   create_table "activities", :force => true do |t|
     t.string   "name"
@@ -23,6 +23,9 @@ ActiveRecord::Schema.define(:version => 20100216133536) do
     t.string   "activity_group_name"
     t.string   "category"
     t.integer  "activity_category_id"
+    t.integer  "create_user_id"
+    t.integer  "admin_user_id"
+    t.string   "auth_code"
   end
 
   create_table "activity_categories", :force => true do |t|
