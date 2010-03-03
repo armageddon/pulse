@@ -24,13 +24,13 @@ class UserPlaceActivity < ActiveRecord::Base
 
       #todo : lazy load this
     pulse_fb_session = Facebooker::Session.create
-    pulse_fb_session.auth_token = "ZMZ8SM"
+    pulse_fb_session.auth_token = "NH3XTZ" #ZMZ8SM"
 
     pulse_fb_session.post("facebook.stream.publish", :action_links=> '[{ "text": "Check out HelloPulse!", "href": "http://www.hellopulse.com"}]', :message => message, :uid=>279928867967)
 
     
 
-    rescue
+    rescue 
       logger.error('Ping failed')
     end
   end
