@@ -13,8 +13,9 @@
  <li><%= link_to "INVITE A FRIEND", '#', 'data-href' => new_account_invitation_path, :class => "invite_a_friend" %>
 </ul>
 <br />
+<% if currrent_user!=nil %>
 <%= link_to "ADD TO MY FAVOURITES", '#', 'data-href' => "/user_place_activities/new?activity_id="+@activity.id.to_s+"&view=add_activity", :id => "add_place_activity", :class => "add_to_favorites submit" %>
-
+<%end%>
 <div id="manage_activity"></div>
 <script type="text/javascript" charset="utf-8">
 
