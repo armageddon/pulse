@@ -61,8 +61,11 @@ module ApplicationHelper
   end
   
   def nav_links
-    return unless logged_in?
+     logger.debug('LOGINLOGINLOGIN')
+     #logged_id
+    return unless logged_in?&&current_user!=nil
     [
+     
       content_tag(:li,:class=>nav_link_class('')) { link_to "Logout", logout_path },
       content_tag(:li,:class=>nav_link_class('user_favorites')) { link_to I18n.translate("my_favorites"), account_favorites_path },
       content_tag(:li,:class=>nav_link_class('user_messages')) { link_to "My messages#{current_user.unread_count > 0 ? " (#{current_user.unread_count})" : ""}", account_messages_path },

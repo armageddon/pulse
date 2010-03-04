@@ -1,7 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :test3s
 
-  
   #maps controller
   map.map '/map',  :controller => 'maps', :action => 'index'
   map.big_map '/big_map' , :controller => 'maps', :action => 'map'
@@ -23,8 +22,8 @@ ActionController::Routing::Routes.draw do |map|
   map.quick_reg '/quick_reg', :controller=>'users', :action=>'quick_reg'
   map.partner_reg '/partner_reg', :controller=>'users', :action=>'partner_reg'
   map.linker '/account/do_link' , :controller => 'sessions', :action=>'link'
-map.link_page '/account/link', :controller => 'users', :action => 'link'
- map.link_user_accounts '/account/link_user_accounts', :controller => 'users', :action => 'link_user_accounts'
+  map.link_page '/account/link', :controller => 'users', :action => 'link'
+  map.link_user_accounts '/account/link_user_accounts', :controller => 'users', :action => 'link_user_accounts'
   map.admin_delete '/admin_delete', :controller => 'users', :action => 'admin_delete'
   map.user_admins '/user_admins', :controller => 'users', :action => 'admin'
   map.register '/register', :controller => 'users', :action => 'create'
@@ -64,11 +63,10 @@ map.link_page '/account/link', :controller => 'users', :action => 'link'
 
   
   #feeds controller
-   map.feed '/feed', :controller => 'feeds', :action => 'feed'
+  map.feed '/feed', :controller => 'feeds', :action => 'feed'
   
   #place_pictures controller
 
-  
   #user_favorites controller
   map.user_favorite_delete 'account/favorites/delete', :controller => 'user_favorites',  :action => 'destroy'
   map.user_favorite_users '/favorites/users', :controller => 'user_favorites',  :action => 'users'
@@ -84,8 +82,8 @@ map.link_page '/account/link', :controller => 'users', :action => 'link'
   map.favourite_place_activities 'user_place_activities/list', :controller => 'user_place_activities', :action=>'list'
   map.add_user_place_activity 'user_place_activities/add', :controller => 'user_place_activities', :action=>'create'
   map.update_user_place_activity 'user_place_activities/update', :controller => 'user_place_activities', :action=>'update'
-   map.update_user_place_activity 'user_place_activities/edit', :controller => 'user_place_activities', :action=>'edit'
-   map.new_user_place_activity '/user_place_activities/new_user_place_activity',  :controller => 'user_place_activities', :action=>'new_user_place_activity'
+  map.update_user_place_activity 'user_place_activities/edit', :controller => 'user_place_activities', :action=>'edit'
+  map.new_user_place_activity '/user_place_activities/new_user_place_activity',  :controller => 'user_place_activities', :action=>'new_user_place_activity'
   #place_activities controller
   map.resources :place_activities
   map.place_activity_users '/place_activity/users', :controller => 'place_activities', :action => 'users'
@@ -101,13 +99,12 @@ map.link_page '/account/link', :controller => 'users', :action => 'link'
   map.place_user_place_activities '/place/user_place_activities', :controller => 'places', :action => 'user_place_activities'
   
   #activity_controller
+  map.activity_update  'activities/update', :controller=>'activities', :action=>'update'
+  map.activity_admin 'activities/admin', :controller=>'activities', :action=>'admin'
   map.activity_partner 'activities/partner' , :controller=>'activities', :action=>'partner'
   map.resources :activities, :collection => { :autocomplete => :get } do |a|
     a.resources :pictures, :controller => "activity_pictures"
   end
-
-
-
 
   map.test_new 'new_test', :controller=>'activities', :action => 'new_test'
   map.activity_users '/activity/users', :controller => 'activities', :action => 'users'
@@ -127,11 +124,11 @@ map.link_page '/account/link', :controller => 'users', :action => 'link'
   map.resources :profiles, :except => :show
   map.user "/profiles/:id", :controller => "profiles", :action => "show"
   
-   ActionController::Routing::Routes.draw do |map|
-  map.resources :test3s
+  ActionController::Routing::Routes.draw do |map|
+    map.resources :test3s
   
-   map.simple_captcha '/simple_captcha/:action', :controller => 'simple_captcha'  
-   end
+    map.simple_captcha '/simple_captcha/:action', :controller => 'simple_captcha'
+  end
   
   map.resource :session
   map.root :controller => "sessions", :action => "new"

@@ -4,18 +4,19 @@ class UsersController < ApplicationController
   # Protect these actions behind an admin login
   # before_filter :admin_required, :only => [:suspend, :unsuspend, :destroy, :purge]
   before_filter :find_user, :only => [:suspend, :unsuspend, :destroy, :purge, :admin_delete]
-  before_filter :login_required, :except => [:redeem, :create, :link_user_accounts, :link, :quick_reg, :partner_reg]
-  #skip_before_filter :verify_authenticity_token, :only => :admin_delete
+  before_filter :login_required, :except => [:redeem, :create, :link_user_accounts, :link, :quick_reg, :partner_reg, :partner_new]
+  skip_before_filter :verify_authenticity_token, :only => [:admin_delete,:partner_new]
 
 
   def quick_reg
-     respond_to do |format|
+    respond_to do |format|
       format.js { render :partial => "/users/quick_reg"}
     end
   end
- def partner_reg
-     respond_to do |format|
-      format.js { render :partial => "/users/partner_reg"}
+  def partner_reg
+    logger.debug(params[:auth_code])
+    respond_to do |format|
+      format.js { render :partial => "/users/partner_reg", :locals=>{:activity_id=>params[:activity_id], :auth_code=>params[:auth_code]}}
     end
   end
 
@@ -31,7 +32,7 @@ class UsersController < ApplicationController
       redirect_to('/account/link')
       return
       logger.debug('current user nil - link accounts')
-     # User.create_from_fb_connect(facebook_session.user)
+      # User.create_from_fb_connect(facebook_session.user)
     else
       logger.debug('connect_accounts')
       #connect accounts
@@ -168,11 +169,16 @@ class UsersController < ApplicationController
     end
   end
 
-    def partner_new
-    logout_keeping_session!
-    @user = User.new(params[:user])
+  def partner_new
     logger.debug('QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ')
-    if(simple_captcha_valid?)
+    logout_keeping_session!
+    @activity_id = params[:activity_id]
+    @activity = Activity.find(:first,:conditions=>{:auth_code => params[:auth_code] , :id=>@activity_id, :admin_user_id => nil })
+
+    @user = User.new(params[:user])
+    
+    if(simple_captcha_valid? )
+      @user.fb_user_id = facebook_session.user.id
       @user.sex ||= 2
       @user.age ||= 5
       @user.sex_preference ||= 1
@@ -180,7 +186,7 @@ class UsersController < ApplicationController
       @user.height = 100
       @user.dob = '20000101'.to_date
       @user.location_id = 1;
-      @user.postcode = @user.postcode.upcase
+      @user.postcode = 'W8 6QA'
       simple_captcha_valid?
       @user.register! if @user && @user.valid?
       success = @user && @user.valid?
@@ -195,8 +201,11 @@ class UsersController < ApplicationController
     end
     respond_to do |format|
       if success && @user.errors.empty?
-        # DEBUG
+       logger.debug('sdsdsdsdsdsdsdfasdfasdfasdfsdf - PARTNER CREATED - MODIFYING ACTIVITY')
         @user.activate!
+
+        @activity.admin_user_id = @user.id
+        @activity.save
         session[:user_id] = @user.id
         format.html {
           redirect_to :action=>'photos'

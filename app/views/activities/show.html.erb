@@ -5,59 +5,52 @@
 <%= init_fb_connect "XFBML", :js=>:jquery%>
 
 <% content_for :message do %>
-  <%if auth_code != nil  %>
-  You have been invited to link this activity to your Facebook Page. You will be asked to grant Hellopulse permission to publish to your activity stream, and to give us offline access so we can publish updates to your page. Please click <%= fb_login_button('reqPermissions()')%> to continue
+  <%if auth_code != nil && !logged_in? %>
+<h3> You have been invited to link this activity to your Facebook Page. You will be asked to grant Hellopulse permission to publish to your activity stream, and to give us offline access so we can publish updates to your page. Please click <%= fb_login_button('showReg()')%> to continue</h3>
+  <%end%>
 <%end%>
-<%end%>
-
+<%=hidden_field_tag 'auth_code_hidden' , auth_code%>
 <div class="column_header">
-      <span>
-      	<h2><%=@activity.name%></h2>
-      </span>
+
+  <h2><%=@activity.name%></h2>
+
 </div>
 <div style="float:left;width:356px; margin-bottom:4px;margin-top:0px">
-		<h3 style="width:356px;font-size:14px" class="section_name">People who do this</h3>
+  <h3 style="width:356px;font-size:14px" class="section_name">People who do this</h3>
 </div>
-<div style="text-align: right;float:right;width:200px; margin-bottom:4px;margin-top:0px">
-		<h4 id="people_paging" style="width:200px;font-size:12px" class="section_name">Page 1 of <%=@users.total_pages %></h3>
+<div style="text-align: right;float:right;width:200px; margin-bottom:4px;margin-top:0px">Ï
+  <h4 id="people_paging" style="width:200px;font-size:12px" class="section_name">Page 1 of <%=@users.total_pages %></h4>
 </div>
 <div class='clear'></div>
 <div id='people_results'>
-	<%= render :partial => 'shared_object_collections/horizontal_users_collection' , :locals => {:collection => @users, :reqpath=>'/activity/users'}%>
+  <%= render :partial => 'shared_object_collections/horizontal_users_collection' , :locals => {:collection => @users, :reqpath=>'/activity/users'}%>
 </div>
 <div class="clear">&nbsp;</div>
 <div class="section_header" >
-	<div style="float:left;width:200px">
-		<h3 style="width:100px;" class="section_name">Comments</h3>
-	</div>
-	<div class="clear">&nbsp;</div>
+  <div style="float:left;width:200px">
+    <h3 style="width:100px;" class="section_name">Comments</h3>
+  </div>
+  <div class="clear">&nbsp;</div>
 </div>
 <div>
-	<div style="margin-right:5px;width:136px;float:left;text-align:center;background-color:#EDEDED;">Who</div>
-	<div style="margin-right:5px;width:310px;float:left;text-align:center;background-color:#EDEDED;">Why & Where</div>
-	<div style="width:100px;float:left;text-align:center;background-color:#EDEDED;">When</div>
-	<div class="clear"></div>
-<%= render :partial => 'user_place_activity_collection' , :locals => {:collection => @user_place_activities}%>
+  <div style="margin-right:5px;width:136px;float:left;text-align:center;background-color:#EDEDED;">Who</div>
+  <div style="margin-right:5px;width:310px;float:left;text-align:center;background-color:#EDEDED;">Why & Where</div>
+  <div style="width:100px;float:left;text-align:center;background-color:#EDEDED;">When</div>
+  <div class="clear"></div>
+  <%= render :partial => 'user_place_activity_collection' , :locals => {:collection => @user_place_activities}%>
 </div>
 
 <script type="text/javascript">
 
-
-  $('#post').live('click', function(){
-    var actionLinks = [{ "text": "Check them out!", "href": "http://www.hellopulse.com"}];
-    var attachment = {'media': [{'type':'image',   'src':'http://bit.ly/AJTnf',   'href':'http://bit.ly/hifZk'}]};
-
-    alert(FB.Connect.streamPublish('9 singles added Rosy Yoga on HelloPulse!', attachment, actionLinks,100000807720563,null,null,true,350077551773));
-
-  });
-
-   function showReg()
+  function showReg()
   {
-    $('#dialog').jqm({ajax:'/partner_reg',modal:true});
+    alert('<%=@activity.id%>');
+    $('#dialog').jqm({ajax:'/partner_reg?auth_code=<%=auth_code%>&activity_id=<%=@activity.id%>',modal:true});
     $("#dialog").jqmShow();
   }
+
   function reqPermissions()
   {
-    FB.Connect.showPermissionDialog("status_update,offline_access,publish_stream", function(perms) { showReg();},true );
+    FB.Connect.showPermissionDialog("status_update,offline_access,publish_stream", '',true );
   }
 </script>

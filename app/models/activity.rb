@@ -15,7 +15,10 @@ class Activity < ActiveRecord::Base
     indexes name
     has activity_category_id
   end
-  has_attached_file :icon, :styles => { :thumb => "75x75#", :thumb => "160x160#" }, :default_url => "/images/Question.png"
+  has_attached_file :icon, :styles => { :thumb => "75x75#", :large => "160x160#" },
+     :url => "/:class/:attachment/:id/:style_:filename",
+    :default_url => "/images/Question.png"
+    
   
   has_many :user_place_activities
   has_many :users, :through => :user_place_activities

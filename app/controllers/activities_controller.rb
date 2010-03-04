@@ -7,12 +7,27 @@ class ActivitiesController < ApplicationController
     #work out code
     @activity = Activity.find(:first,:conditions=>{:auth_code => params[:code], :admin_user_id => nil }) if params[:code] != nil
     if @activity == nil
-      render :text => 'The login code you provided does not match one in our system. Please try again'
+      # render :text => 'The login code you provided does not match one in our system. Please try again'
+      logger.debug('no such')
+      render :template => 'sessions/partner'
     else
       @users = @activity.users.paginate(:all,:group => :user_id, :page => params[:page], :per_page => 6)
       @user_place_activities = @activity.user_place_activities.paginate(:order=>'created_at DESC',:page=>1,:per_page=>10)
       render :template => 'activities/show', :locals => {:activity => @activity, :auth_code =>params[:code] }
     end
+  end
+
+  def admin
+    if current_user.admin
+      render :template => "activities/admin", :layout => false
+    else
+      render :text => 'you are not authorised'
+    end
+  end
+
+  def update
+      activity = Activity.find(params[:activity_id])
+      activity.update_attributes(params[:activity])
   end
 
   def show

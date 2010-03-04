@@ -27,9 +27,9 @@
 
   $('#post').live('click', function(){
     var actionLinks = [{ "text": "Check them out!", "href": "http://www.hellopulse.com"}];
-    var attachment = {'media': [{'type':'image',   'src':'http://bit.ly/AJTnf',   'href':'http://bit.ly/hifZk'}]};
+      var attachment = {'media': [{'type':'image',   'src':'http://www.hellopulse.com/images/logo_smaller.png',   'href':'http://www.hellopulse.com/images/logo_smaller.png'}]};
 
-    alert(FB.Connect.streamPublish('9 singles added Rosy Yoga on HelloPulse!', attachment, actionLinks,100000807720563,null,null,true));
+    FB.Connect.streamPublish('10 singles added Rosy Yoga on HelloPulse!', attachment, actionLinks,null,null,null,true,350077551773);
 
   });
 
