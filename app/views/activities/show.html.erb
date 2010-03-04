@@ -3,9 +3,11 @@
 <% end %>
 <%= fb_connect_javascript_tag %>
 <%= init_fb_connect "XFBML", :js=>:jquery%>
+<%  auth_code ||='' %>
 
 <% content_for :message do %>
-  <%if auth_code != nil && !logged_in? %>
+  
+  <%if auth_code != nil &&auth_code!='' && !logged_in? %>
 <h3> You have been invited to link this activity to your Facebook Page. You will be asked to grant Hellopulse permission to publish to your activity stream, and to give us offline access so we can publish updates to your page. Please click <%= fb_login_button('showReg()')%> to continue</h3>
   <%end%>
 <%end%>
