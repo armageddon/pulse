@@ -6,11 +6,14 @@
 <%  auth_code ||='' %>
 
 <% content_for :message do %>
-  
   <%if auth_code != nil &&auth_code!='' && !logged_in? %>
-<h3> You have been invited to link this activity to your Facebook Page. You will be asked to grant Hellopulse permission to publish to your activity stream, and to give us offline access so we can publish updates to your page. Please click <%= fb_login_button('showReg()')%> to continue</h3>
+    <h3> You have been invited to link this activity to your Facebook Page. You will be asked to grant Hellopulse permission to publish to your activity stream, and to give us offline access so we can publish updates to your page. Please click <%= fb_login_button('showReg()')%> to continue</h3>
+  <%elsif !logged_in? %>
+    <h1> Join HelloPulse now to meet these great singles, and find where others are hanging out &nbsp;&nbsp; &nbsp;  <%= fb_login_button() %></h1>
   <%end%>
 <%end%>
+    
+
 <%=hidden_field_tag 'auth_code_hidden' , auth_code%>
 <div class="column_header">
 
