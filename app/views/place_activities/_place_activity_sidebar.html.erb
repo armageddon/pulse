@@ -27,7 +27,7 @@
   <li><%= link_to "INVITE A FRIEND", '#', 'data-href' => new_account_invitation_path, :class => "invite_a_friend" %>
 </ul>
 <br/>
-<%= link_to "ADD TO MY FAVOURITES", '#', 'data-href' => "/user_place_activities/new?activity_id="+@activity.id.to_s+"&place_id="+@place.id.to_s+"&place_activity_id="+@place_activity.id.to_s+"&view=add_place_activity", :id => "add_place_activity", :class => "add_to_favorites submit"  %></li> 
+<%= link_to "ADD TO MY FAVOURITES", '#', 'data-href' => "/user_place_activities/new?activity_id="+@activity.id.to_s+"&place_id="+@place.id.to_s+"&place_activity_id="+@place_activity.id.to_s+"&view=add_place_activity", :id => "add_place_activity", :class => "add_to_favorites submit"  %>
 <br/>
 <br/>
 <% if @place.id != ANYWHERE_PLACE_ID %>
@@ -47,7 +47,7 @@
         type: "POST",
         url: target,
         success: function() { $("#remove_place").hide() && $("#add_place").show() },
-        data: { "_method": "delete", },
+        data: { "_method": "delete"}
       });
       return false;
     });

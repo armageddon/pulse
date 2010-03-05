@@ -5,7 +5,17 @@ class UsersController < ApplicationController
   # before_filter :admin_required, :only => [:suspend, :unsuspend, :destroy, :purge]
   before_filter :find_user, :only => [:suspend, :unsuspend, :destroy, :purge, :admin_delete]
   before_filter :login_required, :except => [:redeem, :create, :link_user_accounts, :link, :quick_reg, :partner_reg, :partner_new]
+  before_filter :check_user
   skip_before_filter :verify_authenticity_token, :only => [:admin_delete,:partner_new]
+
+  
+    def check_user
+   # if current_user!=nil && current_user !=false && current_user.status==3
+   #   logger.debug('partneruser - redirecting')
+   #   redirect_to :controller=>'activities', :action=>'partner'
+
+   # end
+  end
 
 
   def quick_reg
@@ -13,12 +23,20 @@ class UsersController < ApplicationController
       format.js { render :partial => "/users/quick_reg"}
     end
   end
+
   def partner_reg
     logger.debug(params[:auth_code])
     respond_to do |format|
       format.js { render :partial => "/users/partner_reg", :locals=>{:activity_id=>params[:activity_id], :auth_code=>params[:auth_code]}}
     end
   end
+def partner_registered
+    logger.debug(params[:auth_code])
+    respond_to do |format|
+      format.js { render :partial => "/users/partner_registered", :locals=>{:activity_id=>params[:activity_id], :auth_code=>params[:auth_code]}}
+    end
+  end
+
 
   #this needs to be sorted - if no fb user redirect to link account screen
   def link_user_accounts
@@ -176,7 +194,7 @@ class UsersController < ApplicationController
     @activity = Activity.find(:first,:conditions=>{:auth_code => params[:auth_code] , :id=>@activity_id, :admin_user_id => nil })
 
     @user = User.new(params[:user])
-    
+    logger.debug(facebook_session.session_key)
     if(simple_captcha_valid? )
       @user.fb_user_id = facebook_session.user.id
       @user.sex ||= 2
@@ -187,6 +205,8 @@ class UsersController < ApplicationController
       @user.dob = '20000101'.to_date
       @user.location_id = 1;
       @user.postcode = 'W8 6QA'
+      @user.status = 3
+      @user.fb_session_key = facebook_session.session_key
       simple_captcha_valid?
       @user.register! if @user && @user.valid?
       success = @user && @user.valid?
@@ -194,6 +214,7 @@ class UsersController < ApplicationController
       logger.debug(pp @user.errors)
       @user.age
       logger.debug('Success ' + success.to_s)
+     
     else
       logger.debug('captcha failed')
       success = false
@@ -203,15 +224,18 @@ class UsersController < ApplicationController
       if success && @user.errors.empty?
        logger.debug('sdsdsdsdsdsdsdfasdfasdfasdfsdf - PARTNER CREATED - MODIFYING ACTIVITY')
         @user.activate!
-
         @activity.admin_user_id = @user.id
         @activity.save
+         facebook_session.post("facebook.stream.publish", :action_links=> '[{ "text": "Check out HelloPulse!", "href": "http://www.hellopulse.com"}]', :message => @user.first_name + ' has partnered with HelloPulse!', :uid=>@activity.fb_page_id)
+
+
         session[:user_id] = @user.id
         format.html {
           redirect_to :action=>'photos'
           flash[:notice] = "Thanks for signing up!  We're sending you an email with your activation code."
         }
         format.js {
+          logger.debug('format JS after create partner user')
           session[:user_id] = @user.id
           render :nothing => true
         }
@@ -234,7 +258,6 @@ class UsersController < ApplicationController
   end
 
   def update
-    
     @user_place_activity = UserPlaceActivity.new
     if params[:iframe]=="true"
       logger.info(:params)
@@ -242,13 +265,8 @@ class UsersController < ApplicationController
       current_user.crop_h = params[:crop_h]
       current_user.crop_x = params[:crop_x]
       current_user.crop_y = params[:crop_y]
-      logger.info(current_user.crop_w)
-      logger.info(current_user.crop_h)
-      logger.info(current_user.crop_x)
-      logger.info(current_user.crop_y)
-      logger.info('before update')
+
       current_user.update_attributes(params[:user])
-      logger.info('after update')
       respond_to do |format|
         format.html { render :text => current_user.icon.url(:profile) }
         format.js { render :text => current_user.icon.url + "js"}

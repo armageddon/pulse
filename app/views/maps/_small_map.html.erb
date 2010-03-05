@@ -1,9 +1,9 @@
 
 <% form_tag '/search', :method => "get", :id=>'search_form' do  %>
-	<%= hidden_field_tag 'search_criteria[type]', '5', :class => "header_input_text" %>
-	<%= hidden_field_tag 'search_criteria[sex_preference]', current_user.sex_preference, :class => "header_input_text" %>
-	<%= hidden_field_tag 'search_criteria[lower_age]', [current_user.age_preference-1], :class => "header_input_text" %>
-	<%= hidden_field_tag 'search_criteria[upper_age]', [current_user.age_preference+1], :class => "header_input_text" %>
+  <%= hidden_field_tag 'search_criteria[type]', '5', :class => "header_input_text" %>
+  <%= hidden_field_tag 'search_criteria[sex_preference]', current_user.sex_preference, :class => "header_input_text" %>
+  <%= hidden_field_tag 'search_criteria[lower_age]', [current_user.age_preference-1], :class => "header_input_text" %>
+  <%= hidden_field_tag 'search_criteria[upper_age]', [current_user.age_preference+1], :class => "header_input_text" %>
 <% end %>
 
 <div id="map_canvas" style="width: 560px; height: 200px; overflow: hidden;">
@@ -31,34 +31,34 @@
 
 
 	
-GEvent.addListener(small_map, "click", function() {
+  GEvent.addListener(small_map, "click", function() {
 	
 	
-  	$('#search_form').submit();
-});
+    $('#search_form').submit();
+  });
 
-	$.ajax({
-	    type: "GET",
-	    url: '/search/map',
-	    data: {"search_criteria[type]" : "5","search_criteria[age_preference]" : "<%= current_user.age_preference%>","search_criteria[age_preferences]" : "<%= current_user.sex_preference%>" },
-	    success: function(p) {
-			var x = eval(p);
-			var marker= new Array();
-			for(var i =0; i < x.length; i++)
-			{
-				var point = new GLatLng(x[i].place.latitude, x[i].place.longitude)
-				var marker = createMarker(point);
-				small_map.addOverlay(marker);
-			}
-	    }
-	});
+  $.ajax({
+    type: "GET",
+    url: '/search/map',
+    data: {"search_criteria[type]" : "5","search_criteria[age_preference]" : "<%= current_user.age_preference%>","search_criteria[age_preferences]" : "<%= current_user.sex_preference%>" },
+    success: function(p) {
+      var x = eval(p);
+      var marker= new Array();
+      for(var i =0; i < x.length; i++)
+      {
+        var point = new GLatLng(x[i].place.latitude, x[i].place.longitude)
+        var marker = createMarker(point);
+        small_map.addOverlay(marker);
+      }
+    }
+  });
 	
 
   
-	function createMarker(point) {
-	        var marker = new GMarker(point,{ icon: dotIcon });
+  function createMarker(point) {
+    var marker = new GMarker(point,{ icon: dotIcon });
 	        
 
-	        return marker;
-	      }
+    return marker;
+  }
 </script>

@@ -21,6 +21,7 @@ ActionController::Routing::Routes.draw do |map|
   map.partner_new 'users/partner_new', :controller=>'users', :action=>'partner_new'
   map.quick_reg '/quick_reg', :controller=>'users', :action=>'quick_reg'
   map.partner_reg '/partner_reg', :controller=>'users', :action=>'partner_reg'
+  map.partner_registered '/partner_registered', :controller =>'users', :action=>'partner_registered'
   map.linker '/account/do_link' , :controller => 'sessions', :action=>'link'
   map.link_page '/account/link', :controller => 'users', :action => 'link'
   map.link_user_accounts '/account/link_user_accounts', :controller => 'users', :action => 'link_user_accounts'
@@ -99,6 +100,7 @@ ActionController::Routing::Routes.draw do |map|
   map.place_user_place_activities '/place/user_place_activities', :controller => 'places', :action => 'user_place_activities'
   
   #activity_controller
+  map.activity_post_fb 'activities/post_to_facebook', :controller=>'activities', :action=>'post_activity_to_facebook'
   map.activity_update  'activities/update', :controller=>'activities', :action=>'update'
   map.activity_admin 'activities/admin', :controller=>'activities', :action=>'admin'
   map.activity_partner 'activities/partner' , :controller=>'activities', :action=>'partner'

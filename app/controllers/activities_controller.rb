@@ -1,15 +1,26 @@
 class ActivitiesController < ApplicationController
+  skip_before_filter :verify_authenticity_token, :only => [:post_activity_to_facebook]
 
+  def post_activity_to_facebook
+    logger.debug('00000000000000000000000000000000000000000')
+    user = User.find(params[:user_id])
+    facebook_act_session = Facebooker::Session.create
+    facebook_act_session.secure_with!(user.fb_session_key)
+    facebook_act_session.post("facebook.stream.publish", :action_links=> '[{ "text": "Check out HelloPulse!", "href": "http://www.hellopulse.com"}]', :message => 'message', :uid=>10150099978705123)
+  end
 
   def partner
     logger.debug('partner')
     logger.debug(params[:code])
     #work out code
     @activity = Activity.find(:first,:conditions=>{:auth_code => params[:code], :admin_user_id => nil }) if params[:code] != nil
+      if @activity == nil && current_user!= false &&current_user.status==3
+          @activity = Activity.find(:first,:conditions=>{ :admin_user_id => current_user.id })
+      end
     if @activity == nil
       # render :text => 'The login code you provided does not match one in our system. Please try again'
       logger.debug('no such')
-      render :template => 'sessions/partner'
+      redirect_to  :controller=>'sessions' , :action=>'partner'
     else
       @users = @activity.users.paginate(:all,:group => :user_id, :page => params[:page], :per_page => 6)
       @user_place_activities = @activity.user_place_activities.paginate(:order=>'created_at DESC',:page=>1,:per_page=>10)
@@ -26,16 +37,16 @@ class ActivitiesController < ApplicationController
   end
 
   def update
-      activity = Activity.find(params[:activity_id])
-      activity.update_attributes(params[:activity])
+    activity = Activity.find(params[:activity_id])
+    activity.auth_code = params[:auth_code]
+    activity.fb_page_id = params[:page_id]
+    activity.update_attributes(params[:activity])
+    redirect_to '/activities/admin'
   end
 
   def show
     @activity =Activity.find(params[:id])
     @user_place_activities = @activity.user_place_activities.paginate(:order=>'created_at DESC',:page=>1,:per_page=>10)
-    @user_place_activities.each do |d|
-      logger.debug('UPA ID::::::::::::::::' + d.id.to_s)
-    end
     @users = @activity.users.paginate(:all,:group => :user_id, :page => params[:page], :per_page => 6)
   end
 
@@ -114,4 +125,5 @@ class ActivitiesController < ApplicationController
       format.js { render :json => res}  #al - add json type as parameter here.
     end
   end
+
 end

@@ -681,18 +681,11 @@ button {
   border: 0;
   padding: 0;
   cursor: pointer;
-  overflow: visibl
-
-e;
+  overflow: visible;
 /* removes extra side padding in IE */
 }
 
-button::-moz-focus-inner {
-  border: none;
 
-
-/* overrides extra padding in Firefox */
-}
 
 button span {
   position: relative;
@@ -700,15 +693,6 @@ button span {
   white-space: nowrap;
 }
 
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-
-/* Safari and Google Chrome only - fix margins */
-
-button span {
-  margin-top: -1px;
-}
-
-}
 
 /* OPTIONAL BUTTON STYLES for applying custom look and feel: */
 

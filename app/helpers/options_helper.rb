@@ -98,6 +98,7 @@ module OptionsHelper
   end
   
   def dotw(day_of_week)
+
     case day_of_week
     when 0 then "Any day"
     when 1 then "Monday"
@@ -107,6 +108,7 @@ module OptionsHelper
     when 5 then "Friday"
     when 6 then "Saturday"
     when 7 then "Sunday"
+    else "Any day"
     end
   end
   def tod(time_of_day)
@@ -120,6 +122,7 @@ module OptionsHelper
     when 6 then "Late Afternoons"
     when 7 then "Evenings"
     when 8 then "Late Nights"
+    else "Any Time"
     end
   end  
   

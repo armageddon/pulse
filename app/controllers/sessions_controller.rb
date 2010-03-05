@@ -10,14 +10,10 @@ class SessionsController < ApplicationController
     if logged_in?
       return redirect_to(:controller => "users", :action => "show")
     end
-
   end
 
   def link
-    logger.debug('SESSION LINK')
-
     user = User.authenticate(params[:login], params[:password])
-    logger.debug('SESSION LINK user set')
     if user
       # Protects against session fixation attacks, causes request forgery
       # protection if user resubmits an earlier form using back
@@ -27,7 +23,7 @@ class SessionsController < ApplicationController
       new_cookie_flag = (params[:remember_me] == "1")
       handle_remember_cookie! new_cookie_flag
       logger.info('session')
-       logger.info(facebook_session.user.uid)
+      logger.info(facebook_session.user.uid)
       self.current_user.fb_user_id = facebook_session.user.uid
       logger.debug(p facebook_session)
       self.current_user.save
@@ -44,17 +40,19 @@ class SessionsController < ApplicationController
 
   end
 
- def activity_user
-   @code = params[:code]||0
-   logger.debug(@code)
+  def activity_user
+    @code = params[:code]||0
+    logger.debug(@code)
     render :template => 'sessions/new' , :locals=>{:code => @code}
- end
+  end
 
-
- def partner
-    render :template => 'sessions/partner' 
- end
-
+  def partner
+    if logged_in?
+      return redirect_to(:controller => "users", :action => "show")
+    else
+      render :template => 'sessions/partner'
+    end
+  end
  
   def create
     logout_keeping_session!

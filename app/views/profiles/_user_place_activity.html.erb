@@ -17,8 +17,9 @@
   	<div class="place_when" style="margin-right:5px;width:75px;float:left">
 		<% if object.day_of_week == 0 && object.time_of_day ==0 %>
 		Anytime
-		<% else %> 
-	    <%=dotw(object.day_of_week) + "<br /> " + tod(object.time_of_day)%>
+		<% else %>
+
+	    <%=dotw(object.day_of_week)||'Any day' + "<br /> " + tod(object.time_of_day)||'Any Time'%>
 		<% end %>
 	</div>
 	<div class="place_why" style="margin-right:5px;width:216px;float:left">
