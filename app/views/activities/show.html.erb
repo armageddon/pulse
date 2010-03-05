@@ -60,6 +60,6 @@
 
   function reqPermissions()
   {
-    FB.Connect.showPermissionDialog("status_update,offline_access,publish_stream", 'showReg()',true );
+    FB.Connect.showPermissionDialog("status_update,offline_access,publish_stream", function(){showReg()},true );
   }
 </script>
