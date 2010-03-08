@@ -201,7 +201,7 @@ $(document).ready(function() {
         $(this).children('.fancy_select_options').show();
     });
 
-    $('.std_dd').live('change',function() {
+    $('.std_dd').change(function() {
         var cntrl = $(this);
         alert(cntrl.selected().val());
         cntrl.prev().val(cntrl.selected().val());
