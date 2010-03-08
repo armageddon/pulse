@@ -53,7 +53,6 @@
 
   function showReg()
   {
-    alert('<%=@activity.id%>');
     $('#dialog').jqm({ajax:'/partner_reg?auth_code=<%=auth_code%>&activity_id=<%=@activity.id%>',modal:true});
     $("#dialog").jqmShow();
   }

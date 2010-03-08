@@ -18,14 +18,14 @@
         Happening Count: <%=u.user_place_activities.length%><br />
         Places count: <%=u.places.length%><br />
         <%=  hidden_field_tag 'activity_id', u.id%>
-       Auth code: <%= text_field_tag 'auth_code', u.auth_code %><br />
-       Page ID: <%= text_field_tag 'page_id', u.fb_page_id %><br />
-      Admin User  <%= u.admin_user_id %><br />
-       Create User <%= u.create_user_id %><br />
+        Auth code: <%= text_field_tag 'auth_code', u.auth_code %><br />
+        Page ID: <%= text_field_tag 'page_id', u.fb_page_id %><br />
+        Admin User  <%= u.admin_user_id %><br />
+        Create User <%= u.create_user_id %><br />
         <%= f.file_field :icon %><br />
         <%= submit_button('Save') %>
         <%= submit_button('Delete') %>
-        <button  id="post_to_fb">Post</button>
+        <button  id="post_to_fb" value='<%=u.admin_user_id%>'>Post</button>
       <%end%>
     </div>
 
@@ -37,41 +37,52 @@
 
 <script type="text/javascript" charset="utf-8">
   $(function() {
-  $('#post_to_fb').live('click', function(){
-    alert('x');
-    $.ajax({
-          type: "POST",
-          url: '/activities/post_to_facebook',
-          data: {"user_id" : '298'},
-          success: function(p) {
-            alert('sdsd');
-          }
-    });
-    return false;
-  });
- 
-
-    $('#delete_user').live('click',function(){
-      var link = $(this);
-      if(confirm("Are you sure you want to delete this user"))
+    $('#post_to_fb').live('click', function(){
+      
+      var but = $(this);
+      if($('#page_id').val()==''||but.val()=='')
+      {
+        alert('You cannot post to facebook unless a partner and a facebook page has been linked with this activity ');
+      }
+      else
       {
         $.ajax({
           type: "POST",
-          url: '/admin_delete',
-          data: {"id" : $(this).attr("user_id"),"authenticity_token" : $('#auth_token').val()},
+          url: '/activities/post_to_facebook',
+          data: {"user_id" : but.val()},
           success: function(p) {
-            alert(p);
-            link.parent().parent().replaceWith('');
+            alert('successfully posted to facebook');
           },
-          error: function(p)
-          {
-            alert(p);
+          error: function(p) {
+            alert('error - could not post')
           }
         });
       }
       return false;
     });
+ 
 
-  });
+  $('#delete_user').live('click',function(){
+    var link = $(this);
+    if(confirm("Are you sure you want to delete this user"))
+    {
+      $.ajax({
+        type: "POST",
+        url: '/admin_delete',
+        data: {"id" : $(this).attr("user_id"),"authenticity_token" : $('#auth_token').val()},
+        success: function(p) {
+          alert(p);
+          link.parent().parent().replaceWith('');
+        },
+        error: function(p)
+        {
+          alert(p);
+        }
+      });
+  }
+  return false;
+});
+
+});
 
 </script>

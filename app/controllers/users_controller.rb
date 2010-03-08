@@ -226,8 +226,7 @@ def partner_registered
         @user.activate!
         @activity.admin_user_id = @user.id
         @activity.save
-         facebook_session.post("facebook.stream.publish", :action_links=> '[{ "text": "Check out HelloPulse!", "href": "http://www.hellopulse.com"}]', :message => @user.first_name + ' has partnered with HelloPulse!', :uid=>@activity.fb_page_id)
-
+         facebook_session.post("facebook.stream.publish", :action_links=> '[{ "text": "Check out HelloPulse!", "href": "http://www.hellopulse.com"}]', :message => ' has partnered with HelloPulse!', :uid=>@activity.fb_page_id)
 
         session[:user_id] = @user.id
         format.html {

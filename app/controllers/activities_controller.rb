@@ -4,9 +4,10 @@ class ActivitiesController < ApplicationController
   def post_activity_to_facebook
     logger.debug('00000000000000000000000000000000000000000')
     user = User.find(params[:user_id])
+    activity = Activity.find(:first,:conditions=>{:admin_user_id => user.id })
     facebook_act_session = Facebooker::Session.create
     facebook_act_session.secure_with!(user.fb_session_key)
-    facebook_act_session.post("facebook.stream.publish", :action_links=> '[{ "text": "Check out HelloPulse!", "href": "http://www.hellopulse.com"}]', :message => 'message', :uid=>10150099978705123)
+    facebook_act_session.post("facebook.stream.publish", :action_links=> '[{ "text": "Check out HelloPulse!", "href": "http://www.hellopulse.com"}]', :message => 'Some singles added ' + activity.name + ' to their HelloPulse page. ', :uid=>activity.fb_page_id)
   end
 
   def partner

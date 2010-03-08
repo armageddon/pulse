@@ -176,9 +176,8 @@
         url: '/users/partner_new',
          data: $(this).serialize(),
         success: function(msg) {
+            $("#dialog").jqmHide();
          window.location = '/activities/partner';
-          
-          
         },
         error: function(xhr) {
           $('#post_error').html('Invalid Captcha Code - please try again')
@@ -187,9 +186,6 @@
       });
       return false;
     });
-
-
-
 
     $("#cancel_partner").click(function() {
       $("#dialog").jqmHide();

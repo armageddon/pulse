@@ -199,6 +199,8 @@ $(document).ready(function() {
     });
 
 	$('.std_dd').live('change',function() {
+                $( this).blur();
+                $(this).focus();
 		$(this).prev().val($(this).selected().val());
 	});
 
