@@ -199,9 +199,10 @@ $(document).ready(function() {
     });
 
 	$('.std_dd').live('change',function() {
-                $( this).blur();
-                $(this).focus();
+                alert('selected');
 		$(this).prev().val($(this).selected().val());
+                  $(this).blur();
+                $(this).focus();
 	});
 
     $('.fancy_select_options p').live('mouseover',function() {
