@@ -203,11 +203,9 @@ $(document).ready(function() {
 
     $('.std_dd').change(function() {
         var cntrl = $(this);
-        alert(cntrl.selected().val());
         cntrl.prev().val(cntrl.selected().val());
-        alert(cntrl.prev().val());
-        cntrl.blur();
-        cntrl.focus();
+   
+ 
     });
 
     $('.fancy_select_options p').live('mouseover',function() {
