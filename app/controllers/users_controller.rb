@@ -97,13 +97,9 @@ def partner_registered
   end
   
   def show
-    logger.debug("users show")
-    logger.debug(current_user.errors.full_messages)
     @places = current_user.suggested_places
     @matches = current_user.matches(params[:page], 8)
-    @updates = TimelineEvent.paginate(:conditions => "actor_id <> " + current_user.id.to_s, :page=>1, :per_page => 5, :order => 'created_at DESC')
-    logger.debug("matches: " + @matches.length.to_s)
-
+    @updates = TimelineEvent.paginate(:all, :conditions => "icon_file_name is not null and users.status=1 and actor_id <> " + current_user.id.to_s,:joins=>"INNER JOIN users on users.id = timeline_events.actor_id", :page=>1, :per_page => 5, :order => 'created_at DESC')
   end
 
   def new

@@ -61,7 +61,7 @@
           <% form_tag session_path , :id => 'session_form' do -%>
             <div style="float:right; width=700px">
               <span style="font-size:14px">Members login:</span>
-              <span style="font-size:14px"><%= text_field_tag 'login', @login, :class => "input_text", :value => "Username", :size => "10" %></span>
+              <span style="font-size:14px"><%= text_field_tag 'login', @login, :class => "input_text", :value => "Username or Email", :size => "16" %></span>
               <span style="font-size:14px"><%= password_field_tag 'password', nil, :size => "10", :class => "input_text", :style => "display: none;" %></span>
               <span style="font-size:14px"><input type="text" class="input_text" size="10" value="Password" id="password_holder"/></span>
               <%= submit_button "GO", :class=> 'submit', :type =>'submit'%><br />

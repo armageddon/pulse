@@ -61,7 +61,7 @@
 
 
 
-           <div class="clear">&nbsp;</div>
+            <div class="clear">&nbsp;</div>
 
           <% end %>
         </div>
@@ -79,14 +79,14 @@
 
         <br />
 
-        
+
 
         <% if flash[:error] %>
           <p id="errors" style="font-size:13px;margin-right:20px;height:23px">
             <%= flash[:error] %>
           </p>
         <% end %>
-       
+
         <div style="float:left; margin-right:0px;margin-top:35px">
           <div style="font-size:17px;margin-left:3px;margin-bottom:5px">Please enter your login code here: </div>
 
@@ -99,7 +99,7 @@
       </div>
     </div>
     <div class="clear">&nbsp;</div>
- <div id="main_footer" style="margin-top:20px">
+    <div id="main_footer" style="margin-top:20px">
       <%= render :partial => "shared/footer" %>
     </div>
   </body>
@@ -139,8 +139,8 @@
 </script>
 
 <script type="text/javascript">
-      try {
-        var pageTracker = _gat._getTracker("<%= googlecode(request.url) %>");
-        pageTracker._trackPageview();
-      } catch(err) {}
-    </script>
+  try {
+    var pageTracker = _gat._getTracker("<%= googlecode(request.url) %>");
+    pageTracker._trackPageview();
+  } catch(err) {}
+</script>

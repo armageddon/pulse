@@ -286,6 +286,7 @@ $(document).ready(function() {
 			$('#dob_error').text('Enter a valid date of birth');
 			day.addClass('invalid');
 		}
+
 		if (month.val() == 0 || day.val() == '' )
 		{
 			error = true;
