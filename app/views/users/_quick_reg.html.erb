@@ -1,4 +1,4 @@
-<% @user = User.new %>
+
 
 <% form_for @user, :url => account_path do |f| %>
   <div style="overflow:auto; max-height:450px">
@@ -11,12 +11,12 @@
     </div>
     <div style="float:left; width:400px; margin-left:10px">
       <label  class='quick_sign_up_label'>First name</label>
-      <%= text_field_tag 'user[first_name]', facebook_session.user.first_name || 'First name', :class => 'input_text' %>
+      <%= text_field_tag 'user[first_name]', user.first_name || 'First name', :class => 'input_text' %>
       <span class="error"></span>
       <div class="clear"></div>
 
       <label class='quick_sign_up_label'>Username</label>
-      <%= text_field_tag 'user[username]', @user.username || "Username", :class => 'input_text' %>
+      <%= text_field_tag 'user[username]', user.username || "Username", :class => 'input_text' %>
       <span class="error"></span>
       <div class="clear"></div>
 
@@ -34,7 +34,7 @@
 
       <label  class='quick_sign_up_label'>Email address</label>
 
-      <%= text_field_tag 'user[email]', @user.email || 'Email address', :class => 'input_text' %>
+      <%= text_field_tag 'user[email]', user.email || 'Email address', :class => 'input_text' %>
       <span class="error"></span>
       <div class="clear"></div>
 
@@ -42,9 +42,9 @@
 
       <%= hidden_field_tag 'user[dob]' %>
       <span>
-        <%= std_drop_down('day', 0, {:width => '60px'},day_options, 'Day', 0) %>
-        <%= std_drop_down('month', 0, {:width => '86px'},month_options, 'Month', 0) %>
-        <%= std_drop_down('year', 0, {:width => '70px'},year_options, 'Year', 0) %>
+        <%= std_drop_down('day', user.dob.day||0, {:width => '60px'},day_options, 'Day', 0) %>
+        <%= std_drop_down('month', user.dob.month||0, {:width => '86px'},month_options, 'Month', 0) %>
+        <%= std_drop_down('year', user.dob.year||0, {:width => '70px'},year_options, 'Year', 0) %>
       </span>
       <span id='dob_error' class="error"></span>
       <div class="clear"></div>
@@ -56,12 +56,12 @@
       <div class="clear"></div>
 
       <label  class='quick_sign_up_label'>Gender</label>
-      <%= std_drop_down('user[sex]', 1, {:width => '90px'},gender_options, '', '') %>
+      <%= std_drop_down('user[sex]', user.sex||1, {:width => '90px'},gender_options, '', '') %>
       <span class="error"></span>
       <div class="clear"></div>
 
       <label  class='quick_sign_up_label'>Looking For</label>
-      <%= std_drop_down('user[sex_preference]', 2, {:width => '90px'},gender_preference_options, '', '') %>
+      <%= std_drop_down('user[sex_preference]', user.sex_preference||2, {:width => '90px'},gender_preference_options, '', '') %>
       <span class="error"></span>
       <div class="clear"></div>
 
@@ -79,7 +79,7 @@
       <div class="clear"></div>
       <label  class='quick_sign_up_label'>About me</label
 
-      <%= text_area_tag 'user[description]', 'Give us a line that sums you up', :rows=>2, :cols=>30,:id => "quick_reg_user_description", :class => "word_count" %>
+      <%= text_area_tag 'user[description]', user.description||'Give us a line that sums you up', :rows=>2, :cols=>30,:id => "quick_reg_user_description", :class => "word_count" %>
 
 
     </div>

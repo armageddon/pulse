@@ -1,9 +1,7 @@
 <% form_tag search_people_path, :method => :get, :id => "advanced_search_side" do |f| %>
   <%= hidden_field_tag "t", params[:t] %>
   <div class="column_header">
-    <span>
       <h2>Filter Results</h2>
-    </span>
   </div>
   <%= hidden_field_tag 'search_criteria[type]', @search_criteria.type, :id=>'search_criteria_type' %>
   <ul id="search_type"  style="text-align:center">
@@ -15,27 +13,27 @@
   <div style='min-height:400px'>
     <div id="keyword_criteria"  style="padding:5px" class="<%=search_keyword_class(@search_criteria.type)%>" >
       <label  class="search_criteria_header" style="padding-top:0px">Keyword</label><br />
-        <%= text_field_tag 'search_criteria[keyword]', @search_criteria.keyword, :class => 'input_text'%><br />
+      <%= text_field_tag 'search_criteria[keyword]', @search_criteria.keyword, :class => 'input_text'%><br />
     </div>
 
     <div id="people_header" class="search_sidebar_header">People</div>
     <div id='people_criteria' style="padding:5px" class="<%=search_people_class(@search_criteria.type)%>" >
       <label class="search_criteria_header">Age</label><br />
       <% age_options.each do |opt| %>
-          <%= check_box_tag "search_criteria[age_"+opt[1].to_s+"]", opt[1] , @search_criteria.ages.include?(opt[1]) %> <%= opt[0] %> <br />
-        <% end %>
-        <label  class="search_criteria_header">Gender</label><br />
-        <%= check_box_tag "search_criteria[sp_1]",1, @search_criteria.sex_preferences.include?("1") %> Male <br />
-        <%= check_box_tag "search_criteria[sp_2]",2, @search_criteria.sex_preferences.include?("2")  %> Female<br />
+        <%= check_box_tag "search_criteria[age_"+opt[1].to_s+"]", opt[1] , @search_criteria.ages.include?(opt[1]) %> <%= opt[0] %> <br />
+      <% end %>
+      <label  class="search_criteria_header">Gender</label><br />
+      <%= check_box_tag "search_criteria[sp_1]",1, @search_criteria.sex_preferences.include?("1") %> Male <br />
+      <%= check_box_tag "search_criteria[sp_2]",2, @search_criteria.sex_preferences.include?("2")  %> Female<br />
     </div>
 
     <div id="place_header" class="search_sidebar_header">Places</div>
     <div id='place_criteria'  style="padding:5px" class="<%=search_places_class(@search_criteria.type)%>" >
       <label class="search_criteria_header">Location</label><br />
-        <div class="float:left" id="postcodesearch">
-          <%= std_drop_down('search_criteria[distance]', @search_criteria.distance, {:width => '130px'},distance_options, 'Any distance',0) %>
+      <div class="float:left" id="postcodesearch">
+        <%= std_drop_down('search_criteria[distance]', @search_criteria.distance, {:width => '130px'},distance_options, 'Any distance',0) %>
         <div class="clear"></div>
-                              from
+        from
         <%= text_field_tag 'search_criteria[postcode]', @search_criteria.postcode, :class => 'input_text' %><br />
       </div>
     </div>
@@ -44,8 +42,8 @@
     <div id='activity_criteria'  style="padding:5px" class="<%=search_activities_class(@search_criteria.type)%>" >
       <label class="search_criteria_header">Activity</label><br />
       <% activity_category_options.each do |opt| %>
-          <%= check_box_tag "search_criteria[ac_"+opt[1].to_s+"]", opt[1] , @search_criteria.activity_categories.include?(opt[1]) %> <%= opt[0] %> <br />
-        <% end %>
+        <%= check_box_tag "search_criteria[ac_"+opt[1].to_s+"]", opt[1] , @search_criteria.activity_categories.include?(opt[1]) %> <%= opt[0] %> <br />
+      <% end %>
     </div>
     <div id="place_header" class="search_sidebar_header_line"></div>
   </div>
@@ -118,7 +116,7 @@
       $('#activity_criteria').css("display","block");
       $('#search_criteria_type').val(5);
       $('#big_map').css("display","block");
-	  map.checkResize();
+      map.checkResize();
 	
       $('#activity_container').css("display","none");
       $('#people_container').css("display","none");
@@ -144,6 +142,7 @@
       $('#search_criteria_type').val(1);
     }
   });
+
   $('#place_criteria').live('click', function() {
     if($('#search_criteria_type').val()!=4&& $('#search_criteria_type').val()!=5){
       $('#people_criteria').css("display","none");
@@ -152,6 +151,7 @@
       $('#search_criteria_type').val(2);
     }
   });
+
   $('#activity_criteria').live('click', function() {
     if($('#search_criteria_type').val()!=4&& $('#search_criteria_type').val()!=5){
       $('#people_criteria').css("display","none");
@@ -160,8 +160,8 @@
       $('#search_criteria_type').val(3);
     }
   });
-  $('#people_header').live('click', function() {
 
+  $('#people_header').live('click', function() {
     if($('#search_criteria_type').val()!=4 && $('#search_criteria_type').val()!=5 ){
       $('#people_criteria').css("display","block");
       $('#place_criteria').css("display","none");
@@ -169,6 +169,7 @@
       $('#search_criteria_type').val(1);
     }
   });
+
   $('#place_header').live('click', function() {
     if($('#search_criteria_type').val()!=4&& $('#search_criteria_type').val()!=5){
       $('#people_criteria').css("display","none");
@@ -177,6 +178,7 @@
       $('#search_criteria_type').val(2);
     }
   });
+
   $('#activity_header').live('click', function() {
     if($('#search_criteria_type').val()!=4&& $('#search_criteria_type').val()!=5){
       $('#people_criteria').css("display","none");
@@ -187,13 +189,16 @@
   });
 
   $("#advanced_search_side").submit(function() {
+
+
     //todo: refactor this method too long
     error = false;
     if($(this).attr('t')=="user_place_activity"){
       var postcode = $('#postcode');
       postcode.removeClass('invalid');
-      regexString = /^([A-PR-UWYZ0-9][A-HK-Y0-9][AEHMNPRTVXY0-9]?[ABEHMNPRVWXY0-9]? {1,2}[0-9][ABD-HJLN-UW-Z]{2}|GIR 0AA)$/
-      if ($('#distance').val() != 0 && (postcode.val() == '' || postcode.val() == 'Post code' || regexString.test(postcode.val().toUpperCase()) != true)) {
+      regexString = /^([A-PR-UWYZ0-9][A-HK-Y0-9][AEHMNPRTVXY0-9]?[ABEHMNPRVWXY0-9]? {1,2}[0-9][ABD-HJLN-UW-Z]{2}|GIR 0AA)$/;
+      if ($('#distance').val() != 0 && (postcode.val() == '' || postcode.val() == 'Post code' || regexString.test(postcode.val().toUpperCase()) != true))
+      {
         postcode.addClass('invalid');
         postcode.nextAll('span.error').text('Please enter a valid post code.');
         error = true;
@@ -209,23 +214,23 @@
 
       switch(type) {
         case "1":
-          objects_url = "/search/people"
-          $('#object_header').text('People')
+          objects_url = "/search/people";
+          $('#object_header').text('People');
           break;
         case "2":
-          objects_url = "/search/places"
+          objects_url = "/search/places";
           $('#object_header').text('Places');
           break;
         case "3":
-          objects_url = "/search/activities"
+          objects_url = "/search/activities";
           $('#object_header').text('Activities');
           break;
         case "4":
-          activities_url = "/search/user_place_activities"
-          people_url = "/search/people_list"
+          activities_url = "/search/user_place_activities";
+          people_url = "/search/people_list";
           break;
         case "5":
-          map_url = "/big_map"
+          map_url = "/big_map";
           break;
       }
 
@@ -238,7 +243,6 @@
           data: $('#advanced_search_side').serialize(), //advanced_search,
           success: function(p) {
             $('#people_results').html(p);
-
           }
         });
       }
@@ -253,7 +257,6 @@
         });
       }
       if(objects_url.length>0){
-
         $.ajax({
           type: "GET",
           url: objects_url,
@@ -264,7 +267,6 @@
         });
       }
       if(map_url.length>0){
-
         var sw = new GLatLng(<%=  51.500152 %>, <%= -0.126236  %>);
         var ne = new GLatLng(<%=  51.502152 %>, <%= -0.122236 %>);
         var bounds = new GLatLngBounds(sw,ne);
@@ -279,7 +281,7 @@
             var marker= new Array();
             for(var i =0; i < x.length; i++)
             {
-              var point = new GLatLng(x[i].place.latitude, x[i].place.longitude)
+              var point = new GLatLng(x[i].place.latitude, x[i].place.longitude);
               var marker = createMarker(point,place_html(x[i].place));
               map.addOverlay(marker);
             }
@@ -293,31 +295,32 @@
 
   function place_html(pl)
   {
-  	var s = '';
-	s += '<div style="float:left">'
-	s += '<img width="30px" height="30px" src="'+pl.icon_file_name+'" alt="7_thumb"/>'
-	s += '</div>'
-	s += '<div style="float:left">'
-	s += '<a style="padding-left:10px" href="/places/'+pl.id.toString()+'">'+pl.name+'</a>';
-	s += '<div class="clear"></div>'
-	s += '<span style="font-size:9px;padding-left:10px">'+ pl.address + ' ' + pl.neighborhood +'</span>';
-	s += '</div>'
-	s += '<div class="clear"></div>'
-	s += '<br />'
-	s += '<div style="float:left">'
-	if(pl.pa_count > 1)
-	{
-		s += pl.pa_count.toString() + ' things happening here'
-	}
-	else
-	{
-		s += '1 thing happening here'
-	}
-	s += '</div>'
+    var s = '';
+    s += '<div style="float:left">'
+    s += '<img width="30px" height="30px" src="'+pl.icon_file_name+'" alt="7_thumb"/>'
+    s += '</div>'
+    s += '<div style="float:left">'
+    s += '<a style="padding-left:10px" href="/places/'+pl.id.toString()+'">'+pl.name+'</a>';
+    s += '<div class="clear"></div>'
+    s += '<span style="font-size:9px;padding-left:10px">'+ pl.address + ' ' + pl.neighborhood +'</span>';
+    s += '</div>'
+    s += '<div class="clear"></div>'
+    s += '<br />'
+    s += '<div style="float:left">'
+    if(pl.pa_count > 1)
+    {
+      s += pl.pa_count.toString() + ' things happening here'
+    }
+    else
+    {
+      s += '1 thing happening here'
+    }
+    s += '</div>'
 	
 	
-	return s;
+    return s;
   }
+
   function createMarker(point,html) {
     var marker = new GMarker(point,{ icon: dotIcon });
     GEvent.addListener(marker, "click", function() {
