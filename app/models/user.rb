@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   include UsersHelper
   apply_simple_captcha
   fires :newuser, :on => :create, :actor => :self
+
   after_create :welcome_mail, :register_user_to_fb
 
   after_update :reprocess_icon, :if => :cropping?
@@ -191,6 +192,7 @@ end
   def inches
     (height * 0.39 % 12 ).truncate
   end
+
   def self.find_by_email_and_login(email, username)
     x = User.find(:all,:conditions => {:email => email, :username => username})
     if x.length != 0
@@ -210,7 +212,6 @@ end
     logger.info(crop_y)
     logger.info(crop_w)
     logger.info(crop_h)  
-    
     !crop_x.blank? && !crop_y.blank? && !crop_w.blank? && !crop_h.blank?
   end
   
@@ -290,7 +291,7 @@ end
   def matches(page=0, per_page=8)
     if sex_preference!=nil && sex != nil && age_preference!=nil && sex != nil && age != nil
       @matches ||= User.paginate(:all, :conditions => [
-          "sex = ? AND sex_preference = ? AND age in (?) AND age_preference in (?) AND id != ?",
+          "sex = ? AND sex_preference = ? AND status = 1 AND age in (?) AND age_preference in (?) AND id != ?",
           sex_preference,
           sex,
           [age_preference - 1, age_preference, age_preference + 1],
@@ -320,6 +321,7 @@ end
         SELECT users.id as id, count(favorites.place_id) as place_count FROM users, favorites
         WHERE favorites.place_id in (#{places.map(&:id).join(',')})
         AND favorites.user_id = users.id
+         AND status = 1
         GROUP BY users.id
         ")
     end
@@ -485,12 +487,6 @@ end
 def self.search_users_simple(params, current_user)
   #this is repeated in other objects - refactor
   search_criteria = SearchCriteria.new(params,current_user)
-  #@results = User.search(params[:search_criteria][:keyword],:conditions => , :page => params[:page], :per_page => 6)
-    
-  logger.info('Sphinx people criteria')
-  logger.info(search_criteria.ages)
-  logger.info(search_criteria.sex_preferences)
-  logger.info(params[:search_criteria][:keyword])
   @results = User.search(params[:search_criteria][:keyword], :conditions => {:status => 1, :age => search_criteria.ages , :sex => search_criteria.sex_preferences},  :page=>params[:page], :per_page=>14)
   return @results
 end
@@ -529,3 +525,4 @@ def make_activation_code
   self.activation_code = self.class.make_token
 end
 end
+#201003-527 lines
