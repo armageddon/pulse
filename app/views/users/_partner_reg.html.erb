@@ -5,7 +5,7 @@
   <%=hidden_field_tag 'activity_id' , activity_id%>
   <div style="overflow:auto; max-height:450px">
     <div style="margin-bottom:15px">
-         <h2>Hello  <%=facebook_session.user.name %>!!! </h2>
+      <h2>Hello  <%=facebook_session.user.name %>!!! </h2>
       <h3>Please confirm the following details and click Register to become a member!</h3>
     </div>
     <div style="float:left; width:100px; height:100px; overflow:hidden">
@@ -46,13 +46,13 @@
       <div class="clear"></div>
 
     </div>
-       <div class="clear"></div>
+    <div class="clear"></div>
 
     <div style="float:left" id="post_error">
 
-      </div>
+    </div>
 
-   <div class="clear"></div>
+    <div class="clear"></div>
 
 
 
@@ -69,119 +69,156 @@
 <script type="text/javascript" charset="utf-8">
   $(document).ready(function() {
 
-
+    $('.std_dd').change(function() {
+        var cntrl = $(this);
+        cntrl.prev().val(cntrl.selected().val());
+    });
+    
 
 
 
     $('#password_holder, #password_confirmation_holder').focus(function() {
-        $(this).hide();
-        $(this).next('input').show();
-        $(this).next('input').focus();
-        return false;
+      $(this).hide();
+      $(this).next('input').show();
+      $(this).next('input').focus();
+      return false;
     });
 
     $('#user_email,#user_first_name, #user_username').focus(function() {
-        $(this).val('');
-        return false;
+      $(this).val('');
+      return false;
     });
 
     $('#user_email').blur(function() {
-        if ($(this).val() == '')
-            $(this).val('Email address');
+      if ($(this).val() == '')
+        $(this).val('Email address');
     })
 
     $('#user_first_name').blur(function() {
-        if ($(this).val() == '')
-            $(this).val('First name');
+      if ($(this).val() == '')
+        $(this).val('First name');
     });
 
     $('#user_username').blur(function() {
-        if ($(this).val() == '')
-            $(this).val('Username');
+      if ($(this).val() == '')
+        $(this).val('Username');
     })
 
     $('#user_password').blur(function() {
-        if ($(this).val() == '') {
-            $(this).hide();
-            $('#password_holder').show();
-        }
+      if ($(this).val() == '') {
+        $(this).hide();
+        $('#password_holder').show();
+      }
     })
 
     $('#user_password_confirmation').blur(function() {
-        if ($(this).val() == '') {
-            $(this).hide();
-            $('#password_confirmation_holder').show();
-        }
+      if ($(this).val() == '') {
+        $(this).hide();
+        $('#password_confirmation_holder').show();
+      }
     })
 
     $("#new_user").submit(function() {
-       var first_name = $('#user_first_name');
-        var username = $('#user_username');
-        var password = $('#user_password');
-        var password_confirm = $('#user_password_confirmation');
-        var email = $('#user_email');
-        $('.invalid').removeClass('invalid');
-        $('span.error').text('');
+      var first_name = $('#user_first_name');
+      var username = $('#user_username');
+      var password = $('#user_password');
+      var password_confirm = $('#user_password_confirmation');
+      var email = $('#user_email');
+      $('.invalid').removeClass('invalid');
+      $('span.error').text('');
 
-        if (email.val() == '' || email.val() == 'Email address') {
-            email.addClass('invalid');
+      if (email.val() == '' || email.val() == 'Email address') {
+        email.addClass('invalid');
 
-            email.next().text('Please enter a valid email address.');
-            error = true;
-        };
+        email.next().text('Please enter a valid email address.');
+        error = true;
+      };
 
-        if (username.val() == '' || username.val() == 'Username') {
-            username.addClass('invalid');
-            username.next().text('Please enter a valid user name')
-            error = true;
-        }
+      if (username.val() == '' || username.val() == 'Username') {
+        username.addClass('invalid');
+        username.next().text('Please enter a valid user name')
+        error = true;
+      }
 
-        if (first_name.val() == '' || first_name.val() == 'First name') {
-            first_name.addClass('invalid');
-            first_name.next().text('Please enter your first name');
-            error = true;
-        }
+      if (first_name.val() == '' || first_name.val() == 'First name') {
+        first_name.addClass('invalid');
+        first_name.next().text('Please enter your first name');
+        error = true;
+      }
 
-        if ((password.val() == '' || password.val() == 'Password' )) {
-            $('#password_holder').addClass('invalid');
-            password.addClass('invalid');
-            password.next().text('Please enter a valid password');
-            error = true;
-        } else if ((password_confirm.val() == '') || (password_confirm.val() == 'Password confirmation')) {
-            $('#password_confirmation_holder').addClass('invalid');
-            password_confirm.addClass('invalid');
-            password_confirm.next().text('Please enter a password confirmation');
-            error = true;
-        } else if ((password.val() != password_confirm.val())) {
-            $('#password_holder, #password_confirmation_holder').addClass('invalid');
-            password.addClass('invalid');
-            password_confirm.addClass('invalid');
-            password.next().text('Your password and password confirmation do not match.');
-            error = true;
-        } else if (password.val().length < 7) {
-            password.addClass('invalid');
-            password_confirm.addClass('invalid');
-            password.next().text('Your passwordmust be 7 characters or more');
-            error = true;
-        }
-        else if (password_confirm.val().length < 7) {
-            password.addClass('invalid');
-            password_confirm.addClass('invalid');
-            password.next().text('Your passwordmust be 7 characters or more');
-            error = true;
-        }
+      if ((password.val() == '' || password.val() == 'Password' )) {
+        $('#password_holder').addClass('invalid');
+        password.addClass('invalid');
+        password.next().text('Please enter a valid password');
+        error = true;
+      } else if ((password_confirm.val() == '') || (password_confirm.val() == 'Password confirmation')) {
+        $('#password_confirmation_holder').addClass('invalid');
+        password_confirm.addClass('invalid');
+        password_confirm.next().text('Please enter a password confirmation');
+        error = true;
+      } else if ((password.val() != password_confirm.val())) {
+        $('#password_holder, #password_confirmation_holder').addClass('invalid');
+        password.addClass('invalid');
+        password_confirm.addClass('invalid');
+        password.next().text('Your password and password confirmation do not match.');
+        error = true;
+      } else if (password.val().length < 7) {
+        password.addClass('invalid');
+        password_confirm.addClass('invalid');
+        password.next().text('Your passwordmust be 7 characters or more');
+        error = true;
+      }
+      else if (password_confirm.val().length < 7) {
+        password.addClass('invalid');
+        password_confirm.addClass('invalid');
+        password.next().text('Your passwordmust be 7 characters or more');
+        error = true;
+      }
 
       $.ajax({
         type: "POST",
         url: '/users/partner_new',
-         data: $(this).serialize(),
+        data: $(this).serialize(),
         success: function(msg) {
-            $("#dialog").jqmHide();
-         window.location = '/activities/partner';
+          $("#dialog").jqmHide();
+          window.location = '/activities/partner';
         },
         error: function(xhr) {
-          $('#post_error').html('Invalid Captcha Code - please try again')
+          //$('#post_error').html('Invalid Captcha Code - please try again')
           var errors = $.httpData(xhr, 'json');
+          $.each(errors, function(i,error) {
+            var field = error[0]
+            var message = error[1];
+            var username_error = false;
+            switch (field) {
+              case 'email':
+                $('#user_email').addClass('invalid');
+                $('#user_email').next().text("Email address " + message);
+                break;
+
+              case 'first_name':
+                $('#user_first_name').addClass('invalid');
+                $('#user_first_name').next().text("First name " + message);
+                break;
+
+              case 'password':
+              case 'password_confirmation':
+                $('#user_password, #user_password_confirmation').addClass('invalid');
+                $('#user_password').next().text("Password " + message);
+                break;
+
+              case 'username':
+                if (!username_error) {
+                  $('#user_username').addClass('invalid');
+                  $('#user_username').next().text("Username " + message);
+                  username_error = true;
+                }
+                break;
+              default:
+                $('#simple_captcha').addClass('invalid');
+                $('#simple_captcha').next().text("You entered the code incorrectly. Please try again");
+            }
+          });
         }
       });
       return false;

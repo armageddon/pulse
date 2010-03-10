@@ -19,9 +19,9 @@
       <%if add_type == 'both'%>
         <div id="add_activity_and_place">
           <% if upa_type=='edit'  %>
-          <h2>Edit this activity</h2>
+            <h2>Edit this activity</h2>
           <%else%>
-          <h2>Add a new activity to your favourites</h2>
+            <h2>Add a new activity to your favourites</h2>
           <%end%>
           <br />
           <div id='activity'>
@@ -115,11 +115,12 @@
 
   $(document).ready(function() {
 
+    $('.std_dd').change(function() {
+        var cntrl = $(this);
+        cntrl.prev().val(cntrl.selected().val());
+    });
+    
     var resultsArray;
-    var selectedActivity;
-    var selectedActivityIndex;
-    var selectedPlace;
-    var selectedPlaceIndex;
     var currentPlaceSelection;
     var currentSelection = 0;
     var search_timeout = undefined;
@@ -191,14 +192,6 @@
           }
         })
       }, 500);
-    });
-
-    $('#activity_name').bind('blur',function(){
-
-    });
-
-    $('#happening').bind('blur',function(){
-      alert('blur');
     });
 
     $('.activity_dd').live('click',function(){
@@ -303,23 +296,42 @@
       return false;
     })
 
-    $('#add_activity_template').live('click',function(){
-      //if activity id = 0 add activity and get activity id
-      //then add UPA
+
+    function checkValidation()
+    {
+      //pass:   has activity id and place id (-1 is new activity and place)
+      //           has activity name and place id
+      //           has activity name and place name and neighborhood
       $('#add_error').html('');
-      var error = false;
       if($('#activity_id').val() == 0)
       {
-        error = true;
         $('#add_error').html('Please ensure you have selected an activity ')
         return false;
       }
       if($('#place_id').val() == 0)
       {
-        error = true;
         $('#add_error').html('Please ensure you have selected a place ')
         return false;
       }
+      if($('#hood').val() == '0' && $('#place_id').val()==-1)
+      {
+        $('#add_error').html('Please ensure you have selected a neighborhood ')
+        return false;
+      }
+      return true;
+    }
+
+
+    $('#add_activity_template').live('click',function(){
+      //if activity id = 0 add activity and get activity id
+      //then add UPA
+      if (!checkValidation())  return false;
+      if($('#description').val().substring(0,11) == 'tell us why')
+        {
+          $('#description').val('') ;
+        }
+
+
       $.ajax({
         type: "POST",
         url: "/user_place_activities/new_user_place_activity",
@@ -342,8 +354,8 @@
               break;
             case 'add' : add_success(p);
               break;
-              case 'edit' : edit_success(p);
-                break;
+            case 'edit' : edit_success(p);
+              break;
           }
         },
         error: function(p) {
