@@ -71,8 +71,8 @@ $(document).ready(function() {
                         textAlign: 'center'
                     })
 					
-						//$('#dialog').jqm({ajax:'/crop',modal:true}); 
-						//$('#dialog').jqmShow(); 
+                //$('#dialog').jqm({ajax:'/crop',modal:true});
+                //$('#dialog').jqmShow();
                 }
             }
         })
@@ -80,7 +80,7 @@ $(document).ready(function() {
 
 
 
-//NEED TO PULL THIS OUT
+    //NEED TO PULL THIS OUT
     $('#place_name').focus(function() {
         if ( !$.data(this, 'initialized') ) {
             $(this).val('');
@@ -209,7 +209,7 @@ $(document).ready(function() {
         }
     });
 
-//************************************************************************************
+    //************************************************************************************
 
 
 
@@ -272,33 +272,33 @@ $(document).ready(function() {
         var password_confirm = $('#user_password_confirmation');
         var email = $('#user_email');
         var location = $('#user_location_id');
-		var day = $('#day');
-		var month = $('#month');
-		var year = $('#year');
+        var day = $('#day');
+        var month = $('#month');
+        var year = $('#year');
         var error = false;
 
         $('.invalid').removeClass('invalid');
         $('span.error').text('');
 
-		if (day.val() == 0 || day.val() == '' )
-		{
-			error = true;
-			$('#dob_error').text('Enter a valid date of birth');
-			day.addClass('invalid');
-		}
+        if (day.val() == 0 || day.val() == '' )
+        {
+            error = true;
+            $('#dob_error').text('Enter a valid date of birth');
+            day.addClass('invalid');
+        }
 
-		if (month.val() == 0 || day.val() == '' )
-		{
-			error = true;
-			$('#dob_error').text('Enter a valid date of birth');
-			month.addClass('invalid');
-		}
-		if (year.val() == 0 || day.val() == '' )
-		{
-			error = true;
-			$('#dob_error').text('Enter a valid date of birth');
-			year.addClass('invalid');
-		}
+        if (month.val() == 0 || day.val() == '' )
+        {
+            error = true;
+            $('#dob_error').text('Enter a valid date of birth');
+            month.addClass('invalid');
+        }
+        if (year.val() == 0 || day.val() == '' )
+        {
+            error = true;
+            $('#dob_error').text('Enter a valid date of birth');
+            year.addClass('invalid');
+        }
 		
         if (email.val() == '' || email.val() == 'Email address') {
             email.addClass('invalid');
@@ -374,7 +374,6 @@ $(document).ready(function() {
                         $('#step_2_text').css('display','block');
                         $('#step_1').css('display','none');
                         $('#step_2').css('display','block');
-			
                     }
                     else
                     {
@@ -414,16 +413,16 @@ $(document).ready(function() {
                                     username_error = true;
                                 }
                                 break;
-							default:
-								$('#simple_captcha').addClass('invalid');
-								$('#simple_captcha').next().text("You entered the code incorrectly. Please try again");
+                            default:
+                                $('#simple_captcha').addClass('invalid');
+                                $('#simple_captcha').next().text("You entered the code incorrectly. Please try again");
                         }
-                    })
+                    });
                 }
-            })
+            });
             return false;
         }
-    })
+    });
 
     $("#details_update").submit(function() {
         $('.invalid').removeClass('invalid');
@@ -450,12 +449,10 @@ $(document).ready(function() {
             user_age.parent().addClass('invalid');
             error = true;
         }
-
         if (user_sex_preference.val() == '') {
             user_sex_preference.parent().addClass('invalid');
             error = true;
         }
-
         if (user_age_preference.val() == '') {
             user_age_preference.parent().addClass('invalid');
             error = true;
