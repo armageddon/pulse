@@ -6,12 +6,15 @@
 <%  auth_code ||='' %>
 
 <% content_for :message do %>
+
   <%if auth_code != nil &&auth_code!='' && !logged_in? %>
     <h3> You have been invited to link this activity to your Facebook Page. You will be asked to grant Hellopulse permission to publish to your activity stream, and to give us offline access so we can publish updates to your page. Please click <%= fb_login_button('reqPermissions()')%> to continue</h3>
-  <%elsif !logged_in? %>
-    <h1> Join HelloPulse now to meet these great singles, and find where others are hanging out &nbsp;&nbsp; &nbsp;  <%= fb_login_button('showUserReg()') %></h1>
-  <%else%>
+  <%elsif (!logged_in?)||(current_user.class!=User)%>
+    <h1> Join HelloPulse now to meet these great singles, and find where others are hanging out.  &nbsp;&nbsp; &nbsp;  <%= fb_login_button('showUserReg()') %></h1>
+  <%elsif current_user.class==User &&current_user.status==3%>
    <h1> Hello <%=current_user.first_name%> - we are pleased to be partnered with you.  </h1>
+   <%else%>
+  <h1> Hello <%=current_user.first_name%> - check out this activity </h1>
   <%end%>
 <%end%>
 

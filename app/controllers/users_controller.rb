@@ -16,23 +16,36 @@ class UsersController < ApplicationController
   end
 
   def quick_reg
-    @user = User.new
-    #get details from facebook
-    @user.first_name  = facebook_session.user.first_name
+    fbuser = User.find(:first,:conditions=>'fb_user_id='+facebook_session.user.id.to_s)
+    if(fbuser != nil)
+      respond_to do |format|
+        format.js { render :text => "you are already a user" }
+      end
+    else
 
-    dobvars = facebook_session.user.birthday_date.split('/')
-    @user.dob = Date.new(dobvars[2].to_i(),dobvars[0].to_i(),dobvars[1].to_i())
-    @user.sex = ( facebook_session.user.sex == 'female')  ? 2 :1
-    @user.sex_preference = (@user.sex == 1) ?  2:1
-    @user.description = facebook_session.user.profile_blurb
 
-    logger.debug('QUICKREG')
-    logger.debug(@user.dob)
-    logger.debug(@user.sex)
-    logger.debug(@user.description)
+      @user = User.new
+      #get details from facebook
+      @user.first_name  = facebook_session.user.first_name
 
-    respond_to do |format|
-      format.js { render :partial => "/users/quick_reg", :locals => {:user => @user}}
+      dobvars = facebook_session.user.birthday_date.split('/')
+
+
+      @user.dob = Date.new(dobvars[2].to_i(),dobvars[0].to_i(),dobvars[1].to_i()) if dobvars.length==3
+      @user.sex = ( facebook_session.user.sex == 'female')  ? 2 :1
+      @user.sex_preference = (@user.sex == 1) ?  2:1
+      @user.description = facebook_session.user.profile_blurb
+
+      logger.debug('QUICKREG')
+      logger.debug( facebook_session.user.birthday_date)
+      logger.debug( facebook_session.user.birthday)
+      logger.debug(@user.dob)
+      logger.debug(@user.sex)
+      logger.debug(@user.description)
+
+      respond_to do |format|
+        format.js { render :partial => "/users/quick_reg", :locals => {:user => @user}}
+      end
     end
   end
 
@@ -52,7 +65,7 @@ class UsersController < ApplicationController
 
   #this needs to be sorted - if no fb user redirect to link account screen
   def link_user_accounts
-    if self.current_user.nil? || self.current_user.id==0
+    if (current_user==nil) || (current_user.class!=User)|| (current_user.id==0)
       #register with fb
       #either connect existing account
       #or go to create user
@@ -147,6 +160,7 @@ class UsersController < ApplicationController
           params[:user][:long] = longitude
         end
       end
+      @user.fb_user_id = facebook_session.user.id if facebook_session != nil
       params[:user][:dob] = Date.new(params[:year].to_i(),params[:month].to_i(),params[:day].to_i())
       @user.dob = params[:user][:dob]
       params[:user][:age] = User.get_age_option_from_dob(params[:user][:dob])
@@ -170,14 +184,17 @@ class UsersController < ApplicationController
         # DEBUG
         @user.activate!
         session[:user_id] = @user.id
-        format.html {
-          redirect_to :action=>'photos'
-          flash[:notice] = "Thanks for signing up!  We're sending you an email with your activation code."
-        }
         format.js {
           session[:user_id] = @user.id
           render :nothing => true
         }
+        format.html {
+          logger.debug('format html from create ')
+        #  redirect_to :action=>'photos'
+        render :text => 'user created'
+          flash[:notice] = "Thanks for signing up!  We're sending you an email with your activation code."
+        }
+        
       else
         format.html {
           render :action => 'new', :layout => false

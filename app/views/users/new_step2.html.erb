@@ -1,0 +1,30 @@
+
+<% content_for :c3 do %>
+  &nbsp;
+<% end %>
+<% content_for :c1 do %>
+  &nbsp;
+<% end %>
+<% content_for :message do %>
+  <h2>Nice job! We've sent you a confirmation email.But don't worry about that right now. Instead go ahead and fill out the info below. Don't forget to add a photo!</h2>
+<% end %>
+
+<div id="upload_container" style="display: none;">
+  <% form_tag "/update", :multipart => true, :target => "image_upload", :id => "photo_upload" do%>
+    <%= file_field(:user , :icon, :style => "position: absolute;")%>
+  <% end %>
+</div>
+
+<div id="add_photo">Add photo</div>
+<% form_tag '/account/', :method => "put", :id => "details_update" do %>
+  <div>
+    <label  style="margin-top: 10px; color:#990000;">Description</label>
+    <div id="description_panel">
+      <%= text_area_tag 'user[description]', 'Give us a line that sums you up', :rows=>2, :cols=>45,:id => "user_description", :class => "word_count" %>
+    </div>
+  </div>
+
+  <div class="image_submit; padding-top:10px">
+    <%= submit_button "Save info", :height => "20px", :width => "70px" %>
+  </div>
+<% end %>
