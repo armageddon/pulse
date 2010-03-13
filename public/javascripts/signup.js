@@ -433,12 +433,11 @@ $(document).ready(function() {
         var user_sex_preference = $('#user_sex_preference');
         var user_age_preference = $('#user_age_preference');
 
-        if (user_desc.val() == '' || user_desc.val() == 'Tell us about yourself') {
+        if(user_desc.val() == 'Give us a line that sums you up')
+            {
+               user_desc.val('') ;
 
-            user_desc.addClass('invalid');
-            user_desc.nextAll('span.error').text('Please fill in your description');
-            error = true;
-        }
+            }
 
         if (user_sex.val() == '') {
             user_sex.parent().addClass('invalid');

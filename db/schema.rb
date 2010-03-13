@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100305152103) do
+ActiveRecord::Schema.define(:version => 20100312152919) do
 
   create_table "activities", :force => true do |t|
     t.string   "name"
@@ -125,6 +125,7 @@ ActiveRecord::Schema.define(:version => 20100305152103) do
   create_table "place_activities", :force => true do |t|
     t.integer "activity_id"
     t.integer "place_id"
+    t.string  "url"
   end
 
   create_table "place_categories", :force => true do |t|
