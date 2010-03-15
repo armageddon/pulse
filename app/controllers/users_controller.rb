@@ -16,7 +16,7 @@ class UsersController < ApplicationController
   end
 
   def quick_reg
-    fbuser = User.find(:first,:conditions=>'fb_user_id='+facebook_session.user.id.to_s)
+    fbuser = User.find(:first,:conditions=>'fb_user_id='+facebook_session.user.id.to_s) unless facebook_session == nil 
     if(fbuser != nil)
       respond_to do |format|
         format.js { render :text => "you are already a user" }
@@ -26,19 +26,19 @@ class UsersController < ApplicationController
 
       @user = User.new
       #get details from facebook
-      @user.first_name  = facebook_session.user.first_name
-
-      dobvars = facebook_session.user.birthday_date.split('/')
+      @user.first_name  = facebook_session.user.first_name unless facebook_session == nil
+      dobvars = ''
+      dobvars = facebook_session.user.birthday_date.split('/') unless facebook_session == nil
 
 
       @user.dob = Date.new(dobvars[2].to_i(),dobvars[0].to_i(),dobvars[1].to_i()) if dobvars.length==3
-      @user.sex = ( facebook_session.user.sex == 'female')  ? 2 :1
-      @user.sex_preference = (@user.sex == 1) ?  2:1
-      @user.description = facebook_session.user.profile_blurb
+      @user.sex = ( facebook_session.user.sex == 'female')  ? 2 :1 unless facebook_session == nil
+      @user.sex_preference = (@user.sex == 1) ?  2:1 unless facebook_session == nil
+      @user.description = facebook_session.user.profile_blurb unless facebook_session == nil
 
       logger.debug('QUICKREG')
-      logger.debug( facebook_session.user.birthday_date)
-      logger.debug( facebook_session.user.birthday)
+      logger.debug( facebook_session.user.birthday_date) unless facebook_session == nil
+      logger.debug( facebook_session.user.birthday) unless facebook_session == nil
       logger.debug(@user.dob)
       logger.debug(@user.sex)
       logger.debug(@user.description)
@@ -190,8 +190,8 @@ class UsersController < ApplicationController
         }
         format.html {
           logger.debug('format html from create ')
-        #  redirect_to :action=>'photos'
-        render :text => 'user created'
+          #  redirect_to :action=>'photos'
+          render :text => 'user created'
           flash[:notice] = "Thanks for signing up!  We're sending you an email with your activation code."
         }
         

@@ -2,12 +2,12 @@
 
 <% form_for @user, :url => account_path do |f| %>
   <div style="overflow:auto; max-height:450px">
-    <div style="margin-bottom:15px"">
-         <h2>Hello  <%=facebook_session.user.name %>!!! </h2>
+    <div style="margin-bottom:15px">
+         <h2>Hello  <%=@user.first_name %>!!! </h2>
       <h3>Please confirm the following details and click Register to become a member!</h3>
     </div>
     <div style="float:left; width:170px; height:350px; overflow:hidden">
-      <img height=150 width=150 src="<%= facebook_session.user.pic_big%> "></img>
+      <img height=150 width=150 src="<%= facebook_session.user.pic_big unless facebook_session == nil%> "></img>
       <br />
       <br />
       Are you human?
