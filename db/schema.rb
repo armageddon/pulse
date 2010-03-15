@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100305152103) do
+ActiveRecord::Schema.define(:version => 20100315114045) do
 
   create_table "activities", :force => true do |t|
     t.string   "name"
@@ -125,6 +125,7 @@ ActiveRecord::Schema.define(:version => 20100305152103) do
   create_table "place_activities", :force => true do |t|
     t.integer "activity_id"
     t.integer "place_id"
+    t.string  "url"
   end
 
   create_table "place_categories", :force => true do |t|
@@ -155,12 +156,17 @@ ActiveRecord::Schema.define(:version => 20100305152103) do
     t.string   "icon_content_type"
     t.string   "icon_file_size"
     t.string   "icon_updated_at"
-    t.boolean  "uploaded_picture_to_s3", :default => false
-    t.boolean  "attempted_geocode",      :default => false
-    t.boolean  "attempted_s3_upload",    :default => false
+    t.boolean  "uploaded_picture_to_s3",              :default => false
+    t.boolean  "attempted_geocode",                   :default => false
+    t.boolean  "attempted_s3_upload",                 :default => false
     t.string   "category"
-    t.boolean  "exclude",                :default => false
+    t.boolean  "exclude",                             :default => false
     t.integer  "place_category_id"
+    t.integer  "create_user_id"
+    t.integer  "admin_user_id"
+    t.string   "auth_code"
+    t.integer  "fb_page_id",             :limit => 8
+    t.string   "url"
   end
 
   add_index "places", ["import_id"], :name => "idx_import_id"

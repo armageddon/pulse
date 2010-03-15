@@ -1,6 +1,17 @@
 class PlacesController < ApplicationController
-  before_filter :login_required
+  #before_filter :login_required
+   skip_before_filter :verify_authenticity_token, :only => [:post_activity_to_facebook]
+
+    def post_activity_to_facebook
+    user = User.find(params[:user_id])
+    place = Place.find(:first,:conditions=>{:admin_user_id => user.id })
+    facebook_act_session = Facebooker::Session.create
+    facebook_act_session.secure_with!(user.fb_session_key)
+    facebook_act_session.post("facebook.stream.publish", :action_links=> '[{ "text": "Check out HelloPulse!", "href": "http://www.hellopulse.com"}]', :message => 'Some singles added ' + place.name + ' to their HelloPulse page. ', :uid=>place.fb_page_id)
+    render :text=>'post to facebook'
+  end
   
+
   def index
     @places = Places.find(:all)
   end
@@ -9,6 +20,31 @@ class PlacesController < ApplicationController
     @place =Place.find(params[:id])
     @user_place_activities = @place.user_place_activities.paginate( :order=>'created_at DESC',:page=>1,:per_page=>10)
     @users = @place.users.paginate(:all,:group => :user_id, :page => params[:page], :per_page => 6)
+  end
+
+  def admin
+    if current_user.admin
+      render :template => "places/admin", :layout => false
+    else
+      render :text => 'you are not authorised'
+    end
+  end
+
+  def partner
+    @place = Place.find(params[:id])
+
+    @users = @place.users.paginate(:all,:group => :user_id, :page => params[:page], :per_page => 6)
+    @user_place_activities = @place.user_place_activities.paginate(:order=>'created_at DESC',:page=>1,:per_page=>10)
+    render :template => 'places/show', :locals => {:activity => @place, :auth_code =>params[:code] }
+ 
+  end
+
+  def update
+    place = Place.find(params[:activity_id])
+    place.auth_code = params[:auth_code]
+    place.fb_page_id = params[:page_id]
+    place.update_attributes(params[place])
+    redirect_to '/places/admin'
   end
   
   def users

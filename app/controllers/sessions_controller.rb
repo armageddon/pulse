@@ -46,6 +46,33 @@ class SessionsController < ApplicationController
     render :template => 'sessions/new' , :locals=>{:code => @code}
   end
 
+  def partner_auth
+    #todo - pull auth code out into seperate model
+    #todo- check if logged in
+    logger.debug('PARTNER AUTH - SESSIONS CONTROLLER')
+    @partner_object = Activity.find(:first,:conditions=>{:auth_code => params[:code], :admin_user_id => nil }) if params[:code] != nil
+    if @partner_object==nil
+      @partner_object = Place.find(:first,:conditions=>{:auth_code => params[:code], :admin_user_id => nil }) if params[:code] != nil
+    end
+    
+    if @partner_object == nil
+      # render :text => 'The login code you provided does not match one in our system. Please try again'
+      logger.debug('no such')
+      redirect_to  :controller=>'sessions' , :action=>'partner'
+    else
+      @users = @partner_object.users.paginate(:all,:group => :user_id, :page => params[:page], :per_page => 6)
+      @user_place_activities = @partner_object.user_place_activities.paginate(:order=>'created_at DESC',:page=>1,:per_page=>10)
+      #todo user switch here
+      if @partner_object.class==Place
+        redirect_to '/places/partner?id='+@partner_object.id.to_s
+      
+      else
+        redirect_to '/activities/partner?id='+@partner_object.id.to_s
+      
+      end
+    end
+  end
+
   def partner
     if logged_in?
       return redirect_to(:controller => "users", :action => "show")
@@ -56,19 +83,15 @@ class SessionsController < ApplicationController
  
   def create
     logout_keeping_session!
-    logger.debug('EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE ')
     user = User.authenticate(params[:login], params[:password])
     if user
-      # Protects against session fixation attacks, causes request forgery
-      # protection if user resubmits an earlier form using back
-      # button. Uncomment if you understand the tradeoffs.
+      # Protects against session fixation attacks, causes request forgery protection if user resubmits an earlier form using back button. Uncomment if you understand the tradeoffs.
       # reset_session
       self.current_user = user
       new_cookie_flag = (params[:remember_me] == "1")
       handle_remember_cookie! new_cookie_flag
       account_path
       flash[:notice] = "Logged in successfully"
-      logger.debug('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW')
       redirect_to root_path
     else
       note_failed_signin

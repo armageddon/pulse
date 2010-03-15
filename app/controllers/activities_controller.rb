@@ -2,7 +2,6 @@ class ActivitiesController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => [:post_activity_to_facebook]
 
   def post_activity_to_facebook
-    logger.debug('00000000000000000000000000000000000000000')
     user = User.find(params[:user_id])
     activity = Activity.find(:first,:conditions=>{:admin_user_id => user.id })
     facebook_act_session = Facebooker::Session.create
@@ -12,22 +11,20 @@ class ActivitiesController < ApplicationController
   end
 
   def partner
-    logger.debug('partner')
-    logger.debug(params[:code])
-    #work out code
-    @activity = Activity.find(:first,:conditions=>{:auth_code => params[:code], :admin_user_id => nil }) if params[:code] != nil
-      if @activity == nil && current_user!= false &&current_user.status==3
-          @activity = Activity.find(:first,:conditions=>{ :admin_user_id => current_user.id })
-      end
-    if @activity == nil
+    #@activity = Activity.find(:first,:conditions=>{:auth_code => params[:code], :admin_user_id => nil }) if params[:code] != nil
+   #   if @activity == nil && current_user!= false &&current_user.status==3
+   #       @activity = Activity.find(:first,:conditions=>{ :admin_user_id => current_user.id })
+   #   end
+   # if @activity == nil
       # render :text => 'The login code you provided does not match one in our system. Please try again'
-      logger.debug('no such')
-      redirect_to  :controller=>'sessions' , :action=>'partner'
-    else
+    #  logger.debug('no such')
+    #  redirect_to  :controller=>'sessions' , :action=>'partner'
+    #else
+    @activity = Activity.find(params[:id])
       @users = @activity.users.paginate(:all,:group => :user_id, :page => params[:page], :per_page => 6)
       @user_place_activities = @activity.user_place_activities.paginate(:order=>'created_at DESC',:page=>1,:per_page=>10)
       render :template => 'activities/show', :locals => {:activity => @activity, :auth_code =>params[:code] }
-    end
+   # end
   end
 
   def admin

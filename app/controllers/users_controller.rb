@@ -8,19 +8,44 @@ class UsersController < ApplicationController
   before_filter :check_user
   skip_before_filter :verify_authenticity_token, :only => [:admin_delete,:partner_new]
 
-  
-    def check_user
-   # if current_user!=nil && current_user !=false && current_user.status==3
-   #   logger.debug('partneruser - redirecting')
-   #   redirect_to :controller=>'activities', :action=>'partner'
-
-   # end
+  def check_user
+    # if current_user!=nil && current_user !=false && current_user.status==3
+    #   logger.debug('partneruser - redirecting')
+    #   redirect_to :controller=>'activities', :action=>'partner'
+    # end
   end
 
-
   def quick_reg
-    respond_to do |format|
-      format.js { render :partial => "/users/quick_reg"}
+    fbuser = User.find(:first,:conditions=>'fb_user_id='+facebook_session.user.id.to_s) unless facebook_session == nil 
+    if(fbuser != nil)
+      respond_to do |format|
+        format.js { render :text => "you are already a user" }
+      end
+    else
+
+
+      @user = User.new
+      #get details from facebook
+      @user.first_name  = facebook_session.user.first_name unless facebook_session == nil
+      dobvars = ''
+      dobvars = facebook_session.user.birthday_date.split('/') unless facebook_session == nil
+
+
+      @user.dob = Date.new(dobvars[2].to_i(),dobvars[0].to_i(),dobvars[1].to_i()) if dobvars.length==3
+      @user.sex = ( facebook_session.user.sex == 'female')  ? 2 :1 unless facebook_session == nil
+      @user.sex_preference = (@user.sex == 1) ?  2:1 unless facebook_session == nil
+      @user.description = facebook_session.user.profile_blurb unless facebook_session == nil
+
+      logger.debug('QUICKREG')
+      logger.debug( facebook_session.user.birthday_date) unless facebook_session == nil
+      logger.debug( facebook_session.user.birthday) unless facebook_session == nil
+      logger.debug(@user.dob)
+      logger.debug(@user.sex)
+      logger.debug(@user.description)
+
+      respond_to do |format|
+        format.js { render :partial => "/users/quick_reg", :locals => {:user => @user}}
+      end
     end
   end
 
@@ -30,22 +55,19 @@ class UsersController < ApplicationController
       format.js { render :partial => "/users/partner_reg", :locals=>{:activity_id=>params[:activity_id], :auth_code=>params[:auth_code]}}
     end
   end
-def partner_registered
+
+  def partner_registered
     logger.debug(params[:auth_code])
     respond_to do |format|
       format.js { render :partial => "/users/partner_registered", :locals=>{:activity_id=>params[:activity_id], :auth_code=>params[:auth_code]}}
     end
   end
 
-
   #this needs to be sorted - if no fb user redirect to link account screen
   def link_user_accounts
-    logger.debug('LLLLLLLLLink user account')
-    logger.debug(self.current_user.id)
-    if self.current_user.nil? || self.current_user.id==0
+    if (current_user==nil) || (current_user.class!=User)|| (current_user.id==0)
       #register with fb
       #either connect existing account
-      
       #or go to create user
       redirect_to('/account/link')
       return
@@ -54,7 +76,6 @@ def partner_registered
     else
       logger.debug('connect_accounts')
       #connect accounts
-    
       #self.current_user.link_fb_connect(facebook_session.user.id) unless self.current_user.fb_user_id == facebook_session.user.id
     end
     redirect_to '/'
@@ -65,7 +86,6 @@ def partner_registered
     respond_to do |format|
       format.html { render :template => "/users/link_facebook"}
     end
-
   end
 
   def place_activity_list
@@ -112,11 +132,8 @@ def partner_registered
     logger.debug("Begin redeem")
     @user_place_activity = UserPlaceActivity.new
     logout_keeping_session!
-    
- 
     @user = User.new
     render :action => :new
-
   end
 
   def create
@@ -143,6 +160,7 @@ def partner_registered
           params[:user][:long] = longitude
         end
       end
+      @user.fb_user_id = facebook_session.user.id if facebook_session != nil
       params[:user][:dob] = Date.new(params[:year].to_i(),params[:month].to_i(),params[:day].to_i())
       @user.dob = params[:user][:dob]
       params[:user][:age] = User.get_age_option_from_dob(params[:user][:dob])
@@ -166,14 +184,17 @@ def partner_registered
         # DEBUG
         @user.activate!
         session[:user_id] = @user.id
-        format.html {
-          redirect_to :action=>'photos'
-          flash[:notice] = "Thanks for signing up!  We're sending you an email with your activation code."
-        }
         format.js {
           session[:user_id] = @user.id
           render :nothing => true
         }
+        format.html {
+          logger.debug('format html from create ')
+          #  redirect_to :action=>'photos'
+          render :text => 'user created'
+          flash[:notice] = "Thanks for signing up!  We're sending you an email with your activation code."
+        }
+        
       else
         format.html {
           render :action => 'new', :layout => false
@@ -184,10 +205,17 @@ def partner_registered
   end
 
   def partner_new
-    logger.debug('QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ')
     logout_keeping_session!
-    @activity_id = params[:activity_id]
-    @activity = Activity.find(:first,:conditions=>{:auth_code => params[:auth_code] , :id=>@activity_id, :admin_user_id => nil })
+
+    @object_id = params[:object_id]
+
+     case params[:object_type]
+    when 'place'
+      @object = Place.find(:first,:conditions=>{:auth_code => params[:auth_code] , :id=>@object_id, :admin_user_id => nil })
+    when 'activity'
+      @object = Activity.find(:first,:conditions=>{:auth_code => params[:auth_code] , :id=>@object_id, :admin_user_id => nil })
+    end
+
 
     @user = User.new(params[:user])
     logger.debug(facebook_session.session_key)
@@ -210,7 +238,6 @@ def partner_registered
       logger.debug(pp @user.errors)
       @user.age
       logger.debug('Success ' + success.to_s)
-     
     else
       logger.debug('captcha failed')
       success = false
@@ -218,12 +245,11 @@ def partner_registered
     end
     respond_to do |format|
       if success && @user.errors.empty?
-       logger.debug('sdsdsdsdsdsdsdfasdfasdfasdfsdf - PARTNER CREATED - MODIFYING ACTIVITY')
+        logger.debug('PARTNER CREATED - MODIFYING ACTIVITY')
         @user.activate!
-        @activity.admin_user_id = @user.id
-        @activity.save
-         facebook_session.post("facebook.stream.publish", :action_links=> '[{ "text": "Check out HelloPulse!", "href": "http://www.hellopulse.com"}]', :message => ' has partnered with HelloPulse!', :uid=>@activity.fb_page_id)
-
+        @object.admin_user_id = @user.id
+        @object.save
+        facebook_session.post("facebook.stream.publish", :action_links=> '[{ "text": "Check out HelloPulse!", "href": "http://www.hellopulse.com"}]', :message => ' has partnered with HelloPulse!', :uid=>@activity.fb_page_id)
         session[:user_id] = @user.id
         format.html {
           redirect_to :action=>'photos'

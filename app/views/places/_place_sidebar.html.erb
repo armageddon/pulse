@@ -8,7 +8,8 @@
 <div id="profile_image">
   <%= image_tag(@place.icon.url(:profile), :class=>"profile_image") %>
 </div>
-<% if current_user.admin? %>
+
+<% if current_user!=nil  && current_user.admin? %>
    <div id="manage_pictures"><%= link_to "Manage place pictures", place_pictures_path(@place) %></div>
 <% end %>
 
@@ -31,8 +32,9 @@
      <li><%= link_to "INVITE A FRIEND", '#', 'data-href' => new_account_invitation_path, :class => "invite_a_friend" %>
  </ul>
 <br />
-	<%= link_to "ADD TO FAVORITES", '#', 'data-href' => "/user_place_activities/new?place_id="+@place.id.to_s+"&view=add_place", :class => "add_to_favorites submit" %></li> 
-
+<% if current_user!=nil %>
+	<%= link_to "ADD TO FAVORITES", '#', 'data-href' => "/user_place_activities/new?place_id="+@place.id.to_s+"&view=add_place", :class => "add_to_favorites submit" %>
+<%end%>
 <div id="manage_place"></div>
  
 <script type="text/javascript" charset="utf-8">

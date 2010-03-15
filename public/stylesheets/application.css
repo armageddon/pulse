@@ -1099,6 +1099,17 @@ a{
     Font-family:arial!important;
     background-image:none;}
 
+.submit_act{
+    padding:2px!important;
+    Background-color:#bf1212!important;
+    border:2px solid #9f1111!important;
+    color:#fff!important;
+    height:25px;
+    margin-bottom:20px;
+    font-size:14px;
+    Font-weight:500!important;
+    Font-family:arial!important;
+    background-image:none;}
 
 /* SIGN-UP*/
 

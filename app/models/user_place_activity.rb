@@ -19,14 +19,14 @@ class UserPlaceActivity < ActiveRecord::Base
   def ping
     begin
       message = User.find(self.user_id).first_name + ' added ' + Activity.find(self.activity_id).name + ' at ' +Place.find(self.place_id).name+ ' : ' + self.description
-
-    PingFM.user_post("status", message)
+      tweet =  message[0,116]+'... http://bit.ly/atCD0U'
+    PingFM.user_post("status", tweet)
 
       #todo : lazy load this
     pulse_fb_session = Facebooker::Session.create
     pulse_fb_session.auth_token = "NH3XTZ" #ZMZ8SM"
     
-    pulse_fb_session.post("facebook.stream.publish", :action_links=> '[{ "text": "Check out HelloPulse!", "href": "http://www.hellopulse.com"}]', :message => message, :uid=>279928867967)
+    pulse_fb_session.post("facebook.stream.publish", :action_links=> '[{ "text": "Check out HelloPulse!", "href": "'+self.place_activity.url+'"}]', :message => message, :uid=>279928867967)
 
     
 

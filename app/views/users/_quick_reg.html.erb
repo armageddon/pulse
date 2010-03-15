@@ -1,22 +1,26 @@
-<% @user = User.new %>
+
 
 <% form_for @user, :url => account_path do |f| %>
   <div style="overflow:auto; max-height:450px">
-    <div style="margin-bottom:15px"">
-         <h2>Hello  <%=facebook_session.user.name %>!!! </h2>
+    <div style="margin-bottom:15px">
+         <h2>Hello  <%=@user.first_name %>!!! </h2>
       <h3>Please confirm the following details and click Register to become a member!</h3>
     </div>
-    <div style="float:left; width:100px; height:100px; overflow:hidden">
-      <img height=100 width=100 src="<%= facebook_session.user.pic_big%> "></img>
+    <div style="float:left; width:170px; height:350px; overflow:hidden">
+      <img height=150 width=150 src="<%= facebook_session.user.pic_big unless facebook_session == nil%> "></img>
+      <br />
+      <br />
+      Are you human?
+      <%= show_simple_captcha(:label => " ") %>
     </div>
-    <div style="float:left; width:400px; margin-left:10px">
+    <div style="float:left; width:380px; margin-left:10px">
       <label  class='quick_sign_up_label'>First name</label>
-      <%= text_field_tag 'user[first_name]', facebook_session.user.first_name || 'First name', :class => 'input_text' %>
+      <%= text_field_tag 'user[first_name]', user.first_name || 'First name', :class => 'input_text' %>
       <span class="error"></span>
       <div class="clear"></div>
 
       <label class='quick_sign_up_label'>Username</label>
-      <%= text_field_tag 'user[username]', @user.username || "Username", :class => 'input_text' %>
+      <%= text_field_tag 'user[username]', user.username || "Username", :class => 'input_text' %>
       <span class="error"></span>
       <div class="clear"></div>
 
@@ -34,7 +38,7 @@
 
       <label  class='quick_sign_up_label'>Email address</label>
 
-      <%= text_field_tag 'user[email]', @user.email || 'Email address', :class => 'input_text' %>
+      <%= text_field_tag 'user[email]', user.email || 'Email address', :class => 'input_text' %>
       <span class="error"></span>
       <div class="clear"></div>
 
@@ -42,9 +46,9 @@
 
       <%= hidden_field_tag 'user[dob]' %>
       <span>
-        <%= std_drop_down('day', 0, {:width => '60px'},day_options, 'Day', 0) %>
-        <%= std_drop_down('month', 0, {:width => '86px'},month_options, 'Month', 0) %>
-        <%= std_drop_down('year', 0, {:width => '70px'},year_options, 'Year', 0) %>
+        <%= std_drop_down('day', user.dob == nil ? 0 : user.dob.day||0, {:width => '60px'},day_options, 'Day', 0) %>
+        <%= std_drop_down('month', user.dob == nil ? 0 : user.dob.month, {:width => '86px'},month_options, 'Month', 0) %>
+        <%= std_drop_down('year',user.dob == nil ? 0 : user.dob.year, {:width => '70px'},year_options, 'Year', 0) %>
       </span>
       <span id='dob_error' class="error"></span>
       <div class="clear"></div>
@@ -56,12 +60,12 @@
       <div class="clear"></div>
 
       <label  class='quick_sign_up_label'>Gender</label>
-      <%= std_drop_down('user[sex]', 1, {:width => '90px'},gender_options, '', '') %>
+      <%= std_drop_down('user[sex]', user.sex||1, {:width => '90px'},gender_options, '', '') %>
       <span class="error"></span>
       <div class="clear"></div>
 
       <label  class='quick_sign_up_label'>Looking For</label>
-      <%= std_drop_down('user[sex_preference]', 2, {:width => '90px'},gender_preference_options, '', '') %>
+      <%= std_drop_down('user[sex_preference]', user.sex_preference||2, {:width => '90px'},gender_preference_options, '', '') %>
       <span class="error"></span>
       <div class="clear"></div>
 
@@ -79,7 +83,7 @@
       <div class="clear"></div>
       <label  class='quick_sign_up_label'>About me</label
 
-      <%= text_area_tag 'user[description]', 'Give us a line that sums you up', :rows=>2, :cols=>30,:id => "quick_reg_user_description", :class => "word_count" %>
+      <%= text_area_tag 'user[description]', user.description||'Give us a line that sums you up', :rows=>2, :cols=>30,:id => "quick_reg_user_description", :class => "word_count" %>
 
 
     </div>
@@ -90,8 +94,8 @@
 
   </div>
   <div class="clear"></div>
-  <%= submit_button 'Cancel', :id => "cancel"%>
-  <%= submit_button 'Register', :id => "register"%>
+  <%= submit_button 'Cancel', :id => "quick_cancel"%>
+  <%= submit_button 'Register', :id => "quick_register"%>
 
 
 <% end%>
@@ -103,6 +107,224 @@
       var cntrl = $(this);
       cntrl.prev().val(cntrl.selected().val());
     });
+
+
+    $('#user_username').blur(function() {
+        if ($(this).val() == '')
+            $(this).val('Username');
+    })
+        $('#user_email,#user_postcode, #user_first_name, #user_username').focus(function() {
+        $(this).val('');
+        return false;
+    });
+
+    $('#user_email').blur(function() {
+        if ($(this).val() == '')
+            $(this).val('Email address');
+    })
+
+    $('#postcode').blur(function() {
+        if ($(this).val() == '')
+            $(this).val('Post code');
+    })
+
+    $('#user_first_name').blur(function() {
+        if ($(this).val() == '')
+            $(this).val('First name');
+    });
+   $('#user_description').focus(function() {
+        if ($(this).val() == 'Give us a line that sums you up') {
+            $(this).val('');
+        }
+    });
+
+    $('#password_holder, #password_confirmation_holder').focus(function() {
+      $(this).hide();
+      $(this).next('input').show();
+      $(this).next('input').focus();
+      return false;
+    });
+    
+    $('#user_password').blur(function() {
+      if ($(this).val() == '') {
+        $(this).hide();
+        $('#password_holder').show();
+      }
+    })
+
+    $('#user_password_confirmation').blur(function() {
+      if ($(this).val() == '') {
+        $(this).hide();
+        $('#password_confirmation_holder').show();
+      }
+    })
+
+
+
+
+
+    $("#new_user").submit(function() {
+    
+      var first_name = $('#user_first_name');
+      var username = $('#user_username');
+      var password = $('#user_password');
+      var password_confirm = $('#user_password_confirmation');
+      var email = $('#user_email');
+      var day= $('#day');
+      var month= $('#month');
+      var year = $('#year');
+      var error = false;
+      $('.invalid').removeClass('invalid');
+      $('span.error').text('');
+
+      if (day.val() == 0 || day.val() == '' )
+      {
+       
+        error = true;
+        $('#dob_error').text('Enter a valid date of birth');
+        day.addClass('invalid');
+      }
+
+      if (month.val() == 0 || day.val() == '' )
+      {
+        error = true;
+        $('#dob_error').text('Enter a valid date of birth');
+        month.addClass('invalid');
+      }
+      if (year.val() == 0 || day.val() == '' )
+      {
+        error = true;
+        $('#dob_error').text('Enter a valid date of birth');
+        year.addClass('invalid');
+      }
+        
+      if (email.val() == '' || email.val() == 'Email address') {
+        email.addClass('invalid');
+
+        email.next().text('Please enter a valid email address.');
+        error = true;
+      };
+
+      if (username.val() == '' || username.val() == 'Username') {
+        username.addClass('invalid');
+        username.next().text('Please enter a valid user name')
+        error = true;
+      }
+
+      if (first_name.val() == '' || first_name.val() == 'First name') {
+        first_name.addClass('invalid');
+        first_name.next().text('Please enter your first name');
+        error = true;
+      }
+
+      if ((password.val() == '' || password.val() == 'Password' )) {
+        $('#password_holder').addClass('invalid');
+        password.addClass('invalid');
+        password.next().text('Please enter a valid password');
+        error = true;
+      } else if ((password_confirm.val() == '') || (password_confirm.val() == 'Password confirmation')) {
+        $('#password_confirmation_holder').addClass('invalid');
+        password_confirm.addClass('invalid');
+        password_confirm.next().text('Please enter a password confirmation');
+        error = true;
+      } else if ((password.val() != password_confirm.val())) {
+        $('#password_holder, #password_confirmation_holder').addClass('invalid');
+        password.addClass('invalid');
+        password_confirm.addClass('invalid');
+        password.next().text('Your password and password confirmation do not match.');
+        error = true;
+      } else if (password.val().length < 7) {
+        password.addClass('invalid');
+        password_confirm.addClass('invalid');
+        password.next().text('Your passwordmust be 7 characters or more');
+        error = true;
+      }
+      else if (password_confirm.val().length < 7) {
+        password.addClass('invalid');
+        password_confirm.addClass('invalid');
+        password.next().text('Your passwordmust be 7 characters or more');
+        error = true;
+      }
+   
+
+      var postcode = $('#user_postcode');
+      regexString = /^([A-PR-UWYZ0-9][A-HK-Y0-9][AEHMNPRTVXY0-9]?[ABEHMNPRVWXY0-9]? {1,2}[0-9][ABD-HJLN-UW-Z]{2}|GIR 0AA)$/;
+
+      if (postcode.val() == '' || postcode.val() == 'Post code' || regexString.test(postcode.val().toUpperCase()) != true) {
+
+        postcode.addClass('invalid');
+        postcode.next().text('Please enter a valid post code.');
+        error = true;
+      }
+
+      if(error==true)  {
+        return false;
+      }
+
+     
+      $.ajax({
+        type: "POST",
+        url: '/users/create',
+        data: $(this).serialize(),
+        dataType: 'js',
+        success: function(msg)
+        {
+          alert('success');
+          $("#dialog").jqmHide();
+          window.location.href=window.location.href;
+          return false;
+        },
+        error: function(xhr) {
+          alert(xhr);
+          //$('#post_error').html('Invalid Captcha Code - please try again')
+          var errors = $.httpData(xhr, 'json');
+          $.each(errors, function(i,error) {
+            var field = error[0]
+            var message = error[1];
+            var username_error = false;
+            switch (field) {
+              case 'email':
+                $('#user_email').addClass('invalid');
+                $('#user_email').next().text("Email address " + message);
+                break;
+
+              case 'first_name':
+                $('#user_first_name').addClass('invalid');
+                $('#user_first_name').next().text("First name " + message);
+                break;
+
+              case 'password':
+              case 'password_confirmation':
+                $('#user_password, #user_password_confirmation').addClass('invalid');
+                $('#user_password').next().text("Password " + message);
+                break;
+
+              case 'username':
+                if (!username_error) {
+                  $('#user_username').addClass('invalid');
+                  $('#user_username').next().text("Username " + message);
+                  username_error = true;
+                }
+                break;
+              default:
+                $('#simple_captcha').addClass('invalid');
+                $('#simple_captcha').next().text("You entered the code incorrectly. Please try again");
+            }
+          });
+        }
+      });
+      return false;
+    });
+
+
+    $("#quick_cancel").click(function() {
+      $("#dialog").jqmHide();
+      return false;
+    });
+
+
+
+
 
   });
 

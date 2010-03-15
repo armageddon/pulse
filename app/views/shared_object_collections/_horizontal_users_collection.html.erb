@@ -2,60 +2,68 @@
 <%= hidden_field_tag 'user_page_count', collection.total_pages %>
 
 <div id="userpage" style="width:556px;background-color:#EDEDED;">
-	<div style="align:center;text-align:center;float:left;width:20px;font-size:20px;background-color:#EDEDED;height:130px" id="page_back" >
-		<div style="width:20px;height:50px;float:left;"></div>
-		<div class="clear"></div>
-		<div style="height:24px">
-			<% if collection.previous_page  %>
-				<% qstring = "" %>
-				<% params.each do |p| %>
-				    <% if p[0] != "page"  && p[0] != "search_criteria"%>
-					   <% qstring += "&" + p[0].to_s + '=' + p[1].to_s %>
-					<% end %> 
-			  	<% end %>
-				<% qstring += "&type="+collection.first.class.to_s.tableize %>
-				<% if params[:search_criteria] != nil %>
-				   	<%params[:search_criteria].each do |sc| %>
-						<% qstring += "&search_criteria[" + sc[0].to_s + ']=' + sc[1].to_s %>
-					<% end %>
-				<% end %>
-				<%= link_to "<", reqpath + '?page=' + collection.previous_page.to_s + qstring, :class => "userpaginator" %>
-			<% else %>
-				<%= "<" %>
-			<% end %>
-		</div>
-		<div style="width:20px;height:35px;float:left;"></div>
-	</div>
+  <div style="align:center;text-align:center;float:left;width:20px;font-size:20px;background-color:#EDEDED;height:130px" id="page_back" >
+    <div style="width:20px;height:50px;float:left;"></div>
+    <div class="clear"></div>
+    <div style="height:24px">
+      <% if collection.previous_page  %>
+        <% qstring = "" %>
+        <% params.each do |p| %>
+          <% if p[0] != "page"  && p[0] != "search_criteria"%>
+            <% qstring += "&" + p[0].to_s + '=' + p[1].to_s %>
+          <% end %>
+        <% end %>
+        <% qstring += "&type="+collection.first.class.to_s.tableize %>
+        <% if params[:search_criteria] != nil %>
+          <%params[:search_criteria].each do |sc| %>
+            <% qstring += "&search_criteria[" + sc[0].to_s + ']=' + sc[1].to_s %>
+          <% end %>
+        <% end %>
+        <%= link_to "<", reqpath + '?page=' + collection.previous_page.to_s + qstring, :class => "userpaginator" %>
+      <% else %>
+        <%= "<" %>
+      <% end %>
+    </div>
+    <div style="width:20px;height:35px;float:left;"></div>
+  </div>
 
-	<div style="float:left;height:130px;width:516px;background-color:#EDEDED;" id="users">
-  		<%= render :partial => "shared_objects/horizontal_user", :collection => collection %>
-	</div>
+  <div style="float:left;height:130px;width:516px;background-color:#EDEDED;" id="users">
+    <% if collection.length == 0 %>
+      <% if reqpath =='/activity/users'||reqpath =='/place_activity/users'||reqpath =='/place/users' %>
+        <%= render :text => '<div style="margin-top:45px;text-align:center"><h2>Be the first to add this activity!!!</h2></div>' %>
+      <%else%>
+        <%= render :text => 'Add some people to your favourites'%>
+      <%end%>
+    <%else%>
+      <%= render :partial => "shared_objects/horizontal_user", :collection => collection %>
+    <%end%>
+  </div>
 
-	<div style="align:center;text-align:center;float:left;width:20px;font-size:20px;background-color:#EDEDED;height:130px" id="page_forward" >
-		<div style="width:20px;height:50px;float:left;">
-		</div>
-		<div class="clear"></div>
-		<div style="height:24px">
-			<% if collection.next_page %>
-				<% qstring = "" %>
-				<% params.each do |p| %>
-				    <% if p[0] != "page"  && p[0] != "search_criteria"%>
-					      <% qstring += "&" + p[0].to_s + '=' + p[1].to_s %>
-					<% end %> 
-			  	<% end %>
-				<% qstring += "&type="+collection.first.class.to_s.tableize %>
-				<% if params[:search_criteria] != nil %>
-				   	<%params[:search_criteria].each do |sc| %>
-						<% qstring += "&search_criteria[" + sc[0].to_s + ']=' + sc[1].to_s %>
-					<% end %>
-				<% end %>
-			  		<%= link_to ">", reqpath + '?page=' + collection.next_page.to_s + qstring, :class => "userpaginator" %>
-			<% else %>
-				<%= ">" %>	
-			<% end %>
-		</div>
-		<div style="width:20px;height:35px;float:left;"></div>
-	</div>
+  <div style="align:center;text-align:center;float:left;width:20px;font-size:20px;background-color:#EDEDED;height:130px" id="page_forward" >
+    <div style="width:20px;height:50px;float:left;">
+    </div>
+    <div class="clear"></div>
+    <div style="height:24px">
+      <% if collection.next_page %>
+        <% qstring = "" %>
+        <% params.each do |p| %>
+          <% if p[0] != "page"  && p[0] != "search_criteria"%>
+            <% qstring += "&" + p[0].to_s + '=' + p[1].to_s %>
+          <% end %>
+        <% end %>
+        <% qstring += "&type="+collection.first.class.to_s.tableize %>
+        <% if params[:search_criteria] != nil %>
+          <%params[:search_criteria].each do |sc| %>
+            <% qstring += "&search_criteria[" + sc[0].to_s + ']=' + sc[1].to_s %>
+          <% end %>
+        <% end %>
+        <%= link_to ">", reqpath + '?page=' + collection.next_page.to_s + qstring, :class => "userpaginator" %>
+      <% else %>
+        <%= ">" %>
+      <% end %>
+    </div>
+    <div style="width:20px;height:35px;float:left;"></div>
+  </div>
 </div>
 
 
@@ -63,10 +71,10 @@
 
   $(document).ready(function() {
 	
-	  if ($.jqm) {
-	    $("#dialog").jqm({ajax: '@data-href', modal: true});
-	    $("#dialog").jqmAddTrigger('.add_to_favorites, .add_place, .add_event, .add_activity, .invite_a_friend');
-	  }
+    if ($.jqm) {
+      $("#dialog").jqm({ajax: '@data-href', modal: true});
+      $("#dialog").jqmAddTrigger('.add_to_favorites, .add_place, .add_event, .add_activity, .invite_a_friend');
+    }
 	
-	  });
+  });
 </script>
