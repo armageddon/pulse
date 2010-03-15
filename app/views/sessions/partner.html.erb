@@ -44,25 +44,14 @@
           margin-top: -1px;
         }
       }
-
-
-
     </style>
   </head>
-
   <body>
-
     <div id="container" class="container_16">
-
       <div class="grid_16" id="stock">
         <div style="float:right; margin-right:20px">
           <% form_tag session_path , :id => 'session_form' do -%>
-
-
-
-
             <div class="clear">&nbsp;</div>
-
           <% end %>
         </div>
         <%= image_tag "feature-pannel.jpg" %>
@@ -70,28 +59,19 @@
           <%= image_tag "logo.png" %>
         </div>
       </div>
-
       <div class="clear"></div>
-
       <div class="" style="padding-left:180px;width:740px;float:left;padding;margin-left:10px;margin-right:10px;" id="">
         <p id="hello" style="font-size:25px;margin-top:10px"> Welcome to HelloPulse partner login page</p><br />
         <p id="hello1" style="font-size:20px;margin-top:10px"> As a valued partner we will promote your business to our members - socially mobile and influencial singles</p>
-
         <br />
-
-
-
         <% if flash[:error] %>
           <p id="errors" style="font-size:13px;margin-right:20px;height:23px">
             <%= flash[:error] %>
           </p>
         <% end %>
-
         <div style="float:left; margin-right:0px;margin-top:35px">
           <div style="font-size:17px;margin-left:3px;margin-bottom:5px">Please enter your login code here: </div>
-
-
-          <% form_tag 'activities/partner', :id => 'redeem_form' do -%>
+          <% form_tag 'sessions/partner_auth', :id => 'redeem_form' do -%>
             <%= text_field_tag 'code', '', :class => "input_text", :value => "", :size => "10" %>
             <%= submit_button "Register", :class =>'submit'  %>
           <% end %>
@@ -109,19 +89,16 @@
   $(document).ready(function() {
 
     $('#login, #invite_code').focus(function() {
-<%# password failure/autocomplete %>
-<% if @login.present? %>
-        $.data(this, 'clicked', true);
-<% end %>
+        <%# password failure/autocomplete %>
+        <% if @login.present? %>
+            $.data(this, 'clicked', true);
+        <% end %>
 
       if (!$.data(this, 'clicked')) {
         $(this).val('');
         $.data(this, 'clicked', true);
       }
     });
-
-
-
 
     $('#password_holder').focus(function() {
       $(this).hide();
@@ -131,7 +108,6 @@
 
     $('#redeem, #show_login').click(function() {
       $('#redeem, #show_login').toggle();
-
       return false;
     })
 

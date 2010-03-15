@@ -49,6 +49,7 @@ ActionController::Routing::Routes.draw do |map|
   end
   
   #sessions controller
+  map.partner_auth 'sessions/partner_auth' , :controller=>'sessions', :action => 'partner_auth'
   map.partner '/partner', :controller=>'sessions', :action => 'partner'
   map.logout '/logout', :controller => 'sessions', :action => 'destroy'
   map.login '/login', :controller => 'sessions', :action => 'new'
@@ -92,6 +93,9 @@ ActionController::Routing::Routes.draw do |map|
   
   #places_controller
   map.place_autocomplete_new '/places/autocomplete_new', :controller => 'places', :action => 'autocomplete_new'
+  map.activity_admin 'places/admin', :controller=>'places', :action=>'admin'
+  map.activity_post_fb 'places/post_to_facebook', :controller=>'places', :action=>'post_activity_to_facebook'
+    map.activity_partner 'places/partner' , :controller=>'places', :action=>'partner'
   map.resources :places, :collection => { :autocomplete => :get } do |p|
     p.resources :pictures, :controller => "place_pictures"
   end

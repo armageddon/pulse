@@ -2,8 +2,11 @@
 
 <% form_for @user, :url => '/users/partner_new' do |f| %>
   <%=hidden_field_tag 'auth_code' , auth_code%>
-  <%=hidden_field_tag 'activity_id' , activity_id%>
-  <div style="overflow:auto; max-height:450px">
+  <%=hidden_field_tag 'object_id' , object_id%>
+  <%=hidden_field_tag 'object_type', object_type%>
+
+
+  <div style="overflow:auto; max-height:450px"> 
     <div style="margin-bottom:15px">
       <h2>Hello  <%=facebook_session.user.name %>!!! </h2>
       <h3>Please confirm the following details and click Register to become a member!</h3>

@@ -1,5 +1,6 @@
+<%@activity=activity%>
 <% content_for :c1 do %>
-  <%= render :partial => "activity_sidebar" %>
+  <%= render :partial => "activities/activity_sidebar" %>
 <% end %>
 <%= fb_connect_javascript_tag %>
 <%= init_fb_connect "XFBML", :js=>:jquery%>
@@ -50,7 +51,7 @@
   <div style="margin-right:5px;width:310px;float:left;text-align:center;background-color:#EDEDED;">Why & Where</div>
   <div style="width:100px;float:left;text-align:center;background-color:#EDEDED;">When</div>
   <div class="clear"></div>
-  <%= render :partial => 'user_place_activity_collection' , :locals => {:collection => @user_place_activities}%>
+  <%= render :partial => 'activities/user_place_activity_collection' , :locals => {:collection => @user_place_activities}%>
 </div>
 
 <script type="text/javascript">
@@ -62,7 +63,7 @@ $('#join').live('click',function(){
 
   function showReg()
   {
-    $('#dialog').jqm({ajax:'/partner_reg?auth_code=<%=auth_code%>&activity_id=<%=@activity.id%>',modal:true});
+    $('#dialog').jqm({ajax:'/partner_reg?auth_code=<%=auth_code%>&object_id=<%=@activity.id%>&object_type=activity',modal:true});
     $("#dialog").jqmShow();
   }
 

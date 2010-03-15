@@ -206,8 +206,17 @@ class UsersController < ApplicationController
 
   def partner_new
     logout_keeping_session!
-    @activity_id = params[:activity_id]
-    @activity = Activity.find(:first,:conditions=>{:auth_code => params[:auth_code] , :id=>@activity_id, :admin_user_id => nil })
+
+    @object_id = params[:object_id]
+
+     case params[:object_type]
+    when 'place'
+      @object = Place.find(:first,:conditions=>{:auth_code => params[:auth_code] , :id=>@object_id, :admin_user_id => nil })
+    when 'activity'
+      @object = Activity.find(:first,:conditions=>{:auth_code => params[:auth_code] , :id=>@object_id, :admin_user_id => nil })
+    end
+
+
     @user = User.new(params[:user])
     logger.debug(facebook_session.session_key)
     if(simple_captcha_valid? )
@@ -238,8 +247,8 @@ class UsersController < ApplicationController
       if success && @user.errors.empty?
         logger.debug('PARTNER CREATED - MODIFYING ACTIVITY')
         @user.activate!
-        @activity.admin_user_id = @user.id
-        @activity.save
+        @object.admin_user_id = @user.id
+        @object.save
         facebook_session.post("facebook.stream.publish", :action_links=> '[{ "text": "Check out HelloPulse!", "href": "http://www.hellopulse.com"}]', :message => ' has partnered with HelloPulse!', :uid=>@activity.fb_page_id)
         session[:user_id] = @user.id
         format.html {
