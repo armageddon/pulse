@@ -816,6 +816,10 @@ a{
 #nav #top-nav li:hover {
     background-color:#999;
 }
+
+#nav #top-nav li#search-box-holder:hover {
+    background-color: transparent;
+}
 #nav #top-nav li.selected {
     border-left:1px solid #aaa;
     border-right:1px solid #aaa;
