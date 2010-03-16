@@ -15,6 +15,7 @@ class ApplicationController < ActionController::Base
 
 
 
+
   def login_required
     authorized? || access_denied
   end

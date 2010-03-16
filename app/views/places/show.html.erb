@@ -67,7 +67,7 @@ $('#join').live('click',function(){
 
   function showReg()
   {
-    $('#dialog').jqm({ajax:'/partner_reg?auth_code=<%=auth_code%>&object_id_id=<%=@place.id%>&object_type=place',modal:true});
+    $('#dialog').jqm({ajax:'/partner_reg?auth_code=<%=auth_code%>&object_id=<%=@place.id%>&object_type=place',modal:true});
     $("#dialog").jqmShow();
   }
 

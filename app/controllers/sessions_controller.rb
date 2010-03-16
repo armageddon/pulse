@@ -64,10 +64,10 @@ class SessionsController < ApplicationController
       @user_place_activities = @partner_object.user_place_activities.paginate(:order=>'created_at DESC',:page=>1,:per_page=>10)
       #todo user switch here
       if @partner_object.class==Place
-        redirect_to '/places/partner?id='+@partner_object.id.to_s
+        redirect_to '/places/partner?id='+@partner_object.id.to_s+'&code='+params[:code]
       
       else
-        redirect_to '/activities/partner?id='+@partner_object.id.to_s
+        redirect_to '/activities/partner?id='+@partner_object.id.to_s+'&code='+params[:code]
       
       end
     end

@@ -20,7 +20,7 @@ class ActivitiesController < ApplicationController
     #  logger.debug('no such')
     #  redirect_to  :controller=>'sessions' , :action=>'partner'
     #else
-    @activity = Activity.find(params[:id])
+    params[:id].present? ? @activity =  Activity.find(params[:id]) : @activity =  Activity.find_by_admin_user_id(current_user.id)
       @users = @activity.users.paginate(:all,:group => :user_id, :page => params[:page], :per_page => 6)
       @user_place_activities = @activity.user_place_activities.paginate(:order=>'created_at DESC',:page=>1,:per_page=>10)
       render :template => 'activities/show', :locals => {:activity => @activity, :auth_code =>params[:code] }

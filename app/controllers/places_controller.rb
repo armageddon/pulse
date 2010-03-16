@@ -31,8 +31,7 @@ class PlacesController < ApplicationController
   end
 
   def partner
-    @place = Place.find(params[:id])
-
+    params[:id].present? ? @place =  Place.find(params[:id]) : @place =  Place.find_by_admin_user_id(current_user.id)
     @users = @place.users.paginate(:all,:group => :user_id, :page => params[:page], :per_page => 6)
     @user_place_activities = @place.user_place_activities.paginate(:order=>'created_at DESC',:page=>1,:per_page=>10)
     render :template => 'places/show', :locals => {:activity => @place, :auth_code =>params[:code] }

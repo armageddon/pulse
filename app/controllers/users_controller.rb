@@ -51,8 +51,15 @@ class UsersController < ApplicationController
 
   def partner_reg
     logger.debug(params[:auth_code])
-    respond_to do |format|
-      format.js { render :partial => "/users/partner_reg", :locals=>{:activity_id=>params[:activity_id], :auth_code=>params[:auth_code]}}
+    user = User.find_by_fb_user_id(facebook_session.user.id)
+    if user == nil
+      respond_to do |format|
+        format.js { render :partial => "/users/partner_reg", :locals=>{:object_type=>params[:object_type],:object_id=>params[:object_id], :auth_code=>params[:auth_code]}}
+      end
+    else
+      respond_to do |format|
+        format.js { render :partial => "/users/pop_up"}
+      end
     end
   end
 
@@ -108,7 +115,7 @@ class UsersController < ApplicationController
       format.js { render :partial => "shared_object_collections/object_collection", :locals => {:collection => @places}}
     end
   end
-
+ 
   def user_place_activities
     @activities = current_user.activities;
     respond_to do |format|
@@ -117,6 +124,8 @@ class UsersController < ApplicationController
   end
   
   def show
+    redirect_to '/activities/partner' and return if current_user.status == 3 && current_user.partner_type ==2
+    redirect_to '/places/partner' and return if current_user.status == 3 && current_user.partner_type ==1
     @places = current_user.suggested_places
     @matches = current_user.matches(params[:page], 8)
     @updates = TimelineEvent.paginate(:all, :conditions => "icon_file_name is not null and users.status=1 and actor_id <> " + current_user.id.to_s,:joins=>"INNER JOIN users on users.id = timeline_events.actor_id", :page=>1, :per_page => 5, :order => 'created_at DESC')
@@ -206,20 +215,18 @@ class UsersController < ApplicationController
 
   def partner_new
     logout_keeping_session!
-
-    @object_id = params[:object_id]
-
-     case params[:object_type]
-    when 'place'
-      @object = Place.find(:first,:conditions=>{:auth_code => params[:auth_code] , :id=>@object_id, :admin_user_id => nil })
-    when 'activity'
-      @object = Activity.find(:first,:conditions=>{:auth_code => params[:auth_code] , :id=>@object_id, :admin_user_id => nil })
-    end
-
-
-    @user = User.new(params[:user])
     logger.debug(facebook_session.session_key)
     if(simple_captcha_valid? )
+      @object_id = params[:object_id]
+      @user = User.new(params[:user])
+      case params[:object_type]
+      when 'place'
+        @object = Place.find(:first,:conditions=>{:auth_code => params[:auth_code] , :id=>@object_id, :admin_user_id => nil })
+        @user .partner_type = 1
+      when 'activity'
+        @object = Activity.find(:first,:conditions=>{:auth_code => params[:auth_code] , :id=>@object_id, :admin_user_id => nil })
+        @user .partner_type = 2
+      end
       @user.fb_user_id = facebook_session.user.id
       @user.sex ||= 2
       @user.age ||= 5
@@ -231,13 +238,9 @@ class UsersController < ApplicationController
       @user.postcode = 'W8 6QA'
       @user.status = 3
       @user.fb_session_key = facebook_session.session_key
-      simple_captcha_valid?
       @user.register! if @user && @user.valid?
+
       success = @user && @user.valid?
-      logger.debug('errors' )
-      logger.debug(pp @user.errors)
-      @user.age
-      logger.debug('Success ' + success.to_s)
     else
       logger.debug('captcha failed')
       success = false
@@ -249,8 +252,9 @@ class UsersController < ApplicationController
         @user.activate!
         @object.admin_user_id = @user.id
         @object.save
-        facebook_session.post("facebook.stream.publish", :action_links=> '[{ "text": "Check out HelloPulse!", "href": "http://www.hellopulse.com"}]', :message => ' has partnered with HelloPulse!', :uid=>@activity.fb_page_id)
         session[:user_id] = @user.id
+        facebook_session.post("facebook.stream.publish", :action_links=> '[{ "text": "Check out HelloPulse!", "href": "http://www.hellopulse.com"}]', :message => ' has partnered with HelloPulse!', :uid=>@object.fb_page_id) unless @object.fb_page_id == nil
+        
         format.html {
           redirect_to :action=>'photos'
           flash[:notice] = "Thanks for signing up!  We're sending you an email with your activation code."

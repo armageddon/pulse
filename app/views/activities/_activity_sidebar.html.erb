@@ -1,5 +1,5 @@
 <div class="column_header">
-      	<h2>Details</h2>
+  <h2>Details</h2>
 </div>
 
 <div id="profile_image">
@@ -9,12 +9,14 @@
 
 <ul id="do_things">
   <li><%= link_to "SEARCH", :controller=>'search'%></li>
-  <li><%= link_to "EDIT MY INFO", edit_account_path %></li>
- <li><%= link_to "INVITE A FRIEND", '#', 'data-href' => new_account_invitation_path, :class => "invite_a_friend" %>
+  <% if current_user!=nil %>
+    <li><%= link_to "EDIT MY INFO", edit_account_path %></li>
+    <li><%= link_to "INVITE A FRIEND", '#', 'data-href' => new_account_invitation_path, :class => "invite_a_friend" %></li>
+  <%  end %>
 </ul>
 <br />
 <% if current_user!=nil %>
-<%= link_to "ADD TO MY FAVOURITES", '#', 'data-href' => "/user_place_activities/new?activity_id="+@activity.id.to_s+"&view=add_activity", :id => "add_place_activity", :class => "add_to_favorites submit" %>
+  <%= link_to "ADD TO MY FAVOURITES", '#', 'data-href' => "/user_place_activities/new?activity_id="+@activity.id.to_s+"&view=add_activity", :id => "add_place_activity", :class => "add_to_favorites submit" %>
 <%end%>
 <div id="manage_activity"></div>
 <script type="text/javascript" charset="utf-8">
@@ -27,7 +29,7 @@
         type: "POST",
         url: target,
         success: function() { $("#remove_activity").hide() && $("#add_activity").show() },
-        data: { "_method": "delete", },
+        data: { "_method": "delete"}
       });
       return false;
     });

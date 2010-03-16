@@ -71,7 +71,7 @@
         <% end %>
         <div style="float:left; margin-right:0px;margin-top:35px">
           <div style="font-size:17px;margin-left:3px;margin-bottom:5px">Please enter your login code here: </div>
-          <% form_tag 'sessions/partner_auth', :id => 'redeem_form' do -%>
+          <% form_tag '/sessions/partner_auth', :id => 'redeem_form' do -%>
             <%= text_field_tag 'code', '', :class => "input_text", :value => "", :size => "10" %>
             <%= submit_button "Register", :class =>'submit'  %>
           <% end %>

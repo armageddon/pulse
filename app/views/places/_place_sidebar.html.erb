@@ -1,8 +1,8 @@
 
 <div class="column_header">
-      <span>
-      	<h2>Details</h2>
-      </span>
+  <span>
+    <h2>Details</h2>
+  </span>
 </div>
 
 <div id="profile_image">
@@ -10,7 +10,7 @@
 </div>
 
 <% if current_user!=nil  && current_user.admin? %>
-   <div id="manage_pictures"><%= link_to "Manage place pictures", place_pictures_path(@place) %></div>
+  <div id="manage_pictures"><%= link_to "Manage place pictures", place_pictures_path(@place) %></div>
 <% end %>
 
 <div id="place_description">
@@ -18,37 +18,41 @@
 </div>
 <br>
 <div id="address">
- <%= @place.address %><br>
- <%= @place.city %>, <%= @place.zip %><br>
- <% if @place.website.present? %>
- <%= link_to "website", @place.website %>
- <% end %>
+  <%= @place.address %><br>
+  <%if @place.city != nil and @place.zip != nil%>
+    <%= @place.city %>, <%= @place.zip %><br>
+  <%end%>
+  <% if @place.website.present? %>
+    <%= link_to "website", @place.website %>
+  <% end %>
 </div>
 
 <ul id="do_things">
-    <li><%= link_to "SEARCH", :controller=>'search', :action=>"search_criteria", :id=>'find_people_link' , :t => "people" %></li>
-   <li><%= link_to "EDIT MY INFO", edit_account_path %></li>
+  <li><%= link_to "SEARCH", :controller=>'search', :action=>"search_criteria", :id=>'find_people_link' , :t => "people" %></li>
+  <% if current_user!=nil %>
+    <li><%= link_to "EDIT MY INFO", edit_account_path %></li>
 
-     <li><%= link_to "INVITE A FRIEND", '#', 'data-href' => new_account_invitation_path, :class => "invite_a_friend" %>
- </ul>
+    <li><%= link_to "INVITE A FRIEND", '#', 'data-href' => new_account_invitation_path, :class => "invite_a_friend" %>
+    <%end%>
+</ul>
 <br />
 <% if current_user!=nil %>
-	<%= link_to "ADD TO FAVORITES", '#', 'data-href' => "/user_place_activities/new?place_id="+@place.id.to_s+"&view=add_place", :class => "add_to_favorites submit" %>
+  <%= link_to "ADD TO FAVORITES", '#', 'data-href' => "/user_place_activities/new?place_id="+@place.id.to_s+"&view=add_place", :class => "add_to_favorites submit" %>
 <%end%>
 <div id="manage_place"></div>
- 
+
 <script type="text/javascript" charset="utf-8">
-$(document).ready(function() {
- $("#remove_place").click(function(event) {
-   var target = $(this).attr('href');
-   $.ajax({
-     type: "POST",
-     url: target,
-     success: function() { $("#remove_place").hide() && $("#add_place").show() },
-     data: { "_method": "delete", },
-   });
-   return false;
- });
-});
+  $(document).ready(function() {
+    $("#remove_place").click(function(event) {
+      var target = $(this).attr('href');
+      $.ajax({
+        type: "POST",
+        url: target,
+        success: function() { $("#remove_place").hide() && $("#add_place").show() },
+        data: { "_method": "delete", },
+      });
+      return false;
+    });
+  });
 </script>
 

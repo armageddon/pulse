@@ -4,7 +4,7 @@ module ApplicationHelper
     opts = ""
     target = ""
     if default_value != ""
-       opts += "<p>" + default_target + "<span class='hidden_value'>" + default_value.to_s + "</span></p>"
+      opts += "<p>" + default_target + "<span class='hidden_value'>" + default_value.to_s + "</span></p>"
     end
     select_options.each do |opt|
       opts += "<p>" + opt[0] + "<span class='hidden_value'>" + opt[1].to_s + "</span></p>"
@@ -26,7 +26,7 @@ module ApplicationHelper
     logger.debug('VALUE=' + value.to_s)
     opts = ""
     if default_value != ""
-       opts += "<option value=0>" + default_target + "</option>"
+      opts += "<option value=0>" + default_target + "</option>"
     end
     select_options.each do |opt|
       if(opt[1].to_s == value.to_s)
@@ -61,17 +61,14 @@ module ApplicationHelper
   end
   
   def nav_links
-     logger.debug('LOGINLOGINLOGIN')
-     #logged_id
     return unless logged_in?&&current_user!=nil
-    [
-     
-      content_tag(:li,:class=>nav_link_class('')) { link_to "Logout", logout_path },
-      content_tag(:li,:class=>nav_link_class('user_favorites')) { link_to I18n.translate("my_favorites"), account_favorites_path },
-      content_tag(:li,:class=>nav_link_class('user_messages')) { link_to "My messages#{current_user.unread_count > 0 ? " (#{current_user.unread_count})" : ""}", account_messages_path },
-      content_tag(:li,:class=>nav_link_class('user_matches')) { link_to "My matches", account_matches_path },
-      content_tag(:li,:class=>nav_link_class('users')) { link_to "Home", root_path }
-    ].join("")
+    links = Array.new
+    links << content_tag(:li,:class=>nav_link_class('')) { link_to "Logout", logout_path }
+    links << content_tag(:li,:class=>nav_link_class('user_favorites')) { link_to I18n.translate("my_favorites"), account_favorites_path } if current_user.status ==1
+    links <<  content_tag(:li,:class=>nav_link_class('user_messages')) { link_to "My messages#{current_user.unread_count > 0 ? " (#{current_user.unread_count})" : ""}", account_messages_path }
+    links <<  content_tag(:li,:class=>nav_link_class('user_matches')) { link_to "My matches", account_matches_path } if current_user.status ==1
+    links <<  content_tag(:li,:class=>nav_link_class('users')) { link_to "Home", root_path }
+    links.join("")
   end
 
   def nav_link_class(page)
@@ -83,8 +80,8 @@ module ApplicationHelper
     when "user_messages"
       controller_name == "user_messages" ? "selected" : ""
     when "profile"
-     (controller_name == "profiles" && current_user == @user) ? "selected" : ""
-     when "user_favorites"
+      (controller_name == "profiles" && current_user == @user) ? "selected" : ""
+    when "user_favorites"
       controller_name == "user_favorites" ? "selected" : ""
     else
       ""
@@ -105,11 +102,11 @@ module ApplicationHelper
   end
   
   def submit_button(text, options={})
-     if options[:class] == "" or options[:class] == nil
-       c =  'submit'
-     else
-       c =options[:class]
-     end
+    if options[:class] == "" or options[:class] == nil
+      c =  'submit'
+    else
+      c =options[:class]
+    end
     %Q(<button  id="#{options[:id]}" class="#{c}" type="submit"style="#{options[:style]}"
       ><span class="submit_text">#{text}</span>
     </button>)
@@ -117,13 +114,13 @@ module ApplicationHelper
   
   def gender_age_preference(age_preference, gender)
     gender = case gender
-      when User::Sex::FEMALE
-        "her"
-      when User::Sex::MALE
-        "his"
-      when User::Sex::BOTH
-        "his or her"
-      end
+    when User::Sex::FEMALE
+      "her"
+    when User::Sex::MALE
+      "his"
+    when User::Sex::BOTH
+      "his or her"
+    end
     
     case age_preference
     when User::Age::COLLEGE

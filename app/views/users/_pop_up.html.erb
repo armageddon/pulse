@@ -1,0 +1,27 @@
+
+  <h3>
+
+    Your facebook user is already linked to a HelloPulse user and cannot be user for this activity or place.
+    We suggest you create another Facebook user and make it an administrator of your page.
+    Then login again. Thank you.
+
+  </h3>
+<br/>
+  <%= submit_button 'OK', :id => "cancel_pop"%>
+
+
+<script type="text/javascript" charset="utf-8">
+
+  $(document).ready(function() {
+
+    $("#cancel_pop").click(function() {
+    
+      $("#dialog").jqmHide();
+      $("#dialog").html('');
+      window.location ='/logout';
+      return false;
+    });
+
+  });
+
+</script>

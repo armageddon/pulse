@@ -1,5 +1,10 @@
 $(document).ready(function() {
-	
+
+    function close()
+    {
+        $("#dialog").jqmHide();
+    }
+
     $.ajaxSetup({ 
         'beforeSend': function(xhr) {
             xhr.setRequestHeader("Accept", "text/javascript")
