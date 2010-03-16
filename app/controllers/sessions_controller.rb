@@ -74,8 +74,10 @@ class SessionsController < ApplicationController
   end
 
   def partner
-    if logged_in?
+    if logged_in? && current_user.status==3
       return redirect_to(:controller => "users", :action => "show")
+    elsif logged_in? && current_user.status!=3
+       return redirect_to('/account')
     else
       render :template => 'sessions/partner'
     end
