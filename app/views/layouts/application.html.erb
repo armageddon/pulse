@@ -21,7 +21,7 @@
     <div id="nav">
       <ul id="top-nav" >
         <%= nav_links %>
-        <li>
+        <li id="search-box-holder">
           <div id="search-box" >
         <% form_tag '/search/nav?search_criteria_header[type]=1', :method => "get" do  %>
           <%= text_field_tag 'search_criteria[keyword]', '', :class => "header_input_text" %>

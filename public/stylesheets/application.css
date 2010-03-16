@@ -816,6 +816,10 @@ a{
 #nav #top-nav li:hover {
     background-color:#999;
 }
+
+#nav #top-nav li#search-box-holder:hover {
+    background-color: transparent;
+}
 #nav #top-nav li.selected {
     border-left:1px solid #aaa;
     border-right:1px solid #aaa;
@@ -895,6 +899,10 @@ a{
     padding:10px;
     color:black}
 
+	#header-banner h1{
+	    font-size:24px;
+	}
+	
 	#header-banner h2{
 	    font-size:18px;
 	}
@@ -1105,15 +1113,25 @@ a{
 
 .submit_act{
     padding:2px!important;
-    Background-color:#bf1212!important;
+    background-color:#bf1212!important;
     border:2px solid #9f1111!important;
     color:#fff!important;
     height:25px;
-    margin-bottom:20px;
+    /*margin-bottom:20px;*/
     font-size:14px;
-    Font-weight:500!important;
-    Font-family:arial!important;
-    background-image:none;}
+    font-weight:500!important;
+    font-family:arial!important;
+    background-image:none;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	top: -2px;
+}
+
+.facebook-connect-button {
+	position: relative;
+	top: 5px;
+	.top: 2px;
+}
 
 /* SIGN-UP*/
 
