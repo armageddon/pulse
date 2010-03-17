@@ -21,6 +21,7 @@ class ActivitiesController < ApplicationController
     #  redirect_to  :controller=>'sessions' , :action=>'partner'
     #else
     params[:id].present? ? @activity =  Activity.find(params[:id]) : @activity =  Activity.find_by_admin_user_id(current_user.id)
+     render :text => 'Dear partner. An error has occured . please contact HelloPulse admin' and return if @activity == nil
       @users = @activity.users.paginate(:all,:group => :user_id, :page => params[:page], :per_page => 6)
       @user_place_activities = @activity.user_place_activities.paginate(:order=>'created_at DESC',:page=>1,:per_page=>10)
       render :template => 'activities/show', :locals => {:activity => @activity, :auth_code =>params[:code] }

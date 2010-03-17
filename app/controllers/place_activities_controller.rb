@@ -1,5 +1,5 @@
 class PlaceActivitiesController < ApplicationController
-    before_filter :login_required
+    before_filter :login_required, :except => [:show, :users,:user_place_activities]
 
     def show
     logger.debug('show' + params[:id])

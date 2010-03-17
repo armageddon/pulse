@@ -8,7 +8,7 @@
     <%= image_tag(@place.icon.url(:profile), :class=>"profile_image") %>
   <%end%>
 </div>
-<% if current_user.admin? %>
+<% if current_user!=nil && current_user.admin? %>
   <div id="manage_pictures"><%= link_to "Manage place pictures", place_pictures_path(@place) %></div>
 <% end %>
 
@@ -23,11 +23,14 @@
 
 <ul id="do_things">
   <li><%= link_to "SEARCH", :controller=>'search', :action=>"search_criteria", :id=>'find_people_link' , :t => "people" %></li>
+   <% if current_user!=nil %>
   <li><%= link_to "EDIT MY INFO", edit_account_path %></li>
+
   <li><%= link_to "INVITE A FRIEND", '#', 'data-href' => new_account_invitation_path, :class => "invite_a_friend" %>
+    <%end%>
 </ul>
 <br/>
-<%= link_to "ADD TO MY FAVOURITES", '#', 'data-href' => "/user_place_activities/new?activity_id="+@activity.id.to_s+"&place_id="+@place.id.to_s+"&place_activity_id="+@place_activity.id.to_s+"&view=add_place_activity", :id => "add_place_activity", :class => "add_to_favorites submit"  %>
+<%= link_to "ADD TO MY FAVOURITES", '#', 'data-href' => "/user_place_activities/new?activity_id="+@activity.id.to_s+"&place_id="+@place.id.to_s+"&place_activity_id="+@place_activity.id.to_s+"&view=add_place_activity", :id => "add_place_activity", :class => "add_to_favorites submit"   if current_user!=nil  %>
 <br/>
 <br/>
 <% if @place.id != ANYWHERE_PLACE_ID %>

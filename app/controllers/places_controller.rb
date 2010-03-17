@@ -32,6 +32,8 @@ class PlacesController < ApplicationController
 
   def partner
     params[:id].present? ? @place =  Place.find(params[:id]) : @place =  Place.find_by_admin_user_id(current_user.id)
+    #todo: what to do if no place
+    render :text => 'Dear partner. An error has occured . please contact HelloPulse admin' and return if @place == nil
     @users = @place.users.paginate(:all,:group => :user_id, :page => params[:page], :per_page => 6)
     @user_place_activities = @place.user_place_activities.paginate(:order=>'created_at DESC',:page=>1,:per_page=>10)
     render :template => 'places/show', :locals => {:activity => @place, :auth_code =>params[:code] }
