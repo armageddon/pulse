@@ -8,7 +8,7 @@
     <title>HelloPulse</title>
     <link rel="shortcut icon" href="/images/favicon.ico" />
     <%= stylesheet_link_tag %w(jqModal application activity) %>
-    <%= javascript_include_tag 	"jquery-1.3.2", 'jquery.form.js', 'jqModal', 'jquery.autocomplete.js', 'jquery.charcounter.js', 'application', 'signup' %>
+    <%= javascript_include_tag 	"jquery-1.3.2", 'jquery.form.js', 'jqModal', 'jquery.autocomplete.js', 'jquery.charcounter.js','activity', 'application', 'signup' %>
     <%= javascript_tag "var AUTH_TOKEN = #{form_authenticity_token.inspect};" %>
 
     <%= yield(:head) %>
