@@ -48,15 +48,9 @@
     return false;
   })
 
-  function showReg()
-  {
-    //
-    $('#dialog').jqm({ajax:'/partner_reg?auth_code=<%=auth_code%>&object_id=<%=@activity.id%>&object_type=activity',modal:true});
-    $("#dialog").jqmShow();
-  }
+
  function showUserReg()
   {
-  alert('x');
     var id = FB.Connect.get_loggedInUser();
     $.ajax({
       type : "GET",
