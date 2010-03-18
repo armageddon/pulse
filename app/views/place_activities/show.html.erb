@@ -1,3 +1,6 @@
+<%= fb_connect_javascript_tag %>
+<%= init_fb_connect "XFBML", :js=>:jquery%>
+
 <% content_for :c1 do %>
   <%= render :partial => "place_activity_sidebar" , :locals => {:place_activity => @place_activity}%>
 <% end %>
