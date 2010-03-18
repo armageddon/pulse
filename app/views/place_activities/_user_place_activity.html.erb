@@ -17,8 +17,10 @@
 		<% end %>
 	</div>	 
 	<div class="actions">
+          <% if current_user!=nil %>
 		<%= (link_to image_tag("add_user_new.png", :width=>20, :class => " tooltip", :title => I18n.translate("Add_to_favorites")), "#", :class => "place_activity_people_favorite", :friend_id => object.user.id) if !current_user.has_friend?(object.user.id)  %>
 		<%= link_to image_tag("HPMail.png", :width=>20, :class => " tooltip", :title => "Send a mail"), account_message_path(object.user),'data-href' => account_message_path(object.user)  %>
-	</div>
+	<%end%>
+        </div>
 	<div class="clear"></div>
 </div>
