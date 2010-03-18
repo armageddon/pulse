@@ -4,7 +4,7 @@ class InvitationMailer < ActionMailer::Base
     @from    = "admin@hellopulse.com"
     @subject = "You've been invited to HelloPulse"
     @recipients = invitation.email
-    @body[:url]  = "http://hellopulse.com"
+    @body[:url]  = "www.hellopulse.com"
     @body[:user] = invitation.user
   end
 end
