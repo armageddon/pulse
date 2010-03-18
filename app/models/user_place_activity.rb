@@ -18,15 +18,17 @@ class UserPlaceActivity < ActiveRecord::Base
 
   def ping
     begin
+      url = self.place_activity.url||'http://bit.ly/atCD0U'
       message = User.find(self.user_id).first_name + ' added ' + Activity.find(self.activity_id).name + ' at ' +Place.find(self.place_id).name+ ' : ' + self.description
-      tweet =  message[0,116]+'... http://bit.ly/atCD0U'
-    PingFM.user_post("status", tweet)
+      tweet =  message[0,112]+'... '+ url
+      PingFM.user_post("status", tweet)
 
       #todo : lazy load this
-    pulse_fb_session = Facebooker::Session.create
-    pulse_fb_session.auth_token = "NH3XTZ" #ZMZ8SM"
+      logger.info('message: ' + message)
+      pulse_fb_session = Facebooker::Session.create
+      pulse_fb_session.auth_token = "NH3XTZ" #ZMZ8SM"
     
-    pulse_fb_session.post("facebook.stream.publish", :action_links=> '[{ "text": "Check out HelloPulse!", "href": "'+self.place_activity.url+'"}]', :message => message, :uid=>279928867967)
+      pulse_fb_session.post("facebook.stream.publish", :action_links=> '[{ "text": "Check out HelloPulse!", "href": "'+url+'"}]', :message => message, :uid=>279928867967)
 
     
 
@@ -63,7 +65,7 @@ class UserPlaceActivity < ActiveRecord::Base
     end
     if !use_activity && use_place_location
       logger.debug("location")
-    results = UserPlaceActivity.paginate(:select => "user_place_activities.place_activity_id,place_activities.activity_id,place_activities.place_id,user_place_activities.day_of_week, user_place_activities.time_of_day, count(user_id) as users_count", :order => "count(user_id) DESC", :joins => "inner join place_activities  on place_activities.id = user_place_activities.place_activity_id inner join users on users.id = user_place_activities.user_id inner join places on place_activities.place_id = places.id",:group => 'user_place_activities.place_activity_id,place_activities.activity_id,place_activities.place_id,user_place_activities.day_of_week, user_place_activities.time_of_day', :conditions => conditions, :page => params[:page], :per_page => 10)
+      results = UserPlaceActivity.paginate(:select => "user_place_activities.place_activity_id,place_activities.activity_id,place_activities.place_id,user_place_activities.day_of_week, user_place_activities.time_of_day, count(user_id) as users_count", :order => "count(user_id) DESC", :joins => "inner join place_activities  on place_activities.id = user_place_activities.place_activity_id inner join users on users.id = user_place_activities.user_id inner join places on place_activities.place_id = places.id",:group => 'user_place_activities.place_activity_id,place_activities.activity_id,place_activities.place_id,user_place_activities.day_of_week, user_place_activities.time_of_day', :conditions => conditions, :page => params[:page], :per_page => 10)
     end
     if use_activity && !use_place_location
       logger.debug("activities")

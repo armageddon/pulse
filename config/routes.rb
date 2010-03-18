@@ -18,6 +18,7 @@ ActionController::Routing::Routes.draw do |map|
   map.map_places '/search/map', :controller => 'search', :action => 'map_places'
    
   #users controller
+  map.facebook_user_exists 'facebook_user_exists' , :controller=>'users', :action=>'facebook_user_exists'
   map.partner_new 'users/partner_new', :controller=>'users', :action=>'partner_new'
   map.quick_reg '/quick_reg', :controller=>'users', :action=>'quick_reg'
   map.partner_reg '/partner_reg', :controller=>'users', :action=>'partner_reg'

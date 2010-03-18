@@ -45,6 +45,7 @@ class ActivitiesController < ApplicationController
   end
 
   def show
+    login_from_fb
     @activity =Activity.find(params[:id])
     @user_place_activities = @activity.user_place_activities.paginate(:order=>'created_at DESC',:page=>1,:per_page=>10)
     @users = @activity.users.paginate(:all,:group => :user_id, :page => params[:page], :per_page => 6)

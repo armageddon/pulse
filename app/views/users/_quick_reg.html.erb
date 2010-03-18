@@ -269,13 +269,12 @@
         dataType: 'js',
         success: function(msg)
         {
-          alert('success');
           $("#dialog").jqmHide();
           window.location.href=window.location.href;
           return false;
         },
         error: function(xhr) {
-          alert(xhr);
+          alert('error');
           //$('#post_error').html('Invalid Captcha Code - please try again')
           var errors = $.httpData(xhr, 'json');
           $.each(errors, function(i,error) {

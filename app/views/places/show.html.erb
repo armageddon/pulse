@@ -71,12 +71,33 @@ $('#join').live('click',function(){
     $("#dialog").jqmShow();
   }
 
-   function showUserReg()
+ function showUserReg()
   {
-    $('#dialog').jqm({ajax:'/quick_reg',modal:true});
-    $("#dialog").jqmShow();
-  }
+  alert('x');
+    var id = FB.Connect.get_loggedInUser();
+    $.ajax({
+      type : "GET",
+      url : "/facebook_user_exists",
+      data : {"fbid" : id},
+      success : function(p){
+        if(p=='true')
+        {
+                 window.location.href=window.location.href;
+        }
+        else
+        {
+          $('#dialog').jqm({ajax:'/quick_reg',modal:true});
+          $("#dialog").jqmShow();
+        }
+      },
+      error : function(p){
+        alert('error')
+        return false;
+      }
 
+    });
+    return false;
+  }
   function reqPermissions()
   {
     FB.Connect.showPermissionDialog("status_update,offline_access,publish_stream", function(){showReg()},true );

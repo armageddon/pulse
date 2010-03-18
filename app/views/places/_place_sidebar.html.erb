@@ -1,17 +1,13 @@
 
 <div class="column_header">
-  <span>
     <h2>Details</h2>
-  </span>
 </div>
 
 <div id="profile_image">
   <%= image_tag(@place.icon.url(:profile), :class=>"profile_image") %>
 </div>
 
-<% if current_user!=nil  && current_user.admin? %>
-  <div id="manage_pictures"><%= link_to "Manage place pictures", place_pictures_path(@place) %></div>
-<% end %>
+
 
 <div id="place_description">
   <%= @place.description %>

@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+
+
     function close()
     {
         $("#dialog").jqmHide();

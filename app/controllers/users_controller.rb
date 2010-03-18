@@ -4,9 +4,10 @@ class UsersController < ApplicationController
   # Protect these actions behind an admin login
   # before_filter :admin_required, :only => [:suspend, :unsuspend, :destroy, :purge]
   before_filter :find_user, :only => [:suspend, :unsuspend, :destroy, :purge, :admin_delete]
-  before_filter :login_required, :except => [:redeem, :create, :link_user_accounts, :link, :quick_reg, :partner_reg, :partner_new]
+  before_filter :login_required, :except => [:redeem, :create, :link_user_accounts, :link, :quick_reg, :partner_reg, :partner_new, :facebook_user_exists]
   before_filter :check_user
-  skip_before_filter :verify_authenticity_token, :only => [:admin_delete,:partner_new]
+  skip_before_filter :verify_authenticity_token, :only => [:admin_delete,:partner_new, :facebook_user_exists]
+  rescue_from Facebooker::Session::SessionExpired, :with => :facebook_session_expired
 
   def check_user
     # if current_user!=nil && current_user !=false && current_user.status==3
@@ -15,18 +16,23 @@ class UsersController < ApplicationController
     # end
   end
 
+  def facebook_session_expired
+    clear_fb_cookies!
+    clear_facebook_session_information
+  end
+
   def quick_reg
     fbuser = User.find(:first,:conditions=>'fb_user_id='+facebook_session.user.id.to_s) unless facebook_session == nil 
-    if(fbuser != nil)
-      respond_to do |format|
-        format.js { render :text => "you are already a user" }
-      end
+    if fbuser != nil
+      login_from_fb
+      redirect_to '/' and return
+
     else
-
-
+      facebook_session.user.first_name  unless facebook_session == nil || facebook_session.expired?
+      logger.debug('Expired: ' +  facebook_session.valid?.to_s) unless facebook_session == nil || facebook_session.expired?
       @user = User.new
       #get details from facebook
-      @user.first_name  = facebook_session.user.first_name unless facebook_session == nil
+      @user.first_name  = facebook_session.user.first_name unless facebook_session == nil || facebook_session.expired?
       dobvars = ''
       dobvars = facebook_session.user.birthday_date.split('/') unless facebook_session == nil
 
@@ -61,6 +67,7 @@ class UsersController < ApplicationController
         format.js { render :partial => "/users/pop_up"}
       end
     end
+
   end
 
   def partner_registered
@@ -381,6 +388,13 @@ class UsersController < ApplicationController
       end
     end
       
+  end
+
+  def facebook_user_exists
+    
+    respond_to do |format|
+      format.js { render :text => params[:fbid].present? && User.find_by_fb_user_id(params[:fbid])!=nil}
+    end
   end
 
   def destroy
