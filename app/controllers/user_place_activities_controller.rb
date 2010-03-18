@@ -23,6 +23,9 @@ class UserPlaceActivitiesController < ApplicationController
       logger.debug('plc id IS -1 - creating place')
       @place = Place.new
       @place.name = place_name
+      #todo: default place lat/long
+      @place.latitude = 51.5065
+      @place.longitude = -0.138088
       @place.neighborhood = neighborhood
       @place.save
       place_id = @place.id
