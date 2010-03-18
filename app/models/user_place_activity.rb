@@ -28,7 +28,7 @@ class UserPlaceActivity < ActiveRecord::Base
       pulse_fb_session = Facebooker::Session.create
       pulse_fb_session.auth_token = "NH3XTZ" #ZMZ8SM"
     
-      pulse_fb_session.post("facebook.stream.publish", :action_links=> '[{ "text": "Check out HelloPulse!", "href": "'+url+'"}]', :message => message, :uid=>279928867967)
+      pulse_fb_session.post("facebook.stream.publish", :action_links=> '[{ "text": "Check out HelloPulse!", "href": "'+self.place_activity.url+'"}]', :message => message, :uid=>279928867967)
 
     
 
