@@ -44,7 +44,7 @@
       <div class="clear"></div>
 
       <label  class='quick_sign_up_label'>Are you human?</label>
-      <%= show_simple_captcha(:label => " ") %>
+      <%= show_simple_captcha(:object=>'user',:label => " ") %>
       <span class="error"></span>
       <div class="clear"></div>
 
@@ -56,10 +56,6 @@
     </div>
 
     <div class="clear"></div>
-
-
-
-
   </div>
   <div class="clear"></div>
   <%= submit_button 'Cancel', :id => "cancel_partner"%>

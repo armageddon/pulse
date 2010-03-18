@@ -107,7 +107,7 @@
         <div style="float:left">
           <label  style="font-size:10px">Are you human? Please enter the text from the image below </label>
           <div>
-            <%= show_simple_captcha(:label => " ") %>
+            <%= show_simple_captcha(:object=>'user', :label => " ") %>
             <span class="error"></span>
           </div>
         </div>

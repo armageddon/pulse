@@ -29,7 +29,7 @@ class UsersController < ApplicationController
 
     else
       facebook_session.user.first_name  unless facebook_session == nil || facebook_session.expired?
-      logger.debug('Expired: ' +  facebook_session.valid?.to_s) unless facebook_session == nil || facebook_session.expired?
+ 
       @user = User.new
       #get details from facebook
       @user.first_name  = facebook_session.user.first_name unless facebook_session == nil || facebook_session.expired?
@@ -155,47 +155,33 @@ class UsersController < ApplicationController
   def create
     logout_keeping_session!
     @user = User.new(params[:user])
-    if(simple_captcha_valid?)
-      @user.sex ||= 2
-      @user.age ||= 5
-      @user.sex_preference ||= 1
-      @user.age_preference ||= 5
-      logger.debug('sdsdsd')
-      logger.debug(params[:feet])
-      logger.debug(params[:inches])
-      cm = ((params[:feet].to_i * 12) +params[:inches].to_i ) * 2.54
-      @user.height = cm
-      if params[:user][:postcode] != nil
-        geocoder = Graticule.service(:google).new "ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog"
-        location = geocoder.locate('london ' + params[:user][:postcode])
-        latitude, longitude = location.coordinates
-        if latitude != nil && longitude != nil
-          @user.lat = latitude
-          @user.long = longitude
-          params[:user][:lat] = latitude
-          params[:user][:long] = longitude
-        end
+    @user.sex ||= 2
+    @user.age ||= 5
+    @user.sex_preference ||= 1
+    @user.age_preference ||= 5
+    cm = ((params[:feet].to_i * 12) +params[:inches].to_i ) * 2.54
+    @user.height = cm
+    if params[:user][:postcode] != nil
+      geocoder = Graticule.service(:google).new "ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog"
+      location = geocoder.locate('london ' + params[:user][:postcode])
+      latitude, longitude = location.coordinates
+      if latitude != nil && longitude != nil
+        @user.lat = latitude
+        @user.long = longitude
+        params[:user][:lat] = latitude
+        params[:user][:long] = longitude
       end
-      @user.fb_user_id = facebook_session.user.id if facebook_session != nil
-      params[:user][:dob] = Date.new(params[:year].to_i(),params[:month].to_i(),params[:day].to_i())
-      @user.dob = params[:user][:dob]
-      params[:user][:age] = User.get_age_option_from_dob(params[:user][:dob])
-      @user.location_id = 1;
-      @user.postcode = @user.postcode.upcase
-      simple_captcha_valid?
-      @user.register! if @user && @user.valid?
-      success = @user && @user.valid?
-      logger.debug('errors' )
-      logger.debug(pp @user.errors)
-      @user.age
-      logger.debug('Success ' + success.to_s)
-    else
-      logger.debug('captcha failed')
-      success = false
-      @user.errors.add("You failed to enter a valid Captcha code - please try again");
     end
+    @user.fb_user_id = facebook_session.user.id if facebook_session != nil
+    params[:user][:dob] = Date.new(params[:year].to_i(),params[:month].to_i(),params[:day].to_i())
+    @user.dob = params[:user][:dob]
+    params[:user][:age] = User.get_age_option_from_dob(params[:user][:dob])
+    @user.location_id = 1;
+    @user.postcode = @user.postcode.upcase
+    #what is this register method???
+    success =  @user.valid_with_captcha?
+    @user.register! if success
     respond_to do |format|
-      logger.debug('asdasdasdasd')
       if success && @user.errors.empty?
         # DEBUG
         @user.activate!
@@ -210,12 +196,14 @@ class UsersController < ApplicationController
           render :text => 'user created'
           flash[:notice] = "Thanks for signing up!  We're sending you an email with your activation code."
         }
-        
       else
         format.html {
           render :action => 'new', :layout => false
         }
-        format.js { render :json => @user.errors, :status => 500,  :layout => false }
+        format.js {
+          logger.debug(p @user.errors)
+          render :json => @user.errors, :status => 500,  :layout => false
+        }
       end
     end
   end
@@ -223,36 +211,29 @@ class UsersController < ApplicationController
   def partner_new
     logout_keeping_session!
     logger.debug(facebook_session.session_key)
-    if(simple_captcha_valid? )
-      @object_id = params[:object_id]
-      @user = User.new(params[:user])
-      case params[:object_type]
-      when 'place'
-        @object = Place.find(:first,:conditions=>{:auth_code => params[:auth_code] , :id=>@object_id, :admin_user_id => nil })
-        @user .partner_type = 1
-      when 'activity'
-        @object = Activity.find(:first,:conditions=>{:auth_code => params[:auth_code] , :id=>@object_id, :admin_user_id => nil })
-        @user .partner_type = 2
-      end
-      @user.fb_user_id = facebook_session.user.id
-      @user.sex ||= 2
-      @user.age ||= 5
-      @user.sex_preference ||= 1
-      @user.age_preference ||= 5
-      @user.height = 100
-      @user.dob = '20000101'.to_date
-      @user.location_id = 1;
-      @user.postcode = 'W8 6QA'
-      @user.status = 3
-      @user.fb_session_key = facebook_session.session_key
-      @user.register! if @user && @user.valid?
-
-      success = @user && @user.valid?
-    else
-      logger.debug('captcha failed')
-      success = false
-      @user.errors.add("You failed to enter a valid Captcha code - please try again");
+    @object_id = params[:object_id]
+    @user = User.new(params[:user])
+    case params[:object_type]
+    when 'place'
+      @object = Place.find(:first,:conditions=>{:auth_code => params[:auth_code] , :id=>@object_id, :admin_user_id => nil })
+      @user .partner_type = 1
+    when 'activity'
+      @object = Activity.find(:first,:conditions=>{:auth_code => params[:auth_code] , :id=>@object_id, :admin_user_id => nil })
+      @user .partner_type = 2
     end
+    @user.fb_user_id = facebook_session.user.id
+    @user.sex ||= 2
+    @user.age ||= 5
+    @user.sex_preference ||= 1
+    @user.age_preference ||= 5
+    @user.height = 100
+    @user.dob = '20000101'.to_date
+    @user.location_id = 1;
+    @user.postcode = 'W8 6QA'
+    @user.status = 3
+    @user.fb_session_key = facebook_session.session_key
+    success =  @user.valid_with_captcha?
+    @user.register! if success
     respond_to do |format|
       if success && @user.errors.empty?
         logger.debug('PARTNER CREATED - MODIFYING ACTIVITY')
