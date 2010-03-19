@@ -5,9 +5,9 @@
 <%= fb_connect_javascript_tag %>
 <%= init_fb_connect "XFBML", :js=>:jquery%>
 <%  auth_code ||='' %>
+<%=hidden_field_tag 'auth_code_hidden' , auth_code%>
 
 <% content_for :message do %>
-
   <%if auth_code != nil &&auth_code!='' && !logged_in? %>
     <h3> You have been invited to link this activity to your Facebook Page. You will be asked to grant Hellopulse permission to publish to your activity stream, and to give us offline access so we can publish updates to your page. Please click <%= fb_login_button('reqPermissions()')%> to continue</h3>
   <%elsif (!logged_in?)||(current_user.class!=User)%>
@@ -19,40 +19,19 @@
   <%end%>
 <%end%>
 
-
-<%=hidden_field_tag 'auth_code_hidden' , auth_code%>
 <div class="column_header">
-
   <h2><%=@activity.name%></h2>
-
 </div>
-<div style="float:left;width:356px; margin-bottom:4px;margin-top:0px">
-  <h3 style="width:356px;font-size:14px" class="section_name">People who do this</h3>
-</div>
-<div style="text-align: right;float:right;width:200px; margin-bottom:4px;margin-top:0px">
-  <h4 id="people_paging" style="width:200px;font-size:12px" class="section_name">Page 1 of <%=@users.total_pages %></h4>
-</div>
+<div  class="pa_section_name">People who do this</div>
+<div  id="pa_people_paging">Page 1 of <%=@users.total_pages %></div>
 <div class='clear'></div>
 <div id='people_results'>
-
-
   <%= render :partial => 'shared_object_collections/horizontal_users_collection' , :locals => {:collection => @users, :reqpath=>'/activity/users'}%>
-
 </div>
-<div class="clear">&nbsp;</div>
-<div class="section_header" >
-  <div style="float:left;width:200px">
-    <h3 style="width:100px;" class="section_name">Comments</h3>
-  </div>
-  <div class="clear">&nbsp;</div>
-</div>
-<div>
-  <div style="margin-right:5px;width:136px;float:left;text-align:center;background-color:#EDEDED;">Who</div>
-  <div style="margin-right:5px;width:310px;float:left;text-align:center;background-color:#EDEDED;">Why & Where</div>
-  <div style="width:100px;float:left;text-align:center;background-color:#EDEDED;">When</div>
-  <div class="clear"></div>
-  <%= render :partial => 'activities/user_place_activity_collection' , :locals => {:collection => @user_place_activities}%>
-</div>
+<div class="clear"></div>
+<div class="pa_section_name" >Comments</div>
+<div class="clear"></div>
+<%= render :partial => 'activities/user_place_activity_collection' , :locals => {:collection => @user_place_activities}%>
 
 <script type="text/javascript">
 
@@ -78,7 +57,7 @@
       success : function(p){
         if(p=='true')
         {
-                 window.location.href=window.location.href;
+          window.location.href=window.location.href;
         }
         else
         {
@@ -97,7 +76,17 @@
 
   function reqPermissions()
   {
-    FB.Connect.showPermissionDialog("status_update,offline_access,publish_stream", function(){showReg()},true );
+    FB.Facebook.apiClient.users_hasAppPermission('offline_access',function(result1){
+      FB.Facebook.apiClient.users_hasAppPermission('publish_stream',function(result2){
+        if(result1 == 0 || result2 == 0) {
+          FB.Connect.showPermissionDialog("offline_access,publish_stream", function(){showReg()},true );
+        }
+        else
+        {
+          showReg();
+        }
+      });
+    })
   }
 </script>
 

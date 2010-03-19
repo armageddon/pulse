@@ -6,53 +6,37 @@
 <% end %>
 
 <% content_for :message do %>
- <%if (!logged_in?)||(current_user.class!=User)%>
-   <h1> Join HelloPulse now to meet these great singles, and find where others are hanging out.  &nbsp;&nbsp; &nbsp;      <%= submit_button "Join Now", :id =>'join',  :class =>'submit_act'  %>  &nbsp; or &nbsp;     <span class="facebook-connect-button"> <%= fb_login_button('showUserReg()') %></span></h1>
+  <%if (!logged_in?)||(current_user.class!=User)%>
+    <h1> Join HelloPulse now to meet these great singles, and find where others are hanging out.  &nbsp;&nbsp; &nbsp;      <%= submit_button "Join Now", :id =>'join',  :class =>'submit_act'  %>  &nbsp; or &nbsp;     <span class="facebook-connect-button"> <%= fb_login_button('showUserReg()') %></span></h1>
   <%elsif current_user.class==User &&current_user.status==3%>
-   <h1> Hello <%=current_user.first_name%> - we are pleased to be partnered with you.  </h1>
-   <%else%>
-  <h1> Hello <%=current_user.first_name%> - check out this activity </h1>
+    <h1> Hello <%=current_user.first_name%> - we are pleased to be partnered with you.  </h1>
+  <%else%>
+    <h1> Hello <%=current_user.first_name%> - check out this activity </h1>
   <%end%>
 <%end%>
-
+    
 <div class="column_header">
-     
-      	<h2><%= @activity.name + ' @ ' + @place.name%></h2>
-     
+  <h2><%= @activity.name + ' @ ' + @place.name%></h2>
 </div>
-<div style="float:left;width:300px; margin-bottom:4px;margin-top:0px">
-		<h3 style="width:300px;font-size:14px" class="section_name">People who hang here</h3>
-</div>
-<div style="text-align: right;float:right;width:200px; margin-bottom:4px;margin-top:0px">
-		<h4 id="people_paging" style="width:200px;font-size:12px" class="section_name">Page 1 of <%=@users.total_pages %></h4	>
-</div>
+<div class="pa_section_name">People who hang here</div>
+<div id="pa_people_paging" >Page 1 of <%=@users.total_pages %></div>
 <div class='clear'></div>
-<div id='people_results' style="margin-bottom:10px">
-	<%= render :partial => 'shared_object_collections/horizontal_users_collection' , :locals => {:collection => @users, :reqpath=>'/place_activity/users'}%>
+<div id='people_results'>
+  <%= render :partial => 'shared_object_collections/horizontal_users_collection' , :locals => {:collection => @users, :reqpath=>'/place_activity/users'}%>
 </div>
+<div class="pa_section_name">Things happening here</div>
+<div class='clear'></div>
+<%= render :partial => 'user_place_activity_collection' , :locals => {:collection => @user_place_activities}%>
 
-<div style="float:left;width:556px; margin-bottom:4px;margin-top:10px">
-		<h3 style="width:556px;font-size:14px" class="section_name">Things happening here</h3>
-</div>
-
-<div>
-	<div style="padding:5px;margin-right:5px;width:126px;float:left;text-align:center;background-color:#EDEDED;">Who</div>
-	<div style="padding:5px;text-align:center;margin-right:5px;width:275px;float:left;text-align:center;background-color:#EDEDED;">Why</div>
-	<div style="padding:5px;text-align:center;margin-right:5px;width:60px;float:left;text-align:center;background-color:#EDEDED;">When</div>
-	<div style="padding:5px;text-align:center;width:40px;float:left;text-align:center;background-color:#EDEDED;">&nbsp;</div>
-	<div class="clear"></div>
-	<%= render :partial => 'user_place_activity_collection' , :locals => {:collection => @user_place_activities}%>
-</div>
 
 <script type="text/javascript">
 
   $('#join').live('click',function(){
-    showUserReg()
+    showUserReg();
     return false;
-  })
+  });
 
-
- function showUserReg()
+  function showUserReg()
   {
     var id = FB.Connect.get_loggedInUser();
     $.ajax({
@@ -62,7 +46,7 @@
       success : function(p){
         if(p=='true')
         {
-                 window.location.href=window.location.href;
+          window.location.href=window.location.href;
         }
         else
         {
@@ -74,14 +58,7 @@
         alert('error')
         return false;
       }
-
     });
     return false;
-  }
-
-
-  function reqPermissions()
-  {
-    FB.Connect.showPermissionDialog("status_update,offline_access,publish_stream", function(){showReg()},true );
   }
 </script>
