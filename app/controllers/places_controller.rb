@@ -44,6 +44,7 @@ class PlacesController < ApplicationController
     place = Place.find(params[:activity_id])
     place.auth_code = params[:auth_code]
     place.fb_page_id = params[:page_id]
+    place.icon = params[:place][:icon]
     place.update_attributes(params[place])
     redirect_to '/places/admin'
   end
