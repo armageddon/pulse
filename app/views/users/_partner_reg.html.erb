@@ -181,7 +181,6 @@ $("#new_user").submit(function() {
     success: function(msg) {
       $("#dialog").jqmHide();
       var id = $('#object_id').val();
-      alert(id);
       if($('#object_type').val() == 'activity')
       {
         window.location = '/activities/'+ id;

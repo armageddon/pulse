@@ -68,6 +68,10 @@
     width:250px;
     padding:3px;
   }
+  .example {
+
+      color:gray;
+  }
 
   .place_input {
     border-color: #999999 #999999 #999999;

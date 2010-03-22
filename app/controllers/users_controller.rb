@@ -79,20 +79,24 @@ class UsersController < ApplicationController
 
   #this needs to be sorted - if no fb user redirect to link account screen
   def link_user_accounts
+
     if (current_user==nil) || (current_user.class!=User)|| (current_user.id==0)
       #register with fb
       #either connect existing account
       #or go to create user
-      redirect_to('/account/link')
-      return
-      logger.debug('current user nil - link accounts')
-      # User.create_from_fb_connect(facebook_session.user)
+      user = User.find_by_fb_user_id(facebook_session.user.id)
+      if(user!=nil)
+        login_from_fb
+        redirect_to '/' and return
+      else
+        redirect_to('/account/link')  and return
+      end
     else
       logger.debug('connect_accounts')
+       redirect_to('/account/link')  and return
       #connect accounts
       #self.current_user.link_fb_connect(facebook_session.user.id) unless self.current_user.fb_user_id == facebook_session.user.id
     end
-    redirect_to '/'
   end
 
   def link

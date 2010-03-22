@@ -93,7 +93,10 @@ class UserPlaceActivitiesController < ApplicationController
 
   def free
     @user_place_activity = UserPlaceActivity.new
-    render :partial => "free_user_place_activity.html.erb", :locals => { :activity => @activity, :user_place_activity => @user_place_activity, :place => @place, :view => @view }
+    params[:add_type].present? ? @add_type = params[:add_type] : @add_type = 'both'
+    @place_id = params[:place_id] if params[:place_id].present?
+    @activity_id = params[:activity_id] if params[:activity_id].present?
+    render :partial => "free_user_place_activity.html.erb", :locals => {:activity_id => @activity_id, :place_id => @place_id, :add_type => @add_type, :activity => @activity, :user_place_activity => @user_place_activity, :place => @place, :view => @view }
   end
 
   def show

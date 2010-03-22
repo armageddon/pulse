@@ -5,27 +5,39 @@
   &nbsp;
 <% end %>
 <% content_for :message do %>
-    <h2>We do not have an account linked to your Facebook account. Enter your Hellopulse username and password below to link the accounts, or create a new user for this facebook account</h2>
+  <h2>We do not have an account linked to your Facebook account. Enter your Hellopulse username and password below to link the accounts, or create a new user for this facebook account</h2>
 <% end %>
 
 <div class="column_header">
-   <h2>Link your accounts</h2>
+  <h2>Link your accounts</h2>
 </div>
 
+<div style="width:270px;float:left">
+  <% form_tag '/account/do_link' , :id => 'session_form' do -%>
 
- <% form_tag '/account/do_link' , :id => 'session_form' do -%>
-     
-              <span style="font-size:14px">Username</span>
-              <span style="font-size:14px"><%= text_field_tag 'login', @login, :class => "input_text", :value => "Username", :size => "10" %></span><br />
-              <span style="font-size:14px">Password</span>
-              <span style="font-size:14px"><%= password_field_tag 'password', nil, :size => "10", :class => "input_text", :style => "display: none;" %></span>
-              <span style="font-size:14px"><input type="text" class="input_text" size="10" value="Password" id="password_holder"/></span><br />
-              <%= submit_button "GO", :class=> 'submit', :type =>'submit'%><br />
-      
+    <span style="font-size:14px">Username</span>
+    <%= text_field_tag 'login', @login, :class => "input_text", :value => "Username", :size => "10" %><br />
+    <span style="font-size:14px">Password</span>
+  <%= password_field_tag 'password', nil, :size => "10", :class => "input_text", :style => "display: none;" %></span
+  <input type="text" class="input_text" size="10" value="Password" id="password_holder"/><br />
+  <%= submit_button "Link Account", :class=> 'submit', :type =>'submit'%><br />
 
-          <% end %>
+
+<% end %>
+</div>
+<div style="width:270px;float:left">
+
+  <%= submit_button "Join Now", :id =>'join',  :class =>'submit_act'  %>
+</div>
 
 <script type="text/javascript" charset="utf-8">
+
+
+ $('#join').live('click', function() {
+    $('#dialog').jqm({ajax:'/quick_reg',modal:true});
+    $("#dialog").jqmShow();
+    return false;
+  });
 
   $(document).ready(function() {
 
@@ -50,5 +62,5 @@
       $('#password').focus();
     });
 
-      });
+  });
 </script>

@@ -38,9 +38,8 @@
 <script type="text/javascript" charset="utf-8">
   $(function() {
     $('#post_to_fb').live('click', function(){
-
       var but = $(this);
-      if($('#page_id').val()==''||but.val()=='')
+      if(but.val()=='')
       {
         alert('You cannot post to facebook unless a partner and a facebook page has been linked with this activity ');
       }
