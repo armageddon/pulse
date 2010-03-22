@@ -1,0 +1,24 @@
+
+<%= stylesheet_link_tag %w(jqModal application ) %>
+<%= javascript_include_tag 	"jquery-1.3.2", 'jquery.form.js', 'jqModal', 'jquery.autocomplete.js', 'jquery.charcounter.js', 'application', 'signup' %>
+<%= token_tag %>
+<h1>HelloPulse Message Administration </h1>
+<br />
+<%= hidden_field_tag 'auth_token', form_authenticity_token %>
+<% Message.find(:all, :order => 'created_at DESC' ,:limit=>100, :conditions=>'sender_id <> 209').each do |u| %>
+  <div class="object" id="<%= dom_id u %>">
+    <div style="float:left">
+    <%=  image_tag(u.sender.icon.url(:thumb), :class=>"activity_image") %>
+    <%=  image_tag(u.recipient.icon.url(:thumb), :class=>"activity_image") %>
+    </div>
+    <div style='width:700px;float:left;margin-left:100px'>
+
+        <h3><%= u.body %></h3><br/>
+        
+
+    </div>
+
+    <div style="clear:both;"> </div>
+    <br />
+  </div>
+<% end %>

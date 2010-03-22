@@ -1,6 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :test3s
 
+   map.messages_admin '/messages/admin', :controller => 'user_messages' , :action => 'admin'
+   
   #maps controller
   map.map '/map',  :controller => 'maps', :action => 'index'
   map.big_map '/big_map' , :controller => 'maps', :action => 'map'
@@ -58,7 +60,8 @@ ActionController::Routing::Routes.draw do |map|
 
   #user_messages controller
   map.inbox '/account/inbox', :controller => 'user_messages', :action => 'index'
- 
+
+
   #pages controller
   map.about '/about', :controller => "pages", :action => 'about'
   map.contact '/contact', :controller => "pages", :action => 'contact'

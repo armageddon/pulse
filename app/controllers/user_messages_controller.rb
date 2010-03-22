@@ -11,7 +11,15 @@ class UserMessagesController < ApplicationController
 
   before_filter :login_required
   before_filter :set_other_user,  :only => [:show, :update]
-  
+
+    def admin
+    if current_user.admin
+      render :template => "user_messages/admin", :layout => false
+    else
+      render :text => 'you are not authorised'
+    end
+  end
+
   def index
     @places = current_user.suggested_places
     @matches = current_user.matches(params[:page], 8)
