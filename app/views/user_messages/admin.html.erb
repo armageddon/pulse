@@ -9,9 +9,10 @@
   <div class="object" id="<%= dom_id u %>">
     <div style="float:left">
     <%=  image_tag(u.sender.icon.url(:thumb), :class=>"activity_image") %>
-    <%=  image_tag(u.recipient.icon.url(:thumb), :class=>"activity_image") %>
+    <%=  image_tag(u.recipient.icon.url(:thumb), :class=>"activity_image") %><br />
+    <%  u.created_at%>
     </div>
-    <div style='width:700px;float:left;margin-left:100px'>
+    <div style='width:700px;float:left;margin-left:10px'>
 
         <h3><%= u.body %></h3><br/>
         
