@@ -4,31 +4,31 @@ module AuthenticatedSystem
   # Returns true or false if the user is logged in.
   # Preloads @current_user with the user model if they're logged in.
   def logged_in?
-    logger.debug('AUTHENTICATED SYSTEM - logged_id?')
-    logger.debug(current_user)
+    #logger.debug('AUTHENTICATED SYSTEM - logged_id?')
+    #logger.debug(current_user)
     !!current_user
   end
 
   # Accesses the current user from the session.
   # Future calls avoid the database because nil is not equal to false.
   def current_user
-    logger.debug('AUTHENTICATED SYSTEM - current_user')
-    logger.debug(@current_user)
-    logger.debug(@current_user.to_s)
+    #logger.debug('AUTHENTICATED SYSTEM - current_user')
+    #logger.debug(@current_user)
+    #logger.debug(@current_user.to_s)
     @current_user ||= (login_from_session || login_from_basic_auth || login_from_cookie || login_from_fb) unless @current_user == false
   end
 
   def login_from_fb
-    logger.debug('AUTHENTICATED SYSTEM - login_from_fb')
+    #logger.debug('AUTHENTICATED SYSTEM - login_from_fb')
     if facebook_session
-      logger.debug('has session')
-      logger.debug(facebook_session.user.uid)
+      #logger.debug('has session')
+      #logger.debug(facebook_session.user.uid)
       begin
         self.current_user = User.find_by_fb_user(facebook_session.user)
-        logger.debug('***** JUST SET CURRENT USER FROM FB ID')
-        logger.debug(self.current_user.id)
+       # logger.debug('***** JUST SET CURRENT USER FROM FB ID')
+        #logger.debug(self.current_user.id)
       rescue
-        logger.debug('No Session!!!!')
+        #logger.debug('No Session!!!!')
         @current_user = false
         clear_fb_cookies!
         
@@ -40,7 +40,7 @@ module AuthenticatedSystem
 
   # Store the given user id in the session.
   def current_user=(new_user)
-    logger.debug('in current user set session method auth sys')
+   # logger.debug('in current user set session method auth sys')
     session[:user_id] = new_user ? new_user.id : nil
     @current_user = new_user || false
   end

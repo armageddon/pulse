@@ -7,6 +7,8 @@ class SessionsController < ApplicationController
   end
 
   def new
+
+    @dest =   params[:dest] if params[:dest].present?
     if logged_in?
       return redirect_to(:controller => "users", :action => "show")
     end
@@ -85,6 +87,7 @@ class SessionsController < ApplicationController
  
   def create
     logout_keeping_session!
+    logger.debug(params[:dest]) if params[:dest].present?
     user = User.authenticate(params[:login], params[:password])
     if user
       # Protects against session fixation attacks, causes request forgery protection if user resubmits an earlier form using back button. Uncomment if you understand the tradeoffs.
@@ -94,6 +97,8 @@ class SessionsController < ApplicationController
       handle_remember_cookie! new_cookie_flag
       account_path
       flash[:notice] = "Logged in successfully"
+      redirect_to '/account/edit/#notifications' and return if params[:dest].present? && params[:dest] ='unsubscribe'
+      redirect_to '/messages' and return if params[:dest].present? && params[:dest] ='message'
       redirect_to root_path
     else
       note_failed_signin

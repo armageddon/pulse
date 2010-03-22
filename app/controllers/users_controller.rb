@@ -275,6 +275,9 @@ class UsersController < ApplicationController
   end
 
   def update
+    current_user.note_tips = false if !params[:note_tips].present?
+    current_user.note_messages = false if !params[:note_messages].present?
+    current_user.note_matches = false if !params[:note_matches].present?
     @user_place_activity = UserPlaceActivity.new
     if params[:iframe]=="true"
       logger.info(:params)

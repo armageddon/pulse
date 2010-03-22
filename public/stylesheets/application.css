@@ -1077,6 +1077,7 @@ a{
 
     float:left;
 }
+
 .sign_up_text {
     color:#990000;
     margin-bottom: 12px;
@@ -1257,4 +1258,10 @@ a{
     float:left;
     text-align:center;
     background-color:#EDEDED;
+}
+
+/* EDIT USER */
+.edit_label{
+
+    width:170px;
 }
