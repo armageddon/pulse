@@ -7,10 +7,14 @@
 <%= hidden_field_tag 'auth_token', form_authenticity_token %>
 <% Message.find(:all, :order => 'created_at DESC' ,:limit=>100, :conditions=>'sender_id <> 209').each do |u| %>
   <div class="object" id="<%= dom_id u %>">
+    <%=  u.created_at%> <br />
     <div style="float:left">
-    <%=  image_tag(u.sender.icon.url(:thumb), :class=>"activity_image") %>
+    <%=  image_tag(u.sender.icon.url(:thumb), :class=>"activity_image") %><br />
+      <%= u.sender.name  %>
+    </div>
+    <div style="float:left">
     <%=  image_tag(u.recipient.icon.url(:thumb), :class=>"activity_image") %><br />
-    <%  u.created_at%>
+    <%= u.recipient.name  %>
     </div>
     <div style='width:700px;float:left;margin-left:10px'>
 
