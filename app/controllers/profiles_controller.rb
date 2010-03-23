@@ -3,6 +3,7 @@ class ProfilesController < ApplicationController
   before_filter :login_required
 
   def show
+
     @user = User.find_by_username(params[:id])
     @places = @user.places.paginate(:page => params[:page], :per_page => 5)
     @events = @user.events.find(:all, :include => [:place, :user])

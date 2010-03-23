@@ -1,0 +1,7 @@
+development:
+ username: hellopulse
+ password: Dating001
+ api_key: bd544bf8298aeead16d2eac0763ac7be-us1
+ send_goodbye: false
+ send_notify: false
+ double_opt: false
