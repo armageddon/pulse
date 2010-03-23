@@ -35,8 +35,9 @@ module ApplicationHelper
         opts += "<option value='" + opt[1].to_s + "'>" + opt[0].to_s + "</option>"
       end
     end
+    html_options[:class] ||= "std_dd"
     %Q(#{hidden_field_tag name, value}
-    <select  id = "#{select_id}" class="std_dd" style="margin-left:#{html_options[:leftmargin]};width:#{html_options[:width]};float:#{html_options[:float]}; ">
+    <select  id = "#{select_id}" class=#{html_options[:class]} style="margin-left:#{html_options[:leftmargin]};width:#{html_options[:width]};float:#{html_options[:float]}; ">
   	    #{opts}     
   	  </select>)
   end
