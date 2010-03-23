@@ -1,9 +1,18 @@
-
-.std_dd
+.splash-members-login {
+  position: relative;
+  .bottom: 7px;
+}
+.std_dd, .inline_dd
 {
     font-size:12px;
     height:23px;
     margin-bottom:5px;
+}
+
+.inline_dd
+{
+    position: relative;
+    .top: 10px;
 }
 
 textarea
@@ -315,12 +324,17 @@ a, a:active {
     color: #7987a9;
 }
 
-.input_text {
+.input_text, .inline_input_text {
     padding: 3px;
     border: 1px solid #f1f3f6;
     background-color: #f1f3f6;
     color: #666;
     margin-bottom:5px;
+}
+
+.inline_input_text {
+  position:relative;
+  .top: 10px;
 }
 
 #manage_place {

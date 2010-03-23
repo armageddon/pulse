@@ -95,10 +95,10 @@
         </div>
         <br />
 
-        I am a <%= std_drop_down('user[sex]', 1, {:width => '90px'},gender_options, '', '') %> looking for  <%= std_drop_down('user[sex_preference]', 2, {:width => '90px'},gender_preference_options, '', '') %> in their <%= std_drop_down('user[age_preference]', 1, {:width => '120px'},age_options, '', '') %> <br />
+        I am a <%= std_drop_down('user[sex]', 1, {:class=>'inline_dd',:width => '90px'},gender_options, '', '') %> looking for  <%= std_drop_down('user[sex_preference]', 2, {:class=>'inline_dd',:width => '90px'},gender_preference_options, '', '') %> in their <%= std_drop_down('user[age_preference]', 1, {:class=>'inline_dd',:width => '120px'},age_options, '', '') %> <br />
 
-        My Height <%= std_drop_down('feet', 0, {:width => '40px'},feet_options, ' ', '0') %>  feet &nbsp;<%= std_drop_down('inches', -1, {:width => '50px'},inches_options, ' ', '-1') %>  inches<br />
-        My Build <%= std_drop_down('user[body_type]', 0, {:width => '150px'},body_type_options, 'Not specified', '0') %><br />
+        My Height <%= std_drop_down('feet', 0, {:class=>'inline_dd',:width => '40px'},feet_options, ' ', '0') %>  feet &nbsp;<%= std_drop_down('inches', -1, {:class=>'inline_dd',:width => '50px'},inches_options, ' ', '-1') %>  inches<br />
+        My Build <%= std_drop_down('user[body_type]', 0, {:class=>'inline_dd',:width => '150px'},body_type_options, 'Not specified', '0') %><br />
 
         <br />
 
