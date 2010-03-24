@@ -8,6 +8,7 @@ class UserMailer < ActionMailer::Base
   def activity_reminder(user)
     setup_email(user)
     @user = user
+    content_type "text/html"
   end
 
   def activation(user)
@@ -36,5 +37,7 @@ class UserMailer < ActionMailer::Base
       @subject     = "HELLOPULSE "
       @sent_on     = Time.now
       @body[:user] = user
+
+
     end
 end
