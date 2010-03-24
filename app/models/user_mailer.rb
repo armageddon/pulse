@@ -8,7 +8,7 @@ class UserMailer < ActionMailer::Base
   def activity_reminder(user)
     setup_email(user)
     @user = user
-    content_type "text/html"
+    @content_type =  "text/html"
   end
 
   def activation(user)
