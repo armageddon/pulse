@@ -5,6 +5,11 @@ class UserMailer < ActionMailer::Base
     @body[:url]  = "http://hellopulse.com/activate/#{user.activation_code}"
   end
 
+  def activity_reminder(user)
+    setup_email(user)
+    @user = user
+  end
+
   def activation(user)
     setup_email(user)
     @subject    += 'Your account has been activated!'

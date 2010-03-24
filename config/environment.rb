@@ -17,7 +17,7 @@ Rails::Initializer.run do |config|
   config.gem 'rubyist-aasm', :lib => 'aasm', :source => 'http://gems.github.com'
   config.gem 'faker'
   config.gem "right_aws"
-  
+  config.gem "javan-whenever", :lib => false, :source => 'http://gems.github.com'
   # added by Al
   #config.gem "rmagick"
 
