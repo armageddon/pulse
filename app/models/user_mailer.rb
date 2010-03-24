@@ -8,6 +8,15 @@ class UserMailer < ActionMailer::Base
   def activity_reminder(user)
     setup_email(user)
     @user = user
+    #todo: allow for men and women here
+    @gender = user.sex_preference == 1 ? 'men' : 'women'
+    @crm_matches = user.crm_matches(3)
+    @user1 = @crm_matches[1]
+    @user2  =  @crm_matches[2]
+    @user3 = @crm_matches[3]
+    @upa1 = @user1.user_place_activities[1]
+    @upa2 = @user2.user_place_activities[1]
+    @upa3 = @user3.user_place_activities[1]
     @content_type =  "text/html"
   end
 

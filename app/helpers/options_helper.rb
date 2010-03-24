@@ -12,7 +12,7 @@ module OptionsHelper
   end
   def feet_options
     [
-       ["3", 3],
+   
       ["4", 4],
       ["5", 5],
       ["6", 6],
