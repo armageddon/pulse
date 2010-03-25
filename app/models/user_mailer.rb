@@ -8,6 +8,38 @@ class UserMailer < ActionMailer::Base
   def activity_reminder(user)
     setup_email(user)
     @user = user
+    @subject = "What’s shaking on HelloPulse?"
+    #todo: allow for men and women here
+    @gender = user.sex_preference == 1 ? 'men' : 'women'
+    @crm_matches = user.crm_matches(3)
+    @user1 = @crm_matches[0]
+    @user2  =  @crm_matches[1]
+    @user3 = @crm_matches[2]
+    @upa1 = @user1.user_place_activities[0]
+    @upa2 = @user2.user_place_activities[0]
+    @upa3 = @user3.user_place_activities[0]
+    @content_type =  "text/html"
+  end
+
+  def photo_reminder(user)
+     setup_email(user)
+     @subject = "No photo, No action"
+    @user = user
+    #todo: allow for men and women here
+    @gender = user.sex_preference == 1 ? 'men' : 'women'
+    @crm_matches = user.crm_matches(3)
+    @user1 = @crm_matches[0]
+    @user2  =  @crm_matches[1]
+    @user3 = @crm_matches[2]
+    @upa1 = @user1.user_place_activities[0]
+    @upa2 = @user2.user_place_activities[0]
+    @upa3 = @user3.user_place_activities[0]
+    @content_type =  "text/html"
+  end
+  def daily_matches(user)
+     setup_email(user)
+     @subject = "Here are the singles pulsing in London"
+    @user = user
     #todo: allow for men and women here
     @gender = user.sex_preference == 1 ? 'men' : 'women'
     @crm_matches = user.crm_matches(3)
