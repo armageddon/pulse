@@ -15,9 +15,9 @@ class UserMailer < ActionMailer::Base
     @user1 = @crm_matches[0]
     @user2  =  @crm_matches[1]
     @user3 = @crm_matches[2]
-    @upa1 = @user1.user_place_activities.find(:last)
-    @upa2 = @user2.user_place_activities.find(:last)
-    @upa3 = @user3.user_place_activities.find(:last)
+    @upa1 = @user1.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
+    @upa2 = @user2.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
+    @upa3 = @user3.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
     @content_type =  "text/html"
   end
 
@@ -47,11 +47,11 @@ class UserMailer < ActionMailer::Base
     @user3 = @crm_matches[2]
     @user4 = @crm_matches[3]
     @user5 = @crm_matches[4]
-    @upa1 = @user1.user_place_activities.find(:last)
-    @upa2 = @user2.user_place_activities.find(:last)
-    @upa3 = @user3.user_place_activities.find(:last)
-    @upa4 = @user4.user_place_activities.find(:last)
-    @upa5 = @user5.user_place_activities.find(:last)
+    @upa1 = @user1.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
+    @upa2 = @user2.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
+    @upa3 = @user3.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
+    @upa4 = @user4.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
+    @upa5 = @user5.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
     @content_type =  "text/html"
   end
 
