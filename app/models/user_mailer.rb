@@ -45,7 +45,7 @@ class UserMailer < ActionMailer::Base
     @happenings = Array.new
     user.crm_matches(5).each do |u|
       @users << u
-      @happenings << @user1.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
+      @happenings << u.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
     end
     @content_type =  "text/html"
   end
