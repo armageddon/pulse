@@ -306,6 +306,23 @@ end
   def crm_matches(limit=5)
     if sex_preference!=nil && sex != nil && age_preference!=nil && sex != nil && age != nil
       @matches = User.paginate(:select=>'distinct users.*', :conditions => [
+          "users.created_at >= ? and sex = ? AND sex_preference = ? AND status = 1 AND age in (?) AND age_preference in (?) AND users.id != ? and UPA.description is not null and UPA.description <> '' and users.icon_file_name is not null",
+          mail_matches||='20090101',
+          sex_preference,
+          sex,
+          [age_preference - 1, age_preference, age_preference + 1],
+          [age - 1, age, age + 1],
+          id
+        ], :joins => 'inner join user_place_activities UPA on UPA.user_id = users.id', :order=>"UPA.created_at desc", :page=>1, :per_page=>limit)
+    else
+      #todo defaults if no matches (male/female/gay)
+      @matches = User.paginate(:all,:conditions=>"1 = 0",:limit => 0,:page=>1, :per_page=>1)
+    end
+  end
+
+   def crm_activitites(limit=5)
+    if sex_preference!=nil && sex != nil && age_preference!=nil && sex != nil && age != nil
+      @matches = User.paginate(:select=>'distinct users.*', :conditions => [
           "sex = ? AND sex_preference = ? AND status = 1 AND age in (?) AND age_preference in (?) AND users.id != ? and UPA.description is not null and UPA.description <> '' and users.icon_file_name is not null",
           sex_preference,
           sex,
@@ -313,6 +330,23 @@ end
           [age - 1, age, age + 1],
           id
         ], :joins => 'inner join user_place_activities UPA on UPA.user_id = users.id', :order=>"UPA.created_at desc", :page=>1, :per_page=>limit)
+    else
+      #todo defaults if no matches (male/female/gay)
+      @matches = User.paginate(:all,:conditions=>"1 = 0",:limit => 0,:page=>1, :per_page=>1)
+    end
+  end
+
+
+  def crm_photos(limit=5)
+    if sex_preference!=nil && sex != nil && age_preference!=nil && sex != nil && age != nil
+      @matches = User.find(:all, :conditions => [
+          "sex = ? AND sex_preference = ? AND status = 1 AND age in (?) AND age_preference in (?) AND users.id != ?and users.icon_file_name is not null",
+          sex_preference,
+          sex,
+          [age_preference - 1, age_preference, age_preference + 1],
+          [age - 1, age, age + 1],
+          id
+        ], :order=>"users.created_at desc", :page=>1, :per_page=>limit)
     else
       #todo defaults if no matches (male/female/gay)
       @matches = User.paginate(:all,:conditions=>"1 = 0",:limit => 0,:page=>1, :per_page=>1)

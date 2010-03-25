@@ -11,7 +11,7 @@ class UserMailer < ActionMailer::Base
     @subject = "What’s shaking on HelloPulse?"
     #todo: allow for men and women here
     @gender = user.sex_preference == 1 ? 'men' : 'women'
-    @crm_matches = user.crm_matches(3)
+    @crm_matches = user.crm_activitites(3)
     @user1 = @crm_matches[0]
     @user2  =  @crm_matches[1]
     @user3 = @crm_matches[2]
@@ -27,7 +27,7 @@ class UserMailer < ActionMailer::Base
     @user = user
     #todo: allow for men and women here
     @gender = user.sex_preference == 1 ? 'men' : 'women'
-    @crm_matches = user.crm_matches(4)
+    @crm_photos = user.crm_matches(4)
     @user1 = @crm_matches[0]
     @user2  =  @crm_matches[1]
     @user3 = @crm_matches[2]
@@ -42,6 +42,7 @@ class UserMailer < ActionMailer::Base
     #todo: ensure happening is the latest one
     @gender = user.sex_preference == 1 ? 'men' : 'women'
     @crm_matches = user.crm_matches(5)
+    
     @user1 = @crm_matches[0]
     @user2  =  @crm_matches[1]
     @user3 = @crm_matches[2]

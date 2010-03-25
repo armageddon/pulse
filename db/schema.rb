@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100322122929) do
+ActiveRecord::Schema.define(:version => 20100325133127) do
 
   create_table "activities", :force => true do |t|
     t.string   "name"
@@ -283,6 +283,9 @@ ActiveRecord::Schema.define(:version => 20100322122929) do
     t.boolean  "note_matches",                            :default => true
     t.boolean  "note_tips",                               :default => true
     t.boolean  "note_messages",                           :default => true
+    t.datetime "mail_matches"
+    t.datetime "mail_activities"
+    t.datetime "mail_photos"
   end
 
 end
