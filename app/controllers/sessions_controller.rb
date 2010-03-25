@@ -10,6 +10,7 @@ class SessionsController < ApplicationController
 
     @dest =   params[:dest] if params[:dest].present?
     if logged_in?
+      redirect_to '/account/edit/#notifications' and return if params[:dest].present? && params[:dest] ='unsubscribe'
       return redirect_to(:controller => "users", :action => "show")
     end
   end
