@@ -50,8 +50,8 @@ class UserMailer < ActionMailer::Base
     @upa1 = @user1.user_place_activities.find(:last)
     @upa2 = @user2.user_place_activities.find(:last)
     @upa3 = @user3.user_place_activities.find(:last)
-    @upa3 = @user4.user_place_activities.find(:last)
-    @upa3 = @user5.user_place_activities.find(:last)
+    @upa4 = @user4.user_place_activities.find(:last)
+    @upa5 = @user5.user_place_activities.find(:last)
     @content_type =  "text/html"
   end
 
