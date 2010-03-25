@@ -31,7 +31,7 @@ class UserMailer < ActionMailer::Base
     @user1 = @crm_matches[0]
     @user2  =  @crm_matches[1]
     @user3 = @crm_matches[2]
-    @user3 = @crm_matches[3]
+    @user4 = @crm_matches[3]
     @content_type =  "text/html"
   end
   def daily_matches(user)
