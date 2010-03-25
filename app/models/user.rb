@@ -306,7 +306,7 @@ end
   def crm_matches(limit=5)
     if sex_preference!=nil && sex != nil && age_preference!=nil && sex != nil && age != nil
       @matches = User.paginate(:select=>'distinct users.*', :conditions => [
-          "sex = ? AND sex_preference = ? AND status = 1 AND age in (?) AND age_preference in (?) AND users.id != ? and UPA.description is not null",
+          "sex = ? AND sex_preference = ? AND status = 1 AND age in (?) AND age_preference in (?) AND users.id != ? and UPA.description is not null and icon_file_name is not null",
           sex_preference,
           sex,
           [age_preference - 1, age_preference, age_preference + 1],
