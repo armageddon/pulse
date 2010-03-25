@@ -24,16 +24,16 @@
                     <tr>
                       <td><img src="http://aeser.co.uk/g/transparent.gif" width="10" height="10" style="display: block;" /></td>
                     </tr>
-                    <% @crm_matches.each do |u| %>
-                    <tr><td>kjkjsdsd <br /></td></tr>
-                    <% end %>
+                    <% (0..@users.length-1).each do |i| %>
+                 
+                   
                     <tr>
                       <td>
                         <table width="415" border="0" cellpadding="0" cellspacing="0">
                           <tr>
-                            <td valign="top" width="75"><a href="#"><img src="<%=@host + @user1.icon.url(:profile) %>" width="75" height="75" style="display: block;" /></a></td>
+                            <td valign="top" width="75"><a href="#"><img src="<%=@host + @users[i].icon.url(:profile) %>" width="75" height="75" style="display: block;" /></a></td>
                             <td valign="top" width="10"><img src="http://aeser.co.uk/g/transparent.gif" width="10" height="10" style="display: block;" /></td>
-                            <td valign="top" style="font-size: 12px;"><a href="#" style="color: #990000; text-decoration: none;"><%=@user1.first_name%></a><br />added <a href="#" style="color: #990000; text-decoration: none;"><%=@upa1.activity.name %></a> at <a href="#" style="color: #990000; text-decoration: none;"><%=@upa1.place.name %></a><br /><span style="font-style:italic;">'<%=@upa1.description %>'</span></td>
+                            <td valign="top" style="font-size: 12px;"><a href="#" style="color: #990000; text-decoration: none;"><%=@users[i].first_name%></a><br />added <a href="#" style="color: #990000; text-decoration: none;"><%=@happenings[i].activity.name %></a> at <a href="#" style="color: #990000; text-decoration: none;"><%=@happenings[i].place.name %></a><br /><span style="font-style:italic;">'<%=@happenings[i].description %>'</span></td>
 
                             <td valign="top" width="10"><img src="http://aeser.co.uk/g/transparent.gif" width="10" height="10" style="display: block;" /></td>
                             <td valign="middle" width="90">
@@ -50,7 +50,7 @@
                                 <tr>
                                   <td bgcolor="#9F1111" width="1"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
                                   <td bgcolor="#BF1212" width="5"><img src="http://aeser.co.uk/g/transparent.gif" width="5" height="5" style="display: block;" /></td>
-                                  <td bgcolor="#BF1212" align="center"><a href="<%=@host%>/profiles/<%=@user1.username%>" style="color: #FFFFFF; font-size: 18px; text-decoration: none;">Meet <%=@user1.sex == 1 ? 'him' : 'her' %> </a></td>
+                                  <td bgcolor="#BF1212" align="center"><a href="<%=@host%>/profiles/<%=@users[i].username%>" style="color: #FFFFFF; font-size: 18px; text-decoration: none;">Meet <%=@users[i].sex == 1 ? 'him' : 'her' %> </a></td>
                                   <td bgcolor="#BF1212" width="5"><img src="http://aeser.co.uk/g/transparent.gif" width="5" height="5" style="display: block;" /></td>
                                   <td bgcolor="#9F1111" width="1"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
 
@@ -79,222 +79,8 @@
                         </table>
                       </td>
                     </tr>
-                    <tr>
-                      <td>
-                        <table width="415" border="0" cellpadding="0" cellspacing="0">
-
-                          <tr>
-                            <td valign="top" width="75"><a href="#"><img src="<%=@host + @user2.icon.url(:profile) %>" width="75" height="75" style="display: block;" /></a></td>
-                            <td valign="top" width="10"><img src="http://aeser.co.uk/g/transparent.gif" width="10" height="10" style="display: block;" /></td>
-                            <td valign="top" style="font-size: 12px;"><a href="#" style="color: #990000; text-decoration: none;"><%=@user2.first_name%></a><br />added <a href="#" style="color: #990000; text-decoration: none;"><%=@upa2.activity.name %></a> at <a href="#" style="color: #990000; text-decoration: none;"><%=@upa2.place.name %></a><br /><span style="font-style:italic;">'<%=@upa2.description %>'</span></td>
-                            <td valign="top" width="10"><img src="http://aeser.co.uk/g/transparent.gif" width="10" height="10" style="display: block;" /></td>
-
-                            <td valign="middle" width="90">
-                              <table width="90" border="0" cellpadding="0" cellspacing="0">
-                                <tr>
-                                  <td bgcolor="#9F1111" colspan="5"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
-                                </tr>
-                                <tr>
-                                  <td bgcolor="#9F1111" width="1"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
-                                  <td bgcolor="#BF1212" colspan="3"><img src="http://aeser.co.uk/g/transparent.gif" width="5" height="5" style="display: block;" /></td>
-                                  <td bgcolor="#9F1111" width="1"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
-
-                                </tr>
-                                <tr>
-                                  <td bgcolor="#9F1111" width="1"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
-                                  <td bgcolor="#BF1212" width="5"><img src="http://aeser.co.uk/g/transparent.gif" width="5" height="5" style="display: block;" /></td>
-                                  <td bgcolor="#BF1212" align="center"><a href="<%=@host%>/profiles/<%=@user2.username%>" style="color: #FFFFFF; font-size: 18px; text-decoration: none;">Meet <%=@user2.sex == 1 ? 'him' : 'her' %></a></td>
-                                  <td bgcolor="#BF1212" width="5"><img src="http://aeser.co.uk/g/transparent.gif" width="5" height="5" style="display: block;" /></td>
-                                  <td bgcolor="#9F1111" width="1"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
-                                </tr>
-
-                                <tr>
-                                  <td bgcolor="#9F1111" width="1"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
-                                  <td bgcolor="#BF1212" colspan="3"><img src="http://aeser.co.uk/g/transparent.gif" width="5" height="5" style="display: block;" /></td>
-                                  <td bgcolor="#9F1111" width="1"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
-                                </tr>
-                                <tr>
-                                  <td bgcolor="#9F1111" colspan="5"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
-                                </tr>
-                              </table>
-
-                            </td>
-                          </tr>
-                          <tr>
-                            <td colspan="5"><img src="http://aeser.co.uk/g/transparent.gif" width="5" height="5" style="display: block;" /></td>
-                          </tr>
-                          <tr>
-                            <td colspan="5"><img src="http://aeser.co.uk/g/dotted.gif" width="415" height="1" style="display: block;" /></td>
-                          </tr>
-                          <tr>
-
-                            <td colspan="5"><img src="http://aeser.co.uk/g/transparent.gif" width="5" height="5" style="display: block;" /></td>
-                          </tr>
-                        </table>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <table width="415" border="0" cellpadding="0" cellspacing="0">
-                          <tr>
-
-                            <td valign="top" width="75"><a href="#"><img src="<%=@host + @user3.icon.url(:profile) %>" width="75" height="75" style="display: block;" /></a></td>
-                            <td valign="top" width="10"><img src="http://aeser.co.uk/g/transparent.gif" width="10" height="10" style="display: block;" /></td>
-                            <td valign="top" style="font-size: 12px;"><a href="#" style="color: #990000; text-decoration: none;"><%=@user3.first_name%></a><br />added <a href="#" style="color: #990000; text-decoration: none;"><%=@upa3.activity.name %></a> at <a href="#" style="color: #990000; text-decoration: none;"><%=@upa3.place.name %></a><br /><span style="font-style:italic;">'<%=@upa3.description %>'</span></td>
-                            <td valign="top" width="10"><img src="http://aeser.co.uk/g/transparent.gif" width="10" height="10" style="display: block;" /></td>
-                            <td valign="middle" width="90">
-
-                              <table width="90" border="0" cellpadding="0" cellspacing="0">
-                                <tr>
-                                  <td bgcolor="#9F1111" colspan="5"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
-                                </tr>
-                                <tr>
-                                  <td bgcolor="#9F1111" width="1"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
-                                  <td bgcolor="#BF1212" colspan="3"><img src="http://aeser.co.uk/g/transparent.gif" width="5" height="5" style="display: block;" /></td>
-                                  <td bgcolor="#9F1111" width="1"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
-                                </tr>
-
-                                <tr>
-                                  <td bgcolor="#9F1111" width="1"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
-                                  <td bgcolor="#BF1212" width="5"><img src="http://aeser.co.uk/g/transparent.gif" width="5" height="5" style="display: block;" /></td>
-                                  <td bgcolor="#BF1212" align="center"><a href="<%=@host%>/profiles/<%=@user3.username%>" style="color: #FFFFFF; font-size: 18px; text-decoration: none;">Meet <%=@user3.sex == 1 ? 'him' : 'her' %></a></td>
-                                  <td bgcolor="#BF1212" width="5"><img src="http://aeser.co.uk/g/transparent.gif" width="5" height="5" style="display: block;" /></td>
-                                  <td bgcolor="#9F1111" width="1"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
-                                </tr>
-                                <tr>
-
-                                  <td bgcolor="#9F1111" width="1"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
-                                  <td bgcolor="#BF1212" colspan="3"><img src="http://aeser.co.uk/g/transparent.gif" width="5" height="5" style="display: block;" /></td>
-                                  <td bgcolor="#9F1111" width="1"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
-                                </tr>
-                                <tr>
-                                  <td bgcolor="#9F1111" colspan="5"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
-                                </tr>
-                              </table>
-                            </td>
-
-                          </tr>
-                          <tr>
-                            <td colspan="5"><img src="http://aeser.co.uk/g/transparent.gif" width="5" height="5" style="display: block;" /></td>
-                          </tr>
-                          <tr>
-                            <td colspan="5"><img src="http://aeser.co.uk/g/dotted.gif" width="415" height="1" style="display: block;" /></td>
-                          </tr>
-                          <tr>
-                            <td colspan="5"><img src="http://aeser.co.uk/g/transparent.gif" width="5" height="5" style="display: block;" /></td>
-
-                          </tr>
-                        </table>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <table width="415" border="0" cellpadding="0" cellspacing="0">
-                          <tr>
-                            <td valign="top" width="75"><a href="#"><img src="<%=@host + @user4.icon.url(:profile) %>" width="75" height="75" style="display: block;" /></a></td>
-
-                            <td valign="top" width="10"><img src="http://aeser.co.uk/g/transparent.gif" width="10" height="10" style="display: block;" /></td>
-                            <td valign="top" style="font-size: 12px;"><a href="#" style="color: #990000; text-decoration: none;"><%=@user4.first_name%></a><br />added <a href="#" style="color: #990000; text-decoration: none;"><%=@upa4.activity.name %></a> at <a href="#" style="color: #990000; text-decoration: none;"><%=@upa4.place.name %></a><br /><span style="font-style:italic;">'<%=@upa4.description %>'</span></td>
-                            <td valign="top" width="10"><img src="http://aeser.co.uk/g/transparent.gif" width="10" height="10" style="display: block;" /></td>
-                            <td valign="middle" width="90">
-                              <table width="90" border="0" cellpadding="0" cellspacing="0">
-
-                                <tr>
-                                  <td bgcolor="#9F1111" colspan="5"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
-                                </tr>
-                                <tr>
-                                  <td bgcolor="#9F1111" width="1"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
-                                  <td bgcolor="#BF1212" colspan="3"><img src="http://aeser.co.uk/g/transparent.gif" width="5" height="5" style="display: block;" /></td>
-                                  <td bgcolor="#9F1111" width="1"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
-                                </tr>
-                                <tr>
-
-                                  <td bgcolor="#9F1111" width="1"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
-                                  <td bgcolor="#BF1212" width="5"><img src="http://aeser.co.uk/g/transparent.gif" width="5" height="5" style="display: block;" /></td>
-                                  <td bgcolor="#BF1212" align="center"><a href="<%=@host%>/profiles/<%=@user4.username%>" style="color: #FFFFFF; font-size: 18px; text-decoration: none;">Meet <%=@user4.sex == 1 ? 'him' : 'her' %></a></td>
-                                  <td bgcolor="#BF1212" width="5"><img src="http://aeser.co.uk/g/transparent.gif" width="5" height="5" style="display: block;" /></td>
-                                  <td bgcolor="#9F1111" width="1"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
-                                </tr>
-                                <tr>
-                                  <td bgcolor="#9F1111" width="1"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
-
-                                  <td bgcolor="#BF1212" colspan="3"><img src="http://aeser.co.uk/g/transparent.gif" width="5" height="5" style="display: block;" /></td>
-                                  <td bgcolor="#9F1111" width="1"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
-                                </tr>
-                                <tr>
-                                  <td bgcolor="#9F1111" colspan="5"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
-                                </tr>
-                              </table>
-                            </td>
-                          </tr>
-
-                          <tr>
-                            <td colspan="5"><img src="http://aeser.co.uk/g/transparent.gif" width="5" height="5" style="display: block;" /></td>
-                          </tr>
-                          <tr>
-                            <td colspan="5"><img src="http://aeser.co.uk/g/dotted.gif" width="415" height="1" style="display: block;" /></td>
-                          </tr>
-                          <tr>
-                            <td colspan="5"><img src="http://aeser.co.uk/g/transparent.gif" width="5" height="5" style="display: block;" /></td>
-                          </tr>
-
-                        </table>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <table width="415" border="0" cellpadding="0" cellspacing="0">
-                          <tr>
-                            <td valign="top" width="75"><a href="#"><img src="<%=@host + @user5.icon.url(:profile) %>" width="75" height="75" style="display: block;" /></a></td>
-                            <td valign="top" width="10"><img src="http://aeser.co.uk/g/transparent.gif" width="10" height="10" style="display: block;" /></td>
-
-                            <td valign="top" style="font-size: 12px;"><a href="#" style="color: #990000; text-decoration: none;"><%=@user5.first_name%></a><br />added <a href="#" style="color: #990000; text-decoration: none;"><%=@upa5.activity.name %></a> at <a href="#" style="color: #990000; text-decoration: none;"><%=@upa5.place.name %></a><br /><span style="font-style:italic;">'<%=@upa5.description %>'</span></td>
-                            <td valign="top" width="10"><img src="http://aeser.co.uk/g/transparent.gif" width="10" height="10" style="display: block;" /></td>
-                            <td valign="middle" width="90">
-                              <table width="90" border="0" cellpadding="0" cellspacing="0">
-                                <tr>
-
-                                  <td bgcolor="#9F1111" colspan="5"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
-                                </tr>
-                                <tr>
-                                  <td bgcolor="#9F1111" width="1"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
-                                  <td bgcolor="#BF1212" colspan="3"><img src="http://aeser.co.uk/g/transparent.gif" width="5" height="5" style="display: block;" /></td>
-                                  <td bgcolor="#9F1111" width="1"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
-                                </tr>
-                                <tr>
-                                  <td bgcolor="#9F1111" width="1"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
-
-                                  <td bgcolor="#BF1212" width="5"><img src="http://aeser.co.uk/g/transparent.gif" width="5" height="5" style="display: block;" /></td>
-                                  <td bgcolor="#BF1212" align="center"><a href="<%=@host%>/profiles/<%=@user5.username%>" style="color: #FFFFFF; font-size: 18px; text-decoration: none;">Meet <%=@user5.sex == 1 ? 'him' : 'her' %></a></td>
-                                  <td bgcolor="#BF1212" width="5"><img src="http://aeser.co.uk/g/transparent.gif" width="5" height="5" style="display: block;" /></td>
-                                  <td bgcolor="#9F1111" width="1"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
-                                </tr>
-                                <tr>
-                                  <td bgcolor="#9F1111" width="1"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
-                                  <td bgcolor="#BF1212" colspan="3"><img src="http://aeser.co.uk/g/transparent.gif" width="5" height="5" style="display: block;" /></td>
-
-                                  <td bgcolor="#9F1111" width="1"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
-                                </tr>
-                                <tr>
-                                  <td bgcolor="#9F1111" colspan="5"><img src="http://aeser.co.uk/g/transparent.gif" width="1" height="1" style="display: block;" /></td>
-                                </tr>
-                              </table>
-                            </td>
-                          </tr>
-                          <tr>
-
-                            <td colspan="5"><img src="http://aeser.co.uk/g/transparent.gif" width="5" height="5" style="display: block;" /></td>
-                          </tr>
-                          <tr>
-                            <td colspan="5"><img src="http://aeser.co.uk/g/dotted.gif" width="415" height="1" style="display: block;" /></td>
-                          </tr>
-                          <tr>
-                            <td colspan="5"><img src="http://aeser.co.uk/g/transparent.gif" width="5" height="5" style="display: block;" /></td>
-                          </tr>
-                        </table>
-
-                      </td>
-                    </tr>
+                     <% end %>
+          
                     <tr>
                       <td><img src="http://aeser.co.uk/g/transparent.gif" width="15" height="15" style="display: block;" /></td>
                     </tr>

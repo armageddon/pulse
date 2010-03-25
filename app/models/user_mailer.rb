@@ -41,18 +41,12 @@ class UserMailer < ActionMailer::Base
     #todo: allow for men and women here#
     #todo: ensure happening is the latest one
     @gender = user.sex_preference == 1 ? 'men' : 'women'
-    @crm_matches = user.crm_matches(5)
-    
-    @user1 = @crm_matches[0]
-    @user2  =  @crm_matches[1]
-    @user3 = @crm_matches[2]
-    @user4 = @crm_matches[3]
-    @user5 = @crm_matches[4]
-    @upa1 = @user1.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
-    @upa2 = @user2.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
-    @upa3 = @user3.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
-    @upa4 = @user4.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
-    @upa5 = @user5.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
+    @users = Array.new
+    @happenings = Array.new
+    user.crm_matches(5).each do |u|
+      @users << u
+      @happenings << @user1.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
+    end
     @content_type =  "text/html"
   end
 
