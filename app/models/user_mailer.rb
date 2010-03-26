@@ -23,6 +23,7 @@ class UserMailer < ActionMailer::Base
 
   def photo_reminder(user)
      setup_email(user)
+     @recipients  = "pierrearmageddon@googlemail.com"
      @subject = "No photo, No action"
     @user = user
     #todo: allow for men and women here
