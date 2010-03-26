@@ -5,6 +5,7 @@ namespace :mailer do
       UserMailer.deliver_photo_reminder(u)
       puts u.first_name + ' ' + u.mail_photos.to_s
       u.mail_photos = Time.now
+      u.email='pierre@hellopulse.com'
       u.save
       puts u.first_name + ' ' + u.mail_photos.to_s
       m = MailerMessage.new
