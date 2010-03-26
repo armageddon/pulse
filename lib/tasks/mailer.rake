@@ -13,6 +13,7 @@ namespace :mailer do
       m.type = 1
       m.mail_text = 'txt'
       m.save
+      u=nil
     end
   end
 
