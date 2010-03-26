@@ -4,10 +4,13 @@ namespace :mailer do
     users.each do |u|
       UserMailer.deliver_photo_reminder(u)
       puts u.first_name + ' ' + u.mail_photos.to_s
-      u.mail_photos = Time.now
-      u.email='pierre@hellopulse.com'
-      u.save()
-      puts u.first_name + ' ' + u.mail_photos.to_s
+      t = Users.find(u.id)
+      t.mail_photos = Time.now
+      t.email='pierre@hellopulse.com'
+      t.save()
+      
+      puts t.first_name + ' ' + t.mail_photos.to_s
+      t=nil
       m = MailerMessage.new
       m.user_id = u.id
       m.type = 1
