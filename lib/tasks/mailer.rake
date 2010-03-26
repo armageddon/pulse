@@ -2,11 +2,10 @@ namespace :mailer do
   task :photo => :environment do
     users = User.find(:all,:conditions=>"created_at  < DATE_SUB(CURRENT_DATE(), INTERVAL '1' DAY) and mail_photos is null and icon_file_name is null ")
     users.each do |u|
-      UserMailer.deliver_photo_reminder(u)
+      #UserMailer.deliver_photo_reminder(u)
       puts u.first_name + ' ' + u.mail_photos.to_s
       t = User.find(u.id)
       t.mail_photos = Time.now
-      t.email='pierre@hellopulse.com'
       t.save()
       
       puts t.first_name + ' ' + t.mail_photos.to_s
