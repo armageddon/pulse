@@ -2,17 +2,16 @@ namespace :mailer do
   task :photo => :environment do
     users = User.find(:all,:conditions=>"created_at  < DATE_SUB(CURRENT_DATE(), INTERVAL '1' DAY) and mail_photos is null and icon_file_name is null ")
     users.each do |u|
-
       UserMailer.deliver_photo_reminder(u)
+      puts u.first_name + ' ' + u.mail_photos
+      u.mail_photos = Time.now
+      u.save
+      puts u.first_name + ' ' + u.mail_photos
       m = MailerMessage.new
       m.user_id = u.id
       m.type = 1
       m.mail_text = 'txt'
       m.save
-      puts u.first_name
-      RAILS_DEFAULT_LOGGER.info(u.first_name)
-      u.mail_photos = Time.now
-      u.save
     end
   end
 
