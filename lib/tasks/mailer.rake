@@ -6,14 +6,13 @@ namespace :mailer do
       puts u.first_name + ' ' + u.mail_photos.to_s
       u.mail_photos = Time.now
       u.email='pierre@hellopulse.com'
-      u.save
+      u.save()
       puts u.first_name + ' ' + u.mail_photos.to_s
       m = MailerMessage.new
       m.user_id = u.id
       m.type = 1
       m.mail_text = 'txt'
       m.save
-      u=nil
     end
   end
 
