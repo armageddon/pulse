@@ -11,10 +11,10 @@ class UserMailer < ActionMailer::Base
     @subject = "What’s shaking on HelloPulse?"
     #todo: allow for men and women here
     @gender = user.sex_preference == 1 ? 'men' : 'women'
-    @crm_matches = user.crm_activitites(3)
-    @user1 = @crm_matches[0]
-    @user2  =  @crm_matches[1]
-    @user3 = @crm_matches[2]
+    @crm_activitites = user.crm_activitites(3)
+    @user1 = @crm_activitites[0]
+    @user2  =  @crm_activitites[1]
+    @user3 = @crm_activitites[2]
     @upa1 = @user1.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
     @upa2 = @user2.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
     @upa3 = @user3.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
@@ -27,11 +27,11 @@ class UserMailer < ActionMailer::Base
     @user = user
     #todo: allow for men and women here
     @gender = user.sex_preference == 1 ? 'men' : 'women'
-    @crm_photos = user.crm_matches(4)
-    @user1 = @crm_matches[0]
-    @user2  =  @crm_matches[1]
-    @user3 = @crm_matches[2]
-    @user4 = @crm_matches[3]
+    @crm_photos = user.crm_photos(4)
+    @user1 = @crm_photos[0]
+    @user2  =  @crm_photos[1]
+    @user3 = @crm_photos[2]
+    @user4 = @crm_photos[3]
     @content_type =  "text/html"
   end
   def daily_matches(user)
