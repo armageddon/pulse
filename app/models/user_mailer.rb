@@ -22,9 +22,10 @@ class UserMailer < ActionMailer::Base
   end
 
   def photo_reminder(user)
-     setup_email(user)
-     @recipients  = "{pierrearmageddon@googlemail.com}"
-     @subject = "No photo, No action"
+    setup_email(user)
+    recip = "pierrearmageddon@googlemail.com"
+    @recipients  = "#{recip}"
+    @subject = "No photo, No action"
     @user = user
     #todo: allow for men and women here
     @gender = user.sex_preference == 1 ? 'men' : 'women'
@@ -35,9 +36,12 @@ class UserMailer < ActionMailer::Base
     @user4 = @crm_photos[3]
     @content_type =  "text/html"
   end
+
+
+
   def daily_matches(user)
-     setup_email(user)
-     @subject = "Here are the singles pulsing in London"
+    setup_email(user)
+    @subject = "Here are the singles pulsing in London"
     @user = user
     #todo: allow for men and women here#
     #todo: ensure happening is the latest one
@@ -58,27 +62,27 @@ class UserMailer < ActionMailer::Base
   end
 
   def new_password(user, new_password)
-      setup_email(user)
-      @subject    += 'Your new password'
-      @body[:new_password]  = new_password
-    end
+    setup_email(user)
+    @subject    += 'Your new password'
+    @body[:new_password]  = new_password
+  end
 
   def message_received(recipient, sender)
     setup_email(User.find(recipient))
-   @subject   += 'You have received a mail from '  + User.find(sender).first_name
-   @body[:sender]  = sender
-   @body[:recipient] = recipient
-   @body[:url] = 'http://hellopulse.com' + account_messages_path
+    @subject   += 'You have received a mail from '  + User.find(sender).first_name
+    @body[:sender]  = sender
+    @body[:recipient] = recipient
+    @body[:url] = 'http://hellopulse.com' + account_messages_path
   end
   protected
-    def setup_email(user)
-      @host = "http://174.143.128.98"
-      @recipients  = "#{user.email}"
-      @from        = "\"HelloPulse\"<admin@hellopulse.com>"
-      @subject     = "HELLOPULSE "
-      @sent_on     = Time.now
-      @body[:user] = user
+  def setup_email(user)
+    @host = "http://www.hellopulse.com"
+    @recipients  = "#{user.email}"
+    @from        = "\"HelloPulse\"<admin@hellopulse.com>"
+    @subject     = "HELLOPULSE "
+    @sent_on     = Time.now
+    @body[:user] = user
 
 
-    end
+  end
 end

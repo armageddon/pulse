@@ -271,162 +271,157 @@ class UsersController < ApplicationController
   end
 
   def photos
-    render :text => 'sdsd'
+    render :text => 'test photos'
   end
 
   def update
-
-    params[:user][:note_tips] = true if params[:user][:note_tips].present?
-    params[:user][:note_messages] = true if params[:user][:note_messages].present?
-    params[:user][:note_matches] = true  if params[:user][:note_matches].present?
-
- current_user.note_tips = false if !params[:user][:note_tips].present?
-  current_user.note_messages = false if !params[:user][:note_messages].present?
-  current_user.note_matches = false if !params[:user][:note_matches].present?
-  @user_place_activity = UserPlaceActivity.new
-  if params[:iframe]=="true"
-    logger.info(:params)
-    current_user.crop_w = params[:crop_w]
-    current_user.crop_h = params[:crop_h]
-    current_user.crop_x = params[:crop_x]
-    current_user.crop_y = params[:crop_y]
-
-    current_user.update_attributes(params[:user])
-    respond_to do |format|
-      format.html { render :text => current_user.icon.url(:profile) }
-      format.js { render :text => current_user.icon.url + "js"}
-    end
-  else
-    if params[:year] != nil && params[:month] != nil && params[:year] != nil
-      params[:user][:dob] = Date.new(params[:year].to_i(),params[:month].to_i(),params[:day].to_i())
-      params[:user][:age] = User.get_age_option_from_dob(params[:user][:dob])
-    end
-    geocoder = Graticule.service(:google).new "ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog"
-    logger.debug(params[:user][:postcode])
-    if   params[:user][:postcode] != nil
-      location = geocoder.locate('london ' + params[:user][:postcode])
-      latitude, longitude = location.coordinates
-      if latitude != nil && longitude != nil
-        current_user.lat = latitude
-        current_user.long = longitude
-        params[:user][:lat] = latitude
-        params[:user][:long] = longitude
+    if params[:iframe]=="true"
+      logger.info(:params)
+      current_user.crop_w = params[:crop_w]
+      current_user.crop_h = params[:crop_h]
+      current_user.crop_x = params[:crop_x]
+      current_user.crop_y = params[:crop_y]
+      current_user.update_attributes(params[:user])
+      respond_to do |format|
+        format.html { render :text => current_user.icon.url(:profile) }
+        format.js { render :text => current_user.icon.url + "js"}
       end
-    end
-    cm = ((params[:feet].to_i * 12) +params[:inches].to_i ) * 2.54
-    current_user.height = cm
-    respond_to do |format|
-      logger.debug(params[:user]);
-      if current_user.update_attributes(params[:user])
-        format.html { redirect_to account_path }
-        format.js { render :nothing => true}
-      else
-        logger.debug(current_user.errors.full_messages);
-        logger.debug("in no change")
-        format.html { render :action => "edit"}
-        format.js { render :nothing => true, :status => 500 }
+    else
+      params[:user][:note_tips] = true if params[:user][:note_tips].present?
+      params[:user][:note_messages] = true if params[:user][:note_messages].present?
+      params[:user][:note_matches] = true  if params[:user][:note_matches].present?
+      current_user.note_tips = false if !params[:user][:note_tips].present?
+      current_user.note_messages = false if !params[:user][:note_messages].present?
+      current_user.note_matches = false if !params[:user][:note_matches].present?
+      if params[:year] != nil && params[:month] != nil && params[:year] != nil
+        params[:user][:dob] = Date.new(params[:year].to_i(),params[:month].to_i(),params[:day].to_i())
+        params[:user][:age] = User.get_age_option_from_dob(params[:user][:dob])
+      end
+      geocoder = Graticule.service(:google).new "ABQIAAAAZ5MZiTXmjJJnKcZewvCy7RQvluhMgQuOKETgR22EPO6UaC2hYxT6h34IW54BZ084XTohEOIaUG0fog"
+      if   params[:user][:postcode] != nil
+        location = geocoder.locate('london ' + params[:user][:postcode])
+        latitude, longitude = location.coordinates
+        if latitude != nil && longitude != nil
+          current_user.lat = latitude
+          current_user.long = longitude
+          params[:user][:lat] = latitude
+          params[:user][:long] = longitude
+        end
+      end
+      cm = ((params[:feet].to_i * 12) +params[:inches].to_i ) * 2.54
+      current_user.height = cm
+      respond_to do |format|
+        logger.debug(params[:user]);
+        if current_user.update_attributes(params[:user])
+          format.html { redirect_to account_path }
+          format.js { render :nothing => true}
+        else
+          logger.debug(current_user.errors.full_messages);
+          logger.debug("in no change")
+          format.html { render :action => "edit"}
+          format.js { render :nothing => true, :status => 500 }
+        end
       end
     end
   end
-end
 
-def activate
-  logout_keeping_session!
-  user = User.find_by_activation_code(params[:activation_code]) unless params[:activation_code].blank?
-  case
-  when (!params[:activation_code].blank?) && user && !user.active?
-    user.activate!
-    flash[:notice] = "Signup complete! Please sign in to continue."
-    redirect_to '/login'
-  when params[:activation_code].blank?
-    flash[:error] = "The activation code was missing.  Please follow the URL from your email."
-    redirect_back_or_default('/')
-  else
-    flash[:error]  = "We couldn't find a user with that activation code -- check your email? Or maybe you've already activated -- try signing in."
-    redirect_back_or_default('/')
-  end
-end
-
-def suspend
-  @user.suspend!
-  redirect_to login_path
-end
-
-def unsuspend
-  @user.unsuspend!
-  redirect_to login_path
-end
-
-def admin_delete
-  logger.info('sdsdsd')
-  if current_user.admin
-    if @user != nil
-      #need to delete all messages to/from this user
-      @user.all_messages.each do |m|
-        m.destroy
-      end
-      #need to delete user_place_activities from this user
-      @user.user_place_activities.each do |u|
-        u.destroy
-      end
-      #need to delete all timeline events from this user
-      @user.destroy
-    end
-    respond_to do |format|
-      format.js { render :text => "deleted"}
-    end
-  else
-    respond_to do |format|
-      format.js { render :text => "cannot delete this user"}
+  def activate
+    logout_keeping_session!
+    user = User.find_by_activation_code(params[:activation_code]) unless params[:activation_code].blank?
+    case
+    when (!params[:activation_code].blank?) && user && !user.active?
+      user.activate!
+      flash[:notice] = "Signup complete! Please sign in to continue."
+      redirect_to '/login'
+    when params[:activation_code].blank?
+      flash[:error] = "The activation code was missing.  Please follow the URL from your email."
+      redirect_back_or_default('/')
+    else
+      flash[:error]  = "We couldn't find a user with that activation code -- check your email? Or maybe you've already activated -- try signing in."
+      redirect_back_or_default('/')
     end
   end
+
+  def suspend
+    @user.suspend!
+    redirect_to login_path
+  end
+
+  def unsuspend
+    @user.unsuspend!
+    redirect_to login_path
+  end
+
+  def admin_delete
+    logger.info('sdsdsd')
+    if current_user.admin
+      if @user != nil
+        #need to delete all messages to/from this user
+        @user.all_messages.each do |m|
+          m.destroy
+        end
+        #need to delete user_place_activities from this user
+        @user.user_place_activities.each do |u|
+          u.destroy
+        end
+        #need to delete all timeline events from this user
+        @user.destroy
+      end
+      respond_to do |format|
+        format.js { render :text => "deleted"}
+      end
+    else
+      respond_to do |format|
+        format.js { render :text => "cannot delete this user"}
+      end
+    end
       
-end
+  end
 
-def facebook_user_exists
+  def facebook_user_exists
     
-  respond_to do |format|
-    format.js { render :text => params[:fbid].present? && User.find_by_fb_user_id(params[:fbid])!=nil}
+    respond_to do |format|
+      format.js { render :text => params[:fbid].present? && User.find_by_fb_user_id(params[:fbid])!=nil}
+    end
   end
-end
 
-def destroy
-  @user.delete!
-  redirect_to login_path
-end
-
-def purge
-  @user.destroy
-  redirect_to login_path
-end
-
-def icon_crop
-  respond_to do |format|
-    format.js { render :partial => "users/icon_crop", :locals => {:user => current_user}}
+  def destroy
+    @user.delete!
+    redirect_to login_path
   end
-end
+
+  def purge
+    @user.destroy
+    redirect_to login_path
+  end
+
+  def icon_crop
+    respond_to do |format|
+      format.js { render :partial => "users/icon_crop", :locals => {:user => current_user}}
+    end
+  end
   
-def admin
-  logger.debug('sdsd')
-  if current_user.admin
-    render :template => "users/admin", :layout => false
-  else
-    render :text => 'you are not authorised'
+  def admin
+    logger.debug('sdsd')
+    if current_user.admin
+      render :template => "users/admin", :layout => false
+    else
+      render :text => 'you are not authorised'
+    end
   end
-end
   
-protected
+  protected
 
-def access_denied
-  @updates = TimelineEvent.paginate( :page=>1, :conditions=>"icon_file_name is not  null",:joins=>"INNER JOIN users on users.id = timeline_events.actor_id",:per_page => 5, :order => 'created_at DESC')
+  def access_denied
+    @updates = TimelineEvent.paginate( :page=>1, :conditions=>"icon_file_name is not  null",:joins=>"INNER JOIN users on users.id = timeline_events.actor_id",:per_page => 5, :order => 'created_at DESC')
 
-  render :template => "sessions/new", :layout => false
+    render :template => "sessions/new", :layout => false
     
-end
+  end
 
-def find_user
-  @user = User.find(params[:id])
-end
+  def find_user
+    @user = User.find(params[:id])
+  end
   
 
 end
