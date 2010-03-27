@@ -1,6 +1,6 @@
 namespace :mailer do
   task :photo => :environment do
-    users = User.find(:all,:conditions=>"created_at  < DATE_SUB(CURRENT_DATE(), INTERVAL '1' DAY) and mail_photos is null and icon_file_name is null ", :limit => 5)
+    users = User.find(:all,:conditions=>"created_at  < DATE_SUB(CURRENT_DATE(), INTERVAL '1' DAY) and mail_photos is null and icon_file_name is null ")
     users.each do |u|
       RAILS_DEFAULT_LOGGER.info(u.first_name)
       UserMailer.deliver_photo_reminder(u)
