@@ -16,6 +16,7 @@ namespace :mailer do
       m.type = 1
       m.mail_text = 'txt'
       m.save
+      sleep 1
     end
   end
 
