@@ -7,7 +7,7 @@ class PlaceObserver < ActiveRecord::Observer
 
   def after_save(place)
     begin
-      if place.url == BITLY_URL && place.id != 0  && place.id != nil
+      if place.url == nil && place.id != 0  && place.id != nil
         bitly = Bitly.new('hellopulse','R_84b8e1abe448b0ef0517cea2e1a5eb42')
         long_url = 'http://www.hellopulse.com/places/'+place.id.to_s
         logger.debug(long_url )

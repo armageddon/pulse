@@ -14,7 +14,7 @@ class UserPlaceActivitiesController < ApplicationController
     if activity_id == -1
       logger.debug('act id IS -1 - creating activity')
       @activity = Activity.new
-      @activity.url = BITLY_URL
+
       @activity.name = activity_name
       @activity.activity_category_id = 1
       @activity.save
@@ -23,7 +23,7 @@ class UserPlaceActivitiesController < ApplicationController
     if place_id == -1
       logger.debug('plc id IS -1 - creating place')
       @place = Place.new
-      @place.url = BITLY_URL
+
       @place.name = place_name
       #todo: default place lat/long
       @place.latitude = 51.5065
@@ -35,7 +35,7 @@ class UserPlaceActivitiesController < ApplicationController
 
     place_activity = PlaceActivity.find(:first,:conditions=>['place_id = ? and activity_id = ?',place_id, activity_id])
     if place_activity == nil
-      place_activity = PlaceActivity.new(:activity_id => activity_id, :place_id => place_id, :url => BITLY_URL)
+      place_activity = PlaceActivity.new(:activity_id => activity_id, :place_id => place_id)
       place_activity.save
     end
 

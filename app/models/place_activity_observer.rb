@@ -19,7 +19,7 @@ class PlaceActivityObserver < ActiveRecord::Observer
       end
     rescue
       logger.error('Place activity URL save error')
-      place_activity.url = 'www.bit.ly/atCD0U'
+      place_activity.url =BITLY_URL
       place_activity.save
     end
   end
