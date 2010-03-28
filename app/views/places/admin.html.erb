@@ -17,7 +17,7 @@
         <h3><%= u.name %></h3><br/>
         Happening Count: <%=u.user_place_activities.length%><br />
         Places count: <%=u.activities.length%><br />
-        <%=  hidden_field_tag 'activity_id', u.id%>
+        <%=  hidden_field_tag 'place_id', u.id%>
         Auth code: <%= text_field_tag 'auth_code', u.auth_code %><br />
         Page ID: <%= text_field_tag 'page_id', u.fb_page_id %><br />
         Admin User  <%= u.admin_user_id %><br />

@@ -1,8 +1,8 @@
 class PlacesController < ApplicationController
   #before_filter :login_required
-   skip_before_filter :verify_authenticity_token, :only => [:post_activity_to_facebook]
+  skip_before_filter :verify_authenticity_token, :only => [:post_activity_to_facebook]
 
-    def post_activity_to_facebook
+  def post_activity_to_facebook
     user = User.find(params[:user_id])
     place = Place.find(:first,:conditions=>{:admin_user_id => user.id })
     facebook_act_session = Facebooker::Session.create
@@ -41,11 +41,15 @@ class PlacesController < ApplicationController
   end
 
   def update
-    place = Place.find(params[:activity_id])
+    place = Place.find(params[:place_id])
     place.auth_code = params[:auth_code]
     place.fb_page_id = params[:page_id]
-    place.icon = params[:place][:icon]
-    place.update_attributes(params[place])
+    if params[:place].present?
+      place.icon = params[:place][:icon] if  params[:place][:icon].present?
+      place.update_attributes(params[:place])
+    else
+      place.save
+    end
     redirect_to '/places/admin'
   end
   

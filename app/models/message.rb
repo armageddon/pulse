@@ -14,6 +14,6 @@ class Message < ActiveRecord::Base
   def send_email
     logger.debug('after update send mail')
     logger.debug(self.sender_id)
-    UserMailer.deliver_message_received(User.find(self.recipient_id), User.find(self.sender_id))
+    UserMailer.deliver_message_received(User.find(self.recipient_id), User.find(self.sender_id)) unless self.sender_id == HELLOPULSE_USER_ID
   end
 end
