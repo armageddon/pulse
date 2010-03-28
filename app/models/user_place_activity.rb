@@ -29,7 +29,7 @@ class UserPlaceActivity < ActiveRecord::Base
       
       message = User.find(self.user_id).first_name + ' added ' + Activity.find(self.activity_id).name + ' at ' +Place.find(self.place_id).name+ ' : ' + self.description
       tweet =  message[0,112]+'... '+ url
-      #  PingFM.user_post("status", tweet)
+       PingFM.user_post("status", tweet)
       #todo : lazy load this
       logger.info('message: ' + message +  'URL: ' + url)
       pulse_fb_session = Facebooker::Session.create
