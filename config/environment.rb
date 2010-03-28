@@ -30,7 +30,7 @@ Rails::Initializer.run do |config|
   # config.frameworks -= [ :active_record, :active_resource, :action_mailer ]
 
   # Activate observers that should always be running
-  config.active_record.observers = [:user_observer, :invitation_observer, :place_activity_observer]
+  config.active_record.observers = [:user_observer, :invitation_observer, :place_activity_observer, :place_observer, :activity_observer]
 
   # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
   # Run "rake -D time" for a list of tasks for finding time zone names.
@@ -61,3 +61,4 @@ end
 ANYTHING_ACTIVITY_ID = 159;
 ANYWHERE_PLACE_ID=1;
 USER_PLACE_DESCRIPTION_TEXT = "tell us why you socialise here and whether it's good for meeting people"
+BITLY_URL =  'www.bit.ly/atCD0U'

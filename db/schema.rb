@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100326115446) do
+ActiveRecord::Schema.define(:version => 20100327153719) do
 
   create_table "activities", :force => true do |t|
     t.string   "name"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(:version => 20100326115446) do
     t.integer  "admin_user_id"
     t.string   "auth_code"
     t.integer  "fb_page_id",           :limit => 8
+    t.string   "url"
   end
 
   create_table "activity_categories", :force => true do |t|

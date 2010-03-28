@@ -18,15 +18,23 @@ class UserPlaceActivity < ActiveRecord::Base
 
   def ping
     begin
-      url = self.place_activity.url||'http://bit.ly/atCD0U'
+      #check if activity or place has a partner
+      if self.place.admin_user_id != nil
+        url = self.place.url||'http://bit.ly/atCD0U'
+      elsif self.activity.admin_user_id != nil
+        url = self.activity.url||'http://bit.ly/atCD0U'
+      else
+        url = self.place_activity.url||'http://bit.ly/atCD0U'
+      end
+      
       message = User.find(self.user_id).first_name + ' added ' + Activity.find(self.activity_id).name + ' at ' +Place.find(self.place_id).name+ ' : ' + self.description
       tweet =  message[0,112]+'... '+ url
-      PingFM.user_post("status", tweet)
+      #  PingFM.user_post("status", tweet)
       #todo : lazy load this
       logger.info('message: ' + message +  'URL: ' + url)
       pulse_fb_session = Facebooker::Session.create
       pulse_fb_session.auth_token = "NH3XTZ" #ZMZ8SM"
-      pulse_fb_session.post("facebook.stream.publish", :action_links=> '[{ "text": "Check out HelloPulse!", "href": "'+self.place_activity.url+'"}]', :message => message, :uid=>279928867967)
+      pulse_fb_session.post("facebook.stream.publish", :action_links=> '[{ "text": "Check out HelloPulse!", "href": "http://'+url+'"}]', :message => message,  :uid=>279928867967)
     rescue 
       logger.error('Ping failed')
     end
