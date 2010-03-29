@@ -13,6 +13,8 @@
       <span class='error'><%= 'Email ' + current_user.errors.on(:email) %></span>
     <% end %>
   <% end %>
+
+
   <label>Post code</label>
   <%= text_field_tag 'user[postcode]', current_user.postcode || 'Post code', :class => 'input_text' %>
   <% if current_user.errors.length != 0 && current_user.errors.on(:postcode)!=nil%>
@@ -32,8 +34,6 @@
     <span class='error'><%= 'First Name ' + current_user.errors.on(:first_name) %></span>
   <% end %>
 
-
-
   <label>Description</label>
   <div id="description" style ="width:270px">
     <%= text_area_tag 'user[description]', current_user.description, :id => "user_description", :class => "word_count" %>
@@ -46,51 +46,53 @@
     <% end %>
   </div>
 
-
-
-  <label >Date of Birth</label>
-  <div class="clear"></div>
-  <span>
-    <%= std_drop_down('day', current_user.dob.day, {:width => '60px'},day_options, 'Day', '') %>
-    <%= std_drop_down('month', current_user.dob.month, {:width => '86px'},month_options, 'Month', '') %>
-    <%= std_drop_down('year', current_user.dob.year, {:width => '70px'},year_options, 'Year', '') %>
-  </span>
-
   <label>Picture</label>
   <div>
     <%= f.file_field :icon %>
   </div>
 
-  <label >Your gender</label>
-  <div class="clear"></div>
-  <%= std_drop_down('user[sex]', current_user.sex, {:width => '150px'},gender_options, 'Select a gender', '') %><br />
-  <br />
-  
-  <label>Looking for</label>
-  <div class="clear"></div>
-  <%= std_drop_down('user[sex_preference]', current_user.sex_preference , {:width => '150px'},gender_preference_options, 'Gender preference', '') %><br />
-  <label >Age preference</label>
-  <div class="clear"></div>
-  <%= std_drop_down('user[age_preference]', current_user.age_preference, {:width => '150px'},age_options, 'Around the age', '') %><br />
+  <% if current_user.status == 1 %>
+
+    <label >Date of Birth</label>
+    <div class="clear"></div>
+    <span>
+      <%= std_drop_down('day', current_user.dob.day, {:width => '60px'},day_options, 'Day', '') %>
+      <%= std_drop_down('month', current_user.dob.month, {:width => '86px'},month_options, 'Month', '') %>
+      <%= std_drop_down('year', current_user.dob.year, {:width => '70px'},year_options, 'Year', '') %>
+    </span>
 
 
 
-  <label >Your Height</label>
-  <div class="clear"></div>
-  <%= std_drop_down('feet', current_user.feet, {:width => '40px'},feet_options, ' ', '0') %>  feet &nbsp;<%= std_drop_down('inches', current_user.inches, {:width => '50px'},inches_options, ' ', '-1') %>  inches<br />
+    <label >Your gender</label>
+    <div class="clear"></div>
+    <%= std_drop_down('user[sex]', current_user.sex, {:width => '150px'},gender_options, 'Select a gender', '') %><br />
+    <br />
 
-  <label >Your Build</label>
-  <div class="clear"></div>
-  <%= std_drop_down('user[body_type]', current_user.body_type, {:width => '150px'},body_type_options, 'Not specified', '0') %><br />
-  <div style="clear:left;"> </div>
-
-<a name="notifications"</a><h2 style="margin-top:7px">Email Notification Settings</h2>
-<%= check_box_tag("user[note_matches]",current_user.note_matches,current_user.note_matches, :width=>"25px") %> Send me my latest matches via email <br >
-<%= check_box_tag("user[note_messages]",current_user.note_messages,current_user.note_messages, :width=>"25px") %> Notify me when I receive a message from another user<br >
-<%= check_box_tag("user[note_tips]",current_user.note_tips,current_user.note_tips, :width=>"25px") %> Allow HelloPulse to send me tips via email<br >
-  <br />
+    <label>Looking for</label>
+    <div class="clear"></div>
+    <%= std_drop_down('user[sex_preference]', current_user.sex_preference , {:width => '150px'},gender_preference_options, 'Gender preference', '') %><br />
+    <label >Age preference</label>
+    <div class="clear"></div>
+    <%= std_drop_down('user[age_preference]', current_user.age_preference, {:width => '150px'},age_options, 'Around the age', '') %><br />
 
 
+
+    <label >Your Height</label>
+    <div class="clear"></div>
+    <%= std_drop_down('feet', current_user.feet, {:width => '40px'},feet_options, ' ', '0') %>  feet &nbsp;<%= std_drop_down('inches', current_user.inches, {:width => '50px'},inches_options, ' ', '-1') %>  inches<br />
+
+    <label >Your Build</label>
+    <div class="clear"></div>
+    <%= std_drop_down('user[body_type]', current_user.body_type, {:width => '150px'},body_type_options, 'Not specified', '0') %><br />
+    <div style="clear:left;"> </div>
+
+    <a name="notifications"</a><h2 style="margin-top:7px">Email Notification Settings</h2>
+    <%= check_box_tag("user[note_matches]",current_user.note_matches,current_user.note_matches, :width=>"25px") %> Send me my latest matches via email <br >
+    <%= check_box_tag("user[note_messages]",current_user.note_messages,current_user.note_messages, :width=>"25px") %> Notify me when I receive a message from another user<br >
+    <%= check_box_tag("user[note_tips]",current_user.note_tips,current_user.note_tips, :width=>"25px") %> Allow HelloPulse to send me tips via email<br >
+    <br />
+
+  <% end %>
   <%= submit_button('Save') %>
 
 <% end %>
