@@ -245,7 +245,7 @@ class UsersController < ApplicationController
         @object.admin_user_id = @user.id
         @object.save
         session[:user_id] = @user.id
-        facebook_session.post("facebook.stream.publish", :action_links=> '[{ "text": "Check out HelloPulse!", "href": "http://www.hellopulse.com"}]', :message => ' has partnered with HelloPulse!', :uid=>@object.fb_page_id) unless @object.fb_page_id == nil
+        facebook_session.post("facebook.stream.publish", :action_links=> '[{ "text": "Check out HelloPulse!", "href": "' + @object.url + '"}]', :message => ' has partnered with HelloPulse!', :uid=>@object.fb_page_id) unless @object.fb_page_id == nil
         
         format.html {
           redirect_to :action=>'photos'

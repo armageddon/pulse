@@ -4,6 +4,11 @@ class UserMailer < ActionMailer::Base
     @subject    += 'Welcome to HelloPulse'
     @body[:url]  = "http://hellopulse.com/activate/#{user.activation_code}"
   end
+  
+  def partner_welcome(user)
+    setup_email(user)
+    @subject    = 'Welcome to HelloPulse'
+  end
 
   def activity_reminder(user)
     setup_email(user)
@@ -74,6 +79,10 @@ class UserMailer < ActionMailer::Base
     @body[:recipient] = recipient
     @body[:url] = 'http://hellopulse.com' + account_messages_path
   end
+
+
+
+
   protected
   def setup_email(user)
     @host = "http://www.hellopulse.com"
