@@ -2,24 +2,32 @@
 
 <div class="column_header">
 
-      	<h2>Dashboard</h2>
-      
+  <h2>Dashboard</h2>
+
 </div>
 <% if current_user.partner_type ==1 %>
-  
+   <% place = Place.find_by_admin_user_id(current_user.id) %>
+  <div><div style="float:left;font-size:12px;">Activities happening here</div><div style="float:right;font-size:14px;"><%=place.place_activities.length %></div></div><br/>
+  <div class='clear'></div>
+  <div><div style="float:left;font-size:12px;">Comments</div><div style="float:right;font-size:14px;"><%=place.user_place_activities.length%></div></div><br/>
+  <div class='clear'></div>
 <%elsif current_user.partner_type==2 %>
-
+   <% activity = Activity.find_by_admin_user_id(current_user.id) %>
+  <div><div style="float:left;font-size:12px;">Places where this happens</div><div style="float:right;font-size:14px;"><%=activity.place_activities.length %></div></div><br/>
+  <div class='clear'></div>
+  <div><div style="float:left;font-size:12px;">Comments</div><div style="float:right;font-size:14px;"><%=activity.user_place_activities.length%></div></div><br/>
+  <div class='clear'></div>
 <% else %>
-<div><div style="float:left;font-size:14px;"><%=link_to 'Matches',  account_matches_path %></div><div style="float:right;font-size:14px;"><%= current_user.matches.total_entries %> </div></div><br/>
-<div class='clear'></div>
-<div><div style="float:left;font-size:14px;"><%=link_to 'Suggested Places',account_matches_path %></div><div style="float:right;font-size:14px;"><%= current_user.suggested_places.length %></div></div><br/>
-<div class='clear'></div>
-<div><div style="float:left;font-size:14px;"><%=link_to 'Mail', account_messages_path%></div><div style="float:right;font-size:14px;"><%= current_user.all_messages.length %></div></div><br/>
-<div class='clear'></div>
-<div><div style="float:left;font-size:14px;"><%=link_to 'Profile views', profile_path(current_user)%></div><div style="float:right;font-size:14px;"><%= current_user.profile_views %></div></div><br/>
-<div class='clear'></div>
-<div><div style="float:left;font-size:14px;"><%=link_to 'Favourite Things' ,account_favorites_path%></div><div style="float:right;font-size:14px;"><%=current_user.user_place_activities.length %></div></div><br/>
-<div class='clear'></div>
-<div><div style="float:left;font-size:14px;"><%=link_to 'Favourite People', account_favorites_path%></div><div style="float:right;font-size:14px;"><%=current_user.friends.length %> </div></div><br/>
-<div class='clear'></div>
+  <div><div style="float:left;font-size:14px;"><%=link_to 'Matches',  account_matches_path %></div><div style="float:right;font-size:14px;"><%= current_user.matches.total_entries %> </div></div><br/>
+  <div class='clear'></div>
+  <div><div style="float:left;font-size:14px;"><%=link_to 'Suggested Places',account_matches_path %></div><div style="float:right;font-size:14px;"><%= current_user.suggested_places.length %></div></div><br/>
+  <div class='clear'></div>
+  <div><div style="float:left;font-size:14px;"><%=link_to 'Mail', account_messages_path%></div><div style="float:right;font-size:14px;"><%= current_user.all_messages.length %></div></div><br/>
+  <div class='clear'></div>
+  <div><div style="float:left;font-size:14px;"><%=link_to 'Profile views', profile_path(current_user)%></div><div style="float:right;font-size:14px;"><%= current_user.profile_views %></div></div><br/>
+  <div class='clear'></div>
+  <div><div style="float:left;font-size:14px;"><%=link_to 'Favourite Things' ,account_favorites_path%></div><div style="float:right;font-size:14px;"><%=current_user.user_place_activities.length %></div></div><br/>
+  <div class='clear'></div>
+  <div><div style="float:left;font-size:14px;"><%=link_to 'Favourite People', account_favorites_path%></div><div style="float:right;font-size:14px;"><%=current_user.friends.length %> </div></div><br/>
+  <div class='clear'></div>
 <% end %>

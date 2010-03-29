@@ -19,8 +19,8 @@ class Activity < ActiveRecord::Base
      :url => "/:class/:attachment/:id/:style_:filename",
     :default_url => "/images/Question.png"
     
-  
-  has_many :user_place_activities
+  has_many :place_activities
+  has_many :user_place_activities 
   has_many :users, :through => :user_place_activities
   has_many :places, :through => :user_place_activities
   belongs_to :activity_categories
