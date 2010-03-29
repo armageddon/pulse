@@ -179,7 +179,7 @@ class UsersController < ApplicationController
     @user.fb_user_id = facebook_session.user.id if facebook_session != nil
     params[:user][:dob] = Date.new(params[:year].to_i(),params[:month].to_i(),params[:day].to_i())
     @user.dob = params[:user][:dob]
-    params[:user][:age] = User.get_age_option_from_dob(params[:user][:dob])
+    @user_age = User.get_age_option_from_dob(params[:user][:dob])
     @user.location_id = 1;
     @user.postcode = @user.postcode.upcase
     #what is this register method???
@@ -225,6 +225,7 @@ class UsersController < ApplicationController
       @object = Activity.find(:first,:conditions=>{:auth_code => params[:auth_code] , :id=>@object_id, :admin_user_id => nil })
       @user .partner_type = 2
     end
+
     @user.fb_user_id = facebook_session.user.id
     @user.sex ||= 2
     @user.age ||= 5

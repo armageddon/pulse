@@ -1434,3 +1434,81 @@ Unknown database 'pulse_production'
 
 (See full trace by running task with --trace)
 (in /Users/pierrearmageddon/Development/pulse)
+rake aborted!
+Unknown database 'pulse_production'
+
+(See full trace by running task with --trace)
+(in /Users/pierrearmageddon/Development/pulse)
+rake aborted!
+Unknown database 'pulse_production'
+
+(See full trace by running task with --trace)
+(in /Users/pierrearmageddon/Development/pulse)
+rake aborted!
+Unknown database 'pulse_production'
+
+(See full trace by running task with --trace)
+(in /Users/pierrearmageddon/Development/pulse)
+rake aborted!
+Unknown database 'pulse_production'
+
+(See full trace by running task with --trace)
+(in /Users/pierrearmageddon/Development/pulse)
+rake aborted!
+(in /Users/pierrearmageddon/Development/pulse)
+searchd --pidfile --config /Users/pierrearmageddon/Development/pulse/config/production.sphinx.conf
+Unknown database 'pulse_production'
+
+(See full trace by running task with --trace)
+(in /Users/pierrearmageddon/Development/pulse)
+[Mon Mar 29 10:40:41.255 2010] [  177] using config file '/Users/pierrearmageddon/Development/pulse/config/production.sphinx.conf'...
+[Mon Mar 29 10:40:41.276 2010] [  177] FATAL: failed to create pid file '/var/www/sites/pulse_staging/current/log/searchd.production.pid': No such file or directory
+Sphinx 0.9.8.1-release (r1533)
+Copyright (c) 2001-2008, Andrew Aksyonoff
+
+Failed to start searchd daemon. Check /Users/pierrearmageddon/Development/pulse/log/searchd.log
+rake aborted!
+Unknown database 'pulse_production'
+
+(See full trace by running task with --trace)
+(in /Users/pierrearmageddon/Development/pulse)
+rake aborted!
+Unknown database 'pulse_production'
+
+(See full trace by running task with --trace)
+(in /Users/pierrearmageddon/Development/pulse)
+rake aborted!
+Unknown database 'pulse_production'
+
+(See full trace by running task with --trace)
+(in /Users/pierrearmageddon/Development/pulse)
+rake aborted!
+Unknown database 'pulse_production'
+
+(See full trace by running task with --trace)
+(in /Users/pierrearmageddon/Development/pulse)
+rake aborted!
+Unknown database 'pulse_production'
+
+(See full trace by running task with --trace)
+(in /Users/pierrearmageddon/Development/pulse)
+rake aborted!
+Unknown database 'pulse_production'
+
+(See full trace by running task with --trace)
+(in /Users/pierrearmageddon/Development/pulse)
+rake aborted!
+Unknown database 'pulse_production'
+
+(See full trace by running task with --trace)
+(in /Users/pierrearmageddon/Development/pulse)
+rake aborted!
+Unknown database 'pulse_production'
+
+(See full trace by running task with --trace)
+(in /Users/pierrearmageddon/Development/pulse)
+rake aborted!
+Unknown database 'pulse_production'
+
+(See full trace by running task with --trace)
+(in /Users/pierrearmageddon/Development/pulse)
