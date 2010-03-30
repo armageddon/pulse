@@ -1,18 +1,33 @@
-    Hello! 
- 
-    Thanks so much for checking out HelloPulse – the next generation site for bringing like-minded single people together.  We’re currently testing the site and really appreciate your feedback.   
- 
-    The idea behind HelloPulse is that you get a better insight into what someone is like based on where they go and what they do than you do than by reading a profile where everyone tends to sound the same.  We also know that you’re more likely to meet someone when you’re out living your life rather than sitting behind a computer.  That’s why HelloPulse helps you connect in the real world.  Just tell us where to go to meet great single people.  
- 
-    Please let us know your thoughts on the feedback form at the bottom of the page.  We’re constantly updating the site so can’t wait to show you what’s new. 
- 
-    Happy searching. 
- 
-    The HelloPulse Team 
 
-These are your account details:
-
-  Username: <%=h @user.username %>
-  Password: <%=h @user.password %>
-
-
+  
+  
+<table id="hellopulse-wrapper" width="100%" border="0" cellpadding="0" cellspacing="0" style="font-family: Arial,Helvetica,sans-serif;">
+  <tr>
+    <td width="10"><img src="http://aeser.co.uk/g/transparent.gif" width="10" height="10" style="display: block; border: 0;" /></td>
+    <td align="center">
+      <table id="hellopulse-welcome" width="620" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+          <td>
+            <table width="620" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td valign="top" width="122"><a href="http://www.hellopulse.com/"><img src="http://aeser.co.uk/g/logo-hellopulse-122x122.jpg" width="122" height="122" style="display: block; border: 0;" /></a></td>
+                <td valign="top" width="20"><img src="http://aeser.co.uk/g/transparent.gif" width="20" height="10" style="display: block; border: 0;" /></td>
+                <td valign="top">
+                  <table width="478" border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                      <td style="font-size: 13px;"><span style="font-weight:700;">Hello <%= @user.first_name %></span><br /><br />Great to have you on board at HelloPulse. We're the next generation site for bringing like-minded single people together.<br /><br />We believe you get a better insight into what someone is like based on where they go and what they do than by reading a profile where everyone tends to sound the same. We also know that you're more likely to meet someone when you're out living your life rather than sitting behind a computer. That's why HelloPulse helps you connect in the real world. Just tell us where to go to meet great single people.<br /><br />Remember, you'll only connect with people if you add activities and places so come on, tell us what you get up to.<br /><br /><a href="<%=@host %>/account"><img src="http://aeser.co.uk/g/button-add-activites.jpg" alt="Add activities now" width="202" height="37" style="display: block; border: 0;" /></a><br />Happy searching.<br /><br />The HelloPulse Team<br /><br />These are your account details:<br />Username: <%=h @user.username %><br />Password: <%=h @user.password %></td>
+                    </tr>
+                    <tr>
+                      <td><img src="http://aeser.co.uk/g/transparent.gif" width="10" height="10" style="display: block; border: 0;" /></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+    <td width="10"><img src="http://aeser.co.uk/g/transparent.gif" width="10" height="10" style="display: block; border: 0;" /></td>
+  </tr>
+</table>
