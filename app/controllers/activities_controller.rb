@@ -12,20 +12,20 @@ class ActivitiesController < ApplicationController
 
   def partner
     #@activity = Activity.find(:first,:conditions=>{:auth_code => params[:code], :admin_user_id => nil }) if params[:code] != nil
-   #   if @activity == nil && current_user!= false &&current_user.status==3
-   #       @activity = Activity.find(:first,:conditions=>{ :admin_user_id => current_user.id })
-   #   end
-   # if @activity == nil
-      # render :text => 'The login code you provided does not match one in our system. Please try again'
+    #   if @activity == nil && current_user!= false &&current_user.status==3
+    #       @activity = Activity.find(:first,:conditions=>{ :admin_user_id => current_user.id })
+    #   end
+    # if @activity == nil
+    # render :text => 'The login code you provided does not match one in our system. Please try again'
     #  logger.debug('no such')
     #  redirect_to  :controller=>'sessions' , :action=>'partner'
     #else
     params[:id].present? ? @activity =  Activity.find(params[:id]) : @activity =  Activity.find_by_admin_user_id(current_user.id)
-     render :text => 'Dear partner. An error has occured . please contact HelloPulse admin' and return if @activity == nil
-      @users = @activity.users.paginate(:all,:group => :user_id, :page => params[:page], :per_page => 6)
-      @user_place_activities = @activity.user_place_activities.paginate(:order=>'created_at DESC',:page=>1,:per_page=>10)
-      render :template => 'activities/show', :locals => {:activity => @activity, :auth_code =>params[:code] }
-   # end
+    render :text => 'Dear partner. An error has occured . please contact HelloPulse admin' and return if @activity == nil
+    @users = @activity.users.paginate(:all,:group => :user_id, :page => params[:page], :per_page => 6)
+    @user_place_activities = @activity.user_place_activities.paginate(:order=>'created_at DESC',:page=>1,:per_page=>10)
+    render :template => 'activities/show', :locals => {:activity => @activity, :auth_code =>params[:code] }
+    # end
   end
 
   def admin
@@ -45,34 +45,87 @@ class ActivitiesController < ApplicationController
   end
 
   def show
-   # login_from_fb
+    # login_from_fb
     @activity =Activity.find(params[:id])
     @user_place_activities = @activity.user_place_activities.paginate(:order=>'created_at DESC',:page=>1,:per_page=>10)
     @users = @activity.users.paginate(:all,:group => :user_id, :page => params[:page], :per_page => 6)
   end
 
+  def mail_test
+ 
+    @host =  "http://www.hellopulse.com"
+    @user = current_user
+    
+    case params[:type]
+    when 'activities'
+      @host =  "http://www.hellopulse.com"
+      @user = User.find(32)
+      @subject = "What’s shaking on HelloPulse?"
+      @gender = @user.sex_preference == 1 ? 'men' : 'women'
+      @crm_activitites = @user.crm_activitites(3)
+      @user1 = @crm_activitites[0]
+      @user2  =  @crm_activitites[1]
+      @user3 = @crm_activitites[2]
+      @upa1 = @user1.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
+      @upa2 = @user2.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
+      @upa3 = @user3.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
+      render :template => 'user_mailer/activity_reminder' , :layout => false
+   
+    when 'happenings'
+      @subject = "Here are the singles pulsing in London"
+      @user = current_user
+      #todo: allow for men and women here#
+      #todo: ensure happening is the latest one
+      @gender = @user.sex_preference == 1 ? 'men' : 'women'
+      @users = Array.new
+      @happenings = Array.new
+      @user.crm_matches(5).each do |u|
+        @users << u
+        @happenings << u.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
+      end
+      render :template => 'user_mailer/daily_matches' , :layout => false
+
+    when 'welcome'
+      render :template => 'user_mailer/signup_notification' , :layout => false
+
+    when 'notifications'
+      render :template => 'user_mailer/notification' , :layout => false
+
+    when 'photos'
+      @subject = "No photo, No action"
+      @user = current_user
+      #todo: allow for men and women here
+      @gender = @user.sex_preference == 1 ? 'men' : 'women'
+      @crm_photos = @user.crm_photos(4)
+      @user1 = @crm_photos[0]
+      @user2  =  @crm_photos[1]
+      @user3 = @crm_photos[2]
+      @user4 = @crm_photos[3]
+      render :template => 'user_mailer/photo_reminder' , :layout => false
+    else
+      
+    end
+    
+  end
+  
+  
   def new_test
     @user_place_activity = UserPlaceActivity.new
     respond_to do |format|
+      @host =  "http://www.hellopulse.com"
       @user = User.find(32)
-    @subject = "What’s shaking on HelloPulse?"
-    #todo: allow for men and women here
-    @gender = @user.sex_preference == 1 ? 'men' : 'women'
-    @crm_activitites = @user.crm_activitites(3)
-    @user1 = @crm_activitites[0]
-    @user2  =  @crm_activitites[1]
-    @user3 = @crm_activitites[2]
-    @upa1 = @user1.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
-    @upa2 = @user2.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
-    @upa3 = @user3.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
-
-
-
-
+      @subject = "What’s shaking on HelloPulse?"
+      #todo: allow for men and women here
+      @gender = @user.sex_preference == 1 ? 'men' : 'women'
+      @crm_activitites = @user.crm_activitites(3)
+      @user1 = @crm_activitites[0]
+      @user2  =  @crm_activitites[1]
+      @user3 = @crm_activitites[2]
+      @upa1 = @user1.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
+      @upa2 = @user2.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
+      @upa3 = @user3.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
 
       format.html {render :template => 'user_mailer/activity_reminder' , :layout => false }
-     
-      format.js {render :template => 'user_mailer/activation'  }
     end
   end
   

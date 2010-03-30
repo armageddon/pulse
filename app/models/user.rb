@@ -334,6 +334,17 @@ class User < ActiveRecord::Base
       #todo defaults if no matches (male/female/gay)
       @matches = User.paginate(:all,:conditions=>"1 = 0",:limit => 0,:page=>1, :per_page=>1)
     end
+    req = limit - @matches.length
+    defs = User.find(:all, :conditions=>[
+        "users.icon_file_name is not null and UPA.created_at < ? and UPA.description is not null and UPA.description <> ''" ,
+        Time.now -  (60 * 60 * 24)
+      ],:joins => 'inner join user_place_activities UPA on UPA.user_id = users.id', :limit => req)
+    defs.each do |u|
+      @matches <<  u
+    end
+    @matches
+
+
   end
 
 

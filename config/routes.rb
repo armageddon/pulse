@@ -117,6 +117,7 @@ ActionController::Routing::Routes.draw do |map|
   end
 
   map.test_new 'new_test', :controller=>'activities', :action => 'new_test'
+  map.mail_test 'mail_test', :controller=>'activities', :action => 'mail_test'
   map.activity_users '/activity/users', :controller => 'activities', :action => 'users'
   map.activity_user_place_activities '/activity/user_place_activities', :controller => 'activities', :action => 'user_place_activities'
   map.activity_places '/activity/activity_places',  :controller => 'activities', :action => 'activity_places'
