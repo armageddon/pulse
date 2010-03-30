@@ -1,4 +1,5 @@
 class ActivitiesController < ApplicationController
+   include CrmData
   skip_before_filter :verify_authenticity_token, :only => [:post_activity_to_facebook]
 
   def post_activity_to_facebook
@@ -62,7 +63,7 @@ class ActivitiesController < ApplicationController
       @user = User.find(32)
       @subject = "What’s shaking on HelloPulse?"
       @gender = @user.sex_preference == 1 ? 'men' : 'women'
-      @crm_activitites = @user.crm_activitites(3)
+      @crm_activitites = CrmData.crm_activitites(current_user,3)
       @user1 = @crm_activitites[0]
       @user2  =  @crm_activitites[1]
       @user3 = @crm_activitites[2]
@@ -79,7 +80,7 @@ class ActivitiesController < ApplicationController
       @gender = @user.sex_preference == 1 ? 'men' : 'women'
       @users = Array.new
       @happenings = Array.new
-      @user.crm_matches(5).each do |u|
+      CrmData.crm_matches(current_user,5).each do |u|
         @users << u
         @happenings << u.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
       end
@@ -96,7 +97,7 @@ class ActivitiesController < ApplicationController
       @user = current_user
       #todo: allow for men and women here
       @gender = @user.sex_preference == 1 ? 'men' : 'women'
-      @crm_photos = @user.crm_photos(4)
+      @crm_photos = CrmData.crm_photos(current_user,4)
       @user1 = @crm_photos[0]
       @user2  =  @crm_photos[1]
       @user3 = @crm_photos[2]
