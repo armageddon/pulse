@@ -2286,3 +2286,15 @@ Expected /Users/pierrearmageddon/Development/pulse/app/models/user_place_activit
 (See full trace by running task with --trace)
 (in /Users/pierrearmageddon/Development/pulse)
 Hello World
+rake aborted!
+Unknown database 'pulse_production'
+
+(See full trace by running task with --trace)
+(in /Users/pierrearmageddon/Development/pulse)
+Hello World
+rake aborted!
+Unknown database 'pulse_production'
+
+(See full trace by running task with --trace)
+(in /Users/pierrearmageddon/Development/pulse)
+Hello World
