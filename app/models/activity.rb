@@ -17,7 +17,7 @@ class Activity < ActiveRecord::Base
   end
   has_attached_file :icon, :styles => { :thumb => "75x75#", :large => "160x160#" },
      :url => "/:class/:attachment/:id/:style_:filename",
-    :default_url => "/images/Question.png"
+    :default_url => "/images/default.png"
     
   has_many :place_activities
   has_many :user_place_activities 

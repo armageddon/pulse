@@ -14,7 +14,7 @@ class Place < ActiveRecord::Base
     :storage => :s3,
     :s3_credentials => File.join(Rails.root, "config", "s3.yml"),
     :path => "places/:id/:id_:style.:extension",
-    :default_url => "/images/Question.png"
+    :default_url => "/images/default.png"
 
   belongs_to :location
   has_many :place_activities
