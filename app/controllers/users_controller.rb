@@ -90,15 +90,18 @@ class UsersController < ApplicationController
       user = User.find_by_fb_user_id(facebook_session.user.id)
       logger.debug('linked to fb user')
       if(user!=nil)
+        logger.info(params[:dest]) if params[:dest].present? 
         login_from_fb
         redirect_to '/account/edit/#notifications' and return if params[:dest].present? && params[:dest] =='unsubscribe'
         redirect_to '/add_photo' and return if params[:dest].present? && params[:dest] =='addphoto'
         redirect_to '/' and return
       else
+        redirect_to('/account/link?dest='+@dest)  and return if params[:dest].present?
         redirect_to('/account/link')  and return
       end
     else
-      logger.debug('connect_accounts')
+      logger.debug('connect_accounts') 
+      redirect_to('/account/link?dest='+params[:dest])  and return if params[:dest].present?
       redirect_to('/account/link')  and return
       #connect accounts
       #self.current_user.link_fb_connect(facebook_session.user.id) unless self.current_user.fb_user_id == facebook_session.user.id
@@ -111,6 +114,8 @@ class UsersController < ApplicationController
     user = User.find_by_fb_user_id(facebook_session.user.id)
     if(user!=nil)
       login_from_fb
+      redirect_to '/account/edit/#notifications' and return if params[:dest].present? && params[:dest] =='unsubscribe'
+      redirect_to '/add_photo' and return if params[:dest].present? && params[:dest] =='addphoto'
       redirect_to '/' and return
     else
       respond_to do |format|
