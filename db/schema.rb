@@ -295,6 +295,8 @@ ActiveRecord::Schema.define(:version => 20100327153719) do
     t.datetime "mail_matches"
     t.datetime "mail_activities"
     t.datetime "mail_photos"
+    t.string   "partner_website"
+    t.string   "facebook_page"
   end
 
 end

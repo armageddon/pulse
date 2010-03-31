@@ -1107,7 +1107,7 @@ a{
     background: #f1f3f6 url(/images/add_photo.gif) center no-repeat;
     cursor: pointer;
     margin-left:30px;
-    margib-bottom:5px;
+    margib-bottom:15px;
 }
 
 #add_photo_button {

@@ -11,7 +11,11 @@ class SessionsController < ApplicationController
     @dest =   params[:dest] if params[:dest].present?
     if logged_in?
       redirect_to '/account/edit/#notifications' and return if params[:dest].present? && params[:dest] ='unsubscribe'
+      redirect_to '/add_photo' and return if params[:dest].present? && params[:dest] ='addphoto'
       return redirect_to(:controller => "users", :action => "show")
+    else
+      clear_fb_cookies!
+      clear_facebook_session_information
     end
   end
 
@@ -80,7 +84,7 @@ class SessionsController < ApplicationController
     if logged_in? && current_user.status==3
       return redirect_to(:controller => "users", :action => "show")
     elsif logged_in? && current_user.status!=3
-       return redirect_to('/account')
+      return redirect_to('/account')
     else
       render :template => 'sessions/partner'
     end
@@ -100,9 +104,12 @@ class SessionsController < ApplicationController
       flash[:notice] = "Logged in successfully"
       redirect_to '/account/edit/#notifications' and return if params[:dest].present? && params[:dest] ='unsubscribe'
       redirect_to '/messages' and return if params[:dest].present? && params[:dest] ='message'
+      redirect_to '/add_photo' and return if params[:dest].present? && params[:dest] ='addphoto'
       redirect_to root_path
     else
       note_failed_signin
+      clear_fb_cookies!
+      clear_facebook_session_information
       @login       = params[:login]
       @remember_me = params[:remember_me]
       # render :template => "users/splash", :layout => false

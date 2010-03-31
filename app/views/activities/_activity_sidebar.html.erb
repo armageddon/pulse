@@ -6,7 +6,6 @@
   <%= image_tag(@activity.icon.url(:large), :class=>"profile_image") %>
 </div>
 
-
 <ul id="do_things">
   <li><%= link_to "SEARCH", :controller=>'search'%></li>
   <% if current_user!=nil %>
@@ -15,7 +14,7 @@
   <%  end %>
 </ul>
 <br />
-<% if current_user!=nil %>
+<% if current_user!=nil && current_user && current_user.partner_type == nil %>
   <%= link_to "ADD TO MY FAVOURITES", '#', 'data-href' => "/user_place_activities/free?add_type=place&activity_id="+@activity.id.to_s+"&view=add_activity", :id => "add_place_activity", :class => "add_to_favorites submit" %>
 <%end%>
 <div id="manage_activity"></div>

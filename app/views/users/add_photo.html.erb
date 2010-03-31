@@ -1,0 +1,30 @@
+<% content_for :c3 do %>
+  <%= render :partial => "shared/mini_dashboard" %>
+  <br />
+  <%= render :partial => "shared/message" %>
+<% end %>
+
+<% content_for :message do %>
+  <h2>
+    Hello <%= current_user.first_name %>, welcome back to HelloPulse. Please add a photo below.
+  </h2>
+<% end %>
+
+  <div class="column_header">
+  <h2>Add or Change your Profile Picture</h2>
+</div>
+
+<div id="upload_container" style="display: none;">
+  <% form_tag "/update", :multipart => true, :target => "image_upload", :id => "photo_upload" do%>
+    <%= file_field(:user , :icon, :style => "position: absolute;")%>
+  <% end %>
+</div>
+
+<div id="add_photo">Upload a new photo</div>
+<% form_tag '/account/', :method => "put", :id => "details_update" do %>
+
+
+  <div class="image_submit" style=" padding-top:10px; margin-top:10px; margin-left:30px">
+    <%= submit_button "Done", :height => "20px", :width => "70px" %>
+  </div>
+<% end %>

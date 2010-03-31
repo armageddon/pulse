@@ -20,6 +20,8 @@ ActionController::Routing::Routes.draw do |map|
   map.map_places '/search/map', :controller => 'search', :action => 'map_places'
    
   #users controller
+  map.add_photo '/add_photo', :controller => 'users', :action=>'add_photo'
+  map.invite_fb_friends '/invite_fb_friends', :controller=>'users', :action=>'invite_fb_friends'
   map.facebook_user_exists 'facebook_user_exists' , :controller=>'users', :action=>'facebook_user_exists'
   map.partner_new 'users/partner_new', :controller=>'users', :action=>'partner_new'
   map.quick_reg '/quick_reg', :controller=>'users', :action=>'quick_reg'

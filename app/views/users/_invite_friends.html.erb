@@ -1,0 +1,16 @@
+
+<fb:serverfbml style="width: 776px;">
+  <script type="text/fbml">
+      <fb:fbml>
+      <fb:request-form action="http://socialtoo.com/ignore/fb_friends_msg"
+        method="POST"
+       invite="true"
+       type="SocialToo"
+       content="<fb:name uid='(facebook id of user goes here)' useyou='false' /> is a member of SocialToo.com and would like to share that experience with you. To register, simply click on the "Register" button below.<fb:req-choice url="http://socialtoo.com?facebook_login=1" label="Register" />[% END %]">
+      <fb:multi-friend-selector
+       showborder="false"
+       actiontext="Invite your Facebook Friends to use SocialToo" />
+      </fb:request-form>
+      </fb:fbml>
+  </script>
+</fb:serverfbml>

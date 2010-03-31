@@ -32,7 +32,7 @@
     <%end%>
 </ul>
 <br />
-<% if current_user!=nil %>
+<% if current_user!=nil && current_user && current_user.partner_type == nil %>
   <%= link_to "ADD TO FAVORITES", '#', 'data-href' => "/user_place_activities/free?add_type=activity&place_id="+@place.id.to_s+"&view=add_place", :class => "add_to_favorites submit" %>
 <%end%>
 <div id="manage_place"></div>

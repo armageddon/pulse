@@ -111,22 +111,10 @@ class ActivitiesController < ApplicationController
   
   
   def new_test
-    @user_place_activity = UserPlaceActivity.new
+   
     respond_to do |format|
-      @host =  "http://www.hellopulse.com"
-      @user = User.find(32)
-      @subject = "What’s shaking on HelloPulse?"
-      #todo: allow for men and women here
-      @gender = @user.sex_preference == 1 ? 'men' : 'women'
-      @crm_activitites = @user.crm_activitites(3)
-      @user1 = @crm_activitites[0]
-      @user2  =  @crm_activitites[1]
-      @user3 = @crm_activitites[2]
-      @upa1 = @user1.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
-      @upa2 = @user2.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
-      @upa3 = @user3.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
 
-      format.html {render :template => 'user_mailer/activity_reminder' , :layout => false }
+      format.html {render :template => '/activities/new_test.html' }
     end
   end
   

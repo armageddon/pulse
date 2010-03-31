@@ -175,11 +175,6 @@ class User < ActiveRecord::Base
     return !fb_user_id.nil? && fb_user_id > 0
   end
 
-
-
-
-
-
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   # uff.  this is really an authorization, not authentication routine.
   # We really need a Dispatch Chain here or something.
@@ -303,78 +298,10 @@ class User < ActiveRecord::Base
     end
   end
 
-  def crm_matches(limit=5)
-    if sex_preference!=nil && sex != nil && age_preference!=nil && sex != nil && age != nil
-      @matches = User.paginate(:select=>'distinct users.*', :conditions => [
-          "users.created_at >= ? and sex = ? AND sex_preference = ? AND status = 1 AND age in (?) AND age_preference in (?) AND users.id != ? and UPA.description is not null and UPA.description <> '' and users.icon_file_name is not null",
-          mail_matches||='20090101',
-          sex_preference,
-          sex,
-          [age_preference - 1, age_preference, age_preference + 1],
-          [age - 1, age, age + 1],
-          id
-        ], :joins => 'inner join user_place_activities UPA on UPA.user_id = users.id', :order=>"UPA.created_at desc", :page=>1, :per_page=>limit)
-    else
-      #todo defaults if no matches (male/female/gay)
-      @matches = User.paginate(:all,:conditions=>"1 = 0",:limit => 0,:page=>1, :per_page=>1)
-    end
-  end
-
-  def crm_activitites(limit=5)
-    if sex_preference!=nil && sex != nil && age_preference!=nil && sex != nil && age != nil
-      @matches = User.paginate(:select=>'distinct users.*', :conditions => [
-          "sex = ? AND sex_preference = ? AND status = 1 AND age in (?) AND age_preference in (?) AND users.id != ? and UPA.description is not null and UPA.description <> '' and users.icon_file_name is not null",
-          sex_preference,
-          sex,
-          [age_preference - 1, age_preference, age_preference + 1],
-          [age - 1, age, age + 1],
-          id
-        ], :joins => 'inner join user_place_activities UPA on UPA.user_id = users.id', :order=>"UPA.created_at desc", :page=>1, :per_page=>limit)
-    else
-      #todo defaults if no matches (male/female/gay)
-      @matches = User.paginate(:all,:conditions=>"1 = 0",:limit => 0,:page=>1, :per_page=>1)
-    end
-    req = limit - @matches.length
-    defs = User.find(:all, :conditions=>[
-        "users.icon_file_name is not null and UPA.created_at < ? and UPA.description is not null and UPA.description <> ''" ,
-        Time.now -  (60 * 60 * 24)
-      ],:joins => 'inner join user_place_activities UPA on UPA.user_id = users.id', :limit => req)
-    defs.each do |u|
-      @matches <<  u
-    end
-    @matches
 
 
-  end
 
 
-  def crm_photos(limit=5)
-    if sex_preference!=nil && sex != nil && age_preference!=nil && sex != nil && age != nil
-      @matches = User.find(:all, :conditions => [
-          "sex = ? AND sex_preference = ? AND status = 1 AND age in (?) AND age_preference in (?) AND users.id != ? and users.icon_file_name is not null",
-          sex_preference,
-          sex,
-          [age_preference - 1, age_preference, age_preference + 1],
-          [age - 1, age, age + 1],
-          id
-        ], :order=>"users.created_at desc", :limit => limit)
-    else
-      #todo defaults if no matches (male/female/gay)
-      @matches = User.paginate(:all,:conditions=>"1 = 0",:limit => 0,:page=>1, :per_page=>1)
-    end
-    #top up pics
-    req = limit - @matches.length
-    defs = User.find(:all, :conditions=>[
-        "users.icon_file_name is not null and created_at < ? " ,
-        Time.now -  (60 * 60 * 24)
-      ], :limit => req)
-
-    defs.each do |u|
-      @matches <<  u
-    end
-    @matches
-  end
-  
   # This is the a second, more complex, version of the matche-selection algorithm. It can be swapped in for
   # the simpler one if there are enough users in the system that it would yield some actual results
   def matches_v2

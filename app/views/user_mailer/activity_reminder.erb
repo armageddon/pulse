@@ -41,7 +41,7 @@
               <tr>
                 <td valign="top" width="75"><a href="#"><img src="<%=@host + @user1.icon.url(:profile) %>" width="75" height="75" style="display: block; border: 0;" /></a></td>
                 <td valign="top" width="10"><img src="http://aeser.co.uk/g/transparent.gif" width="10" height="10" style="display: block; border: 0;" /></td>
-                <td valign="top" style="font-size: 12px;"><a href="#" style="color: #990000; text-decoration: none;"><%=@user1.first_name%></a><br />added <a href="#" style="color: #990000; text-decoration: none;">ACTIVITYNAME</a> at <a href="#" style="color: #990000; text-decoration: none;">PLACENAME</a><br /><span style="font-style:italic;">'<%=@upa1.description %>'</span></td>
+                <td valign="top" style="font-size: 12px;"><a href="#" style="color: #990000; text-decoration: none;"><%=@user1.first_name%></a><br />added <a href="#" style="color: #990000; text-decoration: none;"><%=@upa1.activity.name %></a> at <a href="#" style="color: #990000; text-decoration: none;"><%=@upa1.place.name %></a><br /><span style="font-style:italic;">'<%=@upa1.description %>'</span></td>
               </tr>
               <tr>
                 <td colspan="3"><img src="http://aeser.co.uk/g/transparent.gif" width="5" height="5" style="display: block; border: 0;" /></td>
