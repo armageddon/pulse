@@ -30,7 +30,7 @@ class UserMailer < ActionMailer::Base
 
   def photo_reminder(user)
     setup_email(user)
-    recip = "hellopulse@googlemail.com"
+ 
     @recipients  = "#{recip}"
     @subject = "No photo, No action"
     @user = user
@@ -43,8 +43,6 @@ class UserMailer < ActionMailer::Base
     @user4 = @crm_photos[3]
     @content_type =  "text/html"
   end
-
-
 
   def daily_matches(user)
     setup_email(user)
@@ -81,9 +79,6 @@ class UserMailer < ActionMailer::Base
     @body[:recipient] = recipient
     @body[:url] = 'http://hellopulse.com' + account_messages_path
   end
-
-
-
 
   protected
   def setup_email(user)
