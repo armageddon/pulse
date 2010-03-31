@@ -102,9 +102,9 @@ class SessionsController < ApplicationController
       handle_remember_cookie! new_cookie_flag
       account_path
       flash[:notice] = "Logged in successfully"
-      redirect_to '/account/edit/#notifications' and return if params[:dest].present? && params[:dest] ='unsubscribe'
-      redirect_to '/messages' and return if params[:dest].present? && params[:dest] ='message'
-      redirect_to '/add_photo' and return if params[:dest].present? && params[:dest] ='addphoto'
+      redirect_to '/account/edit/#notifications' and return if params[:dest].present? && params[:dest] =='unsubscribe'
+      redirect_to '/messages' and return if params[:dest].present? && params[:dest] =='message'
+      redirect_to '/add_photo' and return if params[:dest].present? && params[:dest] =='addphoto'
       redirect_to root_path
     else
       note_failed_signin
