@@ -2237,3 +2237,52 @@ Unknown database 'pulse_production'
 
 (See full trace by running task with --trace)
 (in /Users/pierrearmageddon/Development/pulse)
+rake aborted!
+Unknown database 'pulse_production'
+
+(See full trace by running task with --trace)
+(in /Users/pierrearmageddon/Development/pulse)
+rake aborted!
+Unknown database 'pulse_production'
+
+(See full trace by running task with --trace)
+(in /Users/pierrearmageddon/Development/pulse)
+rake aborted!
+Unknown database 'pulse_production'
+
+(See full trace by running task with --trace)
+(in /Users/pierrearmageddon/Development/pulse)
+rake aborted!
+Unknown database 'pulse_production'
+
+(See full trace by running task with --trace)
+(in /Users/pierrearmageddon/Development/pulse)
+rake aborted!
+Unknown database 'pulse_production'
+
+(See full trace by running task with --trace)
+(in /Users/pierrearmageddon/Development/pulse)
+rake aborted!
+Unknown database 'pulse_production'
+
+(See full trace by running task with --trace)
+(in /Users/pierrearmageddon/Development/pulse)
+Hello World
+rake aborted!
+Unknown database 'pulse_production'
+
+(See full trace by running task with --trace)
+(in /Users/pierrearmageddon/Development/pulse)
+Hello World
+rake aborted!
+Unknown database 'pulse_production'
+
+(See full trace by running task with --trace)
+(in /Users/pierrearmageddon/Development/pulse)
+Hello World
+rake aborted!
+Expected /Users/pierrearmageddon/Development/pulse/app/models/user_place_activity_observer.rb to define UserPlaceActivityObserver
+
+(See full trace by running task with --trace)
+(in /Users/pierrearmageddon/Development/pulse)
+Hello World

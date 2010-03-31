@@ -14,17 +14,17 @@ class UserPlaceActivity < ActiveRecord::Base
   fires :addeduserplaceactivity, :on => :create, :actor => :user, :subject => :self
   #todo - when does create fire - on new or on save?
 
-  after_create :tweet, :ping
+  after_create  :ping
 
   def ping
     begin
       #check if activity or place has a partner
       if self.place.admin_user_id != nil
-        url = self.place.url||'http://bit.ly/atCD0U'
+        url = self.place.url||'http://www.hellopulse.com/places/'+self.place.id.to_s
       elsif self.activity.admin_user_id != nil
-        url = self.activity.url||'http://bit.ly/atCD0U'
+        url = self.activity.url||'http://www.hellopulse.com/activities/'+self.activity.id.to_s
       else
-        url = self.place_activity.url||'http://bit.ly/atCD0U'
+        url = self.place.url||'http://www.hellopulse.com/places/'+self.place.id.to_s
       end
       
       message = User.find(self.user_id).first_name + ' added ' + Activity.find(self.activity_id).name + ' at ' +Place.find(self.place_id).name+ ' : ' + self.description
@@ -40,15 +40,6 @@ class UserPlaceActivity < ActiveRecord::Base
     end
   end
 
-  def tweet
-    begin
-      #httpauth = Twitter::HTTPAuth.new('HelloPulse', 'dating001')
-      #client = Twitter::Base.new(httpauth)
-      #client.update(User.find(self.user_id).first_name + ' added ' + Activity.find(self.activity_id).name + ' at ' +Place.find(self.place_id).name+ ' : ' + self.description )
-    rescue
-      logger.error('Tweet failed')
-    end
-  end
 
   def self.search_user_place_activities(params, current_user)
       
