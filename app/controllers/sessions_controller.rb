@@ -10,8 +10,8 @@ class SessionsController < ApplicationController
 
     @dest =   params[:dest] if params[:dest].present?
     if logged_in?
-      redirect_to '/account/edit/#notifications' and return if params[:dest].present? && params[:dest] ='unsubscribe'
-      redirect_to '/add_photo' and return if params[:dest].present? && params[:dest] ='addphoto'
+      redirect_to '/account/edit/#notifications' and return if params[:dest].present? && params[:dest] =='unsubscribe'
+      redirect_to '/add_photo' and return if params[:dest].present? && params[:dest] =='addphoto'
       return redirect_to(:controller => "users", :action => "show")
     else
       clear_fb_cookies!
