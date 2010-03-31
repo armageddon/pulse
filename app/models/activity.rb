@@ -25,7 +25,6 @@ class Activity < ActiveRecord::Base
   has_many :places, :through => :user_place_activities
   belongs_to :activity_categories
   
-
   def self.search_activities(params, current_user)
     search_criteria = SearchCriteria.new(params, current_user)
     if search_criteria.activity_categories.length > 0

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100327153719) do
+ActiveRecord::Schema.define(:version => 20100331124622) do
 
   create_table "activities", :force => true do |t|
     t.string   "name"
@@ -28,6 +28,8 @@ ActiveRecord::Schema.define(:version => 20100327153719) do
     t.string   "auth_code"
     t.integer  "fb_page_id",           :limit => 8
     t.string   "url"
+    t.string   "fb_page_url"
+    t.string   "website"
   end
 
   create_table "activity_categories", :force => true do |t|
@@ -176,6 +178,7 @@ ActiveRecord::Schema.define(:version => 20100327153719) do
     t.string   "auth_code"
     t.integer  "fb_page_id",             :limit => 8
     t.string   "url"
+    t.string   "fb_page_url"
   end
 
   add_index "places", ["import_id"], :name => "idx_import_id"

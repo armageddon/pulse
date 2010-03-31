@@ -6,10 +6,18 @@
   <%= image_tag(@activity.icon.url(:large), :class=>"profile_image") %>
 </div>
 
+<div id="activity_description">
+  <%= @activity.description %>
+</div>
+<br />
+
+ <h3><%= link_to "Website", @activity.website  if @activity.website.present?%> </h3>
+<h3> <%= link_to "Facebook Page", @activity.fb_page_url  if @activity.fb_page_url.present?%></h3>
+
 <ul id="do_things">
   <li><%= link_to "SEARCH", :controller=>'search'%></li>
   <% if current_user!=nil %>
-    <li><%= link_to "EDIT MY INFO", edit_account_path %></li>
+    <li><%= link_to "EDIT MY INFO", current_user.status ==3 ? '/edit_partner' : edit_account_path %></li>
     <li><%= link_to "INVITE A FRIEND", '#', 'data-href' => new_account_invitation_path, :class => "invite_a_friend" %></li>
   <%  end %>
 </ul>

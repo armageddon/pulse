@@ -1,0 +1,64 @@
+
+<% content_for :c1 do %>
+  <div class="column_header">
+    <h2>Details</h2>
+  </div>
+
+  <div id="profile_image">
+    <%= image_tag(@object.icon.url(:large), :class=>"profile_image") %>
+  </div>
+<%end%>
+
+<div class="column_header">
+  <h2>Edit details</h2>
+</div>
+<% form_tag( 'update_partner' ,:multipart => true ) do -%>
+  <h2>Account Settings</h2>
+  <label class='quick_sign_up_label'>Your Email Address</label>
+  <%= text_field_tag 'user[email]', current_user.email || 'Email address', :class => 'input_text input_text_partner' %>
+  <% if current_user.errors.length != 0 && current_user.errors.on(:email)!=nil%>
+    <% if current_user.errors.on(:email).length == 1 %>
+      <span class='error'><%= 'Email ' + current_user.errors.on(:email) %></span>
+    <% else %>
+      <span class='error'><%= 'Email ' + current_user.errors.on(:email) %></span>
+    <% end %>
+  <% end %>
+    <div class="'clear"></div>
+  <%= link_to "Change Password", :controller=>'passwords', :action=>"edit", :id=>'change_password' %>
+  <br/>
+  <h2 style="margin-top:10px">Profile Settings</h2>
+  <label class='quick_sign_up_label'">First name</label>
+  <%= text_field_tag 'user[first_name]', current_user.first_name || 'First name', :class => 'input_text input_text_partner' %>
+  <% if current_user.errors.length != 0 && current_user.errors.on(:first_name)!=nil%>
+    <span class='error'><%= 'First Name ' + current_user.errors.on(:first_name) %></span>
+  <% end %>
+    <div class="'clear"></div>
+
+  <label class='quick_sign_up_label'>Website</label>
+  <%= text_field_tag 'website', @object.website || '', :class => 'input_text input_text_partner' %>
+  <% if @object.errors.length != 0 && @object.errors.on(:website)!=nil%>
+    <span class='error'><%= 'Website ' + @object.errors.on(:website) %></span>
+  <% end %>
+    <div class="'clear"></div>
+
+  <label class='quick_sign_up_label'>Facebook Page URL</label>
+  <%= text_field_tag 'fb_page_url', @object.fb_page_url || '', :class => 'input_text input_text_partner' %>
+  <% if @object.errors.length != 0 && @object.errors.on(:fb_page_url)!=nil%>
+    <span class='error'><%= 'Facepoog page ' + @object..errors.on(:fb_page_url) %></span>
+  <% end %>
+    <div class="'clear"></div>
+
+  <label class='quick_sign_up_label'>Description</label>
+    <%= text_area_tag 'description', @object.description,:rows=>2, :cols=>30, :id => "user_description", :class => "word_count" %>
+    <% if @object.errors.length != 0 && @object.errors.on(:description)!=nil%>
+      <span class='error'><%= 'Description ' + @object.errors.on(:description) %></span>
+    <% end %>
+
+  <label class='quick_sign_up_label'>Picture</label>
+  <div>
+    <%= file_field_tag 'icon' %>
+  </div>
+  <br />
+  <%= submit_button('Save', :class=>'submit_act') %>
+
+<% end %>

@@ -18,8 +18,43 @@ class UsersController < ApplicationController
 
   def invite_fb_friends
     render :partial => "inviite_friends"
+  end
+
+  def edit_partner
+    #set object
+    @user = current_user
+    case @user.partner_type
+    when 1
+      @object = Place.find_by_admin_user_id(current_user.id)
+    when 2
+      @object = Activity.find_by_admin_user_id(current_user.id)
+    end
+
 
   end
+
+  def update_partner
+     @user = current_user
+    case @user.partner_type
+    when 1
+      @object = Place.find_by_admin_user_id(current_user.id)
+    when 2
+      @object = Activity.find_by_admin_user_id(current_user.id)
+    end
+
+    @object.icon = params[:icon] if params[:icon].present?
+    @object.description =params[:description] if params[:description].present?
+    @object.website =params[:website] if params[:website].present?
+    @object.fb_page_url =params[:fb_page_url] if params[:fb_page_url].present?
+    @object.save
+    redirect_to '/'
+    #set partner id
+    #get object type
+    #update user details
+    #update ibject details
+
+  end
+
   def facebook_session_expired
     clear_fb_cookies!
     clear_facebook_session_information
@@ -296,6 +331,16 @@ class UsersController < ApplicationController
   def edit
     logger.debug(current_user.errors.full_messages)
     @user = current_user
+    case @user.partner_type
+    when 1
+      @object = Place.find_by_admin_user_id(current_user.id)
+        render :template => '/users/edit_partner'
+    when 2
+      @object = Activity.find_by_admin_user_id(current_user.id)
+       render :template => '/users/edit_partner'
+    else
+
+    end
   end
 
   def photos
@@ -439,12 +484,9 @@ class UsersController < ApplicationController
   end
   
   protected
-
   def access_denied
     @updates = TimelineEvent.paginate( :page=>1, :conditions=>"icon_file_name is not  null",:joins=>"INNER JOIN users on users.id = timeline_events.actor_id",:per_page => 5, :order => 'created_at DESC')
-
     render :template => "sessions/new", :layout => false
-    
   end
 
   def find_user

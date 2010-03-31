@@ -337,6 +337,11 @@ a, a:active {
   .top: 10px;
 }
 
+.input_text_partner
+{
+    width:260px;
+}
+
 #manage_place {
     margin-top: 10px;
 }
