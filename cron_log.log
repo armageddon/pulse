@@ -2611,3 +2611,8 @@ Unknown database 'pulse_production'
 
 (See full trace by running task with --trace)
 (in /Users/pierrearmageddon/Development/pulse)
+rake aborted!
+/Users/pierrearmageddon/Development/pulse/app/models/user_place_activity_observer.rb:42: syntax error, unexpected $end, expecting kEND
+
+(See full trace by running task with --trace)
+(in /Users/pierrearmageddon/Development/pulse)

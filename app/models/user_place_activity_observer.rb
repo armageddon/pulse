@@ -24,7 +24,7 @@ class UserPlaceActivityObserver < ActiveRecord::Observer
         PingFM.user_post("status", tweet)
       rescue
         logger.error('tweet failed')
-      ends
+      end
       #todo : lazy load this
       logger.info('message: ' + message +  'URL: ' + url)
       pulse_fb_session = Facebooker::Session.create
