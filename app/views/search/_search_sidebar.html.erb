@@ -40,10 +40,8 @@
 
     <div id="activity_header" class="search_sidebar_header">Activities</div>
     <div id='activity_criteria'  style="padding:5px" class="<%=search_activities_class(@search_criteria.type)%>" >
-      <label class="search_criteria_header">Activity</label><br />
-      <% activity_category_options.each do |opt| %>
-        <%= check_box_tag "search_criteria[ac_"+opt[1].to_s+"]", opt[1] , @search_criteria.activity_categories.include?(opt[1]) %> <%= opt[0] %> <br />
-      <% end %>
+
+      
     </div>
     <div id="place_header" class="search_sidebar_header_line"></div>
   </div>

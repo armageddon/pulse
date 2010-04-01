@@ -81,13 +81,7 @@
       </div>
     </div>
     <div class="clear">&nbsp;</div>
-    <div style="float:left;margin-top:10px">
-      <label class="search_criteria_header" style="padding-top:0px":float:left>Activity</label><br \>
-        <div id="activity_category" style="margin-top:5px">
-          <%= std_drop_down('search_criteria[activity_category]', @search_criteria.activity_category, {:width => '255px'},activity_category_options, 'Any activity','0') %>
-      </div>
-    </div>
-    <div class="clear">&nbsp;</div>
+
     <div id="advanced_search_submit" style="float:left;text-align:center; margin-top:15px">
       <%= submit_button("Search", :id=> "advanced_search_button", :style=>"padding-left:2px") %>
     </div>
