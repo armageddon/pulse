@@ -161,22 +161,24 @@
       $('#place_results').css('margin-top','0px');
       $('#place').css('display','block');
       $('#place').css('margin-left','10px');
+       $('#place_nam').css('width','270px');
       $('#place_nam').css('display','block');
-      $('#place_results').css('max-height','300px');
+      $('#place_results').css('max-height','280px');
       $('#place_results').css('overflow','auto');
     }
 
     function displayPopularPlaces(places)
     {
-      $('#place_label').html('Select a popular place or click search to find other places');
+      $('#place_label').html('Choose a popular place or Search ');
       $('#place_nam').css('display','none');
       $('#place').css('display','block');
       $('#place').css('margin-left','0px');
+      $('#place_nam').css('width','280px');
       $('#place_results').css('display','block');
       $('#place_results').css('border','1px');
       $('#place_results').css('border-style','solid');
       $('#place_results').css('border-color','#999999');
-      $('#place_results').css('margin-top','10px');
+   
       $('#place_results').html(formatPlaceRows(places));
     }
 

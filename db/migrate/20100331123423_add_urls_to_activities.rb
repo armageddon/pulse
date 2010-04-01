@@ -5,7 +5,7 @@ class AddUrlsToActivities < ActiveRecord::Migration
   end
 
   def self.down
-   remove_column :activities, :fb_page_url, :string
-    remove_column :places, :fb_page_url, :string
+   remove_column :activities, :fb_page_url
+    remove_column :places, :fb_page_url
   end
 end

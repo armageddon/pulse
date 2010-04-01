@@ -7,10 +7,9 @@
       <div id="activity_category_div" style="margin-top:10px">
         <label  style="margin-top: 5px; color:#990000;">What do you like doing?</label>
         <div class="clear"></div>
-		<% activity_category = (user_place_activity.activity.activity_category_id == 0 ? nil : ActivityCategory.find(user_place_activity.activity.activity_category_id)) %>
-        <%= std_drop_down('activity_category_id', activity_category.id, {:width => '223px'},activity_category_options, 'Any category', 0, 'activity_category_hidden','activity_category_select') %><br />
+		  <%=# std_drop_down('activity_category_id', activity_category.id, {:width => '223px'},activity_category_options, 'Any category', 0, 'activity_category_hidden','activity_category_select') %><br />
 		<div class="clear"></div>
-		<%= std_drop_down('activity_id', user_place_activity.activity_id, {:width => '223px', :leftmargin => '15px'},activity_options(activity_category.id), 'Any activity', 0, 'activity_hidden', 'activity_select' ) %><br />
+		<%= #std_drop_down('activity_id', user_place_activity.activity_id, {:width => '223px', :leftmargin => '15px'},activity_options(activity_category.id), 'Any activity', 0, 'activity_hidden', 'activity_select' ) %><br />
 		<div class="clear"></div>
 		
 	  </div>

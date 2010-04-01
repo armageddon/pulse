@@ -25,7 +25,7 @@
           <%end%>
           <br />
           <div id='activity'>
-            <label  style="margin-top: 5px; color:#990000;">What do you like doing?</label> <br />
+            <label  class="activity_label">What do you like doing?</label> <br />
             <%= text_field_tag :activity_name,(user_place_activity.activity.present? ? user_place_activity.activity.name : 'e.g. Drinking Margheritas at Crazy Homies'),   :class => "activity_input example", :disabled => false,  :size => 50%>
             <div id ="activity_results" style="display:none">
             </div>
@@ -34,7 +34,7 @@
             <br />
           </div>
           <div id="place" style="<%= ' display:none' unless upa_type == 'edit' %>">
-            <label  id="place_label" style="margin-top: 5px; color:#990000;">Where do you like doing it?</label> <br />
+            <label  id="place_label" class="activity_label">Where do you like doing it?</label> <br />
             <%= text_field_tag :place_nam, (user_place_activity.place.present? ? user_place_activity.place.name : nil), :class => "place_input", :disabled => false, :size => 50%>
             <div id='place_results' style="display:none">
             </div>
@@ -66,33 +66,30 @@
 
       <div class="clear"></div>
 
-      <div style="margin-top:10px; float:left">
-        <label  style="margin-top: 5px; color:#990000; float:left">When do you do it?</label>
-        <div class="clear"></div>
-        <%= std_drop_down('day_of_week', user_place_activity.day_of_week||0, {:width => '130px'},dotw_options, 'Any day',0,'','dowdd') %>
-        <%= std_drop_down('time_of_day', user_place_activity.time_of_day||0, {:width => '200px'},tod_options, 'Any time',0,'','toddd') %>
-      </div>
-      <div class='clear'></div>
 
       <div style="margin-top:5px">
         <span id="add_error" class="error"></span>
       </div>
 
       <div style="float:left;margin-top:10px">
-        <%= text_area_tag('description', user_place_activity.description || USER_PLACE_DESCRIPTION_TEXT, :rows => 2, :cols=>45,:class => "input_text word_count") %>
+        <%= text_area_tag('description', user_place_activity.description || USER_PLACE_DESCRIPTION_TEXT, :rows => 4, :cols=>45,:class => "input_text activity_input_text  word_count") %>
       </div>
       <div class="clear"></div>
-      <%= submit_button upa_type == 'add' ? 'Add' : 'Save', :enabled=>'true', :id => 'add_activity_template' %>
+      <div id="button_div" style="float:left;margin-top:10px">
+        <%= submit_button upa_type == 'add' ? 'Add' : 'Save', :enabled=>'true', :id => 'add_activity_template' , :class=>"submit_act"%>
 
-      <% if upa_type!='reg' %>
-        <%= submit_button 'Cancel', :id => "cancel"%>
-      <% end%>
+        <% if upa_type!='reg' %>
+          <%= submit_button 'Cancel', :id => "cancel", :class=>"submit_act"%>
+        <% end%>
+      </div>
     </div>
+        <div class="clear"></div>
+    
     <div class="clear"></div>
 
     <% if upa_type=='reg' %>
       <div class="clear"></div>
-      <div id="activities_container" style="float:left; margin-top:10px;">
+      <div id="activities_container" style="float:left; margin-top:10px;margin-bottom:10px">
         <div class="clear"></div>
         <div style="float:left;width:556px; margin-bottom:4px;">
           <h3 style="width:556px;font-size:14px" class="section_name">Your activities</h3>
@@ -156,204 +153,205 @@
       if(search_timeout != undefined) {
         clearTimeout(search_timeout);
       }
-    var $this = this;
-    search_timeout = setTimeout(function() {
-      search_timeout = undefined;
-      $.ajax({
-        type: "GET",
-        dataType: 'json',
-        url: '/activities/autocomplete',
-        data: {
-          "q" : $('#activity_name').val()
-        },
-        success: function(p) {
-          displayActivities(p);
-        },
-        error: function(p) {
-          alert('An error occured');
-        }
-    })
-  }, 500);
-});
+      var $this = this;
+      search_timeout = setTimeout(function() {
+        search_timeout = undefined;
+        $.ajax({
+          type: "GET",
+          dataType: 'json',
+          url: '/activities/autocomplete',
+          data: {
+            "q" : $('#activity_name').val()
+          },
+          success: function(p) {
+            displayActivities(p);
+          },
+          error: function(p) {
+            alert('An error occured');
+          }
+        })
+      }, 500);
+    });
 
-$("#place_nam").bind('keyup',function(e){
-  if($("#place_nam").val().length<= 2) return false;
-  if(search_timeout != undefined) {
-    clearTimeout(place_search_timeout);
-  }
-  var $this = this;
-  place_search_timeout = setTimeout(function() {
-    place_search_timeout = undefined;
-    $.ajax({
-      type: "GET",
-      dataType: 'json',
-      url: '/places/autocomplete_new',
-      data: {
-        "q" : $('#place_nam').val()
-      },
-      success: function(p) {
-        $('#place_results').css('display','block');
-        resultsPlaceArray = p;
-        $('#place_results').html(formatPlaceRows(p));
-        bindPlaceHover()
-      },
-      error: function(p) {
-        alert('an error occurred')
+    $("#place_nam").bind('keyup',function(e){
+      if($("#place_nam").val().length<= 2) return false;
+      if(search_timeout != undefined) {
+        clearTimeout(place_search_timeout);
       }
-    })
-  }, 500);
-});
+      var $this = this;
+      place_search_timeout = setTimeout(function() {
+        place_search_timeout = undefined;
+        $.ajax({
+          type: "GET",
+          dataType: 'json',
+          url: '/places/autocomplete_new',
+          data: {
+            "q" : $('#place_nam').val()
+          },
+          success: function(p) {
+            $('#place_results').css('display','block');
+            resultsPlaceArray = p;
+            $('#place_results').html(formatPlaceRows(p));
+            bindPlaceHover()
+          },
+          error: function(p) {
+            alert('an error occurred')
+          }
+        })
+      }, 500);
+    });
 
-$('.activity_dd').live('click',function(){
-  currentSelection  = $("#activity_results ul li").index(this)
-  setSelected(currentSelection);
-  var act_id = $(this).attr('id');
-  if(act_id == 0)
-  {
-    $('#activity_id').val(-1);
-    $('#activity_results').css('display','none');
-    if($('#add_type').val()=='both')  displaySearchPlaces();
-    return false;
-  }
-  else
-  {
-    $('#activity_id').val($(this).attr('id'));
-    if($('#add_type').val()!='both')  $('#activity_results').css('display','none');
-  }
+    $('.activity_dd').live('click',function(){
+      currentSelection  = $("#activity_results ul li").index(this)
+      setSelected(currentSelection);
+      var act_id = $(this).attr('id');
+      if(act_id == 0)
+      {
+        $('#activity_id').val(-1);
+        $('#activity_results').css('display','none');
+        if($('#add_type').val()=='both')  displaySearchPlaces();
+        return false;
+      }
+      else
+      {
+        $('#activity_id').val($(this).attr('id'));
+        if($('#add_type').val()!='both')  $('#activity_results').css('display','none');
+      }
 
-  $('#activity_name').val(getActivityFromID(act_id).name)
-  if($('#add_type').val()=='both')
-  {
-    $('#place_results').html('');
-    $('#place_nam').val('');
-    $.ajax({
-      type: "GET",
-      dataType: 'json',
-      url: '/activity/activity_places',
-      data: {
-        "activity_id" : act_id
-      },
-      success: function(p) {
-        if(p.length >1)
-        {
-          displayPopularPlaces(p);
-        }
-        else
-        {
-          displaySearchPlaces();
-        }
-        resultsPlaceArray = p;
-        bindPlaceHover();
-      },
-      error: function(p) {
-        alert('an error occured');
+      $('#activity_name').val(getActivityFromID(act_id).name)
+      if($('#add_type').val()=='both')
+      {
+        $('#place_results').html('');
+        $('#place_nam').val('');
+        $.ajax({
+          type: "GET",
+          dataType: 'json',
+          url: '/activity/activity_places',
+          data: {
+            "activity_id" : act_id
+          },
+          success: function(p) {
+            if(p.length >1)
+            {
+              displayPopularPlaces(p);
+            }
+            else
+            {
+              displaySearchPlaces();
+            }
+            resultsPlaceArray = p;
+            bindPlaceHover();
+          },
+          error: function(p) {
+            alert('an error occured');
+          }
+        });
       }
     });
-  }
-});
 
-$('.place_dd').live('click',function(){
-  currentPlaceSelection  = $("#place_results ul li").index(this);
-  setPlaceSelected(currentPlaceSelection);
-  var plc_id = $(this).attr('id');
+    $('.place_dd').live('click',function(){
+      currentPlaceSelection  = $("#place_results ul li").index(this);
+      setPlaceSelected(currentPlaceSelection);
+      var plc_id = $(this).attr('id');
 
-  if(plc_id==0)
-  {
-    displaySearchPlaces();
-    $('#place_results').css('display','none');
-    $('#activity_results').css('display','none');
-    $('#place_results').html('');
-
-    return false;
-  }
-  if(plc_id==-1)
-  {
-    $('#activity_results').css('display','none');
-    $('#place_results').css('display','none');
-    $('#new_place').css('display','block');
-    $('#place_id').val(-1);
-    return false;
-  }
-
-  $('#place_nam').css('display','block');
-  $('#place_nam').val(getPlaceFromID(plc_id).name);
-  $('#place_id').val(plc_id);
-  $('#place_results').css('display','none');
-  $('#activity_results').css('display','none');
-  $('#place_results').html('');
-});
-
-$('#place_nam').live('click',function(){
-  $('#place_id').val(0);
-  $(this).val('');
-});
-
-$('#description').live('click',function(){
-  if($('#description').val().substring(0,11) == 'tell us why')
-  {
-    $(this).val('');
-  }
-});
-
-$('#activity_name').live('click',function(){
-  $("#activity_name").removeClass('example');
-  $(this).val('');
-  $("#place").css('display','none');
-  $("#place_results").css('display','none');
-  $("#place_nam").val('');
-  $('#activity_id').val(0);
-  $('#place_results').html('');
-});
-
-$("#cancel").click(function() {
-  $("#dialog").jqmHide();
-  return false;
-})
-
-$('#add_activity_template').live('click',function(){
-  //if activity id = 0 add activity and get activity id
-  //then add UPA
-  if (!checkValidation())  return false;
-  if($('#description').val().substring(0,11) == 'tell us why')
-  {
-    $('#description').val('') ;
-  }
-
-
-  $.ajax({
-    type: "POST",
-    url: "/user_place_activities/new_user_place_activity",
-    data: {
-      "user_place_activity_id" : $('#user_place_activity_id').val(),
-      "activity_id" : $('#activity_id').val(),
-      "activity_name" : $('#activity_name').val(),
-      "place_id" :  $('#place_id').val(),
-      "description" : $('#description').val(),
-      "place_name" :  $('#place_nam').val(),
-      "neighborhood" :  $('#hood').val(),
-      "time_of_day" : $('#time_of_day').val(),
-      "day_of_week" : $('#day_of_week').val()
-    },
-    success: function(p) {
-      var type = $('#upa_type').val();
-      switch(type)
+      if(plc_id==0)
       {
-        case 'reg' : reg_success(p);
-          break;
-        case 'add' : add_success(p);
-          break;
-        case 'edit' : edit_success(p);
-          break;
-      }
-    },
-    error: function(p) {
-      alert("error");
-    }
-  });
-  return false;
-});
-      
-//methods
+        displaySearchPlaces();
+        $('#place_results').css('display','none');
+        $('#activity_results').css('display','none');
+        $('#place_results').html('');
 
-});
+        return false;
+      }
+      if(plc_id==-1)
+      {
+        $('#activity_results').css('display','none');
+        $('#place_results').css('display','none');
+        $('#new_place').css('display','block');
+        $('#place_id').val(-1);
+        return false;
+      }
+
+      $('#place_nam').css('display','block');
+      $('#place_nam').val(getPlaceFromID(plc_id).name);
+      $('#place_id').val(plc_id);
+      $('#place_results').css('display','none');
+      $('#activity_results').css('display','none');
+      $('#place_results').html('');
+    });
+
+    $('#place_nam').live('click',function(){
+      $('#place_id').val(0);
+      $(this).val('');
+    });
+
+    $('#description').live('click',function(){
+      if($('#description').val().substring(0,11) == 'tell us why')
+      {
+        $(this).val('');
+      }
+    });
+
+    $('#activity_name').live('click',function(){
+      $("#activity_name").removeClass('example');
+      $(this).val('');
+      $("#place").css('display','none');
+      $("#place_results").css('display','none');
+      $("#place_nam").val('');
+      $('#activity_id').val(0);
+      $('#place_results').html('');
+    });
+
+    $("#cancel").click(function() {
+      $("#dialog").jqmHide();
+      return false;
+    })
+
+    $('#add_activity_template').live('click',function(){
+      $('#add_activity_template').attr("disabled", "true");
+
+      //if activity id = 0 add activity and get activity id
+      //then add UPA
+      if (!checkValidation())  return false;
+      if($('#description').val().substring(0,11) == 'tell us why')
+      {
+        $('#description').val('') ;
+      }
+
+
+      $.ajax({
+        type: "POST",
+        url: "/user_place_activities/new_user_place_activity",
+        data: {
+          "user_place_activity_id" : $('#user_place_activity_id').val(),
+          "activity_id" : $('#activity_id').val(),
+          "activity_name" : $('#activity_name').val(),
+          "place_id" :  $('#place_id').val(),
+          "description" : $('#description').val(),
+          "place_name" :  $('#place_nam').val(),
+          "neighborhood" :  $('#hood').val()
+        },
+        success: function(p) {
+          var type = $('#upa_type').val();
+          switch(type)
+          {
+            case 'reg' : reg_success(p);
+              break;
+            case 'add' : add_success(p);
+              break;
+            case 'edit' : edit_success(p);
+              break;
+          }
+            $('#add_activity_template').attr("disabled", "false");
+        },
+        error: function(p) {
+          alert("error");
+        }
+      });
+      return false;
+    });
+      
+    //methods
+
+  });
 </script>

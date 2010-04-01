@@ -14,7 +14,7 @@ class UserPlaceActivity < ActiveRecord::Base
   fires :addeduserplaceactivity, :on => :create, :actor => :user, :subject => :self
   #todo - when does create fire - on new or on save?
 
-  after_create  :ping
+  #after_create  :ping
 
   def ping
     begin

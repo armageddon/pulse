@@ -164,13 +164,7 @@ module OptionsHelper
     return options
   end
   
-  def activity_category_options
-    options = Array.new
-    ActivityCategory.find(:all, :order => "description asc").each do |op| 
-      options << [op.description.to_s,op.id.to_s]
-    end 
-    return options
-  end
+
   
   def activity_options(activity_category_id)
     options = Array.new

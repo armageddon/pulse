@@ -1,7 +1,17 @@
 /*
   Name: HelloPulse
 */
+.activity_input_text
+{
+    font-size:14px;
+}
+.activity_label
+{
+    margin-top: 5px;
+    color:#990000;
+    font-size:14px;
 
+}
  .itemhover {
     background-color:#B7B7B7 !important;
     color:#232323 !important;
@@ -40,7 +50,7 @@
     padding:3px;
     position:absolute;
     z-index:10;
-    width:250px;
+    width:260px;
     overflow:auto;
     max-height:200px;
 
@@ -53,7 +63,7 @@
     padding:3px;
     position:absolute;
     z-index:10;
-    width:300px;
+    width:280px;
      overflow:auto;
     max-height:200px;
   }
@@ -65,8 +75,10 @@
     border-color: #999999 #999999 #999999;
     border-style:solid solid solid;
     border-width:1px 1px 1px;
-    width:250px;
+    width:260px;
     padding:3px;
+    height:21px;
+    font-size:12px;
   }
   .example {
       color:gray;
@@ -76,8 +88,10 @@
     border-color: #999999 #999999 #999999;
     border-style:solid solid solid;
     border-width:1px 1px 1px;
-    width:300px;
+    width:280px;
     padding:3px;
+    height:21px;
+    font-size:12px;
   }
 
   .places_it {

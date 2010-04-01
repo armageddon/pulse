@@ -149,10 +149,9 @@
 
 
   <%= render :partial => '/user_place_activities/free_user_place_activity', :locals=>{:upa_type => 'reg', :add_type=>'both',:user_place_activity=>UserPlaceActivity.new} %>
-    <div style="float:left;">
-      <%= submit_button("Finish", :id=> "finished") %>
+    <div style="float:left;margin-top:10px">
+      <%= submit_button("Finish", :id=> "finished", :class=>"submit_act") %>
     </div>
-
   </div>
 </div>
 

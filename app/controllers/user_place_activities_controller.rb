@@ -8,8 +8,7 @@ class UserPlaceActivitiesController < ApplicationController
     place_id = params[:place_id].to_i
     neighborhood = params[:neighborhood]
     place_name = params[:place_name]
-    day_of_week = params[:day_of_week]
-    time_of_day = params[:time_of_day]
+
 
     if activity_id == -1
       logger.debug('act id IS -1 - creating activity')
@@ -23,7 +22,6 @@ class UserPlaceActivitiesController < ApplicationController
     if place_id == -1
       logger.debug('plc id IS -1 - creating place')
       @place = Place.new
-
       @place.name = place_name
       #todo: default place lat/long
       @place.latitude = 51.5065
@@ -41,14 +39,12 @@ class UserPlaceActivitiesController < ApplicationController
 
 
     if user_place_activity_id == 0
-      @user_place_activity = current_user.user_place_activities.build(:description => params[:description], :place_id => place_id, :activity_id => activity_id, :day_of_week =>day_of_week, :time_of_day => time_of_day)
+      @user_place_activity = current_user.user_place_activities.build(:description => params[:description], :place_id => place_id, :activity_id => activity_id)
     else
       @user_place_activity = UserPlaceActivity.find(user_place_activity_id)
       @user_place_activity.place_id = place_id
       @user_place_activity.activity_id = activity_id
-      @user_place_activity.day_of_week =  day_of_week
-      @user_place_activity.time_of_day = time_of_day
-      @user_place_activity.description       = params[:description]
+      @user_place_activity.description = params[:description]
     end
     @user_place_activity.place_activity = place_activity
 
