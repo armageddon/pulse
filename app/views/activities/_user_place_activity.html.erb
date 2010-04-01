@@ -1,27 +1,26 @@
 <% if User.exists?(object.user) %>
-<div class="object" id="<%= dom_id object %>">
+  <div class="object" id="<%= dom_id object %>">
 
-	<div class="place_icon" style="width:41px;float:left;margin-right:5px;">
-		<%= link_to image_tag(object.user.icon.url(:thumb), :width => '45px', :height => '45px'), object.user %>
-	</div>
-	<div class="place_person" style="width:85px;float:left;margin-right:5px;margin-left:10px;">
-		<%= link_to object.user.name, object.user%>
-	</div>
-	<div class="place_why" style="width:305px;float:left;margin-right:5px;">
-                <% if object.place.id != ANYWHERE_PLACE_ID %>
-                    <%=link_to object.place.name, object.place%><br/>
-                 <%  else %>
-                    <%= object.place.name %><br/>
-                    <% end %>
-		<i><%=object.description%>&nbsp;</i>
-	</div>
-	<div class="place_when" style="margin-left:5px;width:95px;float:left">
-		<% if object.day_of_week == 0 && object.time_of_day ==0 %>
-		Anytime
-		<% else %> 
-	    <%=dotw(object.day_of_week) + "<br /> " + tod(object.time_of_day)%>
-		<% end %>
-	</div>	 
-	<div class="clear"></div>
-</div>
+    <div class="a_icon" >
+      <%= link_to image_tag(object.user.icon.url(:thumb), :width => '45px', :height => '45px'), object.user %>
+    </div>
+    <div class="a_who" >
+      <%= link_to object.user.name, object.user%>
+    </div>
+    <div class="a_why" >
+      <% if object.place.id != ANYWHERE_PLACE_ID %>
+        <%=link_to object.place.name, object.place%><br/>
+      <%  else %>
+        <%= object.place.name %><br/>
+      <% end %>
+      <i><%=object.description%>&nbsp;</i>
+    </div>
+    <div class="a_when" >
+      <% if current_user!=nil %>
+        <%= link_to image_tag("HPMail.png", :width=>20, :class => " tooltip", :title => "Send a mail"), account_message_path(object.user),'data-href' => account_message_path(object.user)  %>
+        <%= (link_to image_tag("add_user_new.png", :width=>20, :class => " tooltip", :title => I18n.translate("Add_to_favorites")), "#", :class => "place_activity_people_favorite", :friend_id => object.user.id) unless current_user.has_friend?(object.user.id)  %>
+      <%end%>
+    </div>
+    <div class="clear"></div>
+  </div>
 <% end %>

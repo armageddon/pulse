@@ -1255,7 +1255,7 @@ a{
     margin-top:0px;
 }
 
-.a_who {
+.h_a_who {
     padding:5px;
     margin-right:5px;
     width:126px;
@@ -1263,7 +1263,7 @@ a{
     text-align:center;
     background-color:#EDEDED;
 }
-.a_why {
+.h_a_why {
     padding:5px;
     margin-right:5px;
     width:300px;
@@ -1271,13 +1271,36 @@ a{
     text-align:center;
     background-color:#EDEDED;
 }
-.a_when{
+.h_a_when{
     padding:5px;
     width:90px;
     float:left;
     text-align:center;
     background-color:#EDEDED;
 }
+
+.a_icon {
+    margin-right:5px;
+    width:41px;
+    float:left;
+}
+.a_who {
+    margin-right:5px;
+     margin-left:10px;
+    width:85px;
+    float:left;
+}
+.a_why {
+    margin-left:5px;
+    width:305px;
+    float:left;
+}
+.a_when{
+    margin-left:5px;
+    width:95px;
+    float:left;
+}
+
 
 /* EDIT USER */
 .edit_label{

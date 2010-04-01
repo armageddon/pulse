@@ -47,12 +47,11 @@
 	<div class="clear">&nbsp;</div>
 </div>
 <div>
-	<div style="padding:5px;margin-right:5px;width:126px;float:left;text-align:center;background-color:#EDEDED;">Who</div>
-	<div style="padding:5px;margin-right:5px;width:300px;float:left;text-align:center;background-color:#EDEDED;">Why & What</div>
-	<div style="padding:5px;width:90px;float:left;text-align:center;background-color:#EDEDED;">When</div>
+	<div class="h_a_who">Who</div>
+	<div class="h_a_why">Why & What</div>
+	<div class="h_a_when">&nbsp;</div>
 	<div class="clear"></div>
 	<% if @user_place_activities != nil and @user_place_activities.length >0 %>
-	
 		<%= render :partial => 'user_place_activity_collection' , :locals => {:collection => @user_place_activities}%>
 	<% end %>
 </div>
