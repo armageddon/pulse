@@ -1,23 +1,23 @@
 <% content_for :c3 do %>
- &nbsp;
+  &nbsp;
 <% end %>
 
 <% content_for :message do %>
   <% if !logged_in? || (logged_in? && current_user != @user && current_user.partner_type == nil) %>
     <h2>
-    Here is <%= @user.first_name %>'s profile. Check out places <%= sex_to_s @user.sex, :male => 'he', :female => 'she' %> likes 
-    and see if you have anything in common. If you like, <%= link_to "send #{sex_to_s @user} a message", account_message_path(@user) %>.
-    Or you can go <%= link_to "back to your matches", account_matches_path %>. Add more <%=  link_to 'activities', '#', 'data-href' => "/user_place_activities/free?view=new", :class => "add_activity" %> to refine or increase your matches
+      Here is <%= @user.first_name %>'s profile. Check out places <%= sex_to_s @user.sex, :male => 'he', :female => 'she' %> likes
+      and see if you have anything in common. If you like, <%= link_to "send #{sex_to_s @user} a message", account_message_path(@user) %>.
+      Or you can go <%= link_to "back to your matches", account_matches_path %>. Add more <%=  link_to 'activities', '#', 'data-href' => "/user_place_activities/free?view=new", :class => "add_activity" %> to refine or increase your matches
     </h2>
-<% elsif  !logged_in? || (logged_in? && current_user != @user && current_user.partner_type != nil)%>
- <h2>
-    Here is <%= @user.first_name %>'s profile.
- </h2>
- <%else%>>
-<h2>
-  This is your profile. Add more <%=  link_to 'activities', '#', 'data-href' => "/user_place_activities/free?view=new", :class => "add_activity" %> to refine or increase your matches
+  <% elsif  !logged_in? || (logged_in? && current_user != @user && current_user.partner_type != nil)%>
+    <h2>
+      Here is <%= @user.first_name %>'s profile.
+    </h2>
+  <%else%>
+    <h2>
+      This is your profile. Add more <%=  link_to 'activities', '#', 'data-href' => "/user_place_activities/free?view=new", :class => "add_activity" %> to refine or increase your matches
 
-  </h2>
+    </h2>
   <% end %>
 <% end %>
 
@@ -27,21 +27,18 @@
 <div class='clear'></div>
 
 <div class="column_header">
-      	<h2><%=@user.first_name%></h2>
+  <h2><%=@user.first_name%></h2>
 </div>
 <div class="clear">&nbsp;</div>
 <div id='activity_container' class='<%=search_activity_results_class(@search_criteria.type)%>'>
 
-	<div class="clear">&nbsp;</div>
-	
-	<div style="padding:5px;margin-right:5px;width:85px;float:left;text-align:center;background-color:#EDEDED;">What</div>
-	<div style="padding:5px;margin-right:5px;width:85px;float:left;text-align:center;background-color:#EDEDED;">Where</div>
-	<div style="padding:5px;margin-right:5px;width:65px;float:left;text-align:center;background-color:#EDEDED;">When</div>
-	<div style="padding:5px;margin-right:5px;width:206px;float:left;text-align:center;background-color:#EDEDED;">Why</div>
-	<div style="padding:5px;width:40px;float:left;text-align:center;background-color:#EDEDED;">&nbsp</div>
-	<div class="clear"></div>
-    <div id='activity_results_div'>
-		<%= render :partial => 'user_place_activity_collection', :locals => { :collection => @user_place_activities } %>
-	
-	</div>
+  <div class="clear">&nbsp;</div>
+  <div style="padding:5px;margin-right:5px;width:491px;float:left;background-color:#EDEDED;">Activities</div>
+
+  <div style="padding:5px;width:40px;float:left;text-align:center;background-color:#EDEDED;">&nbsp</div>
+  <div class="clear"></div>
+  <div id='activity_results_div'>
+    <%= render :partial => 'user_place_activity_collection', :locals => { :collection => @user_place_activities } %>
+
+  </div>
 </div> 

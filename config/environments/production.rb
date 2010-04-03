@@ -27,4 +27,14 @@ config.action_view.cache_template_loading            = true
 # Enable threaded mode
 # config.threadsafe!
 
-ActionMailer::Base.delivery_method = :sendmail
+#ActionMailer::Base.delivery_method = :sendmail
+ActionMailer::Base.delivery_method = :smtp
+ActionMailer::Base.smtp_settings = {
+:tls => true,
+:address => 'smtp.critsend.com',
+:port => 587,
+:domain => 'critsend.com',
+:authentication => :plain,
+:user_name => 'pierre@hellopulse.com',
+:password => 'kPSfmogFopxEi7ph'
+}

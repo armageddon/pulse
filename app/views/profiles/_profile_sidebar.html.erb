@@ -18,7 +18,7 @@
 </ul>
 <br />
 <% if @user.id != current_user.id && current_user.partner_type == nil  %>
-  <%= (link_to I18n.translate("ADD_TO_FAVORITES"), 'account/favorites/add',:id=> "profile_people_favorite",:class => "profile_people_favorite submit ", :friend_id => object.id, :style=> current_user.has_friend?(object.id) ? 'display:none' : 'display:block') %>
+  <%= (link_to I18n.translate("ADD_TO_FAVORITES"), 'account/favorites/add',:id=> "profile_people_favorite",:class => "profile_people_favorite submit", :friend_id => object.id, :style=> current_user.has_friend?(object.id) ? 'display:none' : 'display:block') %>
   <%= (link_to 'REMOVE FROM FAVORITES', "account/favorites/delete", :id=> "profile_people_unfavorite",:class => "profile_people_unfavorite submit", :friend_id => object.id, :style=> current_user.has_friend?(object.id) ? 'display:block' : 'display:none')  %>
   <br/>
   <%= link_to "SEND A MESSAGE", account_message_path(@user), :class => "submit" %>

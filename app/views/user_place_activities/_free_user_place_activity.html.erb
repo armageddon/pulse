@@ -63,6 +63,16 @@
         </div>
       <%end%>
 
+      <%if add_type =='neither'%>
+      <% place = Place.find(place_id)  %>
+      <% activity = Activity.find(activity_id)  %>
+      <div style="float:left">
+      <%= image_tag(place.icon.url(:thumb), :width => '30px', :height => '30px') %>
+      </div>
+      <div  style="float:left; margin-left:7px">
+      <h2><%=activity.name%> at <%=place.name%></h2>
+      </div>
+      <% end %>
 
       <div class="clear"></div>
 
