@@ -84,7 +84,7 @@ class UserMailer < ActionMailer::Base
   def setup_email(user)
     @host = "http://www.hellopulse.com"
     @recipients  = "#{user.email}"
-    @from        = "\"HelloPulse\"<admin@hellopulse.com>"
+    @from        = "HelloPulse <admin@hellopulse.com>"
     @subject     = "HELLOPULSE "
     @sent_on     = Time.now
     @body[:user] = user
