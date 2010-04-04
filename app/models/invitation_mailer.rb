@@ -1,7 +1,7 @@
 class InvitationMailer < ActionMailer::Base
 
   def invitation(invitation)
-    @from    = "admin@hellopulse.com"
+    @from    = "\"HelloPulse\" <admin@hellopulse.com>"
     @subject = "You've been invited to HelloPulse"
     @recipients = invitation.email
     @body[:url]  = "www.hellopulse.com"
