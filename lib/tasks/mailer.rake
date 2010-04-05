@@ -40,7 +40,7 @@ namespace :mailer do
   end
 
   task :weekly => :environment do
-    users = User.find(:all,:conditions=>"mail_matches  < DATE_SUB(CURRENT_DATE(), INTERVAL '7' DAY) ")
+    users = User.find(:all,:conditions=>"mail_matches  < DATE_SUB(CURRENT_DATE(), INTERVAL '7' DAY) ", :limit=>1)
     puts users.length
 
     users.each do |u|
