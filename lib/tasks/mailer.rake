@@ -41,14 +41,18 @@ namespace :mailer do
 
   task :weekly => :environment do
     users = User.find(:all,:conditions=>"mail_matches  < DATE_SUB(CURRENT_DATE(), INTERVAL '7' DAY) ")
+    puts users.length
+
     users.each do |u|
-      if u.crm_matches.length >1
+
+    puts u.first_name
+      if CrmData.crm_matches(u,5).length >1
         puts 'got matches - will send mail'
         u.mail_matches = Time.now
         u.save
-        UserMailer.deliver_photo_reminder(u)
+        UserMailer.deliver_daily_matches(u)
         puts u.first_name
-        RAILS_DEFAULT_LOGGER.info(u.first_name)
+        #RAILS_DEFAULT_LOGGER.info(u.first_name)
         u.mail_activities = Time.now
         u.save
         m = MailerMessage.new
