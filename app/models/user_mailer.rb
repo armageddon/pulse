@@ -44,12 +44,12 @@ class UserMailer < ActionMailer::Base
 
   def daily_matches(user)
     setup_email(user)
-    @recipients  = "pierre@hellopulse.com"
+    
     @subject = "Here are the singles pulsing in London"
     @user = user
-     @heading = "Great to have you on board. Check out your weekly matches!"
-      @meet_her_url = "http://aeser.co.uk/g/button-meet-her.jpg"
-      @meet_him_url = "http://aeser.co.uk/g/button-meet-him.jpg"
+    @heading = "Great to have you on board. Check out your weekly matches!"
+    @meet_her_url = "http://aeser.co.uk/g/button-meet-her.jpg"
+    @meet_him_url = "http://aeser.co.uk/g/button-meet-him.jpg"
     #todo: allow for men and women here#
     #todo: ensure happening is the latest one
     @gender = user.sex_preference == 1 ? 'men' : 'women'
