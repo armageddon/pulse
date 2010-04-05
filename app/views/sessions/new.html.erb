@@ -55,6 +55,7 @@
         <div style="float:right; margin-right:20px">
           <% form_tag session_path , :id => 'session_form' do -%>
             <%= hidden_field_tag 'dest', @dest %>
+              <%= hidden_field_tag 'uname', @uname %>
             <div style="float:right; width=700px">
               <span style="font-size:14px;" class="splash-members-login">Members login:</span>
               <span style="font-size:14px"><%= text_field_tag 'login', @login, :class => "input_text", :value => "Username or Email", :size => "16" %></span>

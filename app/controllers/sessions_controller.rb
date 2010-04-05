@@ -9,9 +9,12 @@ class SessionsController < ApplicationController
   def new
 
     @dest =   params[:dest] if params[:dest].present?
+    @uname =   params[:uname] if params[:uname].present?
     if logged_in?
       redirect_to '/account/edit/#notifications' and return if params[:dest].present? && params[:dest] =='unsubscribe'
       redirect_to '/add_photo' and return if params[:dest].present? && params[:dest] =='addphoto'
+      redirect_to '/new_step3' and return if params[:dest].present? && params[:dest] =='add_activities'
+      redirect_to '/profiles/'+params[:uname] and return if params[:dest].present? && params[:uname].present? && params[:dest] =='profile'
       return redirect_to(:controller => "users", :action => "show")
     else
       clear_fb_cookies!
@@ -105,6 +108,8 @@ class SessionsController < ApplicationController
       redirect_to '/account/edit/#notifications' and return if params[:dest].present? && params[:dest] =='unsubscribe'
       redirect_to '/messages' and return if params[:dest].present? && params[:dest] =='message'
       redirect_to '/add_photo' and return if params[:dest].present? && params[:dest] =='addphoto'
+      redirect_to '/new_step3' and return if params[:dest].present? && params[:dest] =='add_activities'
+      redirect_to '/profiles/'+params[:uname] and return if params[:dest].present? && params[:uname].present? && params[:dest] =='profile'
       redirect_to root_path
     else
       note_failed_signin

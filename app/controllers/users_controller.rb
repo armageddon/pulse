@@ -16,6 +16,16 @@ class UsersController < ApplicationController
     # end
   end
 
+
+  def new_step3
+     redirect_to '/activities/partner' and return if current_user.status == 3 && current_user.partner_type ==2
+    redirect_to '/places/partner' and return if current_user.status == 3 && current_user.partner_type ==1
+    @places = current_user.suggested_places
+    @matches = current_user.matches(params[:page], 8)
+    @updates = TimelineEvent.paginate(:all, :conditions => "icon_file_name is not null and users.status=1 and actor_id <> " + current_user.id.to_s,:joins=>"INNER JOIN users on users.id = timeline_events.actor_id", :page=>1, :per_page => 5, :order => 'created_at DESC')
+ 
+  end
+
   def invite_fb_friends
     render :partial => "inviite_friends"
   end
@@ -129,13 +139,17 @@ class UsersController < ApplicationController
         login_from_fb
         redirect_to '/account/edit/#notifications' and return if params[:dest].present? && params[:dest] =='unsubscribe'
         redirect_to '/add_photo' and return if params[:dest].present? && params[:dest] =='addphoto'
+        redirect_to '/new_step3' and return if params[:dest].present? && params[:dest] =='add_activities'
+        redirect_to '/profiles/'+params[:username] and return if params[:dest].present? && params[:uname].present? && params[:dest] =='profile'
         redirect_to '/' and return
       else
+        redirect_to('/account/link?dest='+@dest+'&uname='+@uname)  and return if params[:dest].present? && params[:uname].present?
         redirect_to('/account/link?dest='+@dest)  and return if params[:dest].present?
         redirect_to('/account/link')  and return
       end
     else
-      logger.debug('connect_accounts') 
+      logger.debug('connect_accounts')
+       redirect_to('/account/link?dest='+@dest+'&uname='+@uname)  and return if params[:dest].present? && params[:uname].present?
       redirect_to('/account/link?dest='+params[:dest])  and return if params[:dest].present?
       redirect_to('/account/link')  and return
       #connect accounts
@@ -151,6 +165,8 @@ class UsersController < ApplicationController
       login_from_fb
       redirect_to '/account/edit/#notifications' and return if params[:dest].present? && params[:dest] =='unsubscribe'
       redirect_to '/add_photo' and return if params[:dest].present? && params[:dest] =='addphoto'
+      redirect_to '/new_step3' and return if params[:dest].present? && params[:dest] =='add_activities'
+      redirect_to '/profiles/'+params[:uname] and return if params[:dest].present? && params[:uname].present? && params[:dest] =='profile'
       redirect_to '/' and return
     else
       respond_to do |format|

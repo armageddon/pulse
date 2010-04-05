@@ -30,8 +30,6 @@ class UserMailer < ActionMailer::Base
 
   def photo_reminder(user)
     setup_email(user)
- 
-
     @subject = "No photo, No action"
     @user = user
     #todo: allow for men and women here
@@ -48,6 +46,7 @@ class UserMailer < ActionMailer::Base
     setup_email(user)
     @subject = "Here are the singles pulsing in London"
     @user = user
+    @heading = "Great to have you on board. Check out your weekly matches!"
     #todo: allow for men and women here#
     #todo: ensure happening is the latest one
     @gender = user.sex_preference == 1 ? 'men' : 'women'
@@ -82,13 +81,14 @@ class UserMailer < ActionMailer::Base
 
   protected
   def setup_email(user)
+    headers["return-path"] = 'admin@hellopulse.com'
     @host = "http://www.hellopulse.com"
     @recipients  = "#{user.email}"
-    @from        = "\"HelloPulse\"<admin@hellopulse.com>"
+    @from        = "\"HelloPulse\" <admin@hellopulse.com>"
     @subject     = "HELLOPULSE "
     @sent_on     = Time.now
     @body[:user] = user
-
+    
 
   end
 end
