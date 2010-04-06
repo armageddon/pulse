@@ -5,6 +5,7 @@ class UserMailer < ActionMailer::Base
     setup_email(user)
     @subject    += 'Welcome to HelloPulse'
     @body[:url]  = "http://hellopulse.com/activate/#{user.activation_code}"
+    @content_type =  "text/html"
   end
   
   def partner_welcome(user)
