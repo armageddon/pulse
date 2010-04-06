@@ -33,13 +33,13 @@
             <% if current_user %>
               <%= link_to place_activity.activity.name, place_activity_path(:id=>place_activity.id.to_s) %>
             <% else %>
-              <%= link_to place_activity.activity.name, redeem_path%>
+              <%= link_to place_activity.activity.name, place_activity.default_url%>
             <%end%>
                                 at
             <% if current_user %>
               <%= link_to place_activity.place.name, place_activity_path(:id=>place_activity.id.to_s)  %>
             <%else%>
-              <%= link_to place_activity.place.name,redeem_path  %>
+              <%= link_to place_activity.place.name,place_activity.default_url  %>
             <%end%>
           </div>
           <div class="clear"></div>

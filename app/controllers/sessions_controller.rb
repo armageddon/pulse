@@ -3,7 +3,7 @@ class SessionsController < ApplicationController
   before_filter :load_events , :except => [:destroy]
 
   def load_events
-    @updates = TimelineEvent.paginate( :page=>1, :conditions=>"icon_file_name is not  null",:joins=>"INNER JOIN users on users.id = timeline_events.actor_id",:per_page => 5, :order => 'created_at DESC')
+    @updates = TimelineEvent.paginate( :page=>1, :conditions=>"icon_file_name is not  null and event_type <> 'newuser'",:joins=>"INNER JOIN users on users.id = timeline_events.actor_id",:per_page => 5, :order => 'created_at DESC')
   end
 
   def new
