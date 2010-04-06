@@ -348,14 +348,14 @@ $(document).ready(function() {
             error = true;
         }
 
-        var postcode = $('#user_postcode');
-        regexString = /^([A-PR-UWYZ0-9][A-HK-Y0-9][AEHMNPRTVXY0-9]?[ABEHMNPRVWXY0-9]? {1,2}[0-9][ABD-HJLN-UW-Z]{2}|GIR 0AA)$/
-        if (postcode.val() == '' || postcode.val() == 'Post code' || regexString.test(postcode.val().toUpperCase()) != true) {
+        //var postcode = $('#user_postcode');
+        //regexString = /^([A-PR-UWYZ0-9][A-HK-Y0-9][AEHMNPRTVXY0-9]?[ABEHMNPRVWXY0-9]? {1,2}[0-9][ABD-HJLN-UW-Z]{2}|GIR 0AA)$/
+       // if (postcode.val() == '' || postcode.val() == 'Post code' || regexString.test(postcode.val().toUpperCase()) != true) {
 
-            postcode.addClass('invalid');
-            postcode.next().text('Please enter a valid post code.');
-            error = true;
-        };
+        //    postcode.addClass('invalid');
+       //     postcode.next().text('Please enter a  post code.');
+       //     error = true;
+       // };
         if (error) {
 
             return false;
