@@ -80,7 +80,7 @@ class UserMailer < ActionMailer::Base
     @subject   += 'You have received a message from '  + User.find(sender).first_name
     @body[:sender]  = sender
     @body[:recipient] = recipient
-    @body[:url] = 'http://hellopulse.com/?dest=message'
+    @body[:url] = 'www.hellopulse.com/?dest=message'
     @content_type =  "text/html"
   end
 
