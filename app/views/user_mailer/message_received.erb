@@ -15,7 +15,7 @@
                       <td style="font-size: 13px;"><span style="font-weight:700;">Hello <%= h @recipient.first_name %></span><br /><br />
                         You have received a message from <%=@sender.first_name%><br />
                         Click the following link to read the message<br />
-                         <%=h @url %>
+                         <a href="<%=h @url %>"> Your Message </a>
                       </td>
                     </tr>
                     <tr>
