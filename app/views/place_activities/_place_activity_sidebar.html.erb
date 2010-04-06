@@ -30,7 +30,7 @@
 
 </ul>
 <br/>
-<%= link_to "ADD TO MY FAVOURITES", '#', 'data-href' => "/user_place_activities/new?activity_id="+@activity.id.to_s+"&place_id="+@place.id.to_s+"&place_activity_id="+@place_activity.id.to_s+"&view=add_place_activity", :id => "add_place_activity", :class => "add_to_favorites submit"   if current_user!=nil && current_user && current_user.partner_type == nil  %>
+<%= link_to "ADD TO MY FAVOURITES", '#', 'data-href' => "/user_place_activities/free?add_type=neither&activity_id="+@activity.id.to_s+"&place_id="+@place.id.to_s, :id => "add_place_activity", :class => "add_to_favorites submit"   if current_user!=nil && current_user && current_user.partner_type == nil  %>
 <br/>
 <br/>
 <% if @place.id != ANYWHERE_PLACE_ID %>

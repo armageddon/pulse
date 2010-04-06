@@ -77,7 +77,7 @@ class UserMailer < ActionMailer::Base
 
   def message_received(recipient, sender)
     setup_email(User.find(recipient))
-    @subject   += 'You have received a message from '  + User.find(sender).first_name
+    @subject   = 'You have received a message from '  + User.find(sender).first_name
     @body[:sender]  = sender
     @body[:recipient] = recipient
     @body[:url] = 'http://www.hellopulse.com/?dest=message'

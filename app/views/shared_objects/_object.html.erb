@@ -42,7 +42,7 @@
 				
 			<% when Place %>
 
-				<%= link_to image_tag("HPThumbUp.png", :width=>20,:class => " tooltip ", :title => I18n.translate("Add_to_favorites")), '#', 'data-href' => "/user_place_activities/new?place_id="+object.id.to_s+"&view=add_place", :place_id => object.id, :class => "add_place" %>
+				<%= link_to image_tag("HPThumbUp.png", :width=>20,:class => " tooltip ", :title => I18n.translate("Add_to_favorites")), '#', 'data-href' => "/user_place_activities/free?add_type=activity&place_id="+object.id.to_s+"&view=add_place", :place_id => object.id, :class => "add_place" %>
 			
 		<% end %>
 	</div>
