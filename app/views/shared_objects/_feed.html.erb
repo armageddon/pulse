@@ -1,4 +1,11 @@
 <% if (object.event_type == 'addeduserplaceactivity' && UserPlaceActivity.exists?(object.subject_id)) || object.event_type == 'newuser' %>   
+  <% default_url = redeem_path %>
+  <%if !current_user%>
+
+    <% if object.event_type=='addeduserplaceactivity' && UserPlaceActivity.exists?(object.subject_id) %>
+      <% default_url  = UserPlaceActivity.find(object.subject_id).place_activity.default_url %>
+    <%end%>
+  <%end%>
 
   <div class="object" id="<%= dom_id object %>">
     <% if User.exists?(object.actor_id) %>
@@ -8,16 +15,17 @@
         <%if current_user%>
           <%= link_to image_tag(User.find(object.actor_id).icon.url(:thumb), :width => '45px', :height => '45px'), User.find(object.actor_id) %>
         <%else%>
-          <%= link_to image_tag(User.find(object.actor_id).icon.url(:thumb), :width => '45px', :height => '45px'), redeem_path %>
+          <%= link_to image_tag(User.find(object.actor_id).icon.url(:thumb), :width => '45px', :height => '45px'), default_url %>
         <%end%>
       </div>
       <div class="info_container">
         <div style="float:left;font-size:13px">
           <span>
             <%if current_user%>
-            <%= link_to user.first_name, user %>
+              <%= link_to user.first_name, user %>
             <%else%>
-            <%= link_to user.first_name, redeem_path %>
+
+              <%= link_to user.first_name, default_url %>
             <%end%>
           </span>
         </div>
@@ -25,17 +33,18 @@
           <%= DateAndTimeHelper.didwhen(object.created_at) %>
         </div>
         <div class="clear"></div>
+
         <% if object.event_type == 'addeduserplaceactivity' && UserPlaceActivity.exists?(object.subject_id)%>
           <% user_place_activity = UserPlaceActivity.find(object.subject_id)%>
           <% place_activity =  user_place_activity.place_activity %>
           <div style="float:left">
-                                added
+            added
             <% if current_user %>
               <%= link_to place_activity.activity.name, place_activity_path(:id=>place_activity.id.to_s) %>
             <% else %>
               <%= link_to place_activity.activity.name, place_activity.default_url%>
             <%end%>
-                                at
+            at
             <% if current_user %>
               <%= link_to place_activity.place.name, place_activity_path(:id=>place_activity.id.to_s)  %>
             <%else%>
@@ -46,7 +55,7 @@
           <div class="float:left">
             <i>
               <% if user_place_activity.description!= nil and user_place_activity.description.length >0 %>
-                                                '<%= user_place_activity.description %>'
+                '<%= user_place_activity.description %>'
               <%end%>
             </i>
           </div>
