@@ -1,16 +1,16 @@
 <% if User.exists?(object.user) %>
-<%current_user!=nil ? join_id = '' :  join_id = 'join'%>
+<%current_user!=nil ? join_class = '' :  join_class = 'join'%>
   <div class="object" id="<%= dom_id object %>">
 
     <div class="a_icon" >
-      <%= link_to image_tag(object.user.icon.url(:thumb), :width => '45px', :height => '45px'), object.user , :id=> join_id%>
+      <%= link_to image_tag(object.user.icon.url(:thumb), :width => '45px', :height => '45px'), object.user , :class=> join_class %>
     </div>
     <div class="a_who" >
-      <%= link_to object.user.name, object.user,  :id=> join_id%>
+      <%= link_to object.user.name, object.user,  :class=> join_class %>
     </div>
     <div class="a_why" >
       <% if object.place.id != ANYWHERE_PLACE_ID %>
-        <%=link_to object.place.name, object.place , :id=> join_id%><br/>
+        <%=link_to object.place.name, object.place , :class=> join_class %><br/>
       <%  else %>
         <%= object.place.name %><br/>
       <% end %>

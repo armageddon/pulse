@@ -1,7 +1,7 @@
-<div style="float:left; width:82px; height:120px;margin-left:2px;margin-right:2px;margin-top:5px;margin-botton:5px; background-color:white" id="<%= dom_id object %>">
+<div style="float:left; width:82px; height:120px;margin-left:2px;margin-right:2px;margin-top:5px;margin-bottom:5px; background-color:white" id="<%= dom_id object %>">
   <div style="text-align:center;">
-    <%current_user!=nil ? join_id = '' :  join_id = 'join'%>
-    <%= link_to image_tag(object.icon.url(:thumb), :align => "center", :width => '75px', :height => '75px', :style=>"margin-top:3px;margin-bottom:3px;"), object, :id=> join_id  %>
+    <%current_user!=nil ? join_class = '' :  join_class = 'join'%>
+    <%= link_to image_tag(object.icon.url(:thumb), :align => "center", :width => '75px', :height => '75px', :style=>"margin-top:3px;margin-bottom:3px;"), object, :class=> join_class  %>
   </div>
   <div class="clear"></div>
   <div style="text-align:center;margin-bottom:4px;">

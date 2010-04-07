@@ -1,4 +1,4 @@
-
+<%current_user!=nil ? join_class = '' :  join_class = 'join'%>
 <div class="column_header">
     <h2>Details</h2>
 </div>
@@ -24,7 +24,7 @@
 </div>
 
 <ul id="do_things">
-  <li><%= link_to "SEARCH", :controller=>'search', :action=>"search_criteria", :id=>'find_people_link' , :t => "people" %></li>
+  <li><%= link_to "SEARCH", {:controller=>'search', :action=>"search_criteria", :id=>'find_people_link' , :t => "people"} , :class=>join_class%></li>
   <% if current_user!=nil %>
     <li><%= link_to "EDIT MY INFO", edit_account_path %></li>
 

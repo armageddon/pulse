@@ -1,3 +1,4 @@
+<%current_user!=nil ? join_class = '' :  join_class = 'join'%>
 <div class="column_header">
   <h2>Details</h2>
 </div>
@@ -15,7 +16,7 @@
 <h3> <%= link_to "Facebook Page", @activity.fb_page_url  if @activity.fb_page_url.present?%></h3>
 
 <ul id="do_things">
-  <li><%= link_to "SEARCH", :controller=>'search'%></li>
+  <li><%= link_to "SEARCH", {:controller=>'search' }, :class=>join_class%></li>
   <% if current_user!=nil %>
     <li><%= link_to "EDIT MY INFO", current_user.status ==3 ? '/edit_partner' : edit_account_path %></li>
     <li><%= link_to "INVITE A FRIEND", '#', 'data-href' => new_account_invitation_path, :class => "invite_a_friend" %></li>

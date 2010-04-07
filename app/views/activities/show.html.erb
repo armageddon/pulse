@@ -41,7 +41,12 @@
 <script type="text/javascript">
 
   $('#join').live('click',function(){
-    showUserReg()
+    showUserReg(true)
+    return false;
+  })
+
+    $('.join').live('click',function(){
+    showUserReg(false)
     return false;
   })
 
@@ -52,8 +57,10 @@
     $("#dialog").jqmShow();
   }
 
-  function showUserReg()
+  function showUserReg(checkFB)
   {
+   if(checkFB)
+   {
     var id = FB.Connect.get_loggedInUser();
     $.ajax({
       type : "GET",
@@ -76,6 +83,13 @@
       }
 
     });
+   }
+   else
+   {
+    $('#dialog').jqm({ajax:'/quick_reg',modal:true});
+          $("#dialog").jqmShow();
+
+   }
     return false;
   }
 
