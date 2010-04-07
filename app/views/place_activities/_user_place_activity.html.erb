@@ -6,16 +6,10 @@
 	<div class="place_person" style="width:85px;float:left;margin-right:5px;margin-left:10px;">
 		<%= link_to object.user.name,object.user%>
 	</div>
-	<div class="place_why" style="width:290px;float:left;margin-right:5px;">
+	<div class="place_why" style="width:360px;float:left;margin-right:5px;">
 		<i><%=object.description%>&nbsp;</i>
 	</div>
-	<div class="place_when" style="margin-left:5px;width:75px;float:left">
-		<% if object.day_of_week == 0 && object.time_of_day ==0 %>
-		Anytime
-		<% else %> 
-	    <%=dotw(object.day_of_week) + "<br /> " + tod(object.time_of_day)%>
-		<% end %>
-	</div>	 
+
 	<div class="actions">
           <% if current_user!=nil %>
 		<%= (link_to image_tag("add_user_new.png", :width=>20, :class => " tooltip", :title => I18n.translate("Add_to_favorites")), "#", :class => "place_activity_people_favorite", :friend_id => object.user.id) unless current_user.has_friend?(object.user.id)  || object.user.id == current_user.id  %>
