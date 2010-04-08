@@ -42,19 +42,20 @@
     color:black;
     font-size:11px;
   }
-  #activity_results {
-    background-color:white;
-    border-color:-moz-use-text-color #999999 #999999;
-    border-style:none solid solid;
-    border-width:medium 1px 1px;
-    padding:3px;
-    position:absolute;
-    z-index:10;
-    width:260px;
-    overflow:auto;
-    max-height:200px;
+  
+#activity_results {
+  background: #fff;
+  border: 1px solid #999;
+  left: 12px;
+  max-height: 200px;
+  overflow: auto;
+  padding: 3px;
+  position: absolute;
+  top: 91px;
+  width: 260px;
+  z-index: 10;
+}
 
-  }
   #place_results  {
     background-color:white;
     border-color:-moz-use-text-color #999999 #999999;
@@ -66,6 +67,10 @@
     width:280px;
      overflow:auto;
     max-height:200px;
+    /*
+top: 64px;
+    left: 279px;
+*/
   }
 
   #activity, #place {
