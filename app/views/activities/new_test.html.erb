@@ -1,4 +1,17 @@
 
+
+<div style="width:266px;float:left">
+<% UserMatcher.matches_for(User.find(32), 'place',10).each  do |m|%>
+  <%= m.first_name %> <%= m.id %> <%= m.pct_match %> <br />
+<%end%>
+</div>
+<div style="width:266px;float:left">
+<% UserMatcher.matches_for(User.find(32), 'activity',10).each  do |m|%>
+  <%= m.first_name %> <%= m.pct_match %><br />
+<%end%>
+</div>
+
+
 <div id="step_3_container">
 
 

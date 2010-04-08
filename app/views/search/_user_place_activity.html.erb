@@ -1,9 +1,10 @@
-<div class="object" id="<%= dom_id object %>" style='min-height:30px' >
+<div class="object" id="<%= dom_id object %>"  >
 
   <% pa  = object.place_activity %>
   <div class="what" style="padding:5px;margin-right:5px;width:175px;float:left;">
     <%= link_to (pa.activity.name), activity_path(:id=>pa.activity.id)%>
   </div>
+
   <div class="where" style="padding:5px;margin-right:5px;width:175px;float:left">
     <% if pa.place.id != ANYWHERE_PLACE_ID %>
       <%= link_to (pa.place.name), place_activity_path(:id=>pa.id) %>
@@ -19,6 +20,7 @@
       <%= " and " +  (users.total_entries-3).to_s + " more ..." %>
     <% end %>
   </div>
+
   <div class="actions" style=";width:41px;float:left">
     <% if controller_name == 'search' || controller_name == 'user_favorites' %>
       <%  if logged_in? && !current_user.user_place_activities.include?(object) && controller_name != 'user_favorites' %>
@@ -27,8 +29,9 @@
         <%= link_to image_tag("HPThumbDown.png", :width=>20,:padding=>'3px',:class => " tooltip ", :title => I18n.translate("Remove_from_favorites")), '/user_place_activities/delete?activity_id =' + object.activity_id.to_s + '&place_id=' + object.place_id.to_s, 'data-href' => '/account/delete_user_place_activity?activity_id = ' + object.activity_id.to_s + ' &place_id = ' + object.place_id.to_s,:activity_id => object.activity_id, :place_id => object.place_id, :class => "remove_place_activity" %>
       <%  end %>
     <% end %>
-    <div style="float:left">
-    </div>
+
   </div>
+
+  <div class="clear"></div>
 </div>
-<div class="clear"></div>
+
