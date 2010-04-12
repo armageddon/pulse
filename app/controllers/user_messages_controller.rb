@@ -60,7 +60,7 @@ class UserMessagesController < ApplicationController
   end
 
    def create_meet
-    @body = 'Hi ' + User.find(params[:recipient_id]) + '. We hang out at the same places and I think we have a lot in common.  Would you like to meet?'
+    @body = 'Hi ' + User.find(params[:recipient_id]).first_name + '. We hang out at the same places and I think we have a lot in common.  Would you like to meet?'
      @message = current_user.sent_messages.build(:recipient_id => params[:recipient_id],:body=>@body)
       @message.save
       render :nothing => true
