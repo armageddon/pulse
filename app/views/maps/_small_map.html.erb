@@ -1,4 +1,7 @@
 
+<div class="column_subheader">
+  <h2>Click on the map to find people and places</h2>
+</div>
 <% form_tag '/search', :method => "get", :id=>'search_form' do  %>
   <%= hidden_field_tag 'search_criteria[type]', '5', :class => "header_input_text" %>
   <%= hidden_field_tag 'search_criteria[sex_preference]', current_user.sex_preference, :class => "header_input_text" %>
@@ -6,7 +9,7 @@
   <%= hidden_field_tag 'search_criteria[upper_age]', [current_user.age_preference+1], :class => "header_input_text" %>
 <% end %>
 
-<div id="map_canvas" style="width: 560px; height: 200px; overflow: hidden;">
+<div id="map_canvas" style="width: 556px; height: 200px; overflow: hidden;">
 
 </div>
 <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=<%= getmapsapikey(request.url) %>&sensor=true" type="text/javascript"></script>

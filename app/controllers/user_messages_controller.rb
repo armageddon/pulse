@@ -12,7 +12,7 @@ class UserMessagesController < ApplicationController
   before_filter :login_required
   before_filter :set_other_user,  :only => [:show, :update]
 
-    def admin
+  def admin
     if current_user.admin
       render :template => "user_messages/admin", :layout => false
     else
@@ -50,7 +50,21 @@ class UserMessagesController < ApplicationController
       end
     end
   end
-  
+
+   def meet
+    logger.debug('meet')
+    respond_to do |format|
+      format.js { render :partial => 'meet', :locals=>{:recipient_id => params[:recipient_id]}}
+      format.html { render :partial => 'meet', :locals=>{:recipient_id => params[:recipient_id]}}
+    end
+  end
+
+   def create_meet
+
+     @message = current_user.sent_messages.build(:recipient_id => params[:recipient_id],:body=>params[:body])
+      @message.save
+      render :nothing => true
+   end
   private
   
   def set_other_user

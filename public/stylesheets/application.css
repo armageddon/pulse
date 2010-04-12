@@ -1,6 +1,6 @@
 .splash-members-login {
-  position: relative;
-  .bottom: 7px;
+    position: relative;
+    .bottom: 7px;
 }
 .std_dd, .inline_dd
 {
@@ -333,8 +333,8 @@ a, a:active {
 }
 
 .inline_input_text {
-  position:relative;
-  .top: 10px;
+    position:relative;
+    .top: 10px;
 }
 
 .input_text_partner
@@ -918,13 +918,13 @@ a{
     padding:10px;
     color:black}
 
-	#header-banner h1{
-	    font-size:24px;
-	}
-	
-	#header-banner h2{
-	    font-size:18px;
-	}
+#header-banner h1{
+    font-size:24px;
+}
+
+#header-banner h2{
+    font-size:18px;
+}
 
 
 /*MAIN CONTENT*/
@@ -981,6 +981,23 @@ a{
     font-size:14px;
     color:#fff;}
 
+#main_container .column_subheader{
+    background-image:url(/images/header-strip.png);
+    background-position:top left;
+    background-repeat:repeat-x;
+    height:23px;
+    padding:5px 0 0 10px;
+}
+
+#main_container .column_subheader h2{
+    height:20px;
+    margin-right:30px;
+    margin-bottom:2px;
+}
+
+.column_subheader h2{
+    font-size:12px;
+    color:#fff;}
 /*FOOTER*/	
 
 #main_footer{
@@ -1143,16 +1160,37 @@ a{
     font-weight:500!important;
     font-family:arial!important;
     background-image:none;
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	top: -2px;
-	margin-right: 5px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    top: -2px;
+    margin-right: 5px;
 }
+.submit_small{
+    cursor:pointer;
+    overflow:visible;
 
+
+    margin-top:1 5px;
+    margin-left:20px;
+    padding:4px!important;
+    background-color:#bf1212!important;
+    border:2px solid #9f1111!important;
+    color:#fff!important;
+    height:25px;
+    /*margin-bottom:20px;*/
+    font-size:12px;
+    font-weight:500!important;
+    font-family:arial!important;
+    background-image:none;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    top: -2px;
+    margin-right: 5px;
+}
 .facebook-connect-button {
-	position: relative;
-	top: 5px;
-	.top: 2px;
+    position: relative;
+    top: 5px;
+    .top: 2px;
 }
 
 /* SIGN-UP*/
@@ -1287,7 +1325,7 @@ a{
 }
 .a_who {
     margin-right:5px;
-     margin-left:10px;
+    margin-left:10px;
     width:85px;
     float:left;
 }

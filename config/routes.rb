@@ -65,8 +65,8 @@ ActionController::Routing::Routes.draw do |map|
 
   #user_messages controller
   map.inbox '/account/inbox', :controller => 'user_messages', :action => 'index'
-
-
+  map.meet '/messages/meet', :controller=>'user_messages', :action => 'meet'
+  map.meet '/messages/create_meet', :controller=>'user_messages', :action => 'create_meet'
   #pages controller
   map.about '/about', :controller => "pages", :action => 'about'
   map.contact '/contact', :controller => "pages", :action => 'contact'

@@ -1,0 +1,25 @@
+<%if @matches.length>0%>
+<div class="column_header">
+  <h2>Your top matches</h2>
+</div>
+<div>
+  <div style="float:left;width:276px">
+    <%= render :partial => 'shared_objects/matched_user'  , :locals => {:object => @match_module[0]}%>
+  </div>
+
+  <div style="float:left;width:276px">
+       <%= render :partial => 'shared_objects/matched_user'  , :locals => {:object => @match_module[1]}%>
+  </div>
+
+</div>
+<div class="clear"></div>
+<div style="margin-top:10px">
+  <div style="float:left;width:276px">
+  <%= render :partial => 'shared_objects/matched_user'  , :locals => {:object => @match_module[2]}%>
+  </div>
+  <div style="float:left;width:276px">
+   <%= render :partial => 'shared_objects/matched_user'  , :locals => {:object => @match_module[3]}%>
+  </div>
+
+</div>
+<%end%>

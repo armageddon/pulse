@@ -1,0 +1,17 @@
+
+<div style="float:left">
+  <%=link_to image_tag(object.icon.url(:thumb), :width => '72px', :height => '72px'), object %>
+</div>
+<div style="float:left; margin-left:10px">
+  <%=link_to object.first_name, object,:style=>"font-size:14px" %><br />
+  3 Activities in common <br />
+  2 Places in common <br />
+  <div class="clear"></div>
+  <div style="float:left;margin-top:7px">
+    <span class ='submit_small arrange_to_meet'  data-href = "/messages/meet/?recipient_id=<%=object.id%>" >arrange to meet</span>
+  </div>
+  <div class="actions" style="float:left;margin-top:5px">
+    <%= (link_to image_tag("add_user_new.png", :width=>20, :class => " tooltip", :title => I18n.translate("Add_to_favorites")), "#",'data-href' => account_favorites_path, :class => "people_favorite", :friend_id => object.id) if !current_user.has_friend?(object.id)  %>
+    <%= link_to image_tag("HPMail.png", :width=>20, :class => " tooltip", :title => "Send a mail"), account_message_path(object),'data-href' => account_message_path(object)  %>
+  </div>
+</div>

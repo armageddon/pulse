@@ -1,0 +1,64 @@
+<div id ="main_container" style="width:586px" >
+  <%=hidden_field_tag 'recipient_id', recipient_id%>
+  <div class="column_header">
+    <h2>Arrange a date with Luella</h2>
+  </div>
+
+  <div id="body" style="padding:12px">
+    Hi Luella
+    <br />
+    <br />
+    We hang out at the same places and I think we have a lot in common.  Would you like to meet?
+
+  </div>
+
+  <br />
+  <br />
+  <div id="button_div" style="float:left;margin-top:10px; margin-left:10px">
+    <%= submit_button 'Send' , :enabled=>'true', :id => 'send_meet' , :class=>"submit_act"%>
+    <%= submit_button 'Cancel', :id => "cancel_meet", :class=>"submit_act"%>
+  </div>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function() {
+    $("#cancel_meet").click(function() {
+      $("#dialog").jqmHide();
+      return false;
+    })
+
+    $('#send_meet').live('click',function(){
+
+
+
+
+      $.ajax({
+        type: "POST",
+        url: "/messages/create_meet",
+        data: {
+          "recipient_id" : $("#recipient_id").val(),
+          "body" : "sdsd"
+
+        },
+        success: function(p) {
+
+          $("#dialog").html("Sent!");
+          $('#dialog').fadeTo(1000, 0.1, function() {
+            $('#dialog').jqmHide();
+            $('#dialog').fadeTo(1,1);
+          });
+
+        },
+        error: function(p) {
+          alert("error");
+        }
+      });
+      return false;
+    });
+
+
+
+  })
+
+
+</script>

@@ -18,11 +18,10 @@
 		   	</div>
 		    <div class="clear"></div>
 		</div>
-		<div class="actions">
-				<%= (link_to image_tag("add_user_new.png", :width=>20, :class => " tooltip", :title => I18n.translate("Add_to_favorites")), "#",'data-href' => account_favorites_path, :class => "people_favorite", :friend_id => object.id) if !current_user.has_friend?(object.id)  %>
-			
-			<%= link_to image_tag("HPMail.png", :width=>20, :class => " tooltip", :title => "Send a mail"), account_message_path(object),'data-href' => account_message_path(object)  %>
-			</div>
+          <div class="actions">
+              <%= (link_to image_tag("add_user_new.png", :width=>20, :class => " tooltip", :title => I18n.translate("Add_to_favorites")), "#",'data-href' => account_favorites_path, :class => "people_favorite", :friend_id => object.id) if !current_user.has_friend?(object.id)  %>
+              <%= link_to image_tag("HPMail.png", :width=>20, :class => " tooltip", :title => "Send a mail"), account_message_path(object),'data-href' => account_message_path(object)  %>
+            </div>
 		<div class="clear"></div>
 	</div>
 <% else %>

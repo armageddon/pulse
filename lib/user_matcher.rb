@@ -28,15 +28,34 @@
 # I went for keeping it simple :)
 module UserMatcher
 
+  def self.match_module(user)
+    #4 users only, using v2 and then the rest with v1
+    matches = self.matchesv2(user)
+    if matches.length<4
+      less_specific_matches = self.matchesv1(user, 1, 4-matches.length)
+      matches.concat(less_specific_matches)
+    end
+    matches
+
+  end
+
+  def self.common_places(user1, user2)
+
+  end
+
+  def self.common_activities(user1, user2)
+
+  end
+
   def self.matchesv1(user, page=0, per_page=8)
     if user.sex_preference!=nil && user.sex != nil && user.age_preference!=nil && user.sex != nil && user.age != nil
       @matches ||= User.paginate(:all, :conditions => [
           "sex = ? AND sex_preference = ? AND status = 1 AND age in (?) AND age_preference in (?) AND id != ?",
           user.sex_preference,
-           user.sex,
+          user.sex,
           [ user.age_preference - 1,  user.age_preference,  user.age_preference + 1],
           [ user.age - 1,  user.age,  user.age + 1],
-           user.id
+          user.id
         ], :include => [:places, :activities], :page => page, :per_page => per_page)
     else
       @matches = User.paginate(:all,:conditions=>"1 = 0",:limit => 0,:page=>1, :per_page=>1)
@@ -44,8 +63,23 @@ module UserMatcher
 
   end
 
-  def self.matchesv2(user, page=0, per_page=8)
- places     = user.places.find(:all, :include => [:categories])
+  def self.matchesv2(user)
+    users  = User.find_by_sql("
+        select U2.* from vmatches
+         inner join users U1 on U1.id = vmatches.U1
+         inner join users U2 on U2.id = vmatches.U2
+         where U1.sex_preference = U2.sex
+         and U1.age_preference = U2.age
+         and  U1.sex = U2.sex_preference and U1.age = U2.age_preference
+         and U1.id <> U2.id
+         and U1 = " + user.id.to_s + "
+          limit 0,4"
+    )
+    users
+  end
+
+  def self.matchesv3(user, page=0, per_page=8)
+    places     = user.places.find(:all, :include => [:categories])
     place_cats = places.map(&:categories).flatten.map(&:id).flatten
     place_cats = place_cats.select {|i| place_cats.select {|a| a == i}.length > 2 }
 
@@ -102,22 +136,22 @@ module UserMatcher
   User.find(:all, :conditions => ["sex = ? AND sex_preference = ? AND age = ? AND age_preference = ? AND id != ? AND id IN (?)",user.sex_preference,user.sex,user.age_preference, user.age,user.id,matched_user_ids.map(&:id)])
 
 
-  end
+end
 
-  def self.matches_for( user, entity_type, limit )
-    matches = User.find( :all,
+def self.matches_for( user, entity_type, limit )
+  matches = User.find( :all,
       :select => 'users.*, 100.0 * (v1_dot_v2 / (user1_mod * user2_mod) ) AS pct_match',
       :conditions => ['T.user_id = ? AND (users.sex & ?) > 0 AND (users.sex_preference & ?) > 0', user.id, user.sex_preference, user.sex],
       :limit => limit,
       :order => 'pct_match DESC',
       :joins => "INNER JOIN (#{vector_space(entity_type)}) T ON T.user2_id = users.id"
-    )
-    matches.each{ |m| m.pct_match = m.pct_match.to_f }
-    matches
-  end
+  )
+  matches.each{ |m| m.pct_match = m.pct_match.to_f }
+  matches
+end
     
-  def self.pct_match( user1_id, user2_id, entity_type )
-    sql =<<-SQL
+def self.pct_match( user1_id, user2_id, entity_type )
+  sql =<<-SQL
         SELECT
           user_id, user2_id, 
           100.0 * (v1_dot_v2 / (user1_mod * user2_mod) ) AS pct_match
@@ -130,42 +164,42 @@ module UserMatcher
           
         WHERE user_id = #{user1_id} AND user2_id = #{user2_id}
           AND  (u1.sex & u2.sex_preference) > 0 AND (u1.sex_preference & u2.sex) > 0
-    SQL
-    r = ActiveRecord::Base.connection.execute sql
-    r.all_hashes[0]['pct_match'].to_f rescue 0.0
-  end
+  SQL
+  r = ActiveRecord::Base.connection.execute sql
+  r.all_hashes[0]['pct_match'].to_f rescue 0.0
+end
     
-  protected
+protected
 
-  # Returns SQL to derive a user vectors table
-  # entity_type must be one of the literal strings -
-  #   activity, place, or place_activity
-  def self.user_vectors_old( entity_type, count_var_name = 'n' )
-    "select user_id, #{entity_type}_id, count(*) AS #{count_var_name}
+# Returns SQL to derive a user vectors table
+# entity_type must be one of the literal strings -
+#   activity, place, or place_activity
+def self.user_vectors_old( entity_type, count_var_name = 'n' )
+  "select user_id, #{entity_type}_id, count(*) AS #{count_var_name}
       from user_place_activities
       
       group by user_id, #{entity_type}_id"
-  end
-  #before delving into the maths, changed count(*) to 1 as it's only distinct matches we are concerned with
-    def self.user_vectors( entity_type, count_var_name = 'n' )
-    "select user_id, #{entity_type}_id, 1 AS #{count_var_name}
+end
+#before delving into the maths, changed count(*) to 1 as it's only distinct matches we are concerned with
+def self.user_vectors( entity_type, count_var_name = 'n' )
+  "select user_id, #{entity_type}_id, 1 AS #{count_var_name}
       from user_place_activities
 where place_id <> 1
       group by user_id, #{entity_type}_id"
-  end
-  # returns SQL for calculating a users vector modulus from the vector space
-  # entity_type must be one of the literal strings -
-  #   activity, place, or place_activity
-  def self.vector_mod_sql( entity_type, user_id_criteria )
-    "SELECT SQRT(SUM(n*n)) AS vector_mod
+end
+# returns SQL for calculating a users vector modulus from the vector space
+# entity_type must be one of the literal strings -
+#   activity, place, or place_activity
+def self.vector_mod_sql( entity_type, user_id_criteria )
+  "SELECT SQRT(SUM(n*n)) AS vector_mod
       FROM ( #{user_vectors(entity_type)} ) T
       WHERE user_id = #{user_id_criteria}
       GROUP BY user_id
-    "
-  end
+  "
+end
     
-  def self.vector_space( entity_type )
-    sql = <<-SQL
+def self.vector_space( entity_type )
+  sql = <<-SQL
         SELECT
             upa1.user_id,
             SUM(n1*n2) AS v1_dot_v2,
@@ -181,6 +215,6 @@ where place_id <> 1
 
         WHERE upa1.user_id != upa2.user_id
         GROUP BY upa1.user_id, user2_id
-    SQL
-  end
+  SQL
+end
 end

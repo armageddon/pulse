@@ -198,6 +198,7 @@ class UsersController < ApplicationController
     @places = current_user.suggested_places
     @matches = current_user.matches(params[:page], 8)
     @updates = TimelineEvent.paginate(:all, :conditions => "icon_file_name is not null and users.status=1 and actor_id <> " + current_user.id.to_s,:joins=>"INNER JOIN users on users.id = timeline_events.actor_id", :page=>1, :per_page => 5, :order => 'created_at DESC')
+    @match_module = UserMatcher.match_module(current_user)
   end
 
   def add_photo
