@@ -5,7 +5,7 @@
   &nbsp;	
 <% end %>
 <% content_for :message do %>
- <h2>Enter your username and email address - your new password will be emailed to you.</h2>
+ <h2>Enter your email address - your new password will be emailed to you.</h2>
 <% end %>
 <div class="column_header">
   <span>
@@ -17,10 +17,7 @@
 <div class="form_container">
 	<% form_for(:password, :url => '/passwords/create') do |f| %>
 
-	<div class="form_row">
-    	<label for="login" style="margin-top: 5px; color:#990000;">Username</label><br />
-    	<%= text_field_tag 'login','',:class => 'input_text' %>
-	</div>
+
 	<div class="form_row">
     	<label for="email" style="margin-top: 5px; color:#990000;">Email</label><br />
     	<%= text_field_tag 'email','', :class => 'input_text'%>

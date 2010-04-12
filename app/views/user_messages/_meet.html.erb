@@ -1,11 +1,11 @@
 <div id ="main_container" style="width:586px" >
   <%=hidden_field_tag 'recipient_id', recipient_id%>
   <div class="column_header">
-    <h2>Arrange a date with Luella</h2>
+    <h2>Arrange a date with <%=User.find(recipient_id).first_name%></h2>
   </div>
 
   <div id="body" style="padding:12px">
-    Hi Luella
+    Hi <%=User.find(recipient_id).first_name%>
     <br />
     <br />
     We hang out at the same places and I think we have a lot in common.  Would you like to meet?

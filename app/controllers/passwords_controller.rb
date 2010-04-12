@@ -14,7 +14,7 @@ class PasswordsController < ApplicationController
   def create
     respond_to do |format|
       logger.debug('before')
-      user = User.find_by_email_and_login(params[:email], params[:login])
+      user = User.find_by_email(params[:email])
       logger.debug('after')
       if user
         logger.debug('user')
@@ -30,7 +30,7 @@ class PasswordsController < ApplicationController
         }
       else
          logger.debug('no user')
-        flash[:notice] =  "We can't find that account.  Please try again."
+        flash[:notice] =  "We can't find that email address.  Please try again."
         format.html { render :action => "new" }
       end
     end
