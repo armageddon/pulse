@@ -5,7 +5,7 @@ class NewMatchingViews < ActiveRecord::Migration
     execute("CREATE VIEW vuser_places_match as
     select P1.user_id AS U1,P2.user_id AS U2,count(0) AS place_count
     from vuser_places P1
-    join vuser_places P2 on p2.place_id = p1.place_id
+    join vuser_places P2 on P2.place_id = P1.place_id
     where P1.user_id <> P2.user_id
     and P1.place_id <> 1
     group by P1.user_id,P2.user_id
