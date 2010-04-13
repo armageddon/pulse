@@ -4,8 +4,8 @@
 </div>
 <div style="float:left; margin-left:10px">
   <%=link_to object.first_name, object,:style=>"font-size:14px" %><br />
-  <%= object.activity_count == nil ?  '' : object.activity_count.to_s + ' activities in common' %><br />
-  <%= object.place_count == nil ?  '' : object.place_count.to_s + ' places in common' %><br />
+  <%= object.activity_count == nil ?  '' : object.activity_count == 1 ? object.activity_count.to_s + ' activity in common'  :  object.activity_count.to_s + ' activities in common' %><br />
+  <%= object.place_count == nil ?  '' : object.place_count ==1 ? object.place_count.to_s + ' place in common'  : object.place_count.to_s + ' places in common' %><br />
   <div class="clear"></div>
   <div style="float:left;margin-top:7px">
     <span class ='submit_small arrange_to_meet'  data-href = "/messages/meet/?recipient_id=<%=object.id%>" >arrange to meet</span>
