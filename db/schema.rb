@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100409143633) do
+ActiveRecord::Schema.define(:version => 20100413144717) do
 
   create_table "activities", :force => true do |t|
     t.string   "name"
@@ -132,6 +132,8 @@ ActiveRecord::Schema.define(:version => 20100409143633) do
     t.datetime "read_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "message_type",            :default => 0
+    t.integer  "thread_original_mail_id"
   end
 
   create_table "place_activities", :force => true do |t|
@@ -303,10 +305,25 @@ ActiveRecord::Schema.define(:version => 20100409143633) do
     t.string   "facebook_page"
   end
 
+  create_table "vmatcher", :id => false, :force => true do |t|
+    t.integer "U1",              :default => 0, :null => false
+    t.integer "U2",              :default => 0, :null => false
+    t.integer "C",  :limit => 8, :default => 0
+    t.integer "A",  :limit => 8
+    t.integer "P",  :limit => 8
+  end
+
   create_table "vmatches", :id => false, :force => true do |t|
     t.integer "U1"
     t.integer "U2"
-    t.integer "c",  :limit => 8, :default => 0, :null => false
+    t.integer "C",  :limit => 8, :default => 0, :null => false
+    t.integer "A",  :limit => 8
+    t.integer "P",  :limit => 8
+  end
+
+  create_table "vmatches_all", :id => false, :force => true do |t|
+    t.integer "U1", :default => 0, :null => false
+    t.integer "U2", :default => 0, :null => false
   end
 
   create_table "vuser_activities", :id => false, :force => true do |t|
@@ -326,8 +343,8 @@ ActiveRecord::Schema.define(:version => 20100409143633) do
   end
 
   create_table "vuser_places_match", :id => false, :force => true do |t|
-    t.integer "U1",                       :default => 0, :null => false
-    t.integer "U2",                       :default => 0, :null => false
+    t.integer "U1"
+    t.integer "U2"
     t.integer "place_count", :limit => 8, :default => 0, :null => false
   end
 

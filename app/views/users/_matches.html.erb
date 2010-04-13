@@ -4,21 +4,29 @@
 </div>
 <div>
   <div style="float:left;width:276px">
+    <%if @match_module.length>0 &&@match_module[0]!=nil  %>
     <%= render :partial => 'shared_objects/matched_user'  , :locals => {:object => @match_module[0]}%>
+    <%end%>
   </div>
 
   <div style="float:left;width:276px">
+    <%if @match_module.length>1 &&@match_module[1]!=nil  %>
        <%= render :partial => 'shared_objects/matched_user'  , :locals => {:object => @match_module[1]}%>
+    <%end%>
   </div>
 
 </div>
 <div class="clear"></div>
 <div style="margin-top:10px">
   <div style="float:left;width:276px">
+    <%if @match_module.length>2 &&@match_module[2]!=nil  %>
   <%= render :partial => 'shared_objects/matched_user'  , :locals => {:object => @match_module[2]}%>
+    <%end%>
   </div>
   <div style="float:left;width:276px">
+    <%if @match_module.length>3 &&@match_module[3]!=nil  %>
    <%= render :partial => 'shared_objects/matched_user'  , :locals => {:object => @match_module[3]}%>
+    <%end%>
   </div>
 
 </div>

@@ -18,17 +18,20 @@
   </h2>
 <% end %>
 
-
-
+<div class='clear'></div>
+<div id='profile_matches' style="margin-bottom:10px">
+  <%= render :partial => "users/matches", :locals => {:collection => @updates} %>
+<div class='clear'></div>
+</div>
 
 <div class='clear'></div>
 <div id='small_map' style="margin-bottom:10px">
   <%= render :partial => "maps/small_map", :locals => {:collection => @updates} %>
 </div>
 
-<div class="column_subheader">
+<div class="column_subheader" style="margin-botton:5px">
   <h2>Latest activity</h2>
 </div>
-
+<div  style="margin-top:5px">
 <%= render :partial => "shared_object_collections/feed_collection", :locals => {:collection => @updates} %>
-
+</div>

@@ -36,7 +36,20 @@ class UserMessagesController < ApplicationController
 
   def update
     logger.debug("Message update")
-    @message = current_user.sent_messages.build(params[:message].merge(:recipient_id => @other_user.id))
+    if params[:reply].present?
+      case params[:reply]
+      when 'yes'
+        @body = YES_MAIL
+      when 'maybe'
+        @body = MAYBE_MAIL
+      when 'no'
+        @body=NO_MAIL
+      end
+      @message = current_user.sent_messages.build(:recipient_id => @other_user.id, :body => @body)
+    else
+      @message = current_user.sent_messages.build(params[:message].merge(:recipient_id => @other_user.id))
+    end
+    
     respond_to do |format|
       if @message.save
         format.html do
@@ -61,7 +74,7 @@ class UserMessagesController < ApplicationController
 
    def create_meet
     @body = 'Hi ' + User.find(params[:recipient_id]).first_name + '. We hang out at the same places and I think we have a lot in common.  Would you like to meet?'
-     @message = current_user.sent_messages.build(:recipient_id => params[:recipient_id],:body=>@body)
+     @message = current_user.sent_messages.build(:recipient_id => params[:recipient_id],:body=>@body, :message_type=>1)
       @message.save
       render :nothing => true
    end

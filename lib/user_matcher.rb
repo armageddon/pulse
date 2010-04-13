@@ -28,14 +28,23 @@
 # I went for keeping it simple :)
 module UserMatcher
 
-  def self.match_module(user)
-    #4 users only, using v2 and then the rest with v1
-    matches = self.matchesv2(user)
-    if matches.length<4
-      less_specific_matches = self.matchesv1(user, 1, 4-matches.length)
-      matches.concat(less_specific_matches)
+  def self.match_module(user, page=1, per_page=4)
+       if user.sex_preference!=nil && user.sex != nil && user.age_preference!=nil && user.sex != nil && user.age != nil
+       @matches = User.paginate(:all,:select => "users.*, V.A as activity_count, V.P as place_count", :joins=>"INNER JOIN vmatcher V on V.U2 = users.id", :conditions => [
+          "V.U1 = ?",
+          user.id
+        ], :page => page, :per_page => per_page)
+    else
+      @matches = User.paginate(:all,:conditions=>"1 = 0",:limit => 0,:page=>1, :per_page=>1)
     end
-    matches
+  @matches
+    #4 users only, using v2 and then the rest with v1
+   # matches = self.matchesv2(user)
+   # if matches.length<4
+   #   less_specific_matches = self.matchesv1(user, 1, 4-matches.length)
+   #   matches.concat(less_specific_matches)
+   # end
+   # matches
 
   end
 
