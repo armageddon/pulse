@@ -6,12 +6,14 @@
 	<div class="place_person" style="width:85px;float:left;margin-right:5px;margin-left:10px;">
 		<%= link_to object.user.name,object.user%>
 	</div>
-	<div class="place_why" style="width:360px;float:left;margin-right:5px;">
+	<div class="place_why" style="width:315px;float:left;margin-right:5px;">
 		<i><%=object.description%>&nbsp;</i>
 	</div>
 
-	<div class="actions">
-          <% if current_user!=nil %>
+	<div class="place_actions" style="width:85px;float:left;margin-right:0px;margin-left:5px">
+          <% if current_user!=nil && object.user.id != current_user.id %>
+          <span class ='submit_tiny arrange_to_meet'  data-href = "/messages/meet/?recipient_id=<%=object.user.id%>" >meet</span>
+ 
 		<%= (link_to image_tag("add_user_new.png", :width=>20, :class => " tooltip", :title => I18n.translate("Add_to_favorites")), "#", :class => "place_activity_people_favorite", :friend_id => object.user.id) unless current_user.has_friend?(object.user.id)  || object.user.id == current_user.id  %>
 		<%= link_to image_tag("HPMail.png", :width=>20, :class => " tooltip", :title => "Send a mail"), account_message_path(object.user),'data-href' => account_message_path(object.user)  %>
 	<%end%>
