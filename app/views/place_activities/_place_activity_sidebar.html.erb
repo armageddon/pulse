@@ -8,9 +8,7 @@
     <%= image_tag(@place.icon.url(:profile), :class=>"profile_image") %>
   <%end%>
 </div>
-<% if current_user!=nil && current_user.admin? %>
-  <div id="manage_pictures"><%= link_to "Manage place pictures", place_pictures_path(@place) %></div>
-<% end %>
+
 
 <br>
 <div id="address"> 
