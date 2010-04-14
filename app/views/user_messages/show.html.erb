@@ -17,7 +17,7 @@
 
 
     <% form_for Message.new, :url => account_message_path(@other_user), :html => {:method => "put"} do |m| %>
-      <%if @messages.first.message_type==1&&@messages.first.sender_id != current_user.id%>
+      <%if @messages.length> 0 && @messages.first.message_type==1&&@messages.first.sender_id != current_user.id%>
         <%=radio_button_tag 'reply', 'yes', true%> <%=YES_MAIL%><br />
 
         <%=radio_button_tag 'reply', 'maybe'%> <%=MAYBE_MAIL%><br />
