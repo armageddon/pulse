@@ -1168,8 +1168,6 @@ a{
 .submit_small{
     cursor:pointer;
     overflow:visible;
-
-
     margin-top:1 5px;
     margin-left:20px;
     padding:4px!important;
@@ -1186,6 +1184,25 @@ a{
     -moz-border-radius: 4px;
     top: -2px;
     margin-right: 5px;
+}
+.submit_tiny{
+    cursor:pointer;
+    overflow:visible;
+    margin-top:1 5px;
+    padding:2px!important;
+    background-color:#bf1212!important;
+    border:2px solid #9f1111!important;
+    color:#fff!important;
+    height:25px;
+    /*margin-bottom:20px;*/
+    font-size:12px;
+    font-weight:500!important;
+    font-family:arial!important;
+    background-image:none;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    top: -6px;
+    position:relative;
 }
 .facebook-connect-button {
     position: relative;
@@ -1316,6 +1333,7 @@ a{
     float:left;
     text-align:center;
     background-color:#EDEDED;
+    margin-bottom:4px;
 }
 
 .a_icon {
