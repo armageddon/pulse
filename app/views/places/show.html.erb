@@ -78,10 +78,9 @@
     $("#dialog").jqmShow();
   }
 
-  function showUserReg(checkFB)
+  function showUserReg()
   {
-    if(checkFB)
-    {
+
       var id = FB.Connect.get_loggedInUser();
       $.ajax({
         type : "GET",
@@ -104,13 +103,7 @@
         }
 
       });
-    }
-    else
-    {
-      $('#dialog').jqm({ajax:'/quick_reg',modal:true});
-      $("#dialog").jqmShow();
 
-    }
     return false;
   }
   function reqPermissions()
