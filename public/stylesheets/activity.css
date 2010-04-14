@@ -42,9 +42,8 @@
     color:black;
     font-size:11px;
   }
-  
-#activity_results {
-  background: #fff;
+  .activity_results_h {
+        background: #fff;
   border: 1px solid #999;
   left: 12px;
   max-height: 200px;
@@ -54,6 +53,24 @@
   top: 91px;
   width: 260px;
   z-index: 10;
+  }
+  .activity_results_reg_h
+  {
+  width:260px;
+      background: #fff;
+  border: 1px solid #999;
+  max-height: 200px;
+  overflow: auto;
+  padding: 3px;
+  position: relative;
+  width: 260px;
+  z-index: 10;
+  }
+#activity_results {
+
+}
+#activity_results_reg {
+ 
 }
 
   #place_results  {

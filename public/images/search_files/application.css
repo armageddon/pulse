@@ -219,7 +219,7 @@ a, a:visited, a:active {
 	 width: 555px;	
 }
 #activity_results {
-	 width: 555px;	
+	/* width: 555px;	*/
 }
 .object .icon {
   width: 45px;

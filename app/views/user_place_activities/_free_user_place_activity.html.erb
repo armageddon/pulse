@@ -27,7 +27,7 @@
           <div id='activity'>
             <label  class="activity_label">What do you like doing?</label> <br />
             <%= text_field_tag :activity_name,(user_place_activity.activity.present? ? user_place_activity.activity.name : 'e.g. Drinking Margheritas at Crazy Homies'),   :class => "activity_input example", :disabled => false,  :size => 50%>
-            <div id ="activity_results" style="display:none">
+            <div id ="activity_results" class="<%=upa_type=="reg" ? 'activity_results_reg_h' : 'activity_results_h' %> " style="display:none">
             </div>
           </div>
           <div style="float:left">
@@ -49,7 +49,7 @@
         <div id="add_activity">
           <h2>What do you like doing here?</h2>
           <%= text_field_tag :activity_name,(user_place_activity.place.present? ? user_place_activity.place.name : nil),   :class => "activity_input", :disabled => false,  :size => 50%>
-          <div id ="activity_results" style="display:none">
+          <div id ="activity_results" class="<%=upa_type=="reg" ? 'activity_results_reg_h' : 'activity_results_h' %> " style="display:none">
           </div>
         </div>
       <%end%>

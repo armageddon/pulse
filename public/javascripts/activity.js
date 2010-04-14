@@ -27,7 +27,7 @@
     {
       $("#dialog").jqmAddTrigger('.add_to_favorites, .add_place, .add_event, .add_activity, .invite_a_friend');
       $("#dialog").html("Successfully added to your profile");
-      $('#dialog').fadeTo(2000, 0.1, function() {
+      $('#dialog').fadeTo(1000, 0.1, function() {
         $('#dialog').jqmHide();
         $('#dialog').fadeTo(1,1);
       });
