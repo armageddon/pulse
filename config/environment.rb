@@ -45,6 +45,8 @@ if Rails.env == "production"
   # http://67.23.21.94/   
   if Rails.public_path.include? ".co.uk"
     GOOGLE_MAPS_API_KEY = 'ABQIAAAAxWNpxzcfyhn7zYII6ArMwBTuVtZQfMdAwq5mbuzuAdL882aPpxTzrnL-bVk8wVuKyBuHCsbsgUxeJQ'
+  elsif Rails.public_path.include? "174.143.128.98"
+    GOOGLE_MAPS_API_KEY = 'ABQIAAAArdqGwpu3b8yNbPBH_W7VcxQMwoiYNRvMEoTjsAC5jD4uhD7CdhS80RwbHQzt5Fb-L64ks4UQJ7pY0A'
   else
     GOOGLE_MAPS_API_KEY = 'ABQIAAAArdqGwpu3b8yNbPBH_W7VcxRhKqGJz2XpjEX0yvpoqNJsCS6C3RQc357CAtK1DBmVMWVoj-V1g38HpQ'
   end
