@@ -26,9 +26,9 @@
   var ne = new GLatLng(<%=  51.502152 %>, <%= -0.122236 %>);
   var bounds = new GLatLngBounds(sw,ne);
   small_map.setCenter(bounds.getCenter(), 12);
-  small_map.enableInfoWindow()  
-  small_map.disableDragging() 
-
+  small_map.enableInfoWindow()  ;
+  //small_map.disableDragging()
+ small_map.addControl(new GSmallZoomControl())
 
   small_map.setMapType(G_NORMAL_MAP);
 
@@ -37,31 +37,100 @@
   GEvent.addListener(small_map, "click", function() {
 	
 	
-    $('#search_form').submit();
+   // $('#search_form').submit();
+  });
+   GEvent.addListener(small_map, "dblclick", function() {
+
+
+  $('#search_form').submit();
   });
 
-  $.ajax({
-    type: "GET",
-    url: '/search/map',
-    data: {"search_criteria[type]" : "5","search_criteria[age_preference]" : "<%= current_user.age_preference%>","search_criteria[age_preferences]" : "<%= current_user.sex_preference%>" },
-    success: function(p) {
-      var x = eval(p);
-      var marker= new Array();
-      for(var i =0; i < x.length; i++)
-      {
-        var point = new GLatLng(x[i].place.latitude, x[i].place.longitude)
-        var marker = createMarker(point);
-        small_map.addOverlay(marker);
+    $.ajax({
+      type: "GET",
+      url: '/search/map',
+      data: {"search_criteria[type]" : "5","search_criteria[age_preference]" : "<%= current_user.age_preference%>","search_criteria[age_preferences]" : "<%= current_user.sex_preference%>" },
+      success: function(p) {
+        var x = eval(p);
+        var marker= new Array();
+        for(var i =0; i < x.length; i++)
+        {
+          var point = new GLatLng(x[i].place.latitude, x[i].place.longitude)
+          var marker = createMarker(point,place_html(x[i].place),x[i].place.id);
+          small_map.addOverlay(marker);
+        }
       }
-    }
-  });
+    });
 	
 
-  
-  function createMarker(point) {
+  function place_html(pl)
+  {
+    var s = '';
+    s += '<div style="float:left">'
+    s += '<img width="30px" height="30px" src="'+pl.icon_file_name+'" alt="7_thumb"/>'
+    s += '</div>'
+    s += '<div style="float:left">'
+    s += '<a style="padding-left:10px" href="/places/'+pl.id.toString()+'">'+pl.name+'</a>';
+    s += '<div class="clear"></div>'
+    s += '<span style="font-size:9px;padding-left:10px">'+ pl.address + ' ' + pl.neighborhood +'</span>';
+    s += '</div>'
+    s += '<div class="clear"></div>'
+    s += '<br />'
+    s += '<div style="float:left">'
+    if(pl.pa_count > 1)
+    {
+      s += pl.pa_count.toString() + ' things happening here'
+    }
+    else
+    {
+      s += '1 thing happening here'
+    }
+    s += '</div>'
+    s += '<div class="clear"></div>'
+
+
+
+    return s;
+  }
+
+   function createMarker(point,html,id) {
+    var marker = new GMarker(point,{ icon: dotIcon });
+    GEvent.addListener(marker, "click", function() {
+      location.href = '/places/'+id.toString();
+    });
+
+    // The new marker "mouseover" listener
+    GEvent.addListener(marker,"mouseover", function() {
+      // marker.openInfoWindowHtml(html);
+      getImages(marker,id);
+      
+    });
+
+
+    return marker;
+  }
+
+
+  function createMarkerOld(point) {
     var marker = new GMarker(point,{ icon: dotIcon });
 	        
 
     return marker;
+  }
+  var res = 'sd';
+
+
+  function getImages(mar,id)
+  {
+   
+    $.ajax({
+      type: "GET",
+      url: '/places/info_window',
+      data: {"id" : id },
+      success: function(p) {
+
+       mar.openInfoWindowHtml(p);
+      }
+    });
+    return false;
   }
 </script>

@@ -19,4 +19,27 @@
   
   map.addControl(new GMapTypeControl())
   map.setMapType(G_NORMAL_MAP);
+
+
+
+
+    function getImages(mar,id)
+  {
+    $.ajax({
+      type: "GET",
+      url: '/places/info_window',
+      data: {"id" : id },
+      success: function(p) {
+
+       mar.openInfoWindowHtml(p);
+      },
+      error: function()
+      {}
+    });
+    return false;
+  }
 </script>
+
+
+
+

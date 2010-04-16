@@ -1,0 +1,16 @@
+.ie6-none {
+    display: none !important;
+}
+
+.ie6-bg {
+    background-image: none !important;
+}
+
+/* Warn */
+.ie6-warn {
+ background-color: white;
+ border: 1px solid black;
+ display: block !important;
+ padding: 20px;
+ margin: 20px;
+}

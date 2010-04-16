@@ -101,6 +101,7 @@ ActionController::Routing::Routes.draw do |map|
   map.place_activity_user_place_activities '/place_activity/user_place_activities', :controller => 'place_activities', :action => 'user_place_activities'
   
   #places_controller
+  map.place_users '/places/info_window',  :controller => 'places', :action => 'info_window'
   map.place_autocomplete_new '/places/autocomplete_new', :controller => 'places', :action => 'autocomplete_new'
   map.activity_admin 'places/admin', :controller=>'places', :action=>'admin'
   map.activity_post_fb 'places/post_to_facebook', :controller=>'places', :action=>'post_activity_to_facebook'

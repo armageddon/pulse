@@ -11,7 +11,6 @@ class PlacesController < ApplicationController
     render :text=>'post to facebook'
   end
   
-
   def index
     @places = Places.find(:all)
   end
@@ -37,7 +36,6 @@ class PlacesController < ApplicationController
     @users = @place.users.paginate(:all,:group => :user_id, :page => params[:page], :per_page => 6)
     @user_place_activities = @place.user_place_activities.paginate(:order=>'created_at DESC',:page=>1,:per_page=>10)
     render :template => 'places/show', :locals => {:activity => @place, :auth_code =>params[:code] }
- 
   end
 
   def update
@@ -77,8 +75,6 @@ class PlacesController < ApplicationController
     render :text => results
   end
 
-
-  
   def autocomplete_new
     s = params[:q]
     @places = Place.find(:all,:order => "name", :limit=>"50",:conditions => ["name like ? ", "#{s}%"])
@@ -95,4 +91,43 @@ class PlacesController < ApplicationController
       format.js { render :json => res}
     end
   end
+
+  def info_window
+    begin
+    logger.debug('PLACEID ' + params[:id].to_s )
+    place = Place.find(params[:id].to_i)
+    pics = '<div>'
+    i = 0
+    place.users.paginate(:all,:group => :user_id,:page=>params[:page], :per_page=>8).each do |u|
+      logger.debug(pics)
+      pics += "<div style='float:left;margin-right:2px'><a href='/profiles/"+u.username+"'><img width='25px' height='25px' src='" + u.icon.url(:thumb) + "' alt='7_thumb'/></a></div>" if u.icon.url(:thumb)  != nil
+    end
+    pics += "<div class='clear'></div>"
+    pics += "</div>"
+    s = ''
+    s += '<div style="float:left">'
+    s += '<img width="30px" height="30px" src="'+place.icon.url(:thumb)+'" alt="7_thumb"/>'
+    s += '</div>'
+    s += '<div style="float:left">'
+    s += '<a style="padding-left:10px" href="/places/'+place.id.to_s+'">'+place.name+'</a>'
+    s += '<div class="clear"></div>'
+    s += '<span style="font-size:9px;padding-left:10px">'+ place.address + ' ' + place.neighborhood + '</span>'
+    s += '</div>'
+    s += '<div class="clear"></div>'
+    s += '<div style="float:left">'
+    if place.user_place_activities.length > 1
+      s += place.user_place_activities.length.to_s+ ' things happening here'
+    else
+      s += '1 thing happening here'
+    end
+    s += '</div>'
+    s += '<div class="clear"></div>'
+    s += pics
+    render :text => s and return
+    rescue
+      render :text => '?' and return
+    end
+
+  end
+
 end

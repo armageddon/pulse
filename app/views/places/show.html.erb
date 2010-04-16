@@ -1,11 +1,9 @@
-
 <% content_for :c1 do %>
   <%= render :partial => "places/place_sidebar" %>
 <% end %>
 <%= fb_connect_javascript_tag %>
 <%= init_fb_connect "XFBML", :js=>:jquery%>
 <%  auth_code ||='' %>
-
 <% content_for :message do %>
   <%if auth_code != nil &&auth_code!='' && !logged_in? %>
     <h3> You have been invited to link this activity to your Facebook Page. You will be asked to grant Hellopulse permission to publish to your activity stream, and to give us offline access so we can publish updates to your page. Please click <%= fb_login_button('reqPermissions()')%> to continue</h3>
@@ -17,15 +15,10 @@
     <h1> Hello <%=current_user.first_name%> - check out this place </h1>
   <%end%>
 <%end%>
-
-
 <%=hidden_field_tag 'auth_code_hidden' , auth_code%>
 
-
 <div class="column_header">
-
   <h2><%=@place.name%></h2>
-
 </div>
 <div style="float:left;width:356px; margin-bottom:4px;margin-top:0px">
   <h3 style="width:356px;font-size:14px" class="section_name">People who hang here</h3>
@@ -56,9 +49,7 @@
   <% end %>
 </div>
 
-
 <script type="text/javascript">
-
   $('#join').live('click',function(){
     showUserReg(true)
     return false;
@@ -69,9 +60,6 @@
     return false;
   })
 
-
-
-
   function showReg()
   {
     $('#dialog').jqm({ajax:'/partner_reg?auth_code=<%=auth_code%>&object_id=<%=@place.id%>&object_type=place',modal:true});
@@ -80,32 +68,30 @@
 
   function showUserReg()
   {
-
-      var id = FB.Connect.get_loggedInUser();
-      $.ajax({
-        type : "GET",
-        url : "/facebook_user_exists",
-        data : {"fbid" : id},
-        success : function(p){
-          if(p=='true')
-          {
-            window.location.href=window.location.href;
-          }
-          else
-          {
-            $('#dialog').jqm({ajax:'/quick_reg',modal:true});
-            $("#dialog").jqmShow();
-          }
-        },
-        error : function(p){
-          alert('error')
-          return false;
+    var id = FB.Connect.get_loggedInUser();
+    $.ajax({
+      type : "GET",
+      url : "/facebook_user_exists",
+      data : {"fbid" : id},
+      success : function(p){
+        if(p=='true')
+        {
+          window.location.href=window.location.href;
         }
-
-      });
-
+        else
+        {
+          $('#dialog').jqm({ajax:'/quick_reg',modal:true});
+          $("#dialog").jqmShow();
+        }
+      },
+      error : function(p){
+        alert('error')
+        return false;
+      }
+    });
     return false;
   }
+
   function reqPermissions()
   {
     FB.Connect.showPermissionDialog("status_update,offline_access,publish_stream", function(){showReg()},true );

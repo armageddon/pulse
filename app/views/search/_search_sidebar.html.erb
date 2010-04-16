@@ -280,7 +280,7 @@
             for(var i =0; i < x.length; i++)
             {
               var point = new GLatLng(x[i].place.latitude, x[i].place.longitude);
-              var marker = createMarker(point,place_html(x[i].place));
+              var marker = createMarker(point,place_html(x[i].place),x[i].place.id);
               map.addOverlay(marker);
             }
           }
@@ -319,7 +319,23 @@
     return s;
   }
 
-  function createMarker(point,html) {
+   function createMarker(point,html,id) {
+    var marker = new GMarker(point,{ icon: dotIcon });
+
+    GEvent.addListener(marker, "click", function() {
+      getImages(marker,id);
+    });
+
+    // The new marker "mouseover" listener
+    GEvent.addListener(marker,"mouseover", function() {
+      // marker.openInfoWindowHtml(html);
+      getImages(marker,id);
+    });
+
+    return marker;
+  }
+
+  function createMarkerOld(point,html) {
     var marker = new GMarker(point,{ icon: dotIcon });
     GEvent.addListener(marker, "click", function() {
       marker.openInfoWindowHtml(html);

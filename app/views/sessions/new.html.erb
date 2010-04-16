@@ -10,6 +10,12 @@
     <%= javascript_include_tag "jquery-1.3.2", 'application' %>
     <%= javascript_include_tag :defaults%>
 
+
+             
+     
+
+
+
     <style type="text/css" media="screen">
 
       a, a:visited, a:active { color: #990000; text-decoration: none;}
@@ -48,27 +54,53 @@
   </head>
 
   <body>
+
+
     <%= fb_connect_javascript_tag %>
     <%= init_fb_connect "XFBML", :js=>:jquery%>
     <div id="container" class="container_16">
+      <!--[if lt IE 7]>
+  <div >
+   <h2>We're sorry, but…</h2>
+   You are currently using <b>Internet Explorer version 6.</b><br/>
+   This is an older web browser which has problems displaying newer websites, including ours.<br/>
+   You will enjoy a better experience of <b>HelloPulse</b> (and other sites on the Internet) if you download and install a newer browser.</p><br/>
+   There are a number of alternatives:
+   <ol class="disc">
+       <li><a href="http://www.google.com/chrome/">Google Chrome (extremely fast)</a></li>
+       <li><a href="http://www.mozilla-europe.org/en/firefox/">Mozilla Firefox (this browser also works with older versions of Windows)</a></li>
+       <li><a href="http://www.microsoft.com/uk/windows/internet-explorer/default.aspx">Microsoft Internet Explorer version 8.0 (the latest version of Internet Explorer)</a></li>
+   </ol>
+   <b>All of these can be installed within a couple of minutes by clicking the links above, and are available for free.</b>
+  </div>
+    <![endif]-->
       <div class="grid_16" id="stock">
         <div style="float:right; margin-right:20px">
           <% form_tag session_path , :id => 'session_form' do -%>
             <%= hidden_field_tag 'dest', @dest %>
-              <%= hidden_field_tag 'uname', @uname %>
-            <div style="float:right; width=700px">
+            <%= hidden_field_tag 'uname', @uname %>
+            <div style="float:right; >
               <span style="font-size:14px;" class="splash-members-login">Members login:</span>
               <span style="font-size:14px"><%= text_field_tag 'login', @login, :class => "input_text", :value => "Username or Email", :size => "16" %></span>
               <span style="font-size:14px"><%= password_field_tag 'password', nil, :size => "10", :class => "input_text", :style => "display: none;" %></span>
               <span style="font-size:14px"><input type="text" class="input_text" size="10" value="Password" id="password_holder"/></span>
               <%= submit_button "GO", :class=> 'submit', :type =>'submit'%><br />
+
             </div>
+          <div class="clear">&nbsp;</div>
+          <div style="float:right;">
+           <% if flash[:error] %>
+          <p id="errors" style="font-size:13px;margin-right:20px;height:23px">
+            <%= flash[:error] %>
+          </p>
+        <% end %>
+          </div>
             <div class="clear">&nbsp;</div>
             <div style="float:right; margin-bottom:5px">
               <%if   @dest  == nil%>
-              <%= fb_login_button('window.location = "/account/link_user_accounts";')%>
+                <%= fb_login_button('window.location = "/account/link_user_accounts";')%>
               <% else %>
-              <%= fb_login_button('window.location = "/account/link_user_accounts/?dest=' + @dest +'''";')%>
+                <%= fb_login_button('window.location = "/account/link_user_accounts/?dest=' + @dest +'''";')%>
               <% end %>
               &nbsp;&nbsp;&nbsp;
               <%= link_to "Forgot Password?", :controller=>'passwords', :action=>"new", :id=>'new_password'%>
@@ -83,11 +115,7 @@
       <div class="clear"></div>
       <div class="" style="padding-left:180px;width:740px;float:left;padding;margin-left:10px;margin-right:10px;" id="">
         <p id="hello" style="font-size:25px;margin-top:10px"> Welcome to HelloPulse... the place for singles to meet out and about in London</p>
-        <% if flash[:error] %>
-          <p id="errors" style="font-size:13px;margin-right:20px;height:23px">
-            <%= flash[:error] %>
-          </p>
-        <% end %>
+       
         <div style="width:520px;float:left; margin-top:20px;">
           <div style="margin-bottom:10px; font-size:17px;margin-top:15px">Recent activity on HelloPulse</div>
           <%= render :partial => "shared_object_collections/feed_collection", :locals => {:collection => @updates} %>
@@ -105,13 +133,13 @@
       <%= render :partial => "shared/footer" %>
     </div>
     <script src="//ah8.facebook.com/js/conversions/tracking.js"></script><script type="text/javascript">
-try {
-  FB.Insights.impression({
-     'id' : 6002511185007,
-     'h' : '526ee325d5'
-  });
-} catch (e) {}
-</script>
+      try {
+        FB.Insights.impression({
+          'id' : 6002511185007,
+          'h' : '526ee325d5'
+        });
+      } catch (e) {}
+    </script>
   </body>
 </html>
 
