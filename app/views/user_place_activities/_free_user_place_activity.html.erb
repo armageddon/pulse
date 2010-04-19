@@ -26,16 +26,16 @@
           <br />
           <div id='activity'>
             <label  class="activity_label">What do you like doing?</label> <br />
-            <%= text_field_tag :activity_name,(user_place_activity.activity.present? ? user_place_activity.activity.name : 'e.g. Drinking Margheritas at Crazy Homies'),   :class => "activity_input example", :disabled => false,  :size => 50%>
+            <%= text_field_tag :activity_name,(user_place_activity.activity.present? ? user_place_activity.activity.name : 'e.g. Drinking Margheritas'),   :class => "activity_input example", :disabled => false,  :size => 50%>
             <div id ="activity_results" class="<%=upa_type=="reg" ? 'activity_results_reg_h' : 'activity_results_h' %> " style="display:none">
             </div>
           </div>
-          <div style="float:left">
-            <br />
+          <div style="float:left;font-size:16px;margin-top:20px;margin-left:5px;margin-right:5px">
+            @
           </div>
-          <div id="place" style="<%= ' display:none' unless upa_type == 'edit' %>">
+          <div id="place"  style="width:260px">
             <label  id="place_label" class="activity_label">Where do you like doing it?</label> <br />
-            <%= text_field_tag :place_nam, (user_place_activity.place.present? ? user_place_activity.place.name : nil), :class => "place_input", :disabled => false, :size => 50%>
+            <%= text_field_tag :place_nam, (user_place_activity.place.present? ? user_place_activity.place.name : 'Crazy Homies'), :class => "place_input example", :disabled => false, :size => 50%>
             <div id='place_results' style="display:none">
             </div>
             <div id="new_place" style="width:230px;float:left;margin-top:10px;display:none">
@@ -64,14 +64,14 @@
       <%end%>
 
       <%if add_type =='neither'%>
-      <% place = Place.find(place_id)  %>
-      <% activity = Activity.find(activity_id)  %>
-      <div style="float:left">
-      <%= image_tag(place.icon.url(:thumb), :width => '30px', :height => '30px') %>
-      </div>
-      <div  style="float:left; margin-left:7px">
-      <h2><%=activity.name%> at <%=place.name%></h2>
-      </div>
+        <% place = Place.find(place_id)  %>
+        <% activity = Activity.find(activity_id)  %>
+        <div style="float:left">
+          <%= image_tag(place.icon.url(:thumb), :width => '30px', :height => '30px') %>
+        </div>
+        <div  style="float:left; margin-left:7px">
+          <h2><%=activity.name%> at <%=place.name%></h2>
+        </div>
       <% end %>
 
       <div class="clear"></div>
@@ -93,8 +93,8 @@
         <% end%>
       </div>
     </div>
-        <div class="clear"></div>
-    
+    <div class="clear"></div>
+
     <div class="clear"></div>
 
     <% if upa_type=='reg' %>
@@ -192,6 +192,8 @@
     });
 
     $("#place_nam").bind('keyup',function(e){
+     $('#new_place').css('display','none');
+      $("#place_nam").removeClass('example');
       if($("#place_nam").val().length<= 2) return false;
       if(search_timeout != undefined) {
         clearTimeout(place_search_timeout);
@@ -227,7 +229,10 @@
       {
         $('#activity_id').val(-1);
         $('#activity_results').css('display','none');
-        if($('#add_type').val()=='both')  displaySearchPlaces();
+        if($('#add_type').val()=='both' && ($('#place_id').val()==0 || $('#place_id').val()=='' ))
+        {
+          displaySearchPlaces();
+        }
         return false;
       }
       else
@@ -237,10 +242,11 @@
       }
 
       $('#activity_name').val(getActivityFromID(act_id).name)
-      if($('#add_type').val()=='both')
+      if($('#add_type').val()=='both' && ($('#place_id').val()==0 || $('#place_id').val()=='' ))
       {
-        $('#place_results').html('');
-        $('#place_nam').val('');
+        //$('#place_results').html('');
+        //$('#place_nam').val('');
+     
         $.ajax({
           type: "GET",
           dataType: 'json',
@@ -257,6 +263,7 @@
             {
               displaySearchPlaces();
             }
+
             resultsPlaceArray = p;
             bindPlaceHover();
           },
@@ -264,6 +271,10 @@
             alert('an error occured');
           }
         });
+      }
+      else
+      {
+        $('#activity_results').css('display','none');
       }
     });
 
@@ -299,6 +310,8 @@
     });
 
     $('#place_nam').live('click',function(){
+      $("#place_nam").removeClass('example');
+      $('#new_place').css('display','none');
       $('#place_id').val(0);
       $(this).val('');
     });
@@ -313,9 +326,9 @@
     $('#activity_name').live('click',function(){
       $("#activity_name").removeClass('example');
       $(this).val('');
-      $("#place").css('display','none');
+      //$("#place").css('display','none');
       $("#place_results").css('display','none');
-      $("#place_nam").val('');
+      //$("#place_nam").val('');
       $('#activity_id').val(0);
       $('#place_results').html('');
     });
@@ -360,7 +373,7 @@
             case 'edit' : edit_success(p);
               break;
           }
-            $('#add_activity_template').attr("disabled", "false");
+          $('#add_activity_template').attr("disabled", "false");
         },
         error: function(p) {
           alert("error");

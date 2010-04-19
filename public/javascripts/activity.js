@@ -143,7 +143,7 @@
       //display loading
       resultsArray = activities;
 
-      $('#place_nam').css('display','none');
+     // $('#place_nam').css('display','none');
       $('#activity_results').css('display','block');
 
       $('#activity_results').html(formatActivityRows(activities));
@@ -160,7 +160,7 @@
       $('#place_results').css('display','none');
       $('#place_results').css('margin-top','0px');
       $('#place').css('display','block');
-      $('#place').css('margin-left','10px');
+    
        $('#place_nam').css('width','270px');
       $('#place_nam').css('display','block');
       $('#place_results').css('max-height','280px');
