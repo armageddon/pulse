@@ -192,10 +192,10 @@
     });
 
     $("#place_nam").bind('keyup',function(e){
-     $('#new_place').css('display','none');
+      $('#new_place').css('display','none');
       $("#place_nam").removeClass('example');
       if($("#place_nam").val().length<= 2) return false;
-      if(search_timeout != undefined) {
+      if(place_search_timeout != undefined) {
         clearTimeout(place_search_timeout);
       }
       var $this = this;
