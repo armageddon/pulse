@@ -19,19 +19,26 @@
 <% end %>
 
 <div class='clear'></div>
+
+<%if @match_module.length>0%>
 <div id='profile_matches' style="margin-bottom:10px">
-  <%= render :partial => "users/matches", :locals => {:collection => @updates} %>
-<div class='clear'></div>
-</div>
+
+    <%= render :partial => "users/matches", :locals => {:collection => @match_module} %>
+    <div class='clear'></div>
+  </div>
+<%end%>
+
 
 <div class='clear'></div>
 <div id='small_map' style="margin-bottom:10px">
   <%= render :partial => "maps/small_map", :locals => {:collection => @updates} %>
 </div>
 
-<div class="column_subheader" style="margin-botton:5px">
+<div class="column_subheader" style="margin-bottom:5px">
   <h2>Latest activity</h2>
 </div>
 <div  style="margin-top:5px">
-<%= render :partial => "shared_object_collections/feed_collection", :locals => {:collection => @updates} %>
+
+  <%= render :partial => "shared_object_collections/feed_collection", :locals => {:collection => @updates} %>
 </div>
+

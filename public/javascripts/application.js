@@ -203,6 +203,7 @@ $(document).ready(function() {
         return false;
     })
 
+     
     $('.fancy_select').live('click',function() {
         $('.fancy_select_options').hide();
         $(this).children('.fancy_select_options').show();

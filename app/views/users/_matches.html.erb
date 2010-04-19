@@ -1,33 +1,64 @@
-<%if @matches.length>0%>
-<div class="column_header">
-  <h2>Your top matches</h2>
-</div>
-<div>
-  <div style="float:left;width:276px">
-    <%if @match_module.length>0 &&@match_module[0]!=nil  %>
-    <%= render :partial => 'shared_objects/matched_user'  , :locals => {:object => @match_module[0]}%>
-    <%end%>
+<%  @match_module =  match_module if @match_module == nil %>
+<div id='profile_matches' style="margin-bottom:10px">
+  <div class="column_header">
+    <div style="float:left;color:#FFFFFF;font-size:14px">Your top matches</div>
+    <div id ="mm" style="float:right;margin-right:10px"> <h2 style="margin-right:15px">
+        <%if @match_module.current_page ==1 %>
+          <%= '<' %>
+        <% else %>
+          <%= link_to "<", '/account/match_module?page=' + @match_module.previous_page.to_s, :class => "matchespaginator" %>
+        <% end %>
+        <span id='match_paging'><%= @match_module.current_page.to_s+  ' / ' +@match_module.total_pages.to_s + ' '%></span>
+         <%if @match_module.current_page ==@match_module.total_pages %>
+      <%= '>' %>
+        <% else%>
+        <%= link_to ">", '/account/match_module?page=' + @match_module.next_page.to_s, :class => "matchespaginator" %>
+        <%end%>
+      </h2>
+    </div>
   </div>
 
-  <div style="float:left;width:276px">
-    <%if @match_module.length>1 &&@match_module[1]!=nil  %>
-       <%= render :partial => 'shared_objects/matched_user'  , :locals => {:object => @match_module[1]}%>
-    <%end%>
-  </div>
+  <div>
+    <div style="float:left;width:276px">
+      <%if @match_module.length>0 &&@match_module[0]!=nil  %>
+        <%= render :partial => 'shared_objects/matched_user'  , :locals => {:object => @match_module[0]}%>
+      <%end%>
+    </div>
 
+    <div style="float:left;width:276px">
+      <%if @match_module.length>1 &&@match_module[1]!=nil  %>
+        <%= render :partial => 'shared_objects/matched_user'  , :locals => {:object => @match_module[1]}%>
+      <%end%>
+    </div>
+
+  </div>
+  <div class="clear"></div>
+  <div style="margin-top:10px">
+    <div style="float:left;width:276px">
+      <%if @match_module.length>2 &&@match_module[2]!=nil  %>
+        <%= render :partial => 'shared_objects/matched_user'  , :locals => {:object => @match_module[2]}%>
+      <%end%>
+    </div>
+    <div style="float:left;width:276px">
+      <%if @match_module.length>3 &&@match_module[3]!=nil  %>
+        <%= render :partial => 'shared_objects/matched_user'  , :locals => {:object => @match_module[3]}%>
+      <%end%>
+    </div>
+
+  </div>
 </div>
 <div class="clear"></div>
-<div style="margin-top:10px">
-  <div style="float:left;width:276px">
-    <%if @match_module.length>2 &&@match_module[2]!=nil  %>
-  <%= render :partial => 'shared_objects/matched_user'  , :locals => {:object => @match_module[2]}%>
-    <%end%>
-  </div>
-  <div style="float:left;width:276px">
-    <%if @match_module.length>3 &&@match_module[3]!=nil  %>
-   <%= render :partial => 'shared_objects/matched_user'  , :locals => {:object => @match_module[3]}%>
-    <%end%>
-  </div>
 
-</div>
-<%end%>
+<script type="text/javascript">
+ $('.matchespaginator').live('click', function() {
+
+        var link = $(this);
+        //todo: need to set type here
+        $.get(link.attr('href'),{}, function(data) {
+
+            $('#profile_matches').html(data);
+
+        })
+        return false;
+    })
+</script>

@@ -20,6 +20,7 @@ ActionController::Routing::Routes.draw do |map|
   map.map_places '/search/map', :controller => 'search', :action => 'map_places'
    
   #users controller
+  map.match_module '/account/match_module', :controller=>'users', :action=>'match_module'
   map.step3 '/new_step3', :controller=>'users', :action=>'new_step3'
   map.update_partner '/update_partner',:controller=>'users', :action=>'update_partner'
   map.edit_partner '/edit_partner', :controller=>'users', :action=>'edit_partner'

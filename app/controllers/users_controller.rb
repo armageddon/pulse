@@ -201,6 +201,14 @@ class UsersController < ApplicationController
     @match_module = UserMatcher.match_module(current_user)
   end
 
+  def match_module
+    page = params[:page]
+    @m = UserMatcher.match_module(current_user,page,4)
+    logger.debug(@m.length)
+    respond_to do |format|
+     format.js { render :partial => "users/matches", :locals => {:match_module => @m }}
+   end
+  end
   def add_photo
     redirect_to '/activities/partner' and return if current_user.status == 3 && current_user.partner_type ==2
     redirect_to '/places/partner' and return if current_user.status == 3 && current_user.partner_type ==1
