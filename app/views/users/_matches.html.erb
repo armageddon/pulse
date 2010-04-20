@@ -2,18 +2,22 @@
 <div id='profile_matches' style="margin-bottom:10px">
   <div class="column_header">
     <div style="float:left;color:#FFFFFF;font-size:14px">Your top matches</div>
-    <div id ="mm" style="float:right;margin-right:10px"> <h2 style="margin-right:15px">
+    <div id ="mm" style="float:right;margin-right:10px"> <h2 style="margin-right:15px;font-size:16px;">
+        <span style="font-size:18px; margin-top:4px;font-weight:bold">
         <%if @match_module.current_page ==1 %>
           <%= '<' %>
         <% else %>
           <%= link_to "<", '/account/match_module?page=' + @match_module.previous_page.to_s, :class => "matchespaginator" %>
         <% end %>
+        </span>
         <span id='match_paging'><%= @match_module.current_page.to_s+  ' / ' +@match_module.total_pages.to_s + ' '%></span>
+        <span style="font-size:18px; margin-top:4px;font-weight:bold">
          <%if @match_module.current_page ==@match_module.total_pages %>
       <%= '>' %>
         <% else%>
         <%= link_to ">", '/account/match_module?page=' + @match_module.next_page.to_s, :class => "matchespaginator" %>
         <%end%>
+        </span>
       </h2>
     </div>
   </div>

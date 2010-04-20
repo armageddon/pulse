@@ -1,0 +1,15 @@
+<%  @friends =  friends if @friends == nil %> 
+<% if @friends.length > 0 %>
+  <div class="column_header">
+    <h2>Who's favourited you</h2>
+  </div>
+  <% i = 0 %>
+  <% @friends.each do |u| %>
+    <% i += 1 %>
+    <div style="float:left;margin:1px">
+      <%=link_to image_tag(u.icon.url(:thumb), :width => '58px', :height => '58px',:title=>u.first_name), u %>
+    </div>
+    <% if i%3 == 0%> <div class="clear"></div> <%end%>
+  <%end%>
+  <div class="clear"></div>
+<%end%>

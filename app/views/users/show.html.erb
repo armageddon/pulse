@@ -1,7 +1,12 @@
 <% content_for :c3 do %>
   <%= render :partial => "shared/mini_dashboard" %>
   <br />
-  <%= render :partial => "shared/message" %>
+  <div style="margin-bottom:5px">
+    <%= render :partial => "shared/message" %>
+  </div>
+  <br />
+  <%= render :partial => "user_favorites/user_favorited" %>
+  
 <% end %>
 
 <% content_for :message do %>

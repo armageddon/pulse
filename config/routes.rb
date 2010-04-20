@@ -80,6 +80,7 @@ ActionController::Routing::Routes.draw do |map|
   #place_pictures controller
 
   #user_favorites controller
+  map.user_favorited 'user_favorites/user_favorited', :controller => 'user_favorites',  :action => 'user_favorited'
   map.user_favorite_delete 'account/favorites/delete', :controller => 'user_favorites',  :action => 'destroy'
   map.user_favorite_users '/favorites/users', :controller => 'user_favorites',  :action => 'users'
   map.user_favorite_user_place_activities '/favorites/user_place_activities', :controller => 'user_favorites',  :action => 'user_place_activities'

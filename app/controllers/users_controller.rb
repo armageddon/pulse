@@ -199,6 +199,8 @@ class UsersController < ApplicationController
     @matches = current_user.matches(params[:page], 8)
     @updates = TimelineEvent.paginate(:all, :conditions => "icon_file_name is not null and users.status=1 and actor_id <> " + current_user.id.to_s,:joins=>"INNER JOIN users on users.id = timeline_events.actor_id", :page=>1, :per_page => 5, :order => 'created_at DESC')
     @match_module = UserMatcher.match_module(current_user)
+     @friends = User.paginate(:joins=>"inner join user_favorites on user_favorites.user_id = users.id", :conditions => "user_favorites.friend_id = " + current_user.id.to_s,:page=>params[:page],:per_page=>24)
+   
   end
 
   def match_module
