@@ -18,11 +18,15 @@
 
   <div class="who" style="float:left;width:95px;margin-right:5px">
     <% users = User.search_users_pictures(params, current_user, pa.place.id, pa.activity.id) %>
+    <% if users.length != 0 %>
+      <%= render :partial  => "shared_objects/user_pictures", :collection => users %>
+      <% if users.total_entries > 3 %>
+        <%= "" %>
+      <% end %>
+    <% else %>
+      &nbsp;
+    <% end  %>
 
-    <%= render :partial  => "shared_objects/user_pictures", :collection => users %>
-    <% if users.total_entries > 3 %>
-      <%= "" %>
-    <% end %>
   </div>
   <div class="actions" style="float:left;width:50px;margin-right:5px">
 

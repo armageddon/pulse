@@ -249,7 +249,10 @@ a, a:active {
     width: 460px;
     float: left;
 }
-
+.object .match_info_container {
+    width: 410px;
+    float: left;
+}
 .object .category_info {
     width:120px;
     float:right;
@@ -278,6 +281,13 @@ a, a:active {
 
 .object .actions {
     width: 50px;
+    float: right;
+    color: #666;
+    text-align: right;
+    font-size: .8em;
+}
+.object .match_actions {
+    width: 100px;
     float: right;
     color: #666;
     text-align: right;
@@ -1165,6 +1175,22 @@ a{
     top: -2px;
     margin-right: 5px;
 }
+.submit_act_p{
+    padding:2px!important;
+    background-color:#bf1212!important;
+    border:2px solid #9f1111!important;
+    color:#fff!important;
+    height:25px;
+
+    font-size:14px;
+    font-weight:500!important;
+    font-family:arial!important;
+    background-image:none;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    top: -2px;
+}
+
 .submit_small{
     cursor:pointer;
     overflow:visible;
@@ -1184,6 +1210,11 @@ a{
     -moz-border-radius: 4px;
     top: -2px;
     margin-right: 5px;
+}
+
+.arrange_to_meet {
+    cursor:pointer;
+
 }
 .submit_tiny{
     cursor:pointer;

@@ -2,31 +2,32 @@
 
 
 <% if object != nil %>
-	<div class="object" id="<%= dom_id object %>">
-		<div class="icon">
-			<%= link_to image_tag(object.icon.url(:thumb), :width => '45px', :height => '45px'), object %>
-		</div>
-		<div class="info_container">
-			<div class="info">
-				<span>
-		     		<%= link_to object.name, object %>
-				</span>
-		   	</div>
-			<div class="clear"></div>
-			<div class="description">
-		     	<span class="fancy_quotes">&#8220;</span><%= object.description %><span class="fancy_quotes">&#8221;</span>      
-		   	</div>
-		    <div class="clear"></div>
-		</div>
-          <div class="actions">
-              <%= (link_to image_tag("add_user_new.png", :width=>20, :class => " tooltip", :title => I18n.translate("Add_to_favorites")), "#",'data-href' => account_favorites_path, :class => "people_favorite", :friend_id => object.id) if !current_user.has_friend?(object.id)  %>
-              <%= link_to image_tag("HPMail.png", :width=>20, :class => " tooltip", :title => "Send a mail"), account_message_path(object),'data-href' => account_message_path(object)  %>
-            </div>
-		<div class="clear"></div>
-	</div>
-<% else %>
-	missing
+  <div class="object" id="<%= dom_id object %>">
+    <div class="icon">
+      <%= link_to image_tag(object.icon.url(:thumb), :width => '45px', :height => '45px'), object %>
+    </div>
+    <div class="match_info_container">
+      <div class="info">
+        <span>
+          <%= link_to object.name, object %>
+        </span>
+      </div>
+      <div class="clear"></div>
+      <div class="description">
+        <span class="fancy_quotes">&#8220;</span><%= object.description %><span class="fancy_quotes">&#8221;</span>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div class="match_actions">
+      <%= (link_to image_tag("add_user_new.png", :width=>20, :class => " tooltip", :title => I18n.translate("Add_to_favorites")), "#",'data-href' => account_favorites_path, :class => "people_favorite", :friend_id => object.id) if !current_user.has_friend?(object.id)  %>
+      <%= link_to image_tag("HPMail.png", :width=>20, :class => " tooltip", :title => "Send a mail"), account_message_path(object),'data-href' => account_message_path(object)  %>
+      <span class ='submit_tiny arrange_to_meet'  data-href = "/messages/meet/?recipient_id=<%=object.id%>" >meet</span>
+    </div>
     <div class="clear"></div>
+  </div>
+<% else %>
+          missing
+  <div class="clear"></div>
 <% end %>
 
 

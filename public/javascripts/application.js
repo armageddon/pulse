@@ -123,7 +123,7 @@ $(document).ready(function() {
             },
             success: function(p) {
                 $("#profile_people_unfavorite").css('display', 'none');
-                $("#profile_people_favorite").css('display', 'block');
+                $("#profile_people_favorite").css('display', '');
             },
             error: function(p) {
                 alert("error");
@@ -141,7 +141,7 @@ $(document).ready(function() {
                 "friend_id" : $(this).attr("friend_id")
             },
             success: function(p) {
-                $("#profile_people_unfavorite").css('display', 'block');
+                $("#profile_people_unfavorite").css('display', '');
                 $("#profile_people_favorite").css('display', 'none');
             },
             error: function(p) {
