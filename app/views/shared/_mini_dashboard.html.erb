@@ -24,8 +24,6 @@
   <div class='clear'></div>
   <div><div style="float:left;font-size:14px;"><%=link_to 'Mail', account_messages_path%></div><div style="float:right;font-size:14px;"><%= current_user.all_messages.length %></div></div><br/>
   <div class='clear'></div>
-  <div><div style="float:left;font-size:14px;"><%=link_to 'Profile views', profile_path(current_user)%></div><div style="float:right;font-size:14px;"><%= current_user.profile_views %></div></div><br/>
-  <div class='clear'></div>
   <div><div style="float:left;font-size:14px;"><%=link_to 'Favourite Things' ,account_favorites_path%></div><div style="float:right;font-size:14px;"><%=current_user.user_place_activities.length %></div></div><br/>
   <div class='clear'></div>
   <div><div style="float:left;font-size:14px;"><%=link_to 'Favourite People', account_favorites_path%></div><div style="float:right;font-size:14px;"><%=current_user.friends.length %> </div></div><br/>
