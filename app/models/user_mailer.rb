@@ -3,6 +3,7 @@ class UserMailer < ActionMailer::Base
 
   def notification(user,friend)
     if user.note_messages==1
+       setup_email(user)
       @users = Array.new
       @happenings = Array.new
       @user = user
