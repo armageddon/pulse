@@ -1,6 +1,28 @@
 class UserMailer < ActionMailer::Base
   include CrmData
 
+  def notification(user,friend)
+    if user.note_messages==1
+      @users = Array.new
+      @happenings = Array.new
+      @user = user
+      @crm_activitites = CrmData.crm_activitites(@user,3)
+      @meet_her_url = "http://aeser.co.uk/g/button-meet-her.jpg"
+      @meet_him_url = "http://aeser.co.uk/g/button-meet-him.jpg"
+      @friend=friend
+      @crm_activitites.each do |u|
+        @users << u
+        @happenings << u.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
+      end
+
+      @subject = "Somebody likes you on HelloPulse!"
+      @content_type =  "text/html"
+    end
+
+
+  end
+
+
   def signup_notification(user)
     setup_email(user)
     @subject    += 'Welcome to HelloPulse'
@@ -44,23 +66,24 @@ class UserMailer < ActionMailer::Base
   end
 
   def daily_matches(user)
-    setup_email(user)
-    
-    @subject = "Here are the singles pulsing in London"
-    @user = user
-    @heading = "Great to have you on board. Check out your weekly matches!"
-    @meet_her_url = "http://aeser.co.uk/g/button-meet-her.jpg"
-    @meet_him_url = "http://aeser.co.uk/g/button-meet-him.jpg"
-    #todo: allow for men and women here#
-    #todo: ensure happening is the latest one
-    @gender = user.sex_preference == 1 ? 'men' : 'women'
-    @users = Array.new
-    @happenings = Array.new
-    CrmData.crm_matches(user,5).each do |u|
-      @users << u
-      @happenings << u.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
+    if user.note_matches == 1
+      setup_email(user)
+      @subject = "Here are the singles pulsing in London"
+      @user = user
+      @heading = "Great to have you on board. Check out your weekly matches!"
+      @meet_her_url = "http://aeser.co.uk/g/button-meet-her.jpg"
+      @meet_him_url = "http://aeser.co.uk/g/button-meet-him.jpg"
+      #todo: allow for men and women here#
+      #todo: ensure happening is the latest one
+      @gender = user.sex_preference == 1 ? 'men' : 'women'
+      @users = Array.new
+      @happenings = Array.new
+      CrmData.crm_matches(user,5).each do |u|
+        @users << u
+        @happenings << u.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
+      end
+      @content_type =  "text/html"
     end
-    @content_type =  "text/html"
   end
 
   def activation(user)
@@ -76,12 +99,14 @@ class UserMailer < ActionMailer::Base
   end
 
   def message_received(recipient, sender)
-    setup_email(User.find(recipient))
-    @subject   = 'You have received a message from '  + User.find(sender).first_name
-    @body[:sender]  = sender
-    @body[:recipient] = recipient
-    @body[:url] = 'http://www.hellopulse.com/?dest=message'
-    @content_type =  "text/html"
+    if user.note_messages==1
+      setup_email(User.find(recipient))
+      @subject   = 'You have received a message from '  + User.find(sender).first_name
+      @body[:sender]  = sender
+      @body[:recipient] = recipient
+      @body[:url] = 'http://www.hellopulse.com/?dest=message'
+      @content_type =  "text/html"
+    end
   end
 
   protected

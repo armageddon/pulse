@@ -1,5 +1,5 @@
 class ActivitiesController < ApplicationController
-   include CrmData
+  include CrmData
   skip_before_filter :verify_authenticity_token, :only => [:post_activity_to_facebook]
 
   def post_activity_to_facebook
@@ -93,6 +93,20 @@ class ActivitiesController < ApplicationController
       render :template => 'user_mailer/signup_notification' , :layout => false
 
     when 'notifications'
+      @users = Array.new
+      @happenings = Array.new
+      @user = current_user
+      @crm_activitites = CrmData.crm_activitites(@user,3)
+      @meet_her_url = "http://aeser.co.uk/g/button-meet-her.jpg"
+      @meet_him_url = "http://aeser.co.uk/g/button-meet-him.jpg"
+      @friend=User.find(32)
+      @crm_activitites.each do |u|
+        @users << u
+        @happenings << u.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
+      end
+
+      @subject = "What’s shaking on HelloPulse?"
+      @content_type =  "text/html"
       render :template => 'user_mailer/notification' , :layout => false
 
     when 'photos'
@@ -178,7 +192,7 @@ class ActivitiesController < ApplicationController
     activity_id = params[:activity_id]
     @places = Place.find(:all,:select=>"places.id, places.name, places.neighborhood, count(UPA.id) as UPA", :group=>"places.id, places.name,places.neighborhood",:joins=>"inner join user_place_activities UPA on UPA.place_id = places.id",:conditions=>"UPA.activity_id = " + activity_id.to_s)
     res = Array.new
-     res <<  {:id=>0, :name=>'Search Places >>', :neighborhood=>'', :count=>''}
+    res <<  {:id=>0, :name=>'Search Places >>', :neighborhood=>'', :count=>''}
     @places.each do |p|
       res << {:id=>p.id, :name=>p.name, :count=>p.UPA, :neighborhood=>p.neighborhood}
     end
