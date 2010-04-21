@@ -7,6 +7,7 @@ class UserMailer < ActionMailer::Base
       @users = Array.new
       @happenings = Array.new
       @user = user
+      logger.info(@user.first_name)
       @crm_activitites = CrmData.crm_activitites(@user,3)
       @meet_her_url = "http://aeser.co.uk/g/button-meet-her.jpg"
       @meet_him_url = "http://aeser.co.uk/g/button-meet-him.jpg"
