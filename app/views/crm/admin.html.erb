@@ -1,0 +1,61 @@
+   <%= stylesheet_link_tag %w(jqModal application activity) %>
+    <%= javascript_include_tag 	"jquery-1.3.2", 'jquery.form.js', 'jqModal', 'jquery.autocomplete.js', 'jquery.charcounter.js','activity', 'application', 'signup' %>
+    <%= javascript_tag "var AUTH_TOKEN = #{form_authenticity_token.inspect};" %>
+
+
+HelloPulse CRM Admin<br />
+
+<div style="float:left;margin:10px">
+  Total Users <br />
+  <span style="font-size:26px"><%=@users.length%></span>
+</div>
+
+<div style="float:left;margin:10px">
+  Match Mail On <br />
+  <span style="font-size:26px" > <%=@usersmatches_note_matches.length%></span>
+</div>
+
+<div style="float:left;margin:10px">
+  Match Mails <br />
+  <span style="font-size:26px" id="match_counter"><%=@usersmatches.length%></span>
+</div>
+
+<%=submit_button 'Send', :id=>'send_matches'%>
+<script type="text/javascript" charset="utf-8">
+var match_users = <%= array_or_string_for_javascript(@user_match_ids) %>
+var match_counter = match_users.length
+
+$('#send_matches').live('click', function(){
+ send_match_mail();
+
+})
+
+function  send_match_mail()
+{
+  
+  if(match_users.length>0)
+
+    {
+
+       $.ajax({
+          type: "POST",
+          url: '/crm/match',
+          data: {
+            "id" : match_users.pop()
+          },
+          success: function(p) {
+            send_match_mail()
+          },
+          error: function(p) {
+            alert('An error occured');
+          }
+        })
+        match_counter -= 1;
+      $('#match_counter').html('<span style="font-size:26px" id="match_counter">'+ match_counter.toString()+ "</span>")
+
+
+    }
+
+}
+
+</script>

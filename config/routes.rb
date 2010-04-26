@@ -142,7 +142,10 @@ ActionController::Routing::Routes.draw do |map|
   map.user_user_place_activities '/profile_user_place_activities', :controller=>'profiles', :action=>'user_place_activities'
   map.resources :profiles, :except => :show
   map.user "/profiles/:id", :controller => "profiles", :action => "show"
-  
+
+  #crm controller
+  map.crm_admin '/crm/admin' , :controller=>'crm', :action=>'index'
+ map.crm_match '/crm/match' , :controller=>'crm', :action=>'match'
   ActionController::Routing::Routes.draw do |map|
     map.resources :test3s
   
