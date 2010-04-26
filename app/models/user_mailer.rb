@@ -45,7 +45,7 @@ class UserMailer < ActionMailer::Base
     #todo: allow for men and women here
     @subject = "What’s shaking on HelloPulse?"
     @gender = @user.sex_preference == 1 ? 'men' : 'women'
-    @crm_activitites = CrmData.crm_activitites(current_user,3)
+    @crm_activitites = CrmData.crm_activitites(user,3)
     @users = Array.new
     @happenings = Array.new
     @crm_activitites.each do |u|
