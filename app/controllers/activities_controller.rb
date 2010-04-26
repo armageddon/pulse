@@ -59,17 +59,21 @@ class ActivitiesController < ApplicationController
     
     case params[:type]
     when 'activities'
+       @meet_her_url = "http://aeser.co.uk/g/button-meet-her.jpg"
+      @meet_him_url = "http://aeser.co.uk/g/button-meet-him.jpg"
       @host =  "http://www.hellopulse.com"
       @user = User.find(32)
       @subject = "What’s shaking on HelloPulse?"
       @gender = @user.sex_preference == 1 ? 'men' : 'women'
       @crm_activitites = CrmData.crm_activitites(current_user,3)
-      @user1 = @crm_activitites[0]
-      @user2  =  @crm_activitites[1]
-      @user3 = @crm_activitites[2]
-      @upa1 = @user1.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
-      @upa2 = @user2.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
-      @upa3 = @user3.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
+      @users = Array.new
+      @happenings = Array.new
+      @crm_activitites.each do |u|
+        @users << u
+        @happenings << u.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
+      end
+
+      
       render :template => 'user_mailer/activity_reminder' , :layout => false
    
     when 'happenings'

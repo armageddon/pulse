@@ -1,7 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :test3s
 
-   map.messages_admin '/messages/admin', :controller => 'user_messages' , :action => 'admin'
+  map.messages_admin '/messages/admin', :controller => 'user_messages' , :action => 'admin'
    
   #maps controller
   map.map '/map',  :controller => 'maps', :action => 'index'
@@ -107,7 +107,7 @@ ActionController::Routing::Routes.draw do |map|
   map.place_autocomplete_new '/places/autocomplete_new', :controller => 'places', :action => 'autocomplete_new'
   map.activity_admin 'places/admin', :controller=>'places', :action=>'admin'
   map.activity_post_fb 'places/post_to_facebook', :controller=>'places', :action=>'post_activity_to_facebook'
-    map.activity_partner 'places/partner' , :controller=>'places', :action=>'partner'
+  map.activity_partner 'places/partner' , :controller=>'places', :action=>'partner'
   map.resources :places, :collection => { :autocomplete => :get } do |p|
     p.resources :pictures, :controller => "place_pictures"
   end
@@ -145,7 +145,9 @@ ActionController::Routing::Routes.draw do |map|
 
   #crm controller
   map.crm_admin '/crm/admin' , :controller=>'crm', :action=>'index'
- map.crm_match '/crm/match' , :controller=>'crm', :action=>'match'
+  map.crm_match '/crm/match' , :controller=>'crm', :action=>'match'
+  map.crm_photo '/crm/photo' , :controller=>'crm', :action=>'photo'
+  map.crm_activity '/crm/activity' , :controller=>'crm', :action=>'activity'
   ActionController::Routing::Routes.draw do |map|
     map.resources :test3s
   

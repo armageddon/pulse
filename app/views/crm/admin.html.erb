@@ -1,61 +1,158 @@
-   <%= stylesheet_link_tag %w(jqModal application activity) %>
-    <%= javascript_include_tag 	"jquery-1.3.2", 'jquery.form.js', 'jqModal', 'jquery.autocomplete.js', 'jquery.charcounter.js','activity', 'application', 'signup' %>
-    <%= javascript_tag "var AUTH_TOKEN = #{form_authenticity_token.inspect};" %>
+<%= stylesheet_link_tag %w(jqModal application activity) %>
+<%= javascript_include_tag 	"jquery-1.3.2", 'jquery.form.js', 'jqModal', 'jquery.autocomplete.js', 'jquery.charcounter.js','activity', 'application', 'signup' %>
+<%= javascript_tag "var AUTH_TOKEN = #{form_authenticity_token.inspect};" %>
 
 
-HelloPulse CRM Admin<br />
+<h1>HelloPulse CRM Admin</h1>
+<br />
 
-<div style="float:left;margin:10px">
+<div style="float:left;margin:10px;width:150px">
   Total Users <br />
   <span style="font-size:26px"><%=@users.length%></span>
 </div>
 
-<div style="float:left;margin:10px">
-  Match Mail On <br />
+<div style="float:left;margin:10px;width:150px">
+  With Match Mail On <br />
   <span style="font-size:26px" > <%=@usersmatches_note_matches.length%></span>
 </div>
 
-<div style="float:left;margin:10px">
-  Match Mails <br />
+<div style="float:left;margin:10px;width:150px">
+  To Send <br />
   <span style="font-size:26px" id="match_counter"><%=@usersmatches.length%></span>
 </div>
+<div style="float:left;margin-top:20px">
+  <%=submit_button 'Send', :id=>'send_matches'%>
+</div>
+<div style="float:left;width:330px;padding:20px">Sent to users who have not had a matches mail for 1 week</div>
+<div class="clear"></div>
 
-<%=submit_button 'Send', :id=>'send_matches'%>
+
+<div style="float:left;margin:10px;width:150px">
+  Total Users no photo <br />
+  <span style="font-size:26px"><%=@nophotousers.length%></span>
+  <span style="font-size:16px"><%=@nophotousers.length*100 /@users.length%>&#37;</span>
+</div>
+
+<div style="float:left;margin:10px;width:150px">
+  With Tips Mail On <br />
+  <span style="font-size:26px" > <%=@nophotousers_note_tips.length%></span>
+</div>
+
+<div style="float:left;margin:10px;width:150px">
+  To send <br />
+  <span style="font-size:26px" id="photo_counter"><%=@nophotousersphotos.length%></span>
+</div>
+<div style="float:left;margin-top:20px">
+  <%=submit_button 'Send', :id=>'send_photos'%>
+</div>
+<div style="float:left;width:330px;padding:20px">Sent to users who have no photo, have signed up over a day ago, and have not received a photo mail reminder in the last 2 weeks</div>
+<div class="clear"></div>
+
+
+<div style="float:left;margin:10px;width:150px">
+  Total Users no activities <br />
+  <span style="font-size:26px"><%=@noactivityusers.length%></span>
+  <span style="font-size:16px"><%=@noactivityusers.length*100 /@users.length%>&#37;</span>
+</div>
+
+<div style="float:left;margin:10px;width:150px">
+  With Tips Mail On <br />
+  <span style="font-size:26px" > <%=@noactivityusers_note_tips.length%></span>
+</div>
+
+<div style="float:left;margin:10px;width:150px">
+  To send <br />
+  <span style="font-size:26px" id="activity_counter"><%=@noactivityusersactivities.length%></span>
+</div>
+<div style="float:left;margin-top:20px">
+  <%=submit_button 'Send', :id=>'send_activities'%>
+</div>
+<div style="float:left;width:330px;padding:20px">Sent to users who have no activities, have signed up over a day ago, and have not received an activity mail reminder in the last 2 weeks</div>
+
 <script type="text/javascript" charset="utf-8">
-var match_users = <%= array_or_string_for_javascript(@user_match_ids) %>
-var match_counter = match_users.length
+  var match_users = <%= array_or_string_for_javascript(@user_match_ids) %>
+  var photo_users = <%= array_or_string_for_javascript(@user_photo_ids) %>
+  var activity_users = <%= array_or_string_for_javascript(@user_activity_ids) %>
+  var match_counter = match_users.length;
+  var photo_counter = photo_users.length;
+  var activity_counter = activity_users.length;
 
-$('#send_matches').live('click', function(){
- send_match_mail();
+  $('#send_matches').live('click', function(){
+    send_match_mail();
+  })
+  $('#send_photos').live('click', function(){
+    send_photo_mail();
+  })
+  $('#send_activities').live('click', function(){
+    send_activity_mail();
+  })
 
-})
-
-function  send_match_mail()
-{
-  
-  if(match_users.length>0)
-
+  function  send_match_mail()
+  {
+    if(match_users.length>0)
     {
-
-       $.ajax({
-          type: "POST",
-          url: '/crm/match',
-          data: {
-            "id" : match_users.pop()
-          },
-          success: function(p) {
-            send_match_mail()
-          },
-          error: function(p) {
-            alert('An error occured');
-          }
-        })
-        match_counter -= 1;
+      $.ajax({
+        type: "POST",
+        url: '/crm/match',
+        data: {
+          "id" : match_users.pop()
+        },
+        success: function(p) {
+          send_match_mail();
+        },
+        error: function(p) {
+          alert('An error occured');
+        }
+      })
+      match_counter -= 1;
       $('#match_counter').html('<span style="font-size:26px" id="match_counter">'+ match_counter.toString()+ "</span>")
-
-
     }
+    return false;
+  }
 
-}
+  function  send_photo_mail()
+  {
+    if(photo_users.length>0)
+    {
+      $.ajax({
+        type: "POST",
+        url: '/crm/photo',
+        data: {
+          "id" : photo_users.pop()
+        },
+        success: function(p) {
+          send_photo_mail();
+        },
+        error: function(p) {
+          alert('An error occured');
+        }
+      })
+      photo_counter -= 1;
+      $('#photo_counter').html('<span style="font-size:26px" id="match_counter">'+ photo_counter.toString()+ "</span>")
+    }
+    return false;
+  }
 
+  function  send_activity_mail()
+  {
+    if(activity_users.length>0)
+    {
+      $.ajax({
+        type: "POST",
+        url: '/crm/activity',
+        data: {
+          "id" : activity_users.pop()
+        },
+        success: function(p) {
+          send_activity_mail();
+        },
+        error: function(p) {
+          alert('An error occured');
+        }
+      })
+      activity_counter -= 1;
+      $('#activity_counter').html('<span style="font-size:26px" id="match_counter">'+ activity_counter.toString()+ "</span>")
+    }
+    return false;
+  }
 </script>

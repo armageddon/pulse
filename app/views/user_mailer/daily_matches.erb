@@ -33,7 +33,7 @@
           <td><% (0..@users.length-1).each do |i| %>
             <table width="620" border="0" cellpadding="0" cellspacing="0">
               <tr>
-                <td valign="top" width="75"><img src="<%=@host + @users[i].icon.url(:profile) %>" width="75" height="75" style="display: block; border: 0;" /></td>
+                <td valign="top" width="75"><a href="<%=@host%>/?dest=profile&uname=<%=@users[i].username%>"><img src="<%=@host + @users[i].icon.url(:profile) %>" width="75" height="75" style="display: block; border: 0;" /></a></td>
                 <td valign="top" width="10"><img src="http://aeser.co.uk/g/transparent.gif" width="10" height="10" style="display: block; border: 0;" /></td>
                 <td valign="top" style="font-size: 12px; "><span style="color: #990000;"><%=@users[i].first_name%></span><br />added <span style="color: #990000;"><%=@happenings[i].activity.name%></span> at <span style="color: #990000;"><%=@happenings[i].place.name%></span><br /><span style="font-style:italic;">'<%=@happenings[i].description %>'</span></td>
                 <td valign="top" width="10"><img src="http://aeser.co.uk/g/transparent.gif" width="10" height="10" style="display: block; border: 0;" /></td>
