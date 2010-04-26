@@ -34,8 +34,8 @@ module CrmData
     end
     req = limit - @matches.length
     defs = User.find(:all,:select=>'distinct users.*', :conditions=>[
-        "users.icon_file_name is not null and UPA.created_at < ? and UPA.description is not null and UPA.description <> ''" ,
-        Time.now -  (60 * 60 * 24)
+        "sex = ? and users.icon_file_name is not null and UPA.created_at < ? and UPA.description is not null and UPA.description <> ''"  ,
+         user.sex_preference,Time.now -  (60 * 60 * 24)
       ],:joins => 'inner join user_place_activities UPA on UPA.user_id = users.id', :limit => req)
     defs.each do |u|
       @matches <<  u
