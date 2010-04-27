@@ -69,6 +69,22 @@
 </div>
 <div style="float:left;width:330px;padding:20px">Sent to users who have no activities, have signed up over a day ago, and have not received an activity mail reminder in the last 2 weeks</div>
 
+<div class="clear"></div>
+<br />
+<br />
+  <div style="float:left;width:150px;font-size:16px">Date</div>
+   <div style="float:left;width:100px;margin-left:10px;font-size:16px">Photo Mails</div>
+   <div style="float:left;width:100px;margin-left:10px;font-size:16px">Activity Mails</div>
+    <div style="float:left;width:120px;margin-left:10px;font-size:16px">Matches Mails </div>
+    <div class="clear"></div>
+<% CrmData.mail_report.all_hashes.each do |h| %>
+    <div style="float:left;width:150px"><%= h['Date'] %> </div>
+   <div style="float:left;width:100px;margin-left:10px"> <%= h['Photo'] %> </div>
+   <div style="float:left;width:100px;margin-left:10px"> <%= h['Activity'] %></div>
+    <div style="float:left;width:120px;margin-left:10px"><%= h['Matches'] %> </div>
+    <div class="clear"></div>
+<%end%>
+
 <script type="text/javascript" charset="utf-8">
   var match_users = <%= array_or_string_for_javascript(@user_match_ids) %>
   var photo_users = <%= array_or_string_for_javascript(@user_photo_ids) %>

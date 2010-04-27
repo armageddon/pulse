@@ -71,4 +71,17 @@ module CrmData
     @matches
   end
 
+  def self.mail_report
+     sql =<<-SQL
+        select DATE_FORMAT(created_at, '%W %d  %M %Y') as Date,
+        sum(case type when 1 then 1 else 0 end) as Photo,
+        sum(case type when 2 then 1 else 0 end) as Activity,
+        sum(case type when 3 then 1 else 0 end) as Matches
+        from mailer_messages
+        group by DATE_FORMAT(created_at, '%W %d %M %Y')
+        order by created_at desc
+  SQL
+     r = ActiveRecord::Base.connection.execute sql
+     r
+  end
 end
