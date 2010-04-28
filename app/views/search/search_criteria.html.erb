@@ -10,9 +10,7 @@
 <%= hidden_field_tag "t", params[:t] %>
 <% form_tag search_path, :method => :get, :id => "simple_search" do |f| %>
   <div class="column_header">
-    <span>
       <h2>Search Criteria</h2>
-    </span>
   </div>
   <div id="simple_search" style="width:230px;float:left;margin-right:20px">
     <%= hidden_field_tag 'search_criteria[type]', @search_criteria.type, :id=>'search_criteria_type' %>
@@ -31,13 +29,13 @@
     <br />
     <div class="clear">&nbsp;</div>
     <div id="simple_search_submit" style="float:left;">
-      <%= submit_button("People", :id=> "people_search_button") %>
+      <%= submit_button("People", :id=> "people_search_button", :class=>"submit_act") %>
     </div>
     <div id="simple_search_submit" style="float:left;">
-      <%= submit_button("Places", :id=> "place_search_button", :style=>"padding-left:2px") %>
+      <%= submit_button("Places", :id=> "place_search_button", :style=>"padding-left:2px", :class=>"submit_act") %>
     </div>
     <div id="simple_search_submit" style="float:left;">
-      <%= submit_button("Activities", :id=> "activity_search_button", :style=>"padding-left:2px") %>
+      <%= submit_button("Activities", :id=> "activity_search_button", :style=>"padding-left:2px", :class=>"submit_act") %>
     </div>
   </div>
 
@@ -83,7 +81,7 @@
     <div class="clear">&nbsp;</div>
 
     <div id="advanced_search_submit" style="float:left;text-align:center; margin-top:15px">
-      <%= submit_button("Search", :id=> "advanced_search_button", :style=>"padding-left:2px") %>
+      <%= submit_button("Search", :id=> "advanced_search_button", :style=>"padding-left:2px", :class=>"submit_act") %>
     </div>
   </div>
 <%end%>
@@ -102,6 +100,14 @@
   $('#advanced_search_button').live('click', function() {
     $('#search_criteria_type').val(4);
   });
+
+  $('#search_criteria_keyword').live('click',function(){
+    if($(this).val() == 'Enter keyword')
+    {
+     $(this).val('');
+    }
+  });
+  
 </script>
 
 
