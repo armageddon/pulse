@@ -1,0 +1,9 @@
+<div style="font-size:16px;margin-bottom:3px;border-bottom:1px dotted #CCCCCC;">People</div>
+<%=  render :partial => 'user_collection', :locals => { :collection => @users },  :content_type => "text/html" %>
+<div class="clear"></div>
+<div style="font-size:16px;margin-bottom:3px;margin-top:10px;border-bottom:1px dotted #CCCCCC;">Places</div>
+<%=  render :partial => "place_collection", :locals => {:collection => @places},  :content_type => "text/html"%>
+<div class="clear"></div>
+<div style="font-size:16px;margin-bottom:3px;margin-top:10px;border-bottom:1px dotted #CCCCCC;">Activities</div>
+<%=  render :partial => "activity_collection", :locals => {:collection => @activities},  :content_type => "text/html"%>
+<div class="clear"></div>

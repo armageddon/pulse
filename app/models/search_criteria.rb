@@ -1,5 +1,5 @@
 class SearchCriteria 
-#al - method returns rails default logger.
+  #al - method returns rails default logger.
   def logger
     RAILS_DEFAULT_LOGGER
   end
@@ -38,23 +38,23 @@ class SearchCriteria
       logger.debug('SEARCH CRITERIA')
       logger.debug(params[:search_criteria])
       logger.debug('SEARCH CRITERIA')
-       if params[:search_criteria][:type] != nil 
-         logger.debug('TYPE')
-         logger.debug(params[:search_criteria][:type])
-         @type = params[:search_criteria][:type]
-         end
+      if params[:search_criteria][:type] != nil
+        logger.debug('TYPE')
+        logger.debug(params[:search_criteria][:type])
+        @type = params[:search_criteria][:type]
+      end
       
       
       
       if params[:search_criteria][:lower_age] != nil &&  params[:search_criteria][:upper_age] != nil
-                   logger.debug('HAS PARAMETER AGES')
+        logger.debug('HAS PARAMETER AGES')
         logger.debug(params[:search_criteria][:lower_age])
         lower =   params[:search_criteria][:lower_age].to_i
         upper =   params[:search_criteria][:upper_age].to_i
         (lower..upper).each do |age|
           @ages << age
-           logger.debug('AGES')
-            logger.debug(ages)
+          logger.debug('AGES')
+          logger.debug(ages)
         end
       end
       
@@ -62,11 +62,12 @@ class SearchCriteria
         #todo: both
         @sex_preferences << params[:search_criteria][:sex_preference]
       end
-       params[:search_criteria].each do |p|
+      params[:search_criteria].each do |p|
         @ages << p[1] if p[0].to_s.rindex('age_') != nil
         @activity_categories << p[1] if p[0].to_s.rindex('ac_') != nil
         @sex_preferences << p[1]  if p[0].to_s.rindex('sp_') != nil 
       end
+
       if params[:search_criteria][:keyword] != nil && params[:search_criteria][:keyword] != 'Enter keyword'
         @keyword = params[:search_criteria][:keyword]
       end
@@ -109,28 +110,28 @@ class SearchCriteria
   end
   
   def set_age_condition()
-     if @ages.length!=0 
-        s = ""
-        @ages.each {|e| s+=e.to_s+','}
-        @age_condition =  "age in( " + s.chomp(',') + ")"
-     else
-       @age_condition =  "1=0"
-     end
+    if @ages.length!=0
+      s = ""
+      @ages.each {|e| s+=e.to_s+','}
+      @age_condition =  "age in( " + s.chomp(',') + ")"
+    else
+      @age_condition =  "1=0"
+    end
   end
 
   def set_gender_condition()
     if @sex_preferences.length!=0 
-        s = ""
-        @sex_preferences.each {|e| s+=e.to_s+','}
-        @sex_condition =  "sex in( " + s.chomp(',') + ")"
-     end
+      s = ""
+      @sex_preferences.each {|e| s+=e.to_s+','}
+      @sex_condition =  "sex in( " + s.chomp(',') + ")"
+    end
   end
 
   def set_activity_category_condition()
     if @activity_categories.length!=0 
-       s = ""
-       @activity_categories.each {|e| s+=e.to_s+','}
-       @activity_category_condition = "activity_category_id in( " + s.chomp(',') + ")"
+      s = ""
+      @activity_categories.each {|e| s+=e.to_s+','}
+      @activity_category_condition = "activity_category_id in( " + s.chomp(',') + ")"
     end
   end
 

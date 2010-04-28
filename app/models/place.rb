@@ -71,15 +71,16 @@ class Place < ActiveRecord::Base
   end
 
   
-  def self.search_places(params, current_user)
+  def self.search_places(params, current_user, per_page=14)
     #todo may need a switch here if we want to search places with joins to other tables
     #keep sphinx to one table searches for now
     search_criteria = SearchCriteria.new(params, current_user)
+    logger.debug(p search_criteria)
     search_criteria.conditions
     if search_criteria.distance != nil && search_criteria.distance != "0" && search_criteria.distance != ""
-      results = Place.search(params[:search_criteria][:keyword], :conditions => {:latitude => search_criteria.low_lat..search_criteria.high_lat, :longitude => search_criteria.low_long..search_criteria.high_long},  :page=>params[:page], :per_page=>14)
+      results = Place.search(params[:search_criteria][:keyword], :conditions => {:latitude => search_criteria.low_lat..search_criteria.high_lat, :longitude => search_criteria.low_long..search_criteria.high_long},  :page=>params[:page], :per_page=>per_page)
     else
-      results = Place.search(params[:search_criteria][:keyword],  :page=>params[:page], :per_page=>14)
+      results = Place.search(params[:search_criteria][:keyword],  :page=>params[:page], :per_page=>per_page)
         
     end
     return results

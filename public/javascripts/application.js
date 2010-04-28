@@ -189,6 +189,47 @@ $(document).ready(function() {
         return false;
     })
 
+
+    $('.paginator_user').live('click', function() {
+        var link = $(this);
+        link.hide();
+        $('#user_loading').show();
+        //todo: need to set type here
+        $.get(link.attr('href'),$('#advanced_search_side').serialize(), function(data) {
+            $('#user_loading').hide();
+            link.replaceWith(data);
+            $("#dialog").jqmAddTrigger('.add_to_favorites, .add_event, .add_activity');
+        })
+        return false;
+    })
+    $('.paginator_activity').live('click', function() {
+        var link = $(this);
+        link.hide();
+        $('#activity_loading').show();
+        //todo: need to set type here
+        $.get(link.attr('href'),$('#advanced_search_side').serialize(), function(data) {
+            $('#activity_loading').hide();
+            link.replaceWith(data);
+            $("#dialog").jqmAddTrigger('.add_to_favorites, .add_event, .add_activity');
+        })
+        return false;
+    })
+    $('.paginator_place').live('click', function() {
+        var link = $(this);
+        link.hide();
+        $('#place_loading').show();
+        //todo: need to set type here
+        $.get(link.attr('href'),$('#advanced_search_side').serialize(), function(data) {
+            $('#place_loading').hide();
+            link.replaceWith(data);
+            $("#dialog").jqmAddTrigger('.add_to_favorites, .add_event, .add_activity');
+        })
+        return false;
+    })
+
+
+
+
     $('.userpaginator').live('click', function() {
         var link = $(this);
         //todo: need to set type here

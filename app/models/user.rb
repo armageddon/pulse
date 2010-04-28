@@ -482,10 +482,10 @@ def self.search_users_pictures(params, current_user, place_id, activity_id)
   return @results
 end
   
-def self.search_users_simple(params, current_user)
+def self.search_users_simple(params, current_user,per_page=14)
   #this is repeated in other objects - refactor
   search_criteria = SearchCriteria.new(params,current_user)
-  @results = User.search(params[:search_criteria][:keyword], :conditions => {:status => 1, :age => search_criteria.ages , :sex => search_criteria.sex_preferences},  :page=>params[:page], :per_page=>14)
+  @results = User.search(params[:search_criteria][:keyword], :conditions => {:status => 1, :age => search_criteria.ages , :sex => search_criteria.sex_preferences},  :page=>params[:page], :per_page=>per_page)
   return @results
 end
 

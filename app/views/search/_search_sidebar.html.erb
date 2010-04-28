@@ -10,14 +10,18 @@
     <li id="map_search"  class="<%=search_type_map_class(@search_criteria.type)%>"> Map </li>
   </ul>
   <div class="clear">&nbsp;</div>
-  <div style='min-height:400px'>
+
+
+
+
+  <div >
     <div id="keyword_criteria"  style="padding:5px" class="<%=search_keyword_class(@search_criteria.type)%>" >
       <label  class="search_criteria_header" style="padding-top:0px">Keyword</label><br />
       <%= text_field_tag 'search_criteria[keyword]', @search_criteria.keyword, :class => 'input_text'%><br />
     </div>
 
-    <div id="people_header" class="search_sidebar_header">People</div>
-    <div id='people_criteria' style="padding:5px" class="<%=search_people_class(@search_criteria.type)%>" >
+
+    <div id='people_criteria' style="padding:5px"  >
       <label class="search_criteria_header">Age</label><br />
       <% age_options.each do |opt| %>
         <%= check_box_tag "search_criteria[age_"+opt[1].to_s+"]", opt[1] , @search_criteria.ages.include?(opt[1]) %> <%= opt[0] %> <br />
@@ -27,8 +31,8 @@
       <%= check_box_tag "search_criteria[sp_2]",2, @search_criteria.sex_preferences.include?("2")  %> Female<br />
     </div>
 
-    <div id="place_header" class="search_sidebar_header">Places</div>
-    <div id='place_criteria'  style="padding:5px" class="<%=search_places_class(@search_criteria.type)%>" >
+  
+    <div id='place_criteria'  style="padding:5px" >
       <label class="search_criteria_header">Location</label><br />
       <div class="float:left" id="postcodesearch">
         <%= std_drop_down('search_criteria[distance]', @search_criteria.distance, {:width => '130px'},distance_options, 'Any distance',0) %>
@@ -38,15 +42,19 @@
       </div>
     </div>
 
-    <div id="activity_header" class="search_sidebar_header">Activities</div>
-    <div id='activity_criteria'  style="padding:5px" class="<%=search_activities_class(@search_criteria.type)%>" >
-
-      
-    </div>
-    <div id="place_header" class="search_sidebar_header_line"></div>
+ 
   </div>
+
+
+
+
+
+
+
+
+
   <div id="advanced_search_submit" style="float:left;">
-    <%= submit_button ("Search", :id=> "search_sidebar_button") %>
+    <%= submit_button("Search", :id=> "search_sidebar_button", :class=>"submit_act") %>
   </div>
 <% end %>
 
@@ -61,10 +69,7 @@
   $('#simple_search').live('click', function() {
     if($('#search_criteria_type').val() != "1")
     {
-      $('#keyword_criteria').css("display","block");
-      $('#people_criteria').css("display","block");
-      $('#place_criteria').css("display","none");
-      $('#activity_criteria').css("display","none");
+
       $('#search_criteria_type').val(1);
       $('#big_map').css("display","none");
 
@@ -81,6 +86,8 @@
       $('#keyword_criteria').css('display','block')
     }
   });
+
+  
   $('#advanced_search').live('click', function() {
     if($('#search_criteria_type').val() != "4")
     {
@@ -105,6 +112,8 @@
 
     }
   });
+
+
   $('#map_search').live('click', function() {
     if($('#search_criteria_type').val() != "5")
     {
@@ -131,7 +140,7 @@
   });
 
 
-  $('#people_criteria').live('click', function() {
+ /* $('#people_criteria').live('click', function() {
 
     if($('#search_criteria_type').val()!=4 && $('#search_criteria_type').val()!=5 ){
       $('#people_criteria').css("display","block");
@@ -185,7 +194,7 @@
       $('#search_criteria_type').val(3);
     }
   });
-
+*/
   $("#advanced_search_side").submit(function() {
 
 
@@ -212,15 +221,15 @@
 
       switch(type) {
         case "1":
-          objects_url = "/search/people";
+          objects_url = "/search/simple";
           $('#object_header').text('People');
           break;
         case "2":
-          objects_url = "/search/places";
+          objects_url = "/search/simple";
           $('#object_header').text('Places');
           break;
         case "3":
-          objects_url = "/search/activities";
+          objects_url = "/search/simple";
           $('#object_header').text('Activities');
           break;
         case "4":

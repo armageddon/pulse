@@ -39,21 +39,6 @@ class SearchController < ApplicationController
     end
   end
 
-  def people
-    logger.debug('PEOPLE')
-    @search_criteria = SearchCriteria.new(params, current_user)
-    respond_to do |format|
-      format.js do
-        @users = User.search_users_simple(params, current_user)
-        if @users == nil || @users.length == 0
-          render :text=>"<div style='width:500px' id='activity_results_div'>No results returned</div>"
-        else
-          render :partial => 'shared_object_collections/users_collection', :locals => { :collection => @users },  :content_type => "text/html"
-        end
-      end
-    end
-  end
-  
   def map_places
     @places = Place.search_places_map(params, current_user)
     respond_to do |format|
@@ -67,13 +52,15 @@ class SearchController < ApplicationController
     @search_criteria = SearchCriteria.new(params, current_user)
     logger.debug("ages: ")
     logger.debug(@search_criteria.ages)
+    @user_place_activities = UserPlaceActivity.search_user_place_activities(params, current_user)
+     logger.debug('DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD' )
     respond_to do |format|
       format.js do
-        @user_place_activities = UserPlaceActivity.search_user_place_activities(params, current_user)
-       
+
         if  @user_place_activities == nil || @user_place_activities.length == 0
           render :text=>"<div style='width:500px' id='activity_results_div'>No results returned</div>"
         else
+          logger.debug('DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD' + @user_place_activities.total_entries.to_s)
           render :partial => 'user_place_activity_collection', :locals => { :collection => @user_place_activities },  :content_type => "text/html"
         end
       end
@@ -92,12 +79,27 @@ class SearchController < ApplicationController
       end
     end
   end
-  
+
+  def people
+    logger.debug('PEOPLE')
+    @search_criteria = SearchCriteria.new(params, current_user)
+    respond_to do |format|
+      format.js do
+        @users = User.search_users_simple(params, current_user)
+        if @users == nil || @users.length == 0
+          render :text=>"<div style='width:500px' id='activity_results_div'>No results returned</div>"
+        else
+          render :partial => 'user_collection', :locals => { :collection => @users },  :content_type => "text/html"
+        end
+      end
+    end
+  end
+
   def activities
     @activities = Activity.search_activities(params, current_user)
     respond_to do |format|
       format.js do
-        render :partial => "shared_object_collections/activity_collection", :locals => {:collection => @activities}
+        render :partial => "activity_collection", :locals => {:collection => @activities}
       end
     end
   end
@@ -107,13 +109,24 @@ class SearchController < ApplicationController
     @places = Place.search_places(params, current_user)
     respond_to do |format|
       format.js do
-        render :partial => "shared_object_collections/place_collection", :locals => {:collection => @places}
+        render :partial => "place_collection", :locals => {:collection => @places}
       end
     end
   end  
-  
+
+  def simple
+    @users = User.search_users_simple(params, current_user,5)
+    @places = Place.search_places(params, current_user,5)
+    @activities = Activity.search_activities(params, current_user,5)
+    respond_to do |format|
+      format.js do
+        render :partial => "search/simple_search", :locals => {:collection => @places}
+      end
+    end
+
+  end
+
   def activity_list
-    
     @category = params[:activity_category_id]
     @activities = Activity.all(:conditions => {
         :activity_category_id => params[:activity_category_id]
@@ -151,10 +164,8 @@ class SearchController < ApplicationController
   end
 
   def nav
-    logger.debug('NAAAAAAAAAAAAAAAAAAAAAAAAV')
     list = [Place.search_places(params, current_user),User.search_users_simple(params, current_user),Activity.search_activities(params, current_user)]
     list.sort_by {|a| a.total_entries}
-    logger.debug('NAAAAAAAAAAAAAAAAAAAAAAAAVafterselect')
     case list[0][0]
     when Place
       params[:search_criteria][:type] = "2"

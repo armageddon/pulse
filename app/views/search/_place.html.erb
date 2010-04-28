@@ -1,0 +1,27 @@
+<% if object != nil %>
+  <div class="object" id="<%= dom_id object %>">
+    <div class="icon">
+      <%= link_to image_tag(object.icon.url(:thumb), :width => '25px', :height => '25px'), object %>
+    </div>
+    <div class="info_container">
+      <div class="info">
+        <span>
+          <%= link_to object.name, object %>
+        </span>
+      </div>
+      <div class="category_info">
+      </div>
+  
+      <div class="description">
+        <span><%=object.neighborhood%> </span>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div class="actions">
+      <%= link_to image_tag("edit_add.png", :width=>20,:class => " tooltip ", :title => I18n.translate("Add_to_favorites")), '#', 'data-href' => "/user_place_activities/free?add_type=activity&place_id="+object.id.to_s+"&view=add_place", :place_id => object.id, :class => "add_place" %>
+    </div>
+    <div class="clear"></div>
+    <div class="clear"></div>
+  </div>
+<% end %>
+

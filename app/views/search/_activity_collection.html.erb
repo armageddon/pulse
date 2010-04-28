@@ -1,0 +1,28 @@
+<%= render :partial => "activity", :collection => collection %>
+<div class="clear"></div>
+<% if collection.next_page %>
+  <% qstring = "" %>
+  <% params.each do |p| %>
+    <% if p[0] != "page" %>
+      <% qstring += "&" + p[0].to_s + '=' + p[1].to_s %>
+    <% end %>
+  <% end %>
+  <% qstring += "&type="+collection.first.class.to_s.tableize %>
+  <%= link_to "See more activities", '/search/activities?page=' + collection.next_page.to_s , :class => "paginator_activity" %>
+<% end %>
+<div id="activity_loading" style="display: none;font-size:14px;font-weight:bold;">Loading<img id="loading-image" src="/images/indicator.gif" alt=""  /></div>
+
+
+
+
+
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function() {
+	
+    if ($.jqm) {
+      $("#dialog").jqm({ajax: '@data-href', modal: true});
+      $("#dialog").jqmAddTrigger('.add_to_favorites, .add_place, .add_event, .add_activity, .invite_a_friend');
+    }
+	
+  });
+</script>
