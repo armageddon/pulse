@@ -10,7 +10,7 @@
         </span>
       </div>
      <div class="category_info">
-        <% user_count = object.users.find(:all,:select=>'distinct users.*').count %>
+        <% user_count = object.users.find(:all,:select=>'distinct users.*').length %>
         <% if user_count > 0 %>
           <%=  user_count%> <%= user_count == 1 ? ' person' :  ' people'%>
         <%else%>
@@ -18,7 +18,7 @@
         <% end  %>
       </div>
       <div class="category_info">
-        <% place_count = object.places.find(:all,:select=>'distinct places.*').count %>
+        <% place_count = object.places.find(:all,:select=>'distinct places.*').length %>
         <% if place_count > 0 %>
           <%=place_count%> <%= place_count  == 1 ? ' place' :  ' places'%>
         <% else %>
