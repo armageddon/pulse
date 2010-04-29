@@ -5,6 +5,8 @@ class Place < ActiveRecord::Base
     indexes address
     has longitude
     has latitude
+    has activity_count
+    has id
   end
 
   validates_presence_of :name
@@ -78,10 +80,10 @@ class Place < ActiveRecord::Base
     logger.debug(p search_criteria)
     search_criteria.conditions
     if search_criteria.distance != nil && search_criteria.distance != "0" && search_criteria.distance != ""
-      results = Place.search(params[:search_criteria][:keyword], :conditions => {:latitude => search_criteria.low_lat..search_criteria.high_lat, :longitude => search_criteria.low_long..search_criteria.high_long},  :page=>params[:page], :per_page=>per_page)
+      results = Place.search(params[:search_criteria][:keyword], :without => {:id => 1}, :conditions => {:latitude => search_criteria.low_lat..search_criteria.high_lat, :longitude => search_criteria.low_long..search_criteria.high_long},  :page=>params[:page], :per_page=>per_page)
     else
-      results = Place.search(params[:search_criteria][:keyword],  :page=>params[:page], :per_page=>per_page)
-        
+      results = Place.search(params[:search_criteria][:keyword], :without => {:id => 1}, :page=>params[:page], :per_page=>per_page, :order=>:activity_count, :sort_mode => :desc)
+
     end
     return results
   end

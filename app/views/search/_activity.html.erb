@@ -9,12 +9,21 @@
           <%= link_to object.name, object %>
         </span>
       </div>
-      <div class="category_info">
-
+     <div class="category_info">
+        <% user_count = object.users.find(:all,:select=>'distinct users.*').count %>
+        <% if user_count > 0 %>
+          <%=  user_count%> <%= user_count == 1 ? ' person' :  ' people'%>
+        <%else%>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <% end  %>
       </div>
-      <div class="clear"></div>
-      <div class="description">
-
+      <div class="category_info">
+        <% place_count = object.places.find(:all,:select=>'distinct places.*').count %>
+        <% if place_count > 0 %>
+          <%=place_count%> <%= place_count  == 1 ? ' place' :  ' places'%>
+        <% else %>
+           &nbsp;&nbsp;&nbsp;&nbsp;
+        <% end %>
       </div>
       <div class="clear"></div>
     </div>

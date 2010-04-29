@@ -10,8 +10,22 @@
         </span>
       </div>
       <div class="category_info">
+        <% user_count = object.users.find(:all,:select=>'distinct users.*').count %>
+        <% if user_count > 0 %>
+          <%=  user_count%> <%= user_count == 1 ? ' person' :  ' people'%>
+        <%else%>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <% end  %>
       </div>
-  
+      <div class="category_info">
+        <% activity_count = object.activities.find(:all,:select=>'distinct activities.*').count %>
+        <% if activity_count > 0 %>
+          <%=activity_count%> <%= activity_count  == 1 ? ' activity' :  ' activities'%>
+        <% else %>
+           &nbsp;&nbsp;&nbsp;&nbsp;
+        <% end %>
+      </div>
+
       <div class="description">
         <span><%=object.neighborhood%> </span>
       </div>

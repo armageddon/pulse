@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100413144717) do
+ActiveRecord::Schema.define(:version => 20100429132421) do
 
   create_table "activities", :force => true do |t|
     t.string   "name"
@@ -30,6 +30,8 @@ ActiveRecord::Schema.define(:version => 20100413144717) do
     t.string   "url"
     t.string   "fb_page_url"
     t.string   "website"
+    t.integer  "people_count",                      :default => 0
+    t.integer  "place_count",                       :default => 0
   end
 
   create_table "activity_categories", :force => true do |t|
@@ -182,6 +184,8 @@ ActiveRecord::Schema.define(:version => 20100413144717) do
     t.integer  "fb_page_id",             :limit => 8
     t.string   "url"
     t.string   "fb_page_url"
+    t.integer  "people_count",                        :default => 0
+    t.integer  "activity_count",                      :default => 0
   end
 
   add_index "places", ["import_id"], :name => "idx_import_id"
@@ -305,10 +309,15 @@ ActiveRecord::Schema.define(:version => 20100413144717) do
     t.string   "facebook_page"
   end
 
+  create_table "vactivities_count", :id => false, :force => true do |t|
+    t.integer "id",                 :default => 0, :null => false
+    t.integer "count", :limit => 8, :default => 0, :null => false
+  end
+
   create_table "vmatcher", :id => false, :force => true do |t|
     t.integer "U1",              :default => 0, :null => false
     t.integer "U2",              :default => 0, :null => false
-    t.integer "C",  :limit => 8, :default => 0
+    t.integer "C",  :limit => 8
     t.integer "A",  :limit => 8
     t.integer "P",  :limit => 8
   end
@@ -324,6 +333,11 @@ ActiveRecord::Schema.define(:version => 20100413144717) do
   create_table "vmatches_all", :id => false, :force => true do |t|
     t.integer "U1", :default => 0, :null => false
     t.integer "U2", :default => 0, :null => false
+  end
+
+  create_table "vplaces_count", :id => false, :force => true do |t|
+    t.integer "id",                 :default => 0, :null => false
+    t.integer "count", :limit => 8, :default => 0, :null => false
   end
 
   create_table "vuser_activities", :id => false, :force => true do |t|
