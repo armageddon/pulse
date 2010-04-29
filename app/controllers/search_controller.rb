@@ -96,10 +96,16 @@ class SearchController < ApplicationController
   end
 
   def activities
+      logger.debug('ACTIVITIES SEARCH ' )
     @activities = Activity.search_activities(params, current_user)
     respond_to do |format|
       format.js do
-        render :partial => "activity_collection", :locals => {:collection => @activities}
+         if @activities == nil || @activities.length == 0
+           logger.debug('ACTIVITIES SEARCH - no results' )
+              render :text=> "<div style='width:500px' id='activity_results_div'>No activities found</div>"
+         else
+            render :partial => "activity_collection", :locals => {:collection => @activities}
+         end
       end
     end
   end

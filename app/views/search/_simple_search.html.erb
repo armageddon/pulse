@@ -1,9 +1,24 @@
 <div style="font-size:16px;margin-bottom:3px;border-bottom:1px dotted #CCCCCC;">People</div>
-<%=  render :partial => 'user_collection', :locals => { :collection => @users },  :content_type => "text/html" %>
+<% if @users == nil || @users.length == 0%>
+    <%= render :text => 'No people found' %>
+<% else %>
+    <%=  render :partial => 'user_collection', :locals => { :collection => @users },  :content_type => "text/html" %>
+<% end %>
 <div class="clear"></div>
+
 <div style="font-size:16px;margin-bottom:3px;margin-top:10px;border-bottom:1px dotted #CCCCCC;">Places</div>
+<% if @places == nil || @places.length == 0%>
+    <%= render :text => 'No places found' %>
+
+<% else %>
 <%=  render :partial => "place_collection", :locals => {:collection => @places},  :content_type => "text/html"%>
+<% end %>
 <div class="clear"></div>
+
 <div style="font-size:16px;margin-bottom:3px;margin-top:10px;border-bottom:1px dotted #CCCCCC;">Activities</div>
+<% if @activities == nil || @activities.length == 0%>
+    <%= render :text => 'No activities found' %>
+<% else %>
 <%=  render :partial => "activity_collection", :locals => {:collection => @activities},  :content_type => "text/html"%>
+<% end %>
 <div class="clear"></div>

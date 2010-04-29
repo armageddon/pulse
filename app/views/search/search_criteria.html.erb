@@ -28,15 +28,10 @@
     <%= text_field_tag 'search_criteria[keyword]',  'Enter keyword', :id => "search_criteria_keyword", :class => 'input_text' %><br />
     <br />
     <div class="clear">&nbsp;</div>
-    <div id="simple_search_submit" style="float:left;">
-      <%= submit_button("People", :id=> "people_search_button", :class=>"submit_act") %>
+    <div id="simple_search_submit" style="float:left;margin-left:85px">
+      <%= submit_button("Search", :id=> "people_search_button", :class=>"submit_act") %>
     </div>
-    <div id="simple_search_submit" style="float:left;">
-      <%= submit_button("Places", :id=> "place_search_button", :style=>"padding-left:2px", :class=>"submit_act") %>
-    </div>
-    <div id="simple_search_submit" style="float:left;">
-      <%= submit_button("Activities", :id=> "activity_search_button", :style=>"padding-left:2px", :class=>"submit_act") %>
-    </div>
+   
   </div>
 
   <div id="advanced_search" style="width:280px;float:left;">
