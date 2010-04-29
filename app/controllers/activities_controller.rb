@@ -196,7 +196,7 @@ class ActivitiesController < ApplicationController
     activity_id = params[:activity_id]
     @places = Place.find(:all,:select=>"places.id, places.name, places.neighborhood, count(UPA.id) as UPA", :group=>"places.id, places.name,places.neighborhood",:joins=>"inner join user_place_activities UPA on UPA.place_id = places.id",:conditions=>"UPA.activity_id = " + activity_id.to_s)
     res = Array.new
-    res <<  {:id=>0, :name=>'Search Places >>', :neighborhood=>'', :count=>''}
+    res <<  {:id=>0, :name=>'Search or Add New Places >>', :neighborhood=>'', :count=>''}
     @places.each do |p|
       res << {:id=>p.id, :name=>p.name, :count=>p.UPA, :neighborhood=>p.neighborhood}
     end
