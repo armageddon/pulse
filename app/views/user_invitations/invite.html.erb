@@ -49,7 +49,7 @@
 <br />
 
 <div id="fbdiv" style="display:none">
-<fb:serverfbml style="width: 776px;">  <script type="text/fbml">  <fb:fbml>  <fb:request-form action='http://www.hellopulse.com/invite' method="POST" invite="true" type="HelloPulse" content="<fb:name uid='<%=facebook_session.user.uid %> ' useyou='false' /> is a member of HelloPulse.com and would like to share that experience with you. To register, simply click on the Register button below.<fb:req-choice url='http://www.hellopulse.com' label='Register' />">  <fb:multi-friend-selector cols="3" showborder="true" actiontext="Invite your Facebook Friends to use HelloPulse" />  </fb:request-form>  </fb:fbml>  </script> </fb:serverfbml>
+<fb:serverfbml style="width: 776px;">  <script type="text/fbml">  <fb:fbml>  <fb:request-form action='http://www.hellopulse.com/invite' method="POST" invite="true" type="HelloPulse" content="<fb:name uid='<%=facebook_session != nil ? facebook_session.user.uid : 0%> ' useyou='false' /> is a member of HelloPulse.com and would like to share that experience with you. To register, simply click on the Register button below.<fb:req-choice url='http://www.hellopulse.com' label='Register' />">  <fb:multi-friend-selector cols="3" showborder="true" actiontext="Invite your Facebook Friends to use HelloPulse" />  </fb:request-form>  </fb:fbml>  </script> </fb:serverfbml>
 </div>
 
 
