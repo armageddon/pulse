@@ -3,8 +3,10 @@
   <div id="invitation_error" style="display: none;">This email has already been registered</div>
   <%= text_field_tag "invitation[email]", "Email address", :class => "input_text" %>
   <br> <br>
-  <%= submit_button 'Send invitation' %>
-  <%= submit_button 'Cancel', :id => "cancel" %>
+  <%= submit_button 'Import from Contacts', :id => 'import', :class=>"submit_act" %>
+  <%= submit_button 'Facebook Connect', :id => 'facebook', :class=>"submit_act"  %>
+  <%= submit_button 'Email', :id => 'facebook', :class=>"submit_act"  %>
+  <%= submit_button 'Cancel', :id => "cancel", :class=>"submit_act" %>
 <% end %>
 
 <script type="text/javascript" charset="utf-8">

@@ -74,7 +74,9 @@ ActionController::Routing::Routes.draw do |map|
   map.contact '/contact', :controller => "pages", :action => 'contact'
   map.terms '/terms', :controller => "pages", :action => 'terms'
 
-  
+map.invite_send '/invites/send' , :controller => "user_invitations", :action => 'sender'
+  map.import '/import', :controller => "user_invitations", :action => 'import'
+map.invite '/invite', :controller => "user_invitations", :action => 'invite'
   #feeds controller
   map.feed '/feed', :controller => 'feeds', :action => 'feed'
   
