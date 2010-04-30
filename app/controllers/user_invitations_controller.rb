@@ -1,6 +1,8 @@
 class UserInvitationsController < ApplicationController
   before_filter :login_required
 
+ skip_before_filter :verify_authenticity_token, :only => [:invite]
+
   def import
     render :template => '/user_invitations/import.html', :layout => false
   end
