@@ -14,7 +14,7 @@
   <%  if current_user!=nil && current_user && current_user.partner_type == nil %>
     <li><%= link_to "ADD AN ACTIVITY", '#', 'data-href' => "/user_place_activities/free", :id => "add_place_activity", :class => "add_to_favorites"   %></li>
   <%end%>
-  <li><%= link_to "INVITE A FRIEND", '#', 'data-href' => new_account_invitation_path, :class => "invite_a_friend" %>
+  <li><%= link_to "INVITE A FRIEND", '/invite' ,:class => "invitea" %>
 </ul>
 <br />
 <% if @user.id != current_user.id && current_user.partner_type == nil  %>

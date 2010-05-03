@@ -18,7 +18,7 @@ $(document).ready(function() {
             ajax: '@data-href', 
             modal: true
         });
-        $("#dialog").jqmAddTrigger('.add_to_favorites, .add_place, .add_event, .add_activity, .invite_a_friend, .arrange_to_meet');
+        $("#dialog").jqmAddTrigger('.add_to_favorites, .add_place, .add_event, .add_activity, .arrange_to_meet');
     }
 
     $('#crop').live('click',function() {

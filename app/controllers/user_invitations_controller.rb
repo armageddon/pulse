@@ -14,16 +14,22 @@ class UserInvitationsController < ApplicationController
   def sender
       recips = params[:q]
       logger.debug(recips)
-     @invitation = current_user.invitations.build(recips)
-       if @invitation.save
-        format.html { redirect_to new_account_invitation_path }
-        format.js { render :nothing => true }
+      recip_list = recips.split(',')
+      logger.debug(recip_list.length)
+      UserMailer.deliver_invitations(current_user,recip_list)
+      render :nothing => true 
+     #@invitation = current_user.invitations.build()
+     #  @invitation =.
 
-      else
-        format.html { render :action => :news }
-        format.js { render :nothing => true, :status => 500 }
+    #   if @invitation.save
+     #   format.html { redirect_to new_account_invitation_path }
+    #    format.js { render :nothing => true }
 
-      end
+     # else
+    #    format.html { render :action => :news }
+    #    format.js { render :nothing => true, :status => 500 }
+
+    #  end
   end
 
   def new

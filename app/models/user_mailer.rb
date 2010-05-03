@@ -1,6 +1,18 @@
 class UserMailer < ActionMailer::Base
   include CrmData
 
+  def invitations(user,user_list)
+    headers["return-path"] = 'admin@hellopulse.com'
+    @host = "http://www.hellopulse.com"
+    @recipients  = "#{user_list}"
+    @from        = "\"HelloPulse\" <admin@hellopulse.com>"
+    @sent_on     = Time.now
+    @subject = "You've been invited to HelloPulse"
+    headers["return-path"] = 'admin@hellopulse.com'
+    @recipients = user_list
+    @user = user
+  end
+
   def notification(user,friend)
     @user = user
     setup_email(user)

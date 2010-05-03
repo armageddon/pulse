@@ -19,7 +19,7 @@
   <li><%= link_to "SEARCH", {:controller=>'search' }, :class=>join_class%></li>
   <% if current_user!=nil %>
     <li><%= link_to "EDIT MY INFO", current_user.status ==3 ? '/edit_partner' : edit_account_path %></li>
-    <li><%= link_to "INVITE A FRIEND", '#', 'data-href' => new_account_invitation_path, :class => "invite_a_friend" %></li>
+    <li><%= link_to "INVITE A FRIEND", '/invite', :class => "invitea" %></li>
   <%  end %>
 </ul>
 <br />
