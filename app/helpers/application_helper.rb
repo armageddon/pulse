@@ -72,7 +72,7 @@ module ApplicationHelper
     links.join("")
     else
      logger.debug('DDDDDDDDDDDDD' + request.path_parameters['controller'])
-      render :partial => '/places/login', :locals=>{:id=>params[:id], :controller=>request.path_parameters['controller'] }
+      render :partial => '/shared/login', :locals=>{:id=>params[:id], :controller=>request.path_parameters['controller'] }
 
 
     end
