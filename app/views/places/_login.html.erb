@@ -1,0 +1,62 @@
+<% form_tag '/session?dest=object&type='+controller+'&id='+id.to_s , :id => 'header_login_form' do -%>
+  <%= hidden_field_tag 'dest', @dest %>
+  <%= hidden_field_tag 'uname', @uname %>
+  <div style="float:right;margin-top:10px" >
+    <span style="font-size:14px;" class="splash-members-login">Members login:</span>
+    <span style="font-size:14px"><%= text_field_tag 'login', @login, :class => "input_text", :value => "Username or Email", :size => "16" %></span>
+    <span style="font-size:14px"><%= password_field_tag 'password', nil, :size => "10", :class => "input_text", :style => "display: none;" %></span>
+    <span style="font-size:14px"><input type="text" class="input_text" size="10" value="Password" id="password_holder"/></span>
+    <%= submit_button "GO", :class=> 'submit', :type =>'submit' %><br />
+
+  </div>
+
+  <div style="float:right;">
+    <% if flash[:error] %>
+      <p id="errors" style="font-size:13px;margin-right:20px;height:23px">
+        <%= flash[:error] %>
+      </p>
+    <% end %>
+  </div>
+<% end %>
+
+
+
+<script type="text/javascript" charset="utf-8">
+  $('#header_login_form').submit(function()
+{
+
+
+});
+
+
+  $(document).ready(function() {
+
+
+
+    $('#login, #invite_code').focus(function() {
+<%# password failure/autocomplete %>
+<% if @login.present? %>
+        $.data(this, 'clicked', true);
+<% end %>
+
+      if (!$.data(this, 'clicked')) {
+        $(this).val('');
+        $.data(this, 'clicked', true);
+      }
+    });
+
+    $('#password_holder').focus(function() {
+      $(this).hide();
+      $('#password').show();
+      $('#password').focus();
+    });
+
+    $('#redeem, #show_login').click(function() {
+      $('#redeem, #show_login').toggle();
+
+      return false;
+    })
+
+  });
+</script>
+

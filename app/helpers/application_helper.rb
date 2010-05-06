@@ -62,7 +62,7 @@ module ApplicationHelper
   end
   
   def nav_links
-    return unless logged_in?&&current_user!=nil
+    if logged_in?&&current_user!=nil
     links = Array.new
     links << content_tag(:li,:class=>nav_link_class('')) { link_to "Logout", logout_path }
     links << content_tag(:li,:class=>nav_link_class('user_favorites')) { link_to I18n.translate("my_favorites"), account_favorites_path } if current_user.status ==1
@@ -70,6 +70,12 @@ module ApplicationHelper
     links <<  content_tag(:li,:class=>nav_link_class('user_matches')) { link_to "My matches", account_matches_path } if current_user.status ==1
     links <<  content_tag(:li,:class=>nav_link_class('users')) { link_to "Home", root_path }
     links.join("")
+    else
+     logger.debug('DDDDDDDDDDDDD' + request.path_parameters['controller'])
+      render :partial => '/places/login', :locals=>{:id=>params[:id], :controller=>request.path_parameters['controller'] }
+
+
+    end
   end
 
   def nav_link_class(page)
