@@ -220,6 +220,7 @@ $(document).ready(function() {
     });
 
     $('#password_holder, #password_confirmation_holder').focus(function() {
+ 
         $(this).hide();
         $(this).next('input').show();
         $(this).next('input').focus();

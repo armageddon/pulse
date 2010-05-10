@@ -70,7 +70,7 @@ module ApplicationHelper
     links <<  content_tag(:li,:class=>nav_link_class('user_matches')) { link_to "My matches", account_matches_path } if current_user.status ==1
     links <<  content_tag(:li,:class=>nav_link_class('users')) { link_to "Home", root_path }
     links.join("")
-    else
+    elsif request.path_parameters['controller']!= 'users'
      logger.debug('DDDDDDDDDDDDD' + request.path_parameters['controller'])
       render :partial => '/shared/login', :locals=>{:id=>params[:id], :controller=>request.path_parameters['controller'] }
 

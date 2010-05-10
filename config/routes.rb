@@ -82,6 +82,10 @@ map.invite '/invite', :controller => "user_invitations", :action => 'invite'
   
   #place_pictures controller
 
+  #user_events_controller
+  map.user_events '/user/events', :controller=>'user_events', :action=>'user_events'
+  map.events '/events' , :controller=>'user_events', :action=>'show'
+  map.event_new '/events/new', :controller=>'user_events', :action=>'new'
   #user_favorites controller
   map.user_favorited 'user_favorites/user_favorited', :controller => 'user_favorites',  :action => 'user_favorited'
   map.user_favorite_delete 'account/favorites/delete', :controller => 'user_favorites',  :action => 'destroy'

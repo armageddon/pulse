@@ -1,9 +1,18 @@
+    <%= stylesheet_link_tag %w(fullcalendar) %>
+    <%= javascript_include_tag 	"fullcalendar"%>
+
 <%= fb_connect_javascript_tag %>
 <%= init_fb_connect "XFBML", :js=>:jquery%>
 
 <% content_for :c1 do %>
   <%= render :partial => "place_activity_sidebar" , :locals => {:place_activity => @place_activity}%>
 <% end %>
+
+<% content_for :c3 do %>
+  <%= render :partial => "shared/map" %>
+  
+<% end %>
+
 
 <% content_for :message do %>
   <%if (!logged_in?)||(current_user.class!=User)%>
@@ -34,6 +43,25 @@
 
 
 <script type="text/javascript">
+
+
+$(document).ready(function() {
+
+
+    $('#calendar').fullCalendar({
+      buttonText: {
+ today: ''
+    }
+
+
+
+
+
+        // put your options and callbacks here
+    })
+
+});
+
 
   $('#join').live('click',function(){
     showUserReg();

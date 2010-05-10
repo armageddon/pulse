@@ -7,13 +7,13 @@ class UserEventsController < ApplicationController
 
   def new
     logger.debug("in new")
-    @place = Place.find(params[:place_id])
+    @place = Place.find(1)
     @event = current_user.events.new
     @event.when_time = Time.now
     logger.debug('Created event')
     logger.debug(@event.when_time)
     logger.debug(@event)
-    @event.place = @place
+    #@event.place = @place
     respond_to do |format|
       format.html { render }
       format.js { render :partial => 'new_event', :locals => { :event => @event }, :layout => false, :content_type => "text/html" }
@@ -33,4 +33,16 @@ class UserEventsController < ApplicationController
     end
   end
 
+  def user_events
+    events = Event.find(:all)
+    es=Array.new
+    events.each do |e|
+        es << {:title=>e.title, :start=> e.start}
+    end
+    respond_to do |format|
+      format.js { render :json => es}
+    end
+
+  end
 end
+

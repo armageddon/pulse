@@ -1,0 +1,58 @@
+    <%= stylesheet_link_tag %w(fullcalendar) %>
+    <%= javascript_include_tag 	"fullcalendar"%>
+
+<% content_for :c3 do %>
+  &nbsp;
+<% end %>
+
+  <% content_for :c1 do %>
+
+
+      <div class="column_header" >
+  <h2>Criteria</h2>
+</div>
+  <label  class="search_criteria_header">Type of Events</label><br />
+      <%= check_box_tag "search_criteria[sp_1]",1 %> Your Events <br />
+      <%= check_box_tag "search_criteria[sp_2]",2  %> Facebook Events<br />
+      <%= check_box_tag "search_criteria[sp_2]",2  %> Your Favourites' Events<br />
+      <%= check_box_tag "search_criteria[sp_2]",2  %> Keynoir Events<br />
+      <br />
+      <label  class="search_criteria_header">Location</label><br />
+
+
+      <div class="float:left" id="postcodesearch">
+        <%= std_drop_down('search_criteria[distance]', 0, {:width => '130px'},distance_options, 'Any distance',0) %>
+        <div class="clear"></div>
+        from
+        <%= text_field_tag 'search_criteria[postcode]', 'postcode', :class => 'input_text' %><br />
+      </div>
+    
+      
+<% end %>
+
+
+<div class="column_header" style="width:750px">
+  <h2>Events</h2>
+</div>
+
+<div id='calendar' style="width:760px"></div>
+
+
+   <script type="text/javascript" charset="utf-8">
+
+$(document).ready(function() {
+      $('#right').removeClass('column_container');
+   $('#right').css('display','none');
+ $('#right').html('');
+    // page is now ready, initialize the calendar...
+
+    $('#calendar').fullCalendar({
+      events: "/user/events"
+
+
+
+        // put your options and callbacks here
+    })
+
+});
+   </script>

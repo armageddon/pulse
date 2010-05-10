@@ -1,6 +1,6 @@
 <h4>When are you going to be at <%= @place.name %>?</h4>
 
-<% form_for @event, :url => account_events_path do |f| %>
+<% form_for @event, :url => events_path do |f| %>
   <h3 id="month_name"><%= Time.current.strftime("%B") %></h3>
   <div style="display: none;">
     <%= f.datetime_select :when_time %>
@@ -9,7 +9,10 @@
   <%= calendar_for(Time.now.year, Time.now.month >> 1, :hide_day_names => true, :hide_month_name => false, :next_month => "<div class = 'date_back'>&raquo;</div>", :previous_month => "&laquo;" ) do |day|
     link_to(day.day, '#', 'data-day' => day.day, 'data-month' => day.month)
   end %>
-  Time 
+  Time
+<input type="date" />
+  <input type="date" />
+
     <input maxlength="2" size="1" type="text" class="input_text" name="hour_holder" id="hour_holder"> 
     : <input maxlength="2" size="1" type="text" class="input_text" name="minute_holder" id="minute_holder">
     <div id="am_pm_select">
@@ -51,6 +54,7 @@
 
 <script type="text/javascript" charset="utf-8">
 
+
   function zeroPad(num,count) {
     var numZeropad = num + '';
     while(numZeropad.length < count) {
@@ -60,7 +64,10 @@
   }
 
   $(document).ready(function() {
-    
+
+    $(":date").dateinput();
+
+
     $("#cancel").click(function() {
       $("#dialog").jqmHide();
       return false;
@@ -90,25 +97,27 @@
       $('#am_pm_dropdown').hide();
       return false;
     });
-    
+
+
+
     $('#new_event').submit(function() {
       $('.error').hide();
       var error = false;
       if ($('#hour_holder').val() == '') {
         $('#hour_holder').addClass('invalid');
         $('#hour_holder_error').show();    
-        error = true;
+        //error = true;
       }
       
       if ($('#minute_holder').val() == '') {
         $('#minute_holder').addClass('invalid');
         $('#minute_holder_error').show();
-        error = true;
+        //error = true;
       }
       
       if ($('.day a.active').length == 0) {
         $('#select_day_error').show();
-        error = true;
+        //error = true;
       }
       
       if (!error) {
@@ -123,7 +132,7 @@
           // We are modal
           $.ajax({
             type: 'POST',
-            url: '/account/events',
+            url: 'events/create',
             data: $(this).serialize(),
             success: function() {
               $('#dialog').jqmHide();
