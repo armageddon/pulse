@@ -1,58 +1,104 @@
-    <%= stylesheet_link_tag %w(fullcalendar) %>
-    <%= javascript_include_tag 	"fullcalendar"%>
-
-<% content_for :c3 do %>
-  &nbsp;
-<% end %>
-
-  <% content_for :c1 do %>
-
-
-      <div class="column_header" >
-  <h2>Criteria</h2>
-</div>
-  <label  class="search_criteria_header">Type of Events</label><br />
-      <%= check_box_tag "search_criteria[sp_1]",1 %> Your Events <br />
-      <%= check_box_tag "search_criteria[sp_2]",2  %> Facebook Events<br />
-      <%= check_box_tag "search_criteria[sp_2]",2  %> Your Favourites' Events<br />
-      <%= check_box_tag "search_criteria[sp_2]",2  %> Keynoir Events<br />
-      <br />
-      <label  class="search_criteria_header">Location</label><br />
-
-
-      <div class="float:left" id="postcodesearch">
-        <%= std_drop_down('search_criteria[distance]', 0, {:width => '130px'},distance_options, 'Any distance',0) %>
-        <div class="clear"></div>
-        from
-        <%= text_field_tag 'search_criteria[postcode]', 'postcode', :class => 'input_text' %><br />
-      </div>
-    
-      
-<% end %>
-
-
-<div class="column_header" style="width:750px">
+<div class="column_header">
   <h2>Events</h2>
 </div>
+<div style="float:left;width:360px">
+<%=@event.title%>
+</div>
+<div style="float:left;width:170px">
+  <%=render :partial =>'/user_events/rsvp', :locals=>{:event=>@event}%>
+</div>
+<div class="clear"></div>
+<br />
+<%= hidden_field_tag 'event_id',@event.id %>
+<h3>Attendees</h3>
+<div id ="yes" class="get_attendees" style="float:left">
+  Coming
+</div>
+<div id ="may" class="get_attendees" style="float:left">
+  Might come
+</div>
+<div id ="no" class="get_attendees" style="float:left">
+  Nope
+</div>
+<div id ="not" class="get_attendees" style="float:left">
+  Not responded
+</div>
 
-<div id='calendar' style="width:760px"></div>
+<div class="clear"></div>
+<div id="event_attendees">
 
 
-   <script type="text/javascript" charset="utf-8">
+</div>
 
-$(document).ready(function() {
-      $('#right').removeClass('column_container');
-   $('#right').css('display','none');
- $('#right').html('');
-    // page is now ready, initialize the calendar...
+<script type="text/javascript" charset="utf-8">
 
-    $('#calendar').fullCalendar({
-      events: "/user/events"
+  $(document).ready(function() {
+    $('.get_attendees').live('click',function(){
+      switch(this.id)
+      {
+        case 'yes':
+          show_attendees(1);
+          break;
+        case 'may':
+          show_attendees(2);
+           break;
+        case 'no':
+          show_attendees(3);
+          break;
+        case 'not':
+          show_attendees(0);
+          break;
+        }
+      });
 
+      show_attendees(1);
+    });
 
+    function show_attendees(response_id)
+    {
+      $.ajax({
+          type: 'POST',
+          dataType: 'json',
+          url: '/events/attendees',
+          data: {
+            "event_id" : $('#event_id').val(),
+            "type" : response_id
+          },
+          success: function(p) {
+            populate_users(p)
+          },
+          error: function()
+          {
+            alert('error');
+          }
+        });
+    }
+    function populate_users(p)
+    {
 
-        // put your options and callbacks here
-    })
+      var s ='';
+      var i = 0;
+      for(i=1;i<p.length;i++)
+      {
+        s+=create_user(p[i]);
+      }
 
-});
-   </script>
+      $('#event_attendees').html(s);
+    }
+
+    function create_user(u)
+    {
+      var s = '';
+      s = '<div class= "invite_person"  id="user_'+u.id.toString()+'">';
+      s += '<div style="text-align:center;">';
+      s += '<img align="center" alt="Thumb_dsc09007" height="75px" src="' + u.icon+'" style="margin-top:3px;margin-bottom:3px;" width="75px" />';
+      s += '</div>';
+      s += '<div class="clear"></div>';
+      s += '<div style="margin-bottom:4px;">';
+      s += u.name;
+      s += '</div>';
+      s += '</div>';
+      return s;
+    }
+</script>
+

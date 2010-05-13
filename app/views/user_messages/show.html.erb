@@ -23,6 +23,13 @@
         <%=radio_button_tag 'reply', 'maybe'%> <%=MAYBE_MAIL%><br />
 
         <%=radio_button_tag 'reply', 'no'%> <%=NO_MAIL%><br />
+      <%elsif @messages.length> 0 && @messages.first.message_type==2&&@messages.first.sender_id != current_user.id%>
+        <%=radio_button_tag 'reply', 'yes', true%> <%=YES_MAIL%><br />
+
+        <%=radio_button_tag 'reply', 'maybe'%> <%=MAYBE_MAIL%><br />
+
+        <%=radio_button_tag 'reply', 'no'%> <%=NO_MAIL%><br />
+
       <%else%>
         <%= m.text_area :body , :cols => 30%>
       <%end%>

@@ -1,0 +1,10 @@
+<% a =  @event.attendees.find_by_user_id(current_user.id)   %>
+<% if a==nil || a.attendee_response == 0 %>
+<span style="font-size:16px;font-weight:bold"> ARE YOU COMING?</span>
+<% else %>
+  You are attending this event
+<% end %>
+
+<%=radio_button_tag 'reply', 'yes', true%>I'm a comin'!<br />
+<%=radio_button_tag 'reply', 'maybe'%>I might come<br />
+<%=radio_button_tag 'reply', 'no'%>I ain't gonna be there<br />

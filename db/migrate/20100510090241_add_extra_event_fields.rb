@@ -1,6 +1,6 @@
 class AddExtraEventFields < ActiveRecord::Migration
   def self.up
-    add_column :events, :place_activity_id, :string
+    add_column :events, :place_activity_id, :integer
     create_table "attendees", :force => true do |t|
       t.integer   "event_id"
       t.string   "user_id"

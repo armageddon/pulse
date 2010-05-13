@@ -1541,3 +1541,37 @@ a.caldisabled {
 	background-color:#333;
 	color:#fff;
 }
+
+
+.invite_person
+{
+    float:left;
+    width:82px;
+    height:90px;
+    margin-left:2px;
+    margin-right:2px;
+    margin-top:5px;
+    margin-bottom:5px;
+    background-color:white;
+}
+
+.get_guests
+{
+    margin:2px;
+}
+
+#guests_to_invite
+{
+   height:320px;
+   overflow:scroll;
+}
+
+#event_attendees
+{
+   height:320px;
+   overflow:auto;
+}
+.get_attendees
+{
+    margin:2px;
+}

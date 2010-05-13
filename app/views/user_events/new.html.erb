@@ -1,5 +1,244 @@
 <% content_for :message do %>
 <% end %>
 
-<h3 class="section">Add event</h3>
-<%= render :partial => "new_event", :locals => { :place => @place } %>
+<div class="column_header">
+  <h2>Create an Event for <%= @place_activity.activity.name %> at <%= @place_activity.place.name %></h2>
+</div>
+
+
+<% form_for @event, :url => user_events_path do |f| %>
+  <%= hidden_field_tag 'place_activity_id',@place_activity.id %>
+  <%= hidden_field_tag 'attenddee_ids',''%>
+  <%= f.hidden_field :place_id %>
+  Date:
+  <%= hidden_field_tag 'startdate' %>
+  <span>
+    <%= std_drop_down('day', 0, {:width => '60px'},day_options, 'Day', 0) %>
+    <%= std_drop_down('month', 0, {:width => '86px'},event_month_options, 'Month', 0) %>
+
+  </span>
+  <br />
+  Time:
+  <span>
+    <%= std_drop_down('hour', 0, {:width => '60px'},hour_options, 'Hour', 0) %>:
+    <%= std_drop_down('min', 0, {:width => '60px'},min_options, 'Min', 0) %>
+  </span>
+
+
+
+
+
+  <div class="clear"></div>
+  <div style="float:left;background-color:#EDEDED;height:25px;width:556px;padding:4px">
+    <div style="float:left">
+      Invite some people
+    </div>
+    <div class="clear"></div>
+    <div id ="favs" class="get_guests" style="float:left">
+      Favourites
+    </div>
+    <div id ="mats" class="get_guests"  style="float:left">
+      Matches
+    </div>
+    <div id ="haps" class="get_guests"  style="float:left">
+      Happening
+    </div>
+
+    <div id ="alls" class="get_guests"  style="float:right">
+      All
+    </div>
+
+    <div id ="sels" class="get_guests"  style="float:right">
+      Selected
+    </div>
+  </div>
+
+  <%= render :partial => "shared_object_collections/favorites" , :locals=>{:collection => @favorites} %>
+
+
+
+  <div class="clear">&nbsp;</div>
+  <div id="event_save">
+    <%= submit_button 'Create', :class=>'submit_act' %>
+    <%= submit_button 'Cancel', :id => "cancel", :class=>'submit_act' %>
+  </div>
+<% end %>
+
+<script type="text/javascript" charset="utf-8">
+
+  var guests = new Array();
+
+  function populate_users(p)
+  {
+    
+    var s = '<div id="guests_to_invite">';
+    var i = 0;
+    for(i=0;i<p.length;i++)
+    {
+      s+=create_user(p[i]);
+    }
+    s+='</div>';
+    $('#guests_to_invite').html(s);
+  }
+
+  function create_user(u)
+  {
+    var s = '';
+    s = '<div class= "invite_person"  id="user_'+u.id.toString()+'">';
+    s += '<div style="text-align:center;">';
+    s += '<img align="center" alt="Thumb_dsc09007" height="75px" src="' + u.icon+'" style="margin-top:3px;margin-bottom:3px;" width="75px" />';
+    s += '</div>';
+    s += '<div class="clear"></div>';
+    s += '<div style="margin-bottom:4px;">';
+    s += ' <input id="" name="" type="checkbox" value="1" />';
+    s += u.name;
+    s += '</div>';
+    s += '</div>';
+    return s;
+  }
+
+  $('.get_guests').live('click',function(){
+    $.ajax({
+      type: 'POST',
+      dataType: 'json',
+      url: '/events/guests_to_invite',
+      data: {
+        "pa_id" : <%=@place_activity.id%>,
+        "type" : this.id
+      },
+      success: function(p) {
+        populate_users(p)
+      },
+      error: function()
+      { 
+        alert('error');
+      }
+    });
+  });
+
+  function contains(arry, elmnt)
+  {
+    for(var i =0;i<arry.length;i++)
+    {
+      if(arry[i] == elmnt)
+      {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  $('.invite_person').live('click',function(){
+    var k = this.id.split('_')[1];
+    var j = contains(guests, k)
+    if (j==-1)
+    {
+      guests.push(k);
+    }
+    else
+    {
+      guests.splice(j,1);
+    }
+  });
+
+
+
+  $(document).ready(function() {
+    $("#cancel").click(function() {
+      $("#dialog").jqmHide();
+      return false;
+    });
+
+    $('.day a').click(function() {
+      $('#event_when_time_2i').val($(this).attr('data-month'));
+      $('#event_when_time_3i').val($(this).attr('data-day'));
+      $('.day a').removeClass('active');
+      $(this).addClass('active');
+      return false;
+    });
+
+    $('#hour_holder, #minute_holder').blur(function() {
+      if($(this).val().match(/[^\d]/)) {
+        $(this).val('');
+      }
+    });
+
+    $('#am_pm_select').click(function() {
+      $("#am_pm_dropdown").show();
+      return false;
+    });
+
+    $('#am_pm_dropdown a').click(function() {
+      $('#am_pm_selected').text($(this).text());
+      $('#am_pm_dropdown').hide();
+      return false;
+    });
+
+    $('#new_event').submit(function() {
+      $('#attenddee_ids').val(guests.join(','));
+      alert($('#attenddee_ids').val());
+      $.ajax({
+        type: 'POST',
+        url: '/events/create',
+        data: $(this).serialize(),
+        success: function() {
+          // $('#dialog').jqmHide();
+          alert('done');
+        
+        },
+        error: function(p) {
+          alert(p);
+        }
+      });
+      return false;
+    })
+
+  });
+
+
+
+  
+  /*
+$('.error').hide();
+var error = false;
+if ($('#hour_holder').val() == '') {
+$('#hour_holder').addClass('invalid');
+$('#hour_holder_error').show();
+//error = true;
+}
+
+if ($('#minute_holder').val() == '') {
+$('#minute_holder').addClass('invalid');
+$('#minute_holder_error').show();
+//error = true;
+}
+
+if ($('.day a.active').length == 0) {
+$('#select_day_error').show();
+//error = true;
+}
+
+if (!error) {
+if ($.trim($('#am_pm_selected').text()) == 'PM') {
+$('#event_when_time_4i').val(Number($('#hour_holder').val()) + 12);
+} else {
+$('#event_when_time_4i').val(zeroPad($('#hour_holder').val(), 2));
+}
+
+$('#event_when_time_5i').val(zeroPad($('#minute_holder').val(), 2));
+   */
+  // if ($.jqm.hash[1]) {
+  // We are modal
+
+  //else {
+  //return true;
+  //}
+  //}
+  //return false;
+</script>
+
+
+
+
+
+

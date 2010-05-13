@@ -83,9 +83,11 @@ map.invite '/invite', :controller => "user_invitations", :action => 'invite'
   #place_pictures controller
 
   #user_events_controller
+  map.resources :user_events
   map.user_events '/user/events', :controller=>'user_events', :action=>'user_events'
-  map.events '/events' , :controller=>'user_events', :action=>'show'
-  map.event_new '/events/new', :controller=>'user_events', :action=>'new'
+  map.event_invites '/events/guests_to_invite', :controller=>'user_events', :action=>'guests_to_invite'
+map.event_invites '/events/attendees', :controller=>'user_events', :action=>'attendees'
+map.event_create '/events/create', :controller=>'user_events', :action=>'create'
   #user_favorites controller
   map.user_favorited 'user_favorites/user_favorited', :controller => 'user_favorites',  :action => 'user_favorited'
   map.user_favorite_delete 'account/favorites/delete', :controller => 'user_favorites',  :action => 'destroy'
@@ -130,8 +132,9 @@ map.invite '/invite', :controller => "user_invitations", :action => 'invite'
   map.resources :activities, :collection => { :autocomplete => :get } do |a|
     a.resources :pictures, :controller => "activity_pictures"
   end
-
+map.fb_pull 'fb_pull', :controller=>'activities', :action => 'fb_pull'
   map.test_new 'new_test', :controller=>'activities', :action => 'new_test'
+  map.test_new 'fb_test', :controller=>'activities', :action => 'fb_test'
   map.mail_test 'mail_test', :controller=>'activities', :action => 'mail_test'
   map.activity_users '/activity/users', :controller => 'activities', :action => 'users'
   map.activity_user_place_activities '/activity/user_place_activities', :controller => 'activities', :action => 'user_place_activities'

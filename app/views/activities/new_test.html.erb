@@ -1,48 +1,56 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" xmlns:fb="http://www.facebook.com/2008/fbml">
+  <head>
+    <script type="text/javascript" src="http://www.plaxo.com/css/m/js/util.js"></script>
+    <script type="text/javascript" src="http://www.plaxo.com/css/m/js/basic.js"></script>
+    <script type="text/javascript" src="http://www.plaxo.com/css/m/js/abc_launcher.js"></script>
+    <%= stylesheet_link_tag %w(jqModal application activity) %>
+    <%= javascript_include_tag 	"jquery-1.3.2", 'jquery.form.js', 'jqModal', 'jquery.autocomplete.js', 'jquery.charcounter.js','activity', 'application', 'signup' %>
+    <%= javascript_tag "var AUTH_TOKEN = #{form_authenticity_token.inspect};" %>
+  </head>
+  <body>
+    <%= fb_connect_javascript_tag %>
+    <%= init_fb_connect "XFBML", :js=>:jquery%>
+    <%= link_to "Login", @oauth_url %>
 
-
-
-
-
-  <script type="text/javascript" src="http://www.plaxo.com/css/m/js/util.js"></script>
-<script type="text/javascript" src="http://www.plaxo.com/css/m/js/basic.js"></script>
-<script type="text/javascript" src="http://www.plaxo.com/css/m/js/abc_launcher.js"></script>
-<script type="text/javascript"><!--
-function onABCommComplete() {
-  // OPTIONAL: do something here after the new data has been populated in your text area
-}
-//--></script>
-
-
-<body>
- <a href="#" onclick="showPlaxoABChooser('recipient_list', '/import'); return false" class="submit_act">Import From Contacts</a>
- <div style="width:556px">
- <textarea id="recipient_list" name="recipients"></textarea>
- </div>
- <br />
-
-
- 
-<div style="width:266px;float:left">
-<% UserMatcher.matches_for(User.find(32), 'place',10).each  do |m|%>
-  <%= m.first_name %> <%= m.id %> <%= m.pct_match %> <br />
-<%end%>
-</div>
-<div style="width:266px;float:left">
-<% UserMatcher.matches_for(User.find(32), 'activity',10).each  do |m|%>
-  <%= m.first_name %> <%= m.pct_match %><br />
-<%end%>
-</div>
-
-
-<div id="step_3_container">
-
-
-  <%= render :partial => '/user_place_activities/free_user_place_activity', :locals=>{:upa_type => 'reg', :add_type=>'both',:user_place_activity=>UserPlaceActivity.new} %>
-    <div style="float:left;">
-      <%= submit_button("Finish", :id=> "finished",:class=>"submit_act") %>
+    <a href="#" onclick="getFBData()" class="submit_act">Import From Contacts</a>
+    <div style="width:556px">
+      <textarea id="recipient_list" name="recipients"></textarea>
     </div>
-  </div>
+    <br />
+    <div style="width:266px;float:left">
+      <% UserMatcher.matches_for(User.find(32), 'place',10).each  do |m|%>
+        <%= m.first_name %> <%= m.id %> <%= m.pct_match %> <br />
+      <%end%>
+    </div>
+    <div style="width:266px;float:left">
+      <% UserMatcher.matches_for(User.find(32), 'activity',10).each  do |m|%>
+        <%= m.first_name %> <%= m.pct_match %><br />
+      <%end%>
+    </div>
+    <div id="step_3_container">
+      <%= render :partial => '/user_place_activities/free_user_place_activity', :locals=>{:upa_type => 'reg', :add_type=>'both',:user_place_activity=>UserPlaceActivity.new} %>
+      <div style="float:left;">
+        <%= submit_button("Finish", :id=> "finished",:class=>"submit_act") %>
+      </div>
+    </div>
+    <script type="text/javascript">
+      FB.init("6b47ec733b05df8cc3bcec60e2d5f7ef", "xd_receiver.htm");
+    </script>
+  </body>
+</html>
 
-</body>
 
+<script type="text/javascript">
 
+  function getFBData()
+  {
+    FB.init("6b47ec733b05df8cc3bcec60e2d5f7ef", "xd_receiver.htm");
+    alert('x');
+    var query = FB.Data.query('select name, uid from user where uid=3422344');
+    query.wait(function(rows) {
+      document.getElementById('name').innerHTML =
+        'Your name is ' + rows[0].name;
+    });
+
+  }
+</script>

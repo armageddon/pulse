@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100510090241) do
+ActiveRecord::Schema.define(:version => 20100512195052) do
 
   create_table "activities", :force => true do |t|
     t.string   "name"
@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(:version => 20100510090241) do
     t.datetime "start"
     t.datetime "end"
     t.string   "url"
-    t.string   "place_activity_id"
+    t.integer  "place_activity_id"
   end
 
   create_table "favorites", :force => true do |t|
@@ -88,6 +88,36 @@ ActiveRecord::Schema.define(:version => 20100510090241) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "good_for"
+  end
+
+  create_table "fb_user_events", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "user_name"
+    t.integer  "event_id"
+    t.string   "event_location"
+    t.string   "event_name"
+    t.datetime "event_start"
+    t.datetime "event_end"
+    t.datetime "date_added"
+    t.datetime "date_updated"
+  end
+
+  create_table "fb_user_likes", :force => true do |t|
+    t.integer "fb_user_id"
+    t.string  "category"
+    t.integer "like_id"
+    t.string  "like_name"
+  end
+
+  create_table "fb_users", :force => true do |t|
+    t.integer  "fb_user_id",   :limit => 8
+    t.string   "name"
+    t.string   "gender"
+    t.string   "relationship"
+    t.string   "birthday"
+    t.integer  "location_id",  :limit => 8
+    t.datetime "date_added"
+    t.datetime "date_updated"
   end
 
   create_table "invitations", :force => true do |t|

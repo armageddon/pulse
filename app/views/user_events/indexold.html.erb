@@ -1,0 +1,12 @@
+<h4><%= link_to "add event", new_account_event_path %></h4>
+
+<h4>upcoming events</h4>
+
+<% @events.each do |event| %>
+  <div>
+    <p>
+        <strong>when:</strong> <%= time_ago_in_words event.when_time %> from now<br/>
+        <strong>where:</strong> <%= event.place.name %>
+    </p>
+  </div>
+<% end %>

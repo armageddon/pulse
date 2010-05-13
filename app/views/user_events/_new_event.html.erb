@@ -1,49 +1,26 @@
-<h4>When are you going to be at <%= @place.name %>?</h4>
+<h2><%= @place_activity.activity.name %> at Ï <%= @place_activity.place.name %>?</h2>
 
 <% form_for @event, :url => events_path do |f| %>
-  <h3 id="month_name"><%= Time.current.strftime("%B") %></h3>
-  <div style="display: none;">
-    <%= f.datetime_select :when_time %>
-  </div>
+<%= hidden_field_tag 'place_activity_id',@place_activity.id %>
   <%= f.hidden_field :place_id %>
-  <%= calendar_for(Time.now.year, Time.now.month >> 1, :hide_day_names => true, :hide_month_name => false, :next_month => "<div class = 'date_back'>&raquo;</div>", :previous_month => "&laquo;" ) do |day|
-    link_to(day.day, '#', 'data-day' => day.day, 'data-month' => day.month)
-  end %>
-  Time
-<input type="date" />
-  <input type="date" />
+Date: 
+ <%= hidden_field_tag 'startdate' %>
+        <span>
+          <%= std_drop_down('day', 0, {:width => '60px'},day_options, 'Day', 0) %>
+          <%= std_drop_down('month', 0, {:width => '86px'},event_month_options, 'Month', 0) %>
 
-    <input maxlength="2" size="1" type="text" class="input_text" name="hour_holder" id="hour_holder"> 
-    : <input maxlength="2" size="1" type="text" class="input_text" name="minute_holder" id="minute_holder">
-    <div id="am_pm_select">
-      <div id="am_pm_selected">PM</div>
-      <div id="am_pm_dropdown" style="float: left;">
-        <a href="#">AM</a><br />
-        <a href="#">PM</a>
-      </div>
-    </div>
-    <br><br>
+        </span>
+<br />
+  Time:
+<span>
+          <%= std_drop_down('hour', 0, {:width => '60px'},hour_options, 'Hour', 0) %>:
+          <%= std_drop_down('min', 0, {:width => '60px'},min_options, 'Min', 0) %>
+
+        </span>
+
+
     
-    <div id="how_long">
-      
-      <div class='fancy_select'>
-        <%= hidden_field_tag 'event[duration]', "" %>
-        <div class="fancy_select_target">
-          How long?
-        </div>
-        <div class="fancy_select_options">
-          <% ["popping in", "staying for a drink", "staying for a few", "there all night"].each do |option| %>
-            <p><%= option %><span class="hidden_value"><%= option %></span></p>
-          <% end %>
-        </div>
-      </div>
-    </div>
-    
-    <div class="errors">
-      <div class="error" id="select_day_error">Please select a day.</div>      
-      <div class="error" id="hour_holder_error">Please input an hour.</div>
-      <div class="error" id="minute_holder_error">Please input a minute.</div>
-    </div>
+
     
     <div class="clear">&nbsp;</div>
     <div id="event_save">
@@ -65,7 +42,7 @@
 
   $(document).ready(function() {
 
-    $(":date").dateinput();
+   
 
 
     $("#cancel").click(function() {
@@ -132,7 +109,7 @@
           // We are modal
           $.ajax({
             type: 'POST',
-            url: 'events/create',
+            url: '/events/create',
             data: $(this).serialize(),
             success: function() {
               $('#dialog').jqmHide();

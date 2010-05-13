@@ -67,7 +67,23 @@ module OptionsHelper
       ["Sunday", 7]
     ]
   end
-  
+  def hour_options
+    hours =  Array.new
+    (0..23).each do |h|
+      hours.push([h,h.to_s])
+    end
+    hours
+  end
+
+  def min_options
+    mins =  Array.new
+    mins.push([0,'0'])
+    mins.push([15,'15'])
+    mins.push([30,'30'])
+    mins.push([45,'45'])
+    mins
+  end
+
   def day_options
     days =  Array.new
     (1..31).each do|m|
@@ -87,6 +103,20 @@ module OptionsHelper
       end 
     end
     months 
+  end
+   def event_month_options
+    months =  Array.new
+    i=0;
+
+    Date::MONTHNAMES.each do |m|
+
+      if m != nil
+        i+=1;
+        months.push([m,i]) if(i>=DateTime.now.month&&i<=DateTime.now.month+2)
+        
+      end
+    end
+    months
   end
   
   def year_options

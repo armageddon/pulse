@@ -1,0 +1,12 @@
+<div class= 'invite_person' style="float:left; width:82px; height:90px;margin-left:2px;margin-right:2px;margin-top:5px;margin-bottom:5px; background-color:white" id="<%= dom_id object %>">
+  <div style="text-align:center;">
+    <%current_user!=nil ? join_class = '' :  join_class = 'join'%>
+    <%= image_tag(object.icon.url(:thumb), :align => "center", :width => '75px', :height => '75px', :style=>"margin-top:3px;margin-bottom:3px;") %>
+  </div>
+  <div class="clear"></div>
+  <div style="margin-bottom:4px;">
+    <%= check_box_tag "" %>
+    <%= object.first_name %>
+  </div>
+
+</div>
