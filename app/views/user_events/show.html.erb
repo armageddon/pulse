@@ -1,10 +1,10 @@
 <div class="column_header">
   <h2>Events</h2>
 </div>
-<div style="float:left;width:360px">
-<%=@event.title%>
+<div style="float:left;width:360px;height:100px">
+<%=@event.description%>
 </div>
-<div style="float:left;width:170px">
+<div style="float:left;width:170px;margin-left:26px">
   <%=render :partial =>'/user_events/rsvp', :locals=>{:event=>@event}%>
 </div>
 <div class="clear"></div>

@@ -7,6 +7,10 @@
 
 
 <% form_for @event, :url => user_events_path do |f| %>
+<label>Event Description</label><br />
+<div id="description" style ="width:350px;height:80px">
+  <%= text_area_tag 'user_description', '' ,:width=> '340px', :height=>'70px', :rows=>'2', :class=>'word_count'%>
+</div>
   <%= hidden_field_tag 'place_activity_id',@place_activity.id %>
   <%= hidden_field_tag 'attenddee_ids',''%>
   <%= f.hidden_field :place_id %>
@@ -29,9 +33,9 @@
 
 
   <div class="clear"></div>
-  <div style="float:left;background-color:#EDEDED;height:25px;width:556px;padding:4px">
+  <div style="float:left;background-color:#EDEDED;height:30px;width:546px;padding:4px;margin:4px">
     <div style="float:left">
-      Invite some people
+      <span style="font-size:13px;font-weight:bold;margin:2px">Invite some people</span>
     </div>
     <div class="clear"></div>
     <div id ="favs" class="get_guests" style="float:left">
@@ -71,13 +75,12 @@
   function populate_users(p)
   {
     
-    var s = '<div id="guests_to_invite">';
+    var s = '';
     var i = 0;
     for(i=0;i<p.length;i++)
     {
       s+=create_user(p[i]);
     }
-    s+='</div>';
     $('#guests_to_invite').html(s);
   }
 
@@ -176,14 +179,14 @@
 
     $('#new_event').submit(function() {
       $('#attenddee_ids').val(guests.join(','));
-      alert($('#attenddee_ids').val());
+  
       $.ajax({
         type: 'POST',
         url: '/events/create',
         data: $(this).serialize(),
         success: function() {
           // $('#dialog').jqmHide();
-          alert('done');
+        
         
         },
         error: function(p) {

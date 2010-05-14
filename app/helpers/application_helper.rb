@@ -1,5 +1,16 @@
 module ApplicationHelper
 
+  def attendee_response_string(attendee_response)
+    case attendee_response
+    when 1
+      'ATTENDING'
+    when 2
+      'MAYBE ATTENDING'
+    when 3
+      'NOT ATTENDING'
+    end
+  end
+  
   def drop_down(name, value, html_options, select_options, default_target = "Any", default_value = "", id="")
     opts = ""
     target = ""

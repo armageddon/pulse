@@ -26,6 +26,7 @@ class UserEventsController < ApplicationController
     time = DateTime.new(2010,params[:month].to_i, params[:day].to_i, params[:hour].to_i,params[:min].to_i)
     @event.start = time
     @event.user_id = current_user.id
+    @event.description = params[:user_description] if params[:user_description].present?
     pa_id = params[:place_activity_id].to_i
     @event.place_activity_id=pa_id
     if @event.save

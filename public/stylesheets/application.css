@@ -1563,13 +1563,14 @@ a.caldisabled {
 #guests_to_invite
 {
    height:320px;
-   overflow:scroll;
+   overflow:auto;
 }
 
 #event_attendees
 {
    height:320px;
    overflow:auto;
+   border:1px solid;
 }
 .get_attendees
 {
