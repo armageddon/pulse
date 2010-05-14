@@ -45,7 +45,7 @@ class UserEventsController < ApplicationController
           at.event_id = @event.id
           at.user_id=a
           at.attendee_type = 2
-          at.attendee_response = 2
+          at.attendee_response = 0
           at.save
         end
       end
@@ -111,6 +111,33 @@ class UserEventsController < ApplicationController
     end
   end
 
+  def respond
+      event_id = params[:event_id].to_i if params[:event_id].present?
+      response_id = params[:response_id].to_i if params[:response_id].present?
+      attendee = Attendee.find_by_event_id_and_user_id(event_id, current_user.id)
+      if(attendee!=nil)
+        attendee.attendee_response=response_id
+      else
+         attendee = Attendee.new
+          attendee.event_id = event_id
+          attendee.user_id=current_user.id
+          attendee.attendee_type = 2
+          attendee.attendee_response = 0
+      end
+       attendee.save
+       response_text = ''
+       case response_id
+    when 1
+       response_text = 'ATTENDING'
+     when 2
+     response_text   = 'MAYBE ATTENDING'
+    when 3
+       response_text = 'NOT ATTENDING'
+    end
+    render :text => response_text
+    
+  end
+  
   def attendees
     type = params[:type]
     event_id = params[:event_id]

@@ -69,14 +69,15 @@ ActionController::Routing::Routes.draw do |map|
   map.inbox '/account/inbox', :controller => 'user_messages', :action => 'index'
   map.meet '/messages/meet', :controller=>'user_messages', :action => 'meet'
   map.meet '/messages/create_meet', :controller=>'user_messages', :action => 'create_meet'
+
   #pages controller
   map.about '/about', :controller => "pages", :action => 'about'
   map.contact '/contact', :controller => "pages", :action => 'contact'
   map.terms '/terms', :controller => "pages", :action => 'terms'
 
-map.invite_send '/invites/send' , :controller => "user_invitations", :action => 'sender'
+  map.invite_send '/invites/send' , :controller => "user_invitations", :action => 'sender'
   map.import '/import', :controller => "user_invitations", :action => 'import'
-map.invite '/invite', :controller => "user_invitations", :action => 'invite'
+  map.invite '/invite', :controller => "user_invitations", :action => 'invite'
   #feeds controller
   map.feed '/feed', :controller => 'feeds', :action => 'feed'
   
@@ -86,8 +87,9 @@ map.invite '/invite', :controller => "user_invitations", :action => 'invite'
   map.resources :user_events
   map.user_events '/user/events', :controller=>'user_events', :action=>'user_events'
   map.event_invites '/events/guests_to_invite', :controller=>'user_events', :action=>'guests_to_invite'
-map.event_invites '/events/attendees', :controller=>'user_events', :action=>'attendees'
-map.event_create '/events/create', :controller=>'user_events', :action=>'create'
+  map.event_invites '/events/attendees', :controller=>'user_events', :action=>'attendees'
+  map.event_create '/events/create', :controller=>'user_events', :action=>'create'
+  map.event_respond '/events/respond', :controller=>'user_events', :action=>'respond'
   #user_favorites controller
   map.user_favorited 'user_favorites/user_favorited', :controller => 'user_favorites',  :action => 'user_favorited'
   map.user_favorite_delete 'account/favorites/delete', :controller => 'user_favorites',  :action => 'destroy'
@@ -132,7 +134,7 @@ map.event_create '/events/create', :controller=>'user_events', :action=>'create'
   map.resources :activities, :collection => { :autocomplete => :get } do |a|
     a.resources :pictures, :controller => "activity_pictures"
   end
-map.fb_pull 'fb_pull', :controller=>'activities', :action => 'fb_pull'
+  map.fb_pull 'fb_pull', :controller=>'activities', :action => 'fb_pull'
   map.test_new 'new_test', :controller=>'activities', :action => 'new_test'
   map.test_new 'fb_test', :controller=>'activities', :action => 'fb_test'
   map.mail_test 'mail_test', :controller=>'activities', :action => 'mail_test'
