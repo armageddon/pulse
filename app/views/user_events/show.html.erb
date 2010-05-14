@@ -1,6 +1,12 @@
 <div class="column_header">
   <h2>Events</h2>
 </div>
+<div style="float:left;font-size:14px">
+  <%=link_to @event.place_activity.activity.name, @event.place_activity.activity%>
+at
+ <%=link_to @event.place_activity.place.name, @event.place_activity.place%>
+</div>
+<div class="clear"></div>
 <div style="float:left;width:360px;height:100px">
 <%=@event.description%>
 </div>
