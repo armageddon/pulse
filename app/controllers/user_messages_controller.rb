@@ -64,7 +64,7 @@ class UserMessagesController < ApplicationController
     end
   end
 
-   def meet
+  def meet
     logger.debug('meet')
     respond_to do |format|
       format.js { render :partial => 'meet', :locals=>{:recipient_id => params[:recipient_id]}}
@@ -72,12 +72,14 @@ class UserMessagesController < ApplicationController
     end
   end
 
-   def create_meet
+  def create_meet
     @body = 'Hi ' + User.find(params[:recipient_id]).first_name + '. We hang out at the same places and I think we have a lot in common.  Would you like to meet?'
-     @message = current_user.sent_messages.build(:recipient_id => params[:recipient_id],:body=>@body, :message_type=>1)
-      @message.save
-      render :nothing => true
-   end
+    @message = current_user.sent_messages.build(:recipient_id => params[:recipient_id],:body=>@body, :message_type=>1)
+    @message.save
+    render :nothing => true
+  end
+
+ 
   private
   
   def set_other_user

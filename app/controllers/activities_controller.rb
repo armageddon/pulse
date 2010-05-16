@@ -1,7 +1,7 @@
 class ActivitiesController < ApplicationController
   include CrmData
   skip_before_filter :verify_authenticity_token, :only => [:post_activity_to_facebook]
- require 'mini_fb'
+ # require 'mini_fb'
   
   def post_activity_to_facebook
     user = User.find(params[:user_id])
@@ -130,6 +130,7 @@ class ActivitiesController < ApplicationController
     end
     
   end
+=begin
   def fb_pull
     #cookies[:access_token]='2227470867|2.CjcHOcPLpQ3fSY_G5dYeLA__.3600.1273694400-632510886|KWG4cKwpCJFC3ZTmEARz-bBz2gg.'
     @user = MiniFB.get(cookies[:access_token], 'me')
@@ -186,9 +187,9 @@ class ActivitiesController < ApplicationController
       end
       render :text => @response_hash
     end
+=end
 
-
-
+=begin
     def fb_test
 
       @current_facebook_user = facebook_session.user
@@ -221,7 +222,7 @@ class ActivitiesController < ApplicationController
         format.html {render :template => '/activities/new_test.html', :layout => false }
       end
     end
-
+=end
     def create
       @activity = Activity.new
       @activity.name =params[:activity_name]
