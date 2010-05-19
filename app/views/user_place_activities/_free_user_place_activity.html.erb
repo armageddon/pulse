@@ -352,9 +352,10 @@
      
       if (!checkValidation())
         {
-          allowAdd = true;
+          alert('please add an activity or place');
           return false;
         }
+
       if($('#description').val().substring(0,11) == 'tell us why')
       {
         $('#description').val('') ;
