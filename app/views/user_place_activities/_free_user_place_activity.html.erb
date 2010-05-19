@@ -171,6 +171,7 @@
       {
         return false;
       }
+      $('#add_activity_template').attr("disabled", "false");
       if(search_timeout != undefined) {
         clearTimeout(search_timeout);
       }
@@ -337,19 +338,24 @@
     });
 
     $("#cancel").click(function() {
+
       $("#dialog").jqmHide();
       return false;
     })
 
+    var allowAdd = true;
     $('#add_activity_template').live('click',function(){
-      $('#add_activity_template').attr("disabled", "true");
-
+ 
+    
+    if(allowAdd == true)
+    {
+      allowAdd = false;
       //if activity id = 0 add activity and get activity id
       //then add UPA
      
       if (!checkValidation())
         {
-          $('#add_activity_template').attr("disabled", "false");
+          allowAdd = true;
           return false;
         }
       if($('#description').val().substring(0,11) == 'tell us why')
@@ -381,15 +387,17 @@
             case 'edit' : edit_success(p);
               break;
           }
-          $('#add_activity_template').attr("disabled", "false");
+          allowAdd = true;
         },
         error: function(p) {
           alert("error");
         }
       });
+
       return false;
+    }
     });
-      
+
     //methods
 
   });
