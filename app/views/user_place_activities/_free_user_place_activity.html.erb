@@ -343,13 +343,10 @@
       return false;
     })
 
-    var allowAdd = true;
+
     $('#add_activity_template').live('click',function(){
  
-    
-    if(allowAdd == true)
-    {
-      allowAdd = false;
+
       //if activity id = 0 add activity and get activity id
       //then add UPA
      
@@ -387,7 +384,7 @@
             case 'edit' : edit_success(p);
               break;
           }
-          allowAdd = true;
+         
         },
         error: function(p) {
           alert("error");
@@ -395,7 +392,7 @@
       });
 
       return false;
-    }
+
     });
 
     //methods
