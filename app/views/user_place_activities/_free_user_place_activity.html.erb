@@ -86,7 +86,7 @@
       </div>
       <div class="clear"></div>
       <div id="button_div" style="float:left;margin-top:10px">
-        <%= submit_button upa_type == 'add' ? 'Add' : 'Save', :enabled=>'true', :id => 'add_activity_template' , :class=>"submit_act"%>
+        <%= submit_button upa_type == 'add' ? 'Add' : 'Save', :id => 'add_activity_template' , :class=>"submit_act"%>
 
         <% if upa_type!='reg' %>
           <%= submit_button 'Cancel', :id => "cancel", :class=>"submit_act"%>
@@ -171,7 +171,8 @@
       {
         return false;
       }
-      $('#add_activity_template').attr("disabled", "false");
+
+      
       if(search_timeout != undefined) {
         clearTimeout(search_timeout);
       }
