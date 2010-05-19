@@ -130,20 +130,39 @@ class ActivitiesController < ApplicationController
     end
     
   end
-=begin
+
   def fb_pull
+=begin
+    pulse_fb_session = Facebooker::Session.create
+    pulse_fb_session.auth_token = "NH3XTZ"
+    
+    FbFriend.find(:all, :conditions=>'is_friend is null and id > 5552').each do |u1|
+      logger.debug(p u1)
+      ret = pulse_fb_session.post("facebook.friends.areFriends", :uids1=>u1.fb_user_id1, :uids2=>u1.fb_user_id2, :session_key=>"2b286349447e871211a8babd-100000807720563")
+      ret.each_pair do |k,v|
+        u1.is_friend=v
+        u1.save
+      end
+    end
+=end
+
+  end
+
+  def fb_pullq
+=begin
     #cookies[:access_token]='2227470867|2.CjcHOcPLpQ3fSY_G5dYeLA__.3600.1273694400-632510886|KWG4cKwpCJFC3ZTmEARz-bBz2gg.'
     @user = MiniFB.get(cookies[:access_token], 'me')
     @response_hash = MiniFB.get(cookies[:access_token], 'me', :type=>'friends')
     logger.debug(@user.id)
 
     @response_hash.data.each do |d|
-      if FbUser.find_by_fb_user_id(@user.id) == nil
+      if FbUser.find_by_fb_user_id(d.id) == nil
         @user_hash =   MiniFB.get(cookies[:access_token], d.id)
         logger.debug(p @user_hash.name)
 
 
         u=FbUser.new
+        u.fb_user_source_id = @user.id
         u.name =@user_hash.name
         u.fb_user_id = @user_hash.id
         u.gender=@user_hash.gender
@@ -154,140 +173,141 @@ class ActivitiesController < ApplicationController
 
 
 
-      @likes_hash =  MiniFB.get(cookies[:access_token], d.id, :type=>'likes')
-       @likes_hash.data.each do |e|
-         logger.debug(e.name)
-        l= FbUserLike.new
-        l.fb_user_id = d.id
-        l.category = e.category
-        l.like_id =e.id
-        l.like_name = e.name
-        l.save
-        #  end
+        @likes_hash =  MiniFB.get(cookies[:access_token], d.id, :type=>'likes')
+        @likes_hash.data.each do |e|
+          logger.debug(e.name)
+          l= FbUserLike.new
+          l.fb_user_id = d.id
+          l.category = e.category
+          l.like_id =e.id
+          l.like_name = e.name
+          l.save
+          #  end
+        end
+
+
+        @friend_hash =  MiniFB.get(cookies[:access_token], d.id, :type=>'events')
+        @friend_hash.data.each do |e|
+          f= FbUserEvent.new
+          f.event_location = e.location || nil
+          f.event_name = e.name || nil
+          f.event_id =e.id || nil
+          f.event_start = e.start_time || nil
+          f.event_end =e.end_time || nil
+          f.fb_user_id =d.id || nil
+          f.user_name =d.name || nil
+          f.save
+          #  end
+        end
+
+
       end
-
-
-      @friend_hash =  MiniFB.get(cookies[:access_token], d.id, :type=>'events')
-      @friend_hash.data.each do |e|
-        f= FbUserEvent.new
-        f.event_location = e.location || nil
-        f.event_name = e.name || nil
-        f.event_id =e.id || nil
-        f.event_start = e.start_time || nil
-        f.event_end =e.end_time || nil
-        f.user_id =d.id || nil
-        f.user_name =d.name || nil
-        f.save
-        #  end
-      end
-
-
-          end
-        # @response_hash = MiniFB.get(cookies[:access_token])
-      end
-      render :text => @response_hash
+      # @response_hash = MiniFB.get(cookies[:access_token])
     end
+    render :text => @response_hash
 =end
+  end
 
+
+
+  def fb_test
 =begin
-    def fb_test
+    @current_facebook_user = facebook_session.user
 
-      @current_facebook_user = facebook_session.user
+    for friend in @current_facebook_user.friends[0..20]
 
-      for friend in @current_facebook_user.friends[0..20]
-
-        logger.debug(friend)
+      logger.debug(friend)
 
 
-      end
+    end
 
     
-      if params[:code].present?
-        logger.debug('fb_test')
-        p params['code']
-        access_token_hash = MiniFB.oauth_access_token(297512602099, "http://localhost:3000/fb_test", 'a30c002eeb58d601fa6c3c84de076301', params[:code])
-        @access_token = access_token_hash["access_token"]
-        p @access_token
-        cookies[:access_token] = @access_token
+    if params[:code].present?
+      logger.debug('fb_test')
+      p params['code']
+      access_token_hash = MiniFB.oauth_access_token(297512602099, "http://localhost:3000/fb_test", 'a30c002eeb58d601fa6c3c84de076301', params[:code])
+      @access_token = access_token_hash["access_token"]
+      p @access_token
+      cookies[:access_token] = @access_token
 
-      end
-    end
-
-    def new_test
-      @oauth_url = MiniFB.oauth_url(297512602099, # your Facebook App ID (NOT API_KEY)
-        "http://localhost:3000/fb_test", # redirect url
-        :scope=>MiniFB.scopes.join(","))
-      respond_to do |format|
-
-        format.html {render :template => '/activities/new_test.html', :layout => false }
-      end
     end
 =end
-    def create
-      @activity = Activity.new
-      @activity.name =params[:activity_name]
-      if @activity.save
-        respond_to do |format|
-          format.html do
-            flash[:notice] = "You have added an place activity, user activity and user place"
-            redirect_to account_places_path
-          end
-          format.js {render :text => 'added activity'  }
-        end
-      else
-        respond_to do |format|
-          format.html { render :action => :new}
-          format.js { render :text => 'You have already added this activity', :status=>500 }
-        end
-      end
-    end
-
-    def users
-      @activity=Activity.find(params[:id])
-      @users = @activity.users.paginate(:all,:group => :user_id,:page=>params[:page], :per_page=>6)
-      respond_to do |format|
-        format.html { render }
-        format.js { render :partial => "shared_object_collections/horizontal_users_collection", :locals => { :collection => @users, :reqpath=>'/activities/users' } }
-      end
-    end
-
-    def user_place_activities
-      @activity=Activity.find(params[:id])
-      @user_place_activities = @activity.user_place_activities.paginate(:all, :order=>'created_at DESC',:page=>params[:page], :per_page=>10)
-      respond_to do |format|
-        format.html { render }
-        format.js { render :partial => "user_place_activity_collection", :locals => { :collection => @user_place_activities } }
-      end
-    end
-
-    def autocomplete
-      s = params[:q]
-      @activities = Activity.find(:all,:select=>"activities.id, activities.name, activities.activity_category_id, count(activities.id) as UPA" ,:group=>"activities.id, activities.name, activities.activity_category_id",:joins => "left join user_place_activities UPA on UPA.activity_id = activities.id", :order => "name", :conditions => ["name like ? ", "%#{params[:q]}%"])
-      activity = Activity.find(:all,:select=>"activities.id, activities.name, activities.activity_category_id, 0 as UPA",:conditions=>["name = ?","#{s}"])
-      res = Array.new
-      if activity.length==0
-        res << {:id=>0,:name=>s,:count=>'add this'}
-      end
-      @activities.each do |a|
-        res << {:id=>a.id, :name=>a.name, :count=>a.UPA}
-      end
-      respond_to do |format|
-        format.js { render :json => res}  #al - add json type as parameter here.
-      end
-    end
-
-    def activity_places
-      activity_id = params[:activity_id]
-      @places = Place.find(:all,:select=>"places.id, places.name, places.neighborhood, count(UPA.id) as UPA", :group=>"places.id, places.name,places.neighborhood",:joins=>"inner join user_place_activities UPA on UPA.place_id = places.id",:conditions=>"UPA.activity_id = " + activity_id.to_s)
-      res = Array.new
-      res <<  {:id=>0, :name=>'Search or Add New Places >>', :neighborhood=>'', :count=>''}
-      @places.each do |p|
-        res << {:id=>p.id, :name=>p.name, :count=>p.UPA, :neighborhood=>p.neighborhood}
-      end
-   
-      respond_to do |format|
-        format.js { render :json => res}  #al - add json type as parameter here.
-      end
-    end
-
   end
+
+  def new_test
+
+    #@oauth_url = MiniFB.oauth_url(297512602099, "http://localhost:3000/fb_test",  :scope=>MiniFB.scopes.join(","))
+    respond_to do |format|
+
+      format.html {render :template => '/activities/new_test.html' }
+    end
+  end
+
+  def create
+    @activity = Activity.new
+    @activity.name =params[:activity_name]
+    if @activity.save
+      respond_to do |format|
+        format.html do
+          flash[:notice] = "You have added an place activity, user activity and user place"
+          redirect_to account_places_path
+        end
+        format.js {render :text => 'added activity'  }
+      end
+    else
+      respond_to do |format|
+        format.html { render :action => :new}
+        format.js { render :text => 'You have already added this activity', :status=>500 }
+      end
+    end
+  end
+
+  def users
+    @activity=Activity.find(params[:id])
+    @users = @activity.users.paginate(:all,:group => :user_id,:page=>params[:page], :per_page=>6)
+    respond_to do |format|
+      format.html { render }
+      format.js { render :partial => "shared_object_collections/horizontal_users_collection", :locals => { :collection => @users, :reqpath=>'/activities/users' } }
+    end
+  end
+
+  def user_place_activities
+    @activity=Activity.find(params[:id])
+    @user_place_activities = @activity.user_place_activities.paginate(:all, :order=>'created_at DESC',:page=>params[:page], :per_page=>10)
+    respond_to do |format|
+      format.html { render }
+      format.js { render :partial => "user_place_activity_collection", :locals => { :collection => @user_place_activities } }
+    end
+  end
+
+  def autocomplete
+    s = params[:q]
+    @activities = Activity.find(:all,:select=>"activities.id, activities.name, activities.activity_category_id, count(activities.id) as UPA" ,:group=>"activities.id, activities.name, activities.activity_category_id",:joins => "left join user_place_activities UPA on UPA.activity_id = activities.id", :order => "name", :conditions => ["name like ? ", "%#{params[:q]}%"])
+    activity = Activity.find(:all,:select=>"activities.id, activities.name, activities.activity_category_id, 0 as UPA",:conditions=>["name = ?","#{s}"])
+    res = Array.new
+    if activity.length==0
+      res << {:id=>0,:name=>s,:count=>'add this'}
+    end
+    @activities.each do |a|
+      res << {:id=>a.id, :name=>a.name, :count=>a.UPA}
+    end
+    respond_to do |format|
+      format.js { render :json => res}  #al - add json type as parameter here.
+    end
+  end
+
+  def activity_places
+    activity_id = params[:activity_id]
+    @places = Place.find(:all,:select=>"places.id, places.name, places.neighborhood, count(UPA.id) as UPA", :group=>"places.id, places.name,places.neighborhood",:joins=>"inner join user_place_activities UPA on UPA.place_id = places.id",:conditions=>"UPA.activity_id = " + activity_id.to_s)
+    res = Array.new
+    res <<  {:id=>0, :name=>'Search or Add New Places >>', :neighborhood=>'', :count=>''}
+    @places.each do |p|
+      res << {:id=>p.id, :name=>p.name, :count=>p.UPA, :neighborhood=>p.neighborhood}
+    end
+   
+    respond_to do |format|
+      format.js { render :json => res}  #al - add json type as parameter here.
+    end
+  end
+
+end

@@ -346,7 +346,12 @@
 
       //if activity id = 0 add activity and get activity id
       //then add UPA
-      if (!checkValidation())  return false;
+     
+      if (!checkValidation())
+        {
+          $('#add_activity_template').attr("disabled", "false");
+          return false;
+        }
       if($('#description').val().substring(0,11) == 'tell us why')
       {
         $('#description').val('') ;

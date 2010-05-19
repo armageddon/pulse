@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100514120617) do
+ActiveRecord::Schema.define(:version => 20100518155028) do
 
   create_table "activities", :force => true do |t|
     t.string   "name"
@@ -91,10 +91,16 @@ ActiveRecord::Schema.define(:version => 20100514120617) do
     t.string   "good_for"
   end
 
+  create_table "fb_friends", :force => true do |t|
+    t.integer "fb_user_id1", :limit => 8
+    t.integer "fb_user_id2", :limit => 8
+    t.boolean "is_friend"
+  end
+
   create_table "fb_user_events", :force => true do |t|
-    t.integer  "user_id"
+    t.integer  "fb_user_id"
     t.string   "user_name"
-    t.integer  "event_id"
+    t.integer  "event_id",       :limit => 8
     t.string   "event_location"
     t.string   "event_name"
     t.datetime "event_start"
@@ -103,23 +109,35 @@ ActiveRecord::Schema.define(:version => 20100514120617) do
     t.datetime "date_updated"
   end
 
+  add_index "fb_user_events", ["event_location"], :name => "index_fb_user_events_on_event_location"
+  add_index "fb_user_events", ["event_name"], :name => "index_fb_user_events_on_event_name"
+  add_index "fb_user_events", ["fb_user_id"], :name => "index_fb_user_events_on_fb_user_id"
+
   create_table "fb_user_likes", :force => true do |t|
     t.integer "fb_user_id"
     t.string  "category"
-    t.integer "like_id"
+    t.integer "like_id",    :limit => 8
     t.string  "like_name"
   end
 
+  add_index "fb_user_likes", ["category"], :name => "index_fb_user_likes_on_category"
+  add_index "fb_user_likes", ["fb_user_id"], :name => "index_fb_user_likes_on_fb_user_id"
+  add_index "fb_user_likes", ["like_name"], :name => "index_fb_user_likes_on_like_name"
+
   create_table "fb_users", :force => true do |t|
-    t.integer  "fb_user_id",   :limit => 8
+    t.integer  "fb_user_id",        :limit => 8
     t.string   "name"
     t.string   "gender"
     t.string   "relationship"
     t.string   "birthday"
-    t.integer  "location_id",  :limit => 8
+    t.integer  "location_id",       :limit => 8
     t.datetime "date_added"
     t.datetime "date_updated"
+    t.integer  "fb_user_source_id", :limit => 8
   end
+
+  add_index "fb_users", ["fb_user_id"], :name => "index_fb_users_on_fb_user_id"
+  add_index "fb_users", ["gender"], :name => "index_fb_users_on_gender"
 
   create_table "invitations", :force => true do |t|
     t.string   "email"
