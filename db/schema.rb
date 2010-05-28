@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100518155028) do
+ActiveRecord::Schema.define(:version => 20100525094731) do
 
   create_table "activities", :force => true do |t|
     t.string   "name"
@@ -91,11 +91,66 @@ ActiveRecord::Schema.define(:version => 20100518155028) do
     t.string   "good_for"
   end
 
+  create_table "fb_degree", :id => false, :force => true do |t|
+    t.integer "fb_user_id1", :limit => 8
+    t.integer "fb_user_id2", :limit => 8
+  end
+
+  create_table "fb_events_aggregate", :id => false, :force => true do |t|
+    t.integer "count",       :limit => 8, :default => 0, :null => false
+    t.integer "fb_user_id1"
+    t.integer "fb_user_id2"
+  end
+
   create_table "fb_friends", :force => true do |t|
     t.integer "fb_user_id1", :limit => 8
     t.integer "fb_user_id2", :limit => 8
     t.boolean "is_friend"
   end
+
+  create_table "fb_friends2", :id => false, :force => true do |t|
+    t.integer "id",                       :default => 0, :null => false
+    t.integer "fb_user_id1", :limit => 8
+    t.integer "fb_user_id2", :limit => 8
+    t.boolean "is_friend"
+  end
+
+  create_table "fb_likes_aggregate", :id => false, :force => true do |t|
+    t.integer "fb_user_id1", :limit => 8
+    t.integer "fb_user_id2", :limit => 8
+    t.string  "category"
+    t.integer "count",       :limit => 8, :default => 0, :null => false
+  end
+
+  add_index "fb_likes_aggregate", ["fb_user_id1"], :name => "u3"
+  add_index "fb_likes_aggregate", ["fb_user_id2"], :name => "u4"
+
+  create_table "fb_report_aggregate", :id => false, :force => true do |t|
+    t.integer "user1_ud",           :limit => 8
+    t.string  "user1_name"
+    t.string  "user1_gender"
+    t.string  "user1_relationship"
+    t.integer "user2_id",           :limit => 8
+    t.string  "user2_name"
+    t.string  "user2_gender"
+    t.string  "user2_relationship"
+    t.integer "events",                          :default => 0, :null => false
+    t.integer "events_by_location",              :default => 0, :null => false
+    t.integer "music",                           :default => 0, :null => false
+    t.integer "business",                        :default => 0, :null => false
+    t.integer "store",                           :default => 0, :null => false
+    t.integer "film",                            :default => 0, :null => false
+    t.integer "nonprofit",                       :default => 0, :null => false
+    t.integer "fashion",                         :default => 0, :null => false
+    t.integer "sport",                           :default => 0, :null => false
+    t.integer "writer",                          :default => 0, :null => false
+    t.integer "artist",                          :default => 0, :null => false
+    t.integer "is_friend",                       :default => 0, :null => false
+    t.integer "one_degree",                      :default => 0, :null => false
+  end
+
+  add_index "fb_report_aggregate", ["user1_ud"], :name => "u1"
+  add_index "fb_report_aggregate", ["user2_id"], :name => "u2"
 
   create_table "fb_user_events", :force => true do |t|
     t.integer  "fb_user_id"
@@ -107,11 +162,36 @@ ActiveRecord::Schema.define(:version => 20100518155028) do
     t.datetime "event_end"
     t.datetime "date_added"
     t.datetime "date_updated"
+    t.string   "rsvp_status"
+    t.string   "city"
+    t.string   "country"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.string   "state"
+    t.string   "street"
+    t.string   "event_type"
+    t.string   "event_subtype"
+    t.datetime "start_time"
+    t.datetime "end_time"
   end
 
+  add_index "fb_user_events", ["event_id"], :name => "index_fb_user_events_on_event_id"
   add_index "fb_user_events", ["event_location"], :name => "index_fb_user_events_on_event_location"
   add_index "fb_user_events", ["event_name"], :name => "index_fb_user_events_on_event_name"
   add_index "fb_user_events", ["fb_user_id"], :name => "index_fb_user_events_on_fb_user_id"
+
+  create_table "fb_user_events1", :id => false, :force => true do |t|
+    t.integer  "id",                          :default => 0, :null => false
+    t.integer  "fb_user_id"
+    t.string   "user_name"
+    t.integer  "event_id",       :limit => 8
+    t.string   "event_location"
+    t.string   "event_name"
+    t.datetime "event_start"
+    t.datetime "event_end"
+    t.datetime "date_added"
+    t.datetime "date_updated"
+  end
 
   create_table "fb_user_likes", :force => true do |t|
     t.integer "fb_user_id"
@@ -122,7 +202,37 @@ ActiveRecord::Schema.define(:version => 20100518155028) do
 
   add_index "fb_user_likes", ["category"], :name => "index_fb_user_likes_on_category"
   add_index "fb_user_likes", ["fb_user_id"], :name => "index_fb_user_likes_on_fb_user_id"
+  add_index "fb_user_likes", ["like_id"], :name => "index_fb_user_likes_on_like_id"
   add_index "fb_user_likes", ["like_name"], :name => "index_fb_user_likes_on_like_name"
+
+  create_table "fb_user_likes1", :id => false, :force => true do |t|
+    t.integer "id",                      :default => 0, :null => false
+    t.integer "fb_user_id"
+    t.string  "category"
+    t.integer "like_id",    :limit => 8
+    t.string  "like_name"
+  end
+
+  create_table "fb_user_matches_events", :id => false, :force => true do |t|
+    t.integer "fb_user_id1"
+    t.string  "fb_user_name1"
+    t.integer "fb_user_source_id1", :limit => 8
+    t.integer "fb_user_id2"
+    t.string  "fb_user_name2"
+    t.integer "fb_user_source_id2", :limit => 8
+    t.string  "event_name1"
+    t.string  "event_name2"
+    t.string  "event_location"
+  end
+
+  create_table "fb_user_matches_likes", :id => false, :force => true do |t|
+    t.integer "like_id1",                 :default => 0, :null => false
+    t.integer "fb_user_id1", :limit => 8
+    t.integer "like_id2",                 :default => 0, :null => false
+    t.integer "fb_user_id2", :limit => 8
+    t.string  "category"
+    t.string  "like_name"
+  end
 
   create_table "fb_users", :force => true do |t|
     t.integer  "fb_user_id",        :limit => 8
@@ -134,10 +244,37 @@ ActiveRecord::Schema.define(:version => 20100518155028) do
     t.datetime "date_added"
     t.datetime "date_updated"
     t.integer  "fb_user_source_id", :limit => 8
+    t.string   "first_name"
+    t.string   "religion"
+    t.string   "meeting_for"
+    t.string   "meeting_sex"
+    t.string   "cl_country"
+    t.string   "cl_city"
+    t.string   "cl_state"
+    t.integer  "cl_id",             :limit => 8
+    t.string   "cl_zip"
+    t.string   "htl_country"
+    t.string   "htl_city"
+    t.string   "htl_state"
+    t.integer  "htl_id",            :limit => 8
+    t.string   "htl_zip"
   end
 
   add_index "fb_users", ["fb_user_id"], :name => "index_fb_users_on_fb_user_id"
   add_index "fb_users", ["gender"], :name => "index_fb_users_on_gender"
+
+  create_table "fb_users1", :id => false, :force => true do |t|
+    t.integer  "id",                             :default => 0, :null => false
+    t.integer  "fb_user_id",        :limit => 8
+    t.string   "name"
+    t.string   "gender"
+    t.string   "relationship"
+    t.string   "birthday"
+    t.integer  "location_id",       :limit => 8
+    t.datetime "date_added"
+    t.datetime "date_updated"
+    t.integer  "fb_user_source_id", :limit => 8
+  end
 
   create_table "invitations", :force => true do |t|
     t.string   "email"
@@ -376,6 +513,25 @@ ActiveRecord::Schema.define(:version => 20100518155028) do
   create_table "vactivities_count", :id => false, :force => true do |t|
     t.integer "id",                 :default => 0, :null => false
     t.integer "count", :limit => 8, :default => 0, :null => false
+  end
+
+  create_table "vcommon_likes", :id => false, :force => true do |t|
+    t.integer "fb_user_id1"
+    t.string  "fb_user_name1"
+    t.integer "fb_user_id2"
+    t.string  "fb_user_name2"
+    t.string  "like_name"
+    t.string  "category"
+    t.integer "like_id",       :limit => 8
+  end
+
+  create_table "vlike_points", :id => false, :force => true do |t|
+    t.string  "like_name"
+    t.integer "like_id",            :limit => 8
+    t.decimal "1 - (count(*)/287)",              :precision => 25, :scale => 4
+    t.decimal "1/(count(*)/287)",                :precision => 9,  :scale => 4
+    t.integer "count(*)",           :limit => 8,                                :default => 0, :null => false
+    t.decimal "points",                          :precision => 28, :scale => 4
   end
 
   create_table "vmatcher", :id => false, :force => true do |t|

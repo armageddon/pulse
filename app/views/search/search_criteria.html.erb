@@ -6,6 +6,9 @@
   </div>
 <% end %>
 
+<% content_for :message do %>
+	<h2>We're here to help you connect with great people. So tell us what you want...</h2>
+<% end %>
 
 <%= hidden_field_tag "t", params[:t] %>
 <% form_tag search_path, :method => :get, :id => "simple_search" do |f| %>

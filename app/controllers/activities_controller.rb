@@ -1,7 +1,7 @@
 class ActivitiesController < ApplicationController
   include CrmData
   skip_before_filter :verify_authenticity_token, :only => [:post_activity_to_facebook]
- # require 'mini_fb'
+  require 'mini_fb'
   
   def post_activity_to_facebook
     user = User.find(params[:user_id])
@@ -131,8 +131,301 @@ class ActivitiesController < ApplicationController
     
   end
 
+
   def fb_pull
+
+    q = "SELECT eid,uid, rsvp_status from event_member where uid = 688967986"
+
+    @user = MiniFB.get(cookies[:access_token], 'me')
+
+    sql =<<-SQL
+       DELETE FROM fb_user_events where fb_user_id in (select fb_user_id from fb_users where fb_user_source_id = #{@user.id})
+    SQL
+    r = ActiveRecord::Base.connection.execute sql
+    sql =<<-SQL
+         DELETE FROM fb_user_likes where fb_user_id in (select fb_user_id from fb_users where fb_user_source_id = #{@user.id})
+    SQL
+    r = ActiveRecord::Base.connection.execute sql
+    sql =<<-SQL
+       DELETE FROM fb_users where fb_user_source_id = #{@user.id};
+    SQL
+    r = ActiveRecord::Base.connection.execute sql
+
+    @response_hash = MiniFB.get(cookies[:access_token], @user.id, :type=>'friends')
+
+    logger.debug(@response_hash.data.length)
+    s1 = ""
+    s2 = ""
+    s3 = ""
+    s4 = ""
+    s5 = ""
+    @response_hash.data.each do |d|
+      s1 +=d.id.to_s + ',' if d.id.to_i%5 == 0
+      s2 +=d.id.to_s + ',' if d.id.to_i%5== 1
+      s3 +=d.id.to_s + ',' if d.id.to_i%5 == 2
+      s4 +=d.id.to_s + ',' if d.id.to_i%5 == 3
+      s5 +=d.id.to_s + ',' if d.id.to_i%5 == 4
+    end
+    logger.debug(s1.chomp(','))
+
+    q="select uid, first_name, name, current_location, meeting_for, meeting_sex, religion, relationship_status, birthday_date, birthday , sex , hometown_location from user where uid in ("+ s1.chomp(',') + ") "
+    @users1 = MiniFB.fql(cookies[:access_token], q)
+    q="select uid, first_name, name, current_location, meeting_for, meeting_sex, religion, relationship_status, birthday_date, birthday , sex , hometown_location from user where uid in ("+ s2.chomp(',') + ") "
+    @users2= MiniFB.fql(cookies[:access_token], q)
+    q="select uid, first_name, name, current_location, meeting_for, meeting_sex, religion, relationship_status, birthday_date, birthday , sex , hometown_location from user where uid in ("+ s3.chomp(',') + ") "
+    @users3 = MiniFB.fql(cookies[:access_token], q)
+    q="select uid, first_name, name, current_location, meeting_for, meeting_sex, religion, relationship_status, birthday_date, birthday , sex , hometown_location from user where uid in ("+ s4.chomp(',') + ") "
+    @users4 = MiniFB.fql(cookies[:access_token], q)
+    q="select uid, first_name, name, current_location, meeting_for, meeting_sex, religion, relationship_status, birthday_date, birthday , sex , hometown_location from user where uid in ("+ s5.chomp(',') + ") "
+    @users5 = MiniFB.fql(cookies[:access_token], q)
+    @users = @users1|@users2|@users3|@users4|@users5
+
+    (0..@users.length-1).each do |e|
+
+      usr = @users[e]
+      logger.debug(usr)
+      htl_id = 0
+      cl_id = 0
+      fb_user_id = usr.uid
+      name = usr.name.gsub(/\\/, '\&\&').gsub(/'/, "''")
+      gender = usr.sex
+      relationship = usr.relationship_status.gsub(/\\/, '\&\&').gsub(/'/, "''") if usr.relationship_status!= nil
+      birthday = usr.birthday_date
+      first_name = usr.first_name.gsub(/\\/, '\&\&').gsub(/'/, "''") if usr.first_name nil
+      religion = usr.religion.gsub(/\\/, '\&\&').gsub(/'/, "''") if usr.religion != nil
+      meeting_for = p usr.meeting_for
+      meeting_sex = usr.meeting_sex if usr.meeting_sex != nil
+      fb_user_source_id = @user.id
+      cl_country = usr[:current_location][:country].gsub(/\\/, '\&\&').gsub(/'/, "''") if usr[:current_location].present? &&usr[:current_location][:country].present?
+      cl_city = usr[:current_location][:city].gsub(/\\/, '\&\&').gsub(/'/, "''") if usr[:current_location].present? &&usr[:current_location][:city].present?
+      cl_state  = usr[:current_location][:state].gsub(/\\/, '\&\&').gsub(/'/, "''") if usr[:current_location].present? &&usr[:current_location][:state].present?
+      cl_id = usr[:current_location][:id] if usr[:current_location].present? &&usr[:current_location][:id].present?
+      cl_zip = usr[:current_location][:zip].gsub(/\\/, '\&\&').gsub(/'/, "''") if usr[:current_location].present? &&usr[:current_location][:zip].present?
+      htl_country   = usr[:hometown_location][:country].gsub(/\\/, '\&\&').gsub(/'/, "''") if usr[:hometown_location].present? &&usr[:hometown_location][:country].present?
+      htl_city= usr[:hometown_location][:city].gsub(/\\/, '\&\&').gsub(/'/, "''") if usr[:hometown_location].present? &&usr[:hometown_location][:city].present?
+      htl_state = usr[:hometown_location][:state].gsub(/\\/, '\&\&').gsub(/'/, "''") if usr[:hometown_location].present? &&usr[:hometown_location][:state].present?
+
+      htl_id= usr[:hometown_location][:id] if usr[:hometown_location].present? &&usr[:hometown_location][:id].present?
+      htl_zip= usr[:hometown_location][:zip].gsub(/\\/, '\&\&').gsub(/'/, "''") if usr[:hometown_location].present? &&usr[:hometown_location][:zip].present?
+
+
+      sql =<<-SQL
+       insert into fb_users
+       (fb_user_id,
+        name,
+        gender,
+        relationship,
+        birthday,
+        first_name,
+        religion,
+        meeting_for,
+        meeting_sex,
+        cl_country,
+        cl_city,
+        cl_state,
+        cl_id,
+        cl_zip,
+        htl_country,
+        htl_city,
+        htl_state,
+        htl_id,
+        htl_zip ,
+fb_user_source_id)
+        values (
+        #{fb_user_id},
+        '#{name}',
+        '#{gender}',
+        '#{relationship}',
+        '#{birthday}',
+        '#{first_name}',
+        '#{religion}',
+        '#{meeting_for}',
+        '#{meeting_sex}',
+        '#{cl_country}',
+        '#{cl_city}',
+        '#{cl_state}',
+        #{cl_id},
+        '#{cl_zip}',
+        '#{htl_country}',
+        '#{htl_city}',
+        '#{htl_state}',
+        #{htl_id},
+        '#{htl_zip}' ,
+        #{fb_user_source_id})
+
+      SQL
+      r = ActiveRecord::Base.connection.execute sql
+    end
+
+    #EVENTS
+    q="select uid, eid, rsvp_status  from event_member where uid in ("+ s1.chomp(',') + ") and rsvp_status in  ('attending','unsure')"
+    @events1 = MiniFB.fql(cookies[:access_token], q)
+    q="select uid, eid, rsvp_status from event_member where uid in ("+ s2.chomp(',') + ") and rsvp_status in  ('attending','unsure')"
+    @events2 = MiniFB.fql(cookies[:access_token], q)
+    q="select uid, eid, rsvp_status from event_member where uid in ("+ s3.chomp(',') + ") and rsvp_status in  ('attending','unsure')"
+    @events3 = MiniFB.fql(cookies[:access_token], q)
+    q="select uid, eid, rsvp_status from event_member where uid in ("+ s4.chomp(',') + ") and rsvp_status in  ('attending','unsure')"
+    @events4 = MiniFB.fql(cookies[:access_token], q)
+    q="select uid, eid, rsvp_status from event_member where uid in ("+ s5.chomp(',') + ") and rsvp_status in  ('attending','unsure')"
+    @events5 = MiniFB.fql(cookies[:access_token], q)
+    @events = @events1|@events2|@events3|@events4|@events5
+    logger.debug(@events)
+
+    (0..@events.length-1).each do |e|
+      sql =<<-SQL
+       insert into fb_user_events (fb_user_id, event_id, rsvp_status) values (#{@events[e].uid},#{@events[e].eid},'#{@events[e].rsvp_status}')
+      SQL
+      r = ActiveRecord::Base.connection.execute sql
+    end
+    @event_mems = FbUserEvent.find(:all, :select=> "distinct event_id", :conditions=> "event_name is null")
+    listring = ""
+    i=0
+
+    @event_mems.each do |li|
+      i+=1
+      listring += li.event_id.to_s + ','
+      if i% 500 == 0 || i == @event_mems.length
+        logger.debug(listring)
+        #do the query on likes and then update likes table
+        q = "select eid,name,location,start_time, end_time,event_type, event_subtype, venue from event where eid in ("+ listring.chomp(',') + ") "
+        #logger.debug(q)
+        @lis= MiniFB.fql(cookies[:access_token], q)
+        #logger.debug(@lis)
+        #update vent here
+
+        @lis.each do |evnt|
+          logger.debug(evnt.venue)
+          latitude = 0
+          longitude = 0
+          name = evnt.name.gsub(/\\/, '\&\&').gsub(/'/, "''")
+          start_time = evnt.start_time
+          end_time  = evnt.end_time
+          city = evnt.venue[:city].gsub(/\\/, '\&\&').gsub(/'/, "''") if evnt[:venue].present? && evnt[:venue][:city].present?
+          country = evnt.venue[:country].gsub(/\\/, '\&\&').gsub(/'/, "''") if evnt[:venue].present? && evnt[:venue][:country].present?
+          latitude = evnt.venue[:latitude] if evnt[:venue].present? && evnt[:venue][:latitude].present?
+          longitude = evnt.venue[:longitude] if evnt[:venue].present? && evnt[:venue][:longitude].present?
+          state = evnt.venue[:state].gsub(/\\/, '\&\&').gsub(/'/, "''") if evnt[:venue].present? && evnt[:venue][:state].present?
+          street = evnt.venue[:street].gsub(/\\/, '\&\&').gsub(/'/, "''") if evnt[:venue].present? && evnt[:venue][:street].present?
+          location = evnt.location.gsub(/\\/, '\&\&').gsub(/'/, "''")
+
+          sql =<<-SQL
+                update fb_user_events set
+                event_name = '#{name}' ,
+                start_time = '#{start_time}' ,
+                end_time = '#{end_time}' ,
+                city = '#{city}' ,
+                country = '#{country}' ,
+                latitude = #{latitude} ,
+                longitude = #{longitude},
+                state = '#{state}' ,
+                street = '#{street}' ,
+                event_location = '#{location}'
+                where event_id = #{evnt.eid}
+          SQL
+          r = ActiveRecord::Base.connection.execute sql
+        end
+        listring = ""
+      end
+    end
+    q="select uid, page_id, type from page_fan where uid in ("+ s1.chomp(',') + ") "
+    @user1 = MiniFB.fql(cookies[:access_token], q)
+    q="select uid, page_id, type from page_fan where uid in ("+ s2.chomp(',') + ") "
+    @user2 = MiniFB.fql(cookies[:access_token], q)
+    q="select uid, page_id, type from page_fan where uid in ("+ s3.chomp(',') + ") "
+    @user3 = MiniFB.fql(cookies[:access_token], q)
+    q="select uid, page_id, type from page_fan where uid in ("+ s4.chomp(',') + ") "
+    @user4 = MiniFB.fql(cookies[:access_token], q)
+    q="select uid, page_id, type from page_fan where uid in ("+ s5.chomp(',') + ") "
+    @user5 = MiniFB.fql(cookies[:access_token], q)
+    @user = @user1|@user2|@user3|@user4|@user5
+    (0..@user.length-1).each do |e|
+      sql =<<-SQL
+       insert into fb_user_likes (fb_user_id, like_id, category) values (#{@user[e].uid},#{@user[e].page_id},'#{@user[e][:type]}')
+
+      SQL
+      r = ActiveRecord::Base.connection.execute sql
+    end
+
+
+    @likes = FbUserLike.find(:all, :select=> "distinct like_id", :conditions=> "like_name is null")
+    listring = ""
+    i=0
+    @likes.each do |li|
+      i+=1
+      listring += li.like_id.to_s + ','
+      if i% 500 == 0 || i==@likes.length
+        #do the query on likes and then update likes table
+        q = "select page_id,name from page where page_id in ("+ listring.chomp(',') + ") "
+        logger.debug(q)
+        @lis= MiniFB.fql(cookies[:access_token], q)
+        @lis.each do |page|
+          sql =<<-SQL
+                update fb_user_likes set like_name = '#{page.name.gsub(/\\/, '\&\&').gsub(/'/, "''")}' where like_id = #{page.page_id}
+          SQL
+          r = ActiveRecord::Base.connection.execute sql
+        end
+        listring = ""
+      end
+    end
+
+
+
+
+
+  end
 =begin
+
+
+
+    render :text=>'done'
+
+  end
+=end
+  #PAGES
+=begin
+   
+=end
+
+
+
+
+
+
+
+
+  #@user = MiniFB.get(cookies[:access_token], 'me')
+  #@response_hash = MiniFB.get(cookies[:access_token], 'me', :type=>'friends')
+  #logger.debug(@response_hash)
+  #s = ""
+  #@response_hash.data.each do |d|
+  #  s+=d.id.to_s + ','
+  # end
+  # logger.debug(s.chomp(','))
+  #   logger.debug(d)
+  # q = "SELECT eid,uid, rsvp_status from event_member where uid = 688967986 "
+  #     logger.debug(q)
+  # @user_hash =   MiniFB.fql(cookies[:access_token],q)
+  #  logger.debug(p @user_hash)
+
+
+
+
+  # @likes_hash =  MiniFB.get(cookies[:access_token], d.id, :type=>'likes')
+        
+
+
+  #@friend_hash =  MiniFB.get(cookies[:access_token], d.id, :type=>'events')
+  
+
+
+  #end
+
+
+  
+
+
+  def fb_pullz
+
     pulse_fb_session = Facebooker::Session.create
     pulse_fb_session.auth_token = "NH3XTZ"
     
@@ -144,12 +437,11 @@ class ActivitiesController < ApplicationController
         u1.save
       end
     end
-=end
+
 
   end
 
   def fb_pullq
-=begin
     #cookies[:access_token]='2227470867|2.CjcHOcPLpQ3fSY_G5dYeLA__.3600.1273694400-632510886|KWG4cKwpCJFC3ZTmEARz-bBz2gg.'
     @user = MiniFB.get(cookies[:access_token], 'me')
     @response_hash = MiniFB.get(cookies[:access_token], 'me', :type=>'friends')
@@ -205,13 +497,12 @@ class ActivitiesController < ApplicationController
       # @response_hash = MiniFB.get(cookies[:access_token])
     end
     render :text => @response_hash
-=end
   end
 
 
 
   def fb_test
-=begin
+
     @current_facebook_user = facebook_session.user
 
     for friend in @current_facebook_user.friends[0..20]
@@ -231,12 +522,12 @@ class ActivitiesController < ApplicationController
       cookies[:access_token] = @access_token
 
     end
-=end
   end
 
   def new_test
-
-    #@oauth_url = MiniFB.oauth_url(297512602099, "http://localhost:3000/fb_test",  :scope=>MiniFB.scopes.join(","))
+    @oauth_url = MiniFB.oauth_url(297512602099, # your Facebook App ID (NOT API_KEY)
+      "http://localhost:3000/fb_test", # redirect url
+      :scope=>MiniFB.scopes.join(","))
     respond_to do |format|
 
       format.html {render :template => '/activities/new_test.html' }
