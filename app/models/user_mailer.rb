@@ -110,8 +110,9 @@ class UserMailer < ActionMailer::Base
 
   def new_password(user, new_password)
     setup_email(user)
-    @subject    += 'Your new password'
+    @subject    + 'Your new password'
     @body[:new_password]  = new_password
+    @content_type =  "text/html"
   end
 
   def message_received(recipient, sender)
