@@ -57,9 +57,11 @@ end
 if Rails.env == "production"
   HELLOPULSE_USER_ID = 209
   CALLBACK_URL = "http://hellopulse.com/fb_test"
+  FB_APP_ID = 328522741457
 else
   HELLOPULSE_USER_ID = 32
   CALLBACK_URL = "http://localhost:3000/fb_test"
+  FB_APP_ID = 297512602099
 end
 
 ANYTHING_ACTIVITY_ID = 159;
