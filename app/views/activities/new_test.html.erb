@@ -1,3 +1,7 @@
+<% content_for :c1 do %>
+  &nbsp;
+<% end %>
+
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" xmlns:fb="http://www.facebook.com/2008/fbml">
   <head>
     <script type="text/javascript" src="http://www.plaxo.com/css/m/js/util.js"></script>
@@ -8,9 +12,8 @@
     <%= javascript_tag "var AUTH_TOKEN = #{form_authenticity_token.inspect};" %>
   </head>
   <body>
-    <%= fb_connect_javascript_tag %>
-    <%= init_fb_connect "XFBML", :js=>:jquery%>
-    <%= link_to "Login", @oauth_url %>
+
+    <%= link_to image_tag("fbConnect.gif", :title => "Connect"), @oauth_url %>
 
     <a href="#" onclick="getFBData()" class="submit_act">Import From Contacts</a>
     <div style="width:556px">
@@ -33,9 +36,7 @@
         <%= submit_button("Finish", :id=> "finished",:class=>"submit_act") %>
       </div>
     </div>
-    <script type="text/javascript">
-      FB.init("6b47ec733b05df8cc3bcec60e2d5f7ef", "xd_receiver.htm");
-    </script>
+
   </body>
 </html>
 
