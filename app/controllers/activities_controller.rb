@@ -133,7 +133,7 @@ class ActivitiesController < ApplicationController
 
 
   def fb_pull
-
+    logger.info('FB_PULL START: ' + DateTime.now.to_s)
     q = "SELECT eid,uid, rsvp_status from event_member where uid = 688967986"
 
     @user = MiniFB.get(cookies[:access_token], 'me')
@@ -152,8 +152,8 @@ class ActivitiesController < ApplicationController
     r = ActiveRecord::Base.connection.execute sql
 
     @response_hash = MiniFB.get(cookies[:access_token], @user.id, :type=>'friends')
-
-    logger.debug(@response_hash.data.length)
+    logger.info('FB_PULL GOT FRIENDS ' + DateTime.now.to_s)
+   # logger.debug(@response_hash.data.length)
     s1 = ""
     s2 = ""
     s3 = ""
@@ -166,24 +166,30 @@ class ActivitiesController < ApplicationController
       s4 +=d.id.to_s + ',' if d.id.to_i%5 == 3
       s5 +=d.id.to_s + ',' if d.id.to_i%5 == 4
     end
-    logger.debug(s1.chomp(','))
+    logger.info('FB_PULL MODED FREINDS ' + DateTime.now.to_s)
+   # logger.debug(s1.chomp(','))
 
     q="select uid, first_name, name, current_location, meeting_for, meeting_sex, religion, relationship_status, birthday_date, birthday , sex , hometown_location from user where uid in ("+ s1.chomp(',') + ") "
     @users1 = MiniFB.fql(cookies[:access_token], q)
+    logger.info('FB_PULL  FRIENDS 1 ' + DateTime.now.to_s)
     q="select uid, first_name, name, current_location, meeting_for, meeting_sex, religion, relationship_status, birthday_date, birthday , sex , hometown_location from user where uid in ("+ s2.chomp(',') + ") "
     @users2= MiniFB.fql(cookies[:access_token], q)
+    logger.info('FB_PULL  FRIENDS 2 ' + DateTime.now.to_s)
     q="select uid, first_name, name, current_location, meeting_for, meeting_sex, religion, relationship_status, birthday_date, birthday , sex , hometown_location from user where uid in ("+ s3.chomp(',') + ") "
     @users3 = MiniFB.fql(cookies[:access_token], q)
+    logger.info('FB_PULL  FRIENDS 3 ' + DateTime.now.to_s)
     q="select uid, first_name, name, current_location, meeting_for, meeting_sex, religion, relationship_status, birthday_date, birthday , sex , hometown_location from user where uid in ("+ s4.chomp(',') + ") "
     @users4 = MiniFB.fql(cookies[:access_token], q)
+    logger.info('FB_PULL  FRIENDS 4 ' + DateTime.now.to_s)
     q="select uid, first_name, name, current_location, meeting_for, meeting_sex, religion, relationship_status, birthday_date, birthday , sex , hometown_location from user where uid in ("+ s5.chomp(',') + ") "
     @users5 = MiniFB.fql(cookies[:access_token], q)
+    logger.info('FB_PULL  FRIENDS 5 ' + DateTime.now.to_s)
     @users = @users1|@users2|@users3|@users4|@users5
 
     (0..@users.length-1).each do |e|
 
       usr = @users[e]
-      logger.debug(usr)
+     # logger.debug(usr)
       htl_id = 0
       cl_id = 0
       fb_user_id = usr.uid
@@ -254,8 +260,9 @@ fb_user_source_id)
         #{fb_user_source_id})
 
       SQL
-      r = ActiveRecord::Base.connection.execute sql
+     # r = ActiveRecord::Base.connection.execute sql
     end
+    logger.info('FB_PULL  INSERTED AND CREATED FRIENDS ' + DateTime.now.to_s)
 
     #EVENTS
     q="select uid, eid, rsvp_status  from event_member where uid in ("+ s1.chomp(',') + ") and rsvp_status in  ('attending','unsure')"
@@ -269,14 +276,15 @@ fb_user_source_id)
     q="select uid, eid, rsvp_status from event_member where uid in ("+ s5.chomp(',') + ") and rsvp_status in  ('attending','unsure')"
     @events5 = MiniFB.fql(cookies[:access_token], q)
     @events = @events1|@events2|@events3|@events4|@events5
-    logger.debug(@events)
-
+   # logger.debug(@events)
+    logger.info('FB_PULL  EVENTS ALL 1 ' + DateTime.now.to_s)
     (0..@events.length-1).each do |e|
       sql =<<-SQL
        insert into fb_user_events (fb_user_id, event_id, rsvp_status) values (#{@events[e].uid},#{@events[e].eid},'#{@events[e].rsvp_status}')
       SQL
-      r = ActiveRecord::Base.connection.execute sql
+      # r = ActiveRecord::Base.connection.execute sql
     end
+    logger.info('FB_PULL  INSERTED EVENTS ' + DateTime.now.to_s)
     @event_mems = FbUserEvent.find(:all, :select=> "distinct event_id", :conditions=> "event_name is null")
     listring = ""
     i=0
@@ -285,7 +293,7 @@ fb_user_source_id)
       i+=1
       listring += li.event_id.to_s + ','
       if i% 500 == 0 || i == @event_mems.length
-        logger.debug(listring)
+        #logger.debug(listring)
         #do the query on likes and then update likes table
         q = "select eid,name,location,start_time, end_time,event_type, event_subtype, venue from event where eid in ("+ listring.chomp(',') + ") "
         #logger.debug(q)
@@ -294,7 +302,7 @@ fb_user_source_id)
         #update vent here
 
         @lis.each do |evnt|
-          logger.debug(evnt.venue)
+        #  logger.debug(evnt.venue)
           latitude = 0
           longitude = 0
           name = evnt.name.gsub(/\\/, '\&\&').gsub(/'/, "''")
@@ -308,6 +316,7 @@ fb_user_source_id)
           street = evnt.venue[:street].gsub(/\\/, '\&\&').gsub(/'/, "''") if evnt[:venue].present? && evnt[:venue][:street].present?
           location = evnt.location.gsub(/\\/, '\&\&').gsub(/'/, "''")
 
+=begin
           sql =<<-SQL
                 update fb_user_events set
                 event_name = '#{name}' ,
@@ -323,10 +332,13 @@ fb_user_source_id)
                 where event_id = #{evnt.eid}
           SQL
           r = ActiveRecord::Base.connection.execute sql
+=end
         end
         listring = ""
       end
     end
+    logger.info('FB_PULL  UPDATED EVENTS ' + DateTime.now.to_s)
+
     q="select uid, page_id, type from page_fan where uid in ("+ s1.chomp(',') + ") "
     @user1 = MiniFB.fql(cookies[:access_token], q)
     q="select uid, page_id, type from page_fan where uid in ("+ s2.chomp(',') + ") "
@@ -338,12 +350,13 @@ fb_user_source_id)
     q="select uid, page_id, type from page_fan where uid in ("+ s5.chomp(',') + ") "
     @user5 = MiniFB.fql(cookies[:access_token], q)
     @user = @user1|@user2|@user3|@user4|@user5
+    logger.info('FB_PULL  LIKES ' + DateTime.now.to_s)
     (0..@user.length-1).each do |e|
       sql =<<-SQL
        insert into fb_user_likes (fb_user_id, like_id, category) values (#{@user[e].uid},#{@user[e].page_id},'#{@user[e][:type]}')
 
       SQL
-      r = ActiveRecord::Base.connection.execute sql
+      #r = ActiveRecord::Base.connection.execute sql
     end
 
 
@@ -356,35 +369,27 @@ fb_user_source_id)
       if i% 500 == 0 || i==@likes.length
         #do the query on likes and then update likes table
         q = "select page_id,name from page where page_id in ("+ listring.chomp(',') + ") "
-        logger.debug(q)
+       # logger.debug(q)
         @lis= MiniFB.fql(cookies[:access_token], q)
+=begin
         @lis.each do |page|
           sql =<<-SQL
                 update fb_user_likes set like_name = '#{page.name.gsub(/\\/, '\&\&').gsub(/'/, "''")}' where like_id = #{page.page_id}
           SQL
           r = ActiveRecord::Base.connection.execute sql
         end
+=end
         listring = ""
       end
     end
 
+  logger.info('FB_PULL   UPDATED LIKES ' + DateTime.now.to_s)
 
 
+  render :text=>'done'
 
 
   end
-=begin
-
-
-
-    render :text=>'done'
-
-  end
-=end
-  #PAGES
-=begin
-   
-=end
 
 
 
@@ -393,32 +398,7 @@ fb_user_source_id)
 
 
 
-  #@user = MiniFB.get(cookies[:access_token], 'me')
-  #@response_hash = MiniFB.get(cookies[:access_token], 'me', :type=>'friends')
-  #logger.debug(@response_hash)
-  #s = ""
-  #@response_hash.data.each do |d|
-  #  s+=d.id.to_s + ','
-  # end
-  # logger.debug(s.chomp(','))
-  #   logger.debug(d)
-  # q = "SELECT eid,uid, rsvp_status from event_member where uid = 688967986 "
-  #     logger.debug(q)
-  # @user_hash =   MiniFB.fql(cookies[:access_token],q)
-  #  logger.debug(p @user_hash)
 
-
-
-
-  # @likes_hash =  MiniFB.get(cookies[:access_token], d.id, :type=>'likes')
-        
-
-
-  #@friend_hash =  MiniFB.get(cookies[:access_token], d.id, :type=>'events')
-  
-
-
-  #end
 
 
   
@@ -512,8 +492,8 @@ fb_user_source_id)
     end
     @user = MiniFB.get(cookies[:access_token], 'me')
     logger.debug('USERID:' +@user.id )
-     self.current_user = User.find_by_fb_user_id(@user.id)
-     redirect_to account_path
+    self.current_user = User.find_by_fb_user_id(@user.id)
+    redirect_to account_path
   end
 
   def new_test
