@@ -58,10 +58,12 @@ if Rails.env == "production"
   HELLOPULSE_USER_ID = 209
   CALLBACK_URL = "http://hellopulse.com/fb_test"
   FB_APP_ID = 328522741457
+  FB_SECRET_KEY = "0d0a2e7e1cd0bf9c9688e518f6aeb358"
 else
   HELLOPULSE_USER_ID = 32
   CALLBACK_URL = "http://localhost:3000/fb_test"
   FB_APP_ID = 297512602099
+  FB_SECRET_KEY = "a30c002eeb58d601fa6c3c84de076301"
 end
 
 ANYTHING_ACTIVITY_ID = 159;

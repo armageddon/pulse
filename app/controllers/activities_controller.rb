@@ -505,7 +505,7 @@ fb_user_source_id)
     if params[:code].present?
       logger.debug('fb_test')
       p params['code']
-      access_token_hash = MiniFB.oauth_access_token(FB_APP_ID, CALLBACK_URL, 'a30c002eeb58d601fa6c3c84de076301', params[:code])
+      access_token_hash = MiniFB.oauth_access_token(FB_APP_ID, CALLBACK_URL, FB_SECRET_KEY, params[:code])
       @access_token = access_token_hash["access_token"]
       p @access_token
       cookies[:access_token] = @access_token
