@@ -27,18 +27,66 @@ class SessionsController < ApplicationController
     end
   end
 
-  def link
+   def create
+     cookies[:path] = "account"
+    @oauth_url = MiniFB.oauth_url(FB_APP_ID, # your Facebook App ID (NOT API_KEY)
+      CALLBACK_URL, # redirect url
+      :scope=>MiniFB.scopes.join(",")+",offline_access", :display=>"popup")
+    logout_keeping_session!
+    logger.debug(params[:dest]) if params[:dest].present?
     user = User.authenticate(params[:login], params[:password])
     if user
-      # Protects against session fixation attacks, causes request forgery
-      # protection if user resubmits an earlier form using back
-      # button. Uncomment if you understand the tradeoffs.
+      # Protects against session fixation attacks, causes request forgery protection if user resubmits an earlier form using back button. Uncomment if you understand the tradeoffs.
       # reset_session
       self.current_user = user
       new_cookie_flag = (params[:remember_me] == "1")
       handle_remember_cookie! new_cookie_flag
-      self.current_user.fb_user_id = facebook_session.user.uid
-      logger.debug(p facebook_session)
+      account_path
+      flash[:notice] = "Logged in successfully"
+      redirect_to '/account/edit/#notifications' and return if params[:dest].present? && params[:dest] =='unsubscribe'
+      redirect_to '/account/messages' and return if params[:dest].present? && params[:dest] =='message'
+      redirect_to '/add_photo' and return if params[:dest].present? && params[:dest] =='addphoto'
+      redirect_to '/new_step3' and return if params[:dest].present? && params[:dest] =='add_activities'
+      redirect_to '/profiles/'+params[:uname] and return if params[:dest].present? && params[:uname].present? && params[:dest] =='profile'
+      redirect_to '/'+params[:type]+'/'+ params[:id] and return if params[:dest].present? && params[:type].present? && params[:id].present? && params[:dest] =='object'
+      redirect_to root_path
+    else
+      note_failed_signin
+      clear_fb_cookies!
+      clear_facebook_session_information
+      @login       = params[:login]
+      @remember_me = params[:remember_me]
+      # render :template => "users/splash", :layout => false
+      redirect_to '/'
+    end
+  end
+
+  def destroy
+    logger.debug('Destroying session')
+    logout_killing_session!
+    #done - check what the following 2 methods do
+    #they simply delete the facebook cookies and set the @facebook_session to nil
+    clear_fb_cookies!
+    clear_facebook_session_information
+    flash[:notice] = "You have been logged out."
+    redirect_back_or_default('/')
+
+  end
+
+  def link
+    user = User.authenticate(params[:login], params[:password])
+    if user
+      # reset_session
+      self.current_user = user
+      new_cookie_flag = (params[:remember_me] == "1")
+      handle_remember_cookie! new_cookie_flag
+     @user = MiniFB.get(cookies[:access_token], 'me')
+      logger.debug('USERID:' +@user.id )
+      
+
+      self.current_user.access_token = cookies[:access_token]
+      self.current_user.fb_user_id = @user.id
+      #self.current_user.fb_user_id = facebook_session.user.uid
       self.current_user.save
       account_path
       flash[:notice] = "Logged in successfully"
@@ -96,51 +144,7 @@ class SessionsController < ApplicationController
     end
   end
  
-  def create
-     cookies[:path] = "account"
-    @oauth_url = MiniFB.oauth_url(FB_APP_ID, # your Facebook App ID (NOT API_KEY)
-      CALLBACK_URL, # redirect url
-      :scope=>MiniFB.scopes.join(",")+",offline_access", :display=>"popup")
-    logout_keeping_session!
-    logger.debug(params[:dest]) if params[:dest].present?
-    user = User.authenticate(params[:login], params[:password])
-    if user
-      # Protects against session fixation attacks, causes request forgery protection if user resubmits an earlier form using back button. Uncomment if you understand the tradeoffs.
-      # reset_session
-      self.current_user = user
-      new_cookie_flag = (params[:remember_me] == "1")
-      handle_remember_cookie! new_cookie_flag
-      account_path
-      flash[:notice] = "Logged in successfully"
-      redirect_to '/account/edit/#notifications' and return if params[:dest].present? && params[:dest] =='unsubscribe'
-      redirect_to '/account/messages' and return if params[:dest].present? && params[:dest] =='message'
-      redirect_to '/add_photo' and return if params[:dest].present? && params[:dest] =='addphoto'
-      redirect_to '/new_step3' and return if params[:dest].present? && params[:dest] =='add_activities'
-      redirect_to '/profiles/'+params[:uname] and return if params[:dest].present? && params[:uname].present? && params[:dest] =='profile'
-      redirect_to '/'+params[:type]+'/'+ params[:id] and return if params[:dest].present? && params[:type].present? && params[:id].present? && params[:dest] =='object'
-      redirect_to root_path
-    else
-      note_failed_signin
-      clear_fb_cookies!
-      clear_facebook_session_information
-      @login       = params[:login]
-      @remember_me = params[:remember_me]
-      # render :template => "users/splash", :layout => false
-      redirect_to '/'
-    end
-  end
-
-  def destroy
-    logger.debug('Destroying session')
-    logout_killing_session!
-    #done - check what the following 2 methods do
-    #they simply delete the facebook cookies and set the @facebook_session to nil
-    clear_fb_cookies!
-    clear_facebook_session_information
-    flash[:notice] = "You have been logged out."
-    redirect_back_or_default('/')
-
-  end
+ 
 
   protected
   # Track failed login attempts

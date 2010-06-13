@@ -12,7 +12,7 @@ class FacebookController < ApplicationController
     #need to decide where to redirect to
     #if user  does not exist then go to link with dest so can redirect to original page.
     #if user exists then go to page button was pressedon
-    cookies[:access_token] = ""
+   
     if params[:code].present?
       logger.debug('fb_test')
       p params['code']
