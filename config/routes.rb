@@ -2,7 +2,10 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :test3s
 
   map.messages_admin '/messages/admin', :controller => 'user_messages' , :action => 'admin'
-   
+
+  #facebook controller
+  map.resources :facebook
+
   #maps controller
   map.map '/map',  :controller => 'maps', :action => 'index'
   map.big_map '/big_map' , :controller => 'maps', :action => 'map'
@@ -136,7 +139,7 @@ ActionController::Routing::Routes.draw do |map|
   end
   map.fb_pull 'fb_pull', :controller=>'activities', :action => 'fb_pull'
   map.test_new 'new_test', :controller=>'activities', :action => 'new_test'
-  map.test_new 'fb_test', :controller=>'activities', :action => 'fb_test'
+  map.test_new 'fb_test', :controller=>'facebook', :action => 'callback'
   map.mail_test 'mail_test', :controller=>'activities', :action => 'mail_test'
   map.activity_users '/activity/users', :controller => 'activities', :action => 'users'
   map.activity_user_place_activities '/activity/user_place_activities', :controller => 'activities', :action => 'user_place_activities'

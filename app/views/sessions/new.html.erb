@@ -87,20 +87,27 @@
               <%= submit_button "GO", :class=> 'submit', :type =>'submit'%><br />
 
             </div>
-          <div class="clear">&nbsp;</div>
-          <div style="float:right;">
-           <% if flash[:error] %>
-          <p id="errors" style="font-size:13px;margin-right:20px;height:23px">
-            <%= flash[:error] %>
-          </p>
-        <% end %>
-          </div>
+            <div class="clear">&nbsp;</div>
+            <div style="float:right;">
+              <% if flash[:error] %>
+                <p id="errors" style="font-size:13px;margin-right:20px;height:23px">
+                  <%= flash[:error] %>
+                </p>
+              <% end %>
+            </div>
             <div class="clear">&nbsp;</div>
             <div style="float:right; margin-bottom:5px">
+              <%= link_to image_tag("fbConnect.gif", :title => "Connect"), @oauth_url %>
               <%if   @dest  == nil%>
-                <%= fb_login_button('window.location = "/account/link_user_accounts";')%>
+                <% cookies[:path] =  '/account/edit/#notifications'  if params[:dest].present? && params[:dest] =='unsubscribe' %>
+                <% cookies[:path] =  '/account/messages'   if params[:dest].present? && params[:dest] =='message' %>
+                <% cookies[:path] =  '/add_photo'  if params[:dest].present? && params[:dest] =='addphoto' %>
+                <%  cookies[:path] =  '/new_step3' if params[:dest].present? && params[:dest] =='add_activities' %>
+                <%  cookies[:path] =  '/profiles/'+params[:uname] if params[:dest].present? && params[:uname].present? && params[:dest] =='profile' %>
+
+                <% # = fb_login_button('window.location = "/account/link_user_accounts";')%>
               <% else %>
-                <%= fb_login_button('window.location = "/account/link_user_accounts/?dest=' + @dest +'''";')%>
+                <%#= fb_login_button('window.location = "/account/link_user_accounts/?dest=' + @dest +'''";')%>
               <% end %>
               &nbsp;&nbsp;&nbsp;
               <%= link_to "Forgot Password?", :controller=>'passwords', :action=>"new", :id=>'new_password'%>
@@ -115,7 +122,7 @@
       <div class="clear"></div>
       <div class="" style="padding-left:180px;width:740px;float:left;padding;margin-left:10px;margin-right:10px;" id="">
         <p id="hello" style="font-size:25px;margin-top:10px"> Welcome to HelloPulse... the place for singles to meet out and about in London</p>
-       
+
         <div style="width:520px;float:left; margin-top:20px;">
           <div style="margin-bottom:10px; font-size:17px;margin-top:15px">Recent activity on HelloPulse</div>
           <%= render :partial => "shared_object_collections/feed_collection", :locals => {:collection => @updates} %>

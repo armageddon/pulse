@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100525094731) do
+ActiveRecord::Schema.define(:version => 20100613195133) do
 
   create_table "activities", :force => true do |t|
     t.string   "name"
@@ -315,6 +315,12 @@ ActiveRecord::Schema.define(:version => 20100525094731) do
 
   add_index "ldc", ["id"], :name => "idx_ldc_id"
 
+  create_table "like_weighting", :id => false, :force => true do |t|
+    t.string  "category"
+    t.integer "number_of_likes", :limit => 8, :default => 0, :null => false
+    t.integer "weighting",                    :default => 0, :null => false
+  end
+
   create_table "locations", :force => true do |t|
     t.string "name"
   end
@@ -508,6 +514,8 @@ ActiveRecord::Schema.define(:version => 20100525094731) do
     t.datetime "mail_photos"
     t.string   "partner_website"
     t.string   "facebook_page"
+    t.string   "access_token"
+    t.boolean  "fb_pull",                                 :default => false
   end
 
   create_table "vactivities_count", :id => false, :force => true do |t|
@@ -515,23 +523,163 @@ ActiveRecord::Schema.define(:version => 20100525094731) do
     t.integer "count", :limit => 8, :default => 0, :null => false
   end
 
+  create_table "vcommon", :id => false, :force => true do |t|
+    t.integer "fb_user_id1"
+    t.string  "fb_user_name1"
+    t.integer "fb_user_source_id1", :limit => 8
+    t.integer "fb_user_id2"
+    t.string  "fb_user_name2"
+    t.integer "fb_user_source_id2", :limit => 8
+    t.decimal "sum(weight)",                      :precision => 65, :scale => 4
+    t.integer "sum(cnt)",           :limit => 41, :precision => 41, :scale => 0
+  end
+
+  create_table "vcommon_event", :id => false, :force => true do |t|
+    t.integer "fb_user_id1"
+    t.integer "fb_user_source_id1", :limit => 8
+    t.string  "fb_user_name1"
+    t.integer "fb_user_id2"
+    t.integer "fb_user_source_id2", :limit => 8
+    t.string  "fb_user_name2"
+    t.string  "event_location1"
+    t.string  "event_location2"
+    t.decimal "weight",                          :precision => 11, :scale => 1, :default => 0.0, :null => false
+    t.integer "cnt",                                                            :default => 0,   :null => false
+  end
+
+  create_table "vcommon_events", :id => false, :force => true do |t|
+    t.integer "fb_user_id1"
+    t.integer "fb_user_source_id1", :limit => 8
+    t.string  "fb_user_name1"
+    t.integer "fb_user_id2"
+    t.integer "fb_user_source_id2", :limit => 8
+    t.string  "fb_user_name2"
+    t.string  "event_location1"
+    t.string  "event_location2"
+  end
+
+  create_table "vcommon_events_evt", :id => false, :force => true do |t|
+    t.integer "fb_user_id1"
+    t.integer "fb_user_source_id1", :limit => 8
+    t.string  "fb_user_name1"
+    t.integer "fb_user_id2"
+    t.integer "fb_user_source_id2", :limit => 8
+    t.string  "fb_user_name2"
+    t.string  "event_location1"
+    t.string  "event_location2"
+    t.integer "weight",                          :default => 0, :null => false
+    t.integer "cnt",                             :default => 0, :null => false
+  end
+
+  create_table "vcommon_events_loc", :id => false, :force => true do |t|
+    t.integer "fb_user_id1"
+    t.integer "fb_user_source_id1", :limit => 8
+    t.string  "fb_user_name1"
+    t.integer "fb_user_id2"
+    t.integer "fb_user_source_id2", :limit => 8
+    t.string  "fb_user_name2"
+    t.string  "event_location1"
+    t.string  "event_location2"
+    t.decimal "weight",                          :precision => 2, :scale => 1, :default => 0.0, :null => false
+    t.integer "cnt",                                                           :default => 0,   :null => false
+  end
+
   create_table "vcommon_likes", :id => false, :force => true do |t|
     t.integer "fb_user_id1"
     t.string  "fb_user_name1"
+    t.integer "fb_user_source_id1", :limit => 8
     t.integer "fb_user_id2"
     t.string  "fb_user_name2"
+    t.integer "fb_user_source_id2", :limit => 8
     t.string  "like_name"
     t.string  "category"
-    t.integer "like_id",       :limit => 8
+    t.integer "like_id",            :limit => 8
+  end
+
+  create_table "vcommon_union", :id => false, :force => true do |t|
+    t.integer "fb_user_id1"
+    t.string  "fb_user_name1"
+    t.integer "fb_user_source_id1", :limit => 8
+    t.integer "fb_user_id2"
+    t.string  "fb_user_name2"
+    t.integer "fb_user_source_id2", :limit => 8
+    t.decimal "weight",                          :precision => 58, :scale => 4
+    t.integer "cnt",                :limit => 8,                                :default => 0, :null => false
+  end
+
+  create_table "vevents", :id => false, :force => true do |t|
+    t.integer "fb_user_id1"
+    t.string  "fb_user_name1"
+    t.integer "fb_user_source_id1", :limit => 8
+    t.integer "fb_user_id2"
+    t.string  "fb_user_name2"
+    t.integer "fb_user_source_id2", :limit => 8
+    t.decimal "weight",                          :precision => 33, :scale => 1
+    t.integer "cnt",                :limit => 8,                                :default => 0, :null => false
+  end
+
+  create_table "vevents_event", :id => false, :force => true do |t|
+    t.integer "fb_user_id1"
+    t.integer "fb_user_id2"
+    t.string  "object_type",   :limit => 9, :default => "", :null => false
+    t.integer "object_id",     :limit => 8
+    t.string  "object_name"
+    t.string  "object_detail", :limit => 0, :default => "", :null => false
+    t.integer "weight",                     :default => 0,  :null => false
+    t.integer "cnt",                        :default => 0,  :null => false
+  end
+
+  create_table "vevents_location", :id => false, :force => true do |t|
+    t.integer "fb_user_id1"
+    t.integer "fb_user_id2"
+    t.string  "object_type",   :limit => 9,                               :default => "",  :null => false
+    t.binary  "object_id",     :limit => 0
+    t.string  "object_name"
+    t.string  "object_detail", :limit => 0,                               :default => "",  :null => false
+    t.decimal "weight",                     :precision => 2, :scale => 1, :default => 0.0, :null => false
+    t.integer "cnt",                                                      :default => 0,   :null => false
   end
 
   create_table "vlike_points", :id => false, :force => true do |t|
     t.string  "like_name"
-    t.integer "like_id",            :limit => 8
-    t.decimal "1 - (count(*)/287)",              :precision => 25, :scale => 4
-    t.decimal "1/(count(*)/287)",                :precision => 9,  :scale => 4
-    t.integer "count(*)",           :limit => 8,                                :default => 0, :null => false
-    t.decimal "points",                          :precision => 28, :scale => 4
+    t.string  "category"
+    t.integer "like_id",                              :limit => 8
+    t.integer "count(*)",                             :limit => 8,                                :default => 0, :null => false
+    t.decimal "points",                                            :precision => 25, :scale => 4
+    t.decimal "((1 - (count(0) / 1500)) - 0.887)*10",              :precision => 28, :scale => 4
+    t.decimal "weighting/10",                                      :precision => 14, :scale => 4
+    t.decimal "weight",                                            :precision => 36, :scale => 4
+  end
+
+  create_table "vlikes", :id => false, :force => true do |t|
+    t.integer "fb_user_id1"
+    t.string  "fb_user_name1"
+    t.integer "fb_user_source_id1", :limit => 8
+    t.integer "fb_user_id2"
+    t.string  "fb_user_name2"
+    t.integer "fb_user_source_id2", :limit => 8
+    t.decimal "weight",                          :precision => 58, :scale => 4
+    t.integer "cnt",                :limit => 8,                                :default => 0, :null => false
+  end
+
+  create_table "vlikes_raw", :id => false, :force => true do |t|
+    t.integer "fb_user_id1"
+    t.integer "fb_user_id2"
+    t.string  "object_type"
+    t.integer "object_id",     :limit => 8
+    t.string  "object_name"
+    t.string  "object_detail", :limit => 0, :default => "", :null => false
+  end
+
+  create_table "vlikes_weighted", :id => false, :force => true do |t|
+    t.integer "fb_user_id1"
+    t.integer "fb_user_id2"
+    t.string  "object_type"
+    t.integer "object_id",     :limit => 8
+    t.string  "object_name"
+    t.string  "object_detail", :limit => 0,                                :default => "", :null => false
+    t.decimal "weight",                     :precision => 36, :scale => 4
+    t.integer "cnt",                                                       :default => 0,  :null => false
   end
 
   create_table "vmatcher", :id => false, :force => true do |t|
@@ -558,6 +706,45 @@ ActiveRecord::Schema.define(:version => 20100525094731) do
   create_table "vplaces_count", :id => false, :force => true do |t|
     t.integer "id",                 :default => 0, :null => false
     t.integer "count", :limit => 8, :default => 0, :null => false
+  end
+
+  create_table "vrelationships", :id => false, :force => true do |t|
+    t.integer "fb_user_id1"
+    t.string  "fb_user_name1"
+    t.integer "fb_user_id2"
+    t.string  "fb_user_name2"
+    t.integer "one_degree"
+    t.boolean "is_friend"
+    t.decimal "weight_sum",                  :precision => 58, :scale => 4
+    t.integer "count_sum",     :limit => 32, :precision => 32, :scale => 0
+    t.string  "object_type"
+    t.integer "object_id",     :limit => 8
+    t.string  "object_name"
+    t.string  "object_detail", :limit => 0,                                 :default => "", :null => false
+    t.decimal "weight",                      :precision => 36, :scale => 4
+    t.integer "cnt",                                                        :default => 0,  :null => false
+  end
+
+  create_table "vrelationships_agg", :id => false, :force => true do |t|
+    t.integer "fb_user_id1"
+    t.string  "fb_user_name1"
+    t.integer "fb_user_id2"
+    t.string  "fb_user_name2"
+    t.integer "one_degree"
+    t.boolean "is_friend"
+    t.decimal "weight_sum",                  :precision => 58, :scale => 4
+    t.integer "count_sum",     :limit => 32, :precision => 32, :scale => 0
+  end
+
+  create_table "vrelationships_raw", :id => false, :force => true do |t|
+    t.integer "fb_user_id1"
+    t.integer "fb_user_id2"
+    t.string  "object_type"
+    t.integer "object_id",     :limit => 8
+    t.string  "object_name"
+    t.string  "object_detail", :limit => 0,                                :default => "", :null => false
+    t.decimal "weight",                     :precision => 36, :scale => 4
+    t.integer "cnt",                                                       :default => 0,  :null => false
   end
 
   create_table "vuser_activities", :id => false, :force => true do |t|

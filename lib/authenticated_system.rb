@@ -18,6 +18,8 @@ module AuthenticatedSystem
     @current_user ||= (login_from_session || login_from_basic_auth || login_from_cookie || login_from_fb) unless @current_user == false
   end
 
+
+
   def login_from_fb
     #logger.debug('AUTHENTICATED SYSTEM - login_from_fb')
     if facebook_session

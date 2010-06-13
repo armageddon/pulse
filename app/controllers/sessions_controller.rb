@@ -7,6 +7,10 @@ class SessionsController < ApplicationController
   end
 
   def new
+    cookies[:path] = "account"
+    @oauth_url = MiniFB.oauth_url(FB_APP_ID, # your Facebook App ID (NOT API_KEY)
+      CALLBACK_URL, # redirect url
+      :scope=>MiniFB.scopes.join(",")+",offline_access", :display=>"popup")
 
     @dest =   params[:dest] if params[:dest].present?
     @uname =   params[:uname] if params[:uname].present?
@@ -33,8 +37,6 @@ class SessionsController < ApplicationController
       self.current_user = user
       new_cookie_flag = (params[:remember_me] == "1")
       handle_remember_cookie! new_cookie_flag
-      logger.info('session')
-      logger.info(facebook_session.user.uid)
       self.current_user.fb_user_id = facebook_session.user.uid
       logger.debug(p facebook_session)
       self.current_user.save
@@ -95,6 +97,10 @@ class SessionsController < ApplicationController
   end
  
   def create
+     cookies[:path] = "account"
+    @oauth_url = MiniFB.oauth_url(FB_APP_ID, # your Facebook App ID (NOT API_KEY)
+      CALLBACK_URL, # redirect url
+      :scope=>MiniFB.scopes.join(",")+",offline_access", :display=>"popup")
     logout_keeping_session!
     logger.debug(params[:dest]) if params[:dest].present?
     user = User.authenticate(params[:login], params[:password])

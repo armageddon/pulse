@@ -71,6 +71,35 @@ class UsersController < ApplicationController
   end
 
   def quick_reg
+    @fbmuser = MiniFB.get(cookies[:access_token], 'me')
+    fbuser = User.find(:first,:conditions=>'fb_user_id='+@fbmuser.id.to_s) unless @fbmuser == nil
+    if fbuser != nil
+      login_from_fb
+      redirect_to '/' and return
+    else
+      @fbmuser.first_name  unless @fbmuser == nil# || facebook_session.expired?
+      @user = User.new
+      begin
+      #get details from facebook
+      @user.first_name  = @fbmuser.first_name unless @fbmuser == nil #|| facebook_session.expired?
+      dobvars = ''
+      dobvars = @fbmuser.birthday_date.split('/') unless @fbmuser == nil #|| facebook_session.birthday_date == nil
+      @user.dob = Date.new(dobvars[2].to_i(),dobvars[0].to_i(),dobvars[1].to_i()) if dobvars.length==3
+      @user.sex = ( @fbmuser.sex == 'female')  ? 2 :1 unless @fbmuser == nil
+      @user.sex_preference = (@user.sex == 1) ?  2:1 unless @fbmuser == nil
+      @user.description = @fbmuser.profile_blurb unless @fbmuser == nil
+      @user.access_token =cookies[:access_token]
+      @user.fb_user_id = @fbmuser.id
+      rescue
+        logger.error('facebooker session error - not loading fb data')
+      end
+      respond_to do |format|
+        format.js { render :partial => "/users/quick_reg", :locals => {:user => @user}}
+      end
+    end
+  end
+
+  def quick_reg_old
     fbuser = User.find(:first,:conditions=>'fb_user_id='+facebook_session.user.id.to_s) unless facebook_session == nil 
     if fbuser != nil
       login_from_fb
@@ -168,6 +197,8 @@ class UsersController < ApplicationController
     end
   end
 
+
+
   def place_activity_list
     @user_place_activities = UserPlaceActivity.paginate(:all, :conditions => 'user_id = ' + current_user.id.to_s, :page=> params[:page], :per_page=>10)
     respond_to do |format|
@@ -259,6 +290,12 @@ class UsersController < ApplicationController
       end
     end
     @user.fb_user_id = facebook_session.user.id if facebook_session != nil
+    if cookies[:access_token].present? && cookies[:access_token]!= ""
+      @fbuser = MiniFB.get(cookies[:access_token], 'me')
+      @user.fb_user_id = @fbuser.id
+      @user.access_token = cookies[:access_token]
+    end
+
     params[:user][:dob] = Date.new(params[:year].to_i(),params[:month].to_i(),params[:day].to_i())
     @user.dob = params[:user][:dob]
     @user.age = User.get_age_option_from_dob(params[:user][:dob])
