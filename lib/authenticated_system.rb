@@ -15,7 +15,7 @@ module AuthenticatedSystem
     #logger.debug('AUTHENTICATED SYSTEM - current_user')
     #logger.debug(@current_user)
     #logger.debug(@current_user.to_s)
-    @current_user ||= (login_from_session || login_from_basic_auth || login_from_cookie || login_from_fb) unless @current_user == false
+    @current_user ||= (login_from_session || login_from_basic_auth || login_from_cookie) unless @current_user == false
   end
 
 

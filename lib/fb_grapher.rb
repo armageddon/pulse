@@ -1,17 +1,48 @@
 
 module FbGrapher
   require 'mini_fb'
-   def self.logger
+  def self.logger
     RAILS_DEFAULT_LOGGER
   end
-  
+
+  def self.graph_base
+        "https://graph.facebook.com/"
+    end
+
+  def self.oauth_url(app_id, redirect_uri, options={})
+    logger.debug('OWN OUTH URL GEN')
+    oauth_url = "#{graph_base}oauth/authorize"
+    oauth_url << "?client_id=#{app_id}"
+    oauth_url << "&redirect_uri=#{URI.escape(redirect_uri)}"
+    # oauth_url << "&scope=#{options[:scope]}" if options[:scope]
+    oauth_url << ("&" + options.each.map { |k, v| "%s=%s" % [k, v] }.join('&')) unless options.empty?
+    oauth_url << '&display=popup'
+     oauth_url << '&type=client_cred'
+    oauth_url
+  end
+
+  def self.scopes
+    all_scopes = []
+    scope_names = ["about_me", "activities", "birthday", "education_history", "events", "groups",
+      "interests", "likes",
+      "location", "notes", "online_presence", "photo_video_tags", "photos", "relationships",
+      "religion_politics", "status", "videos", "website", "work_history"]
+    scope_names.each { |x| all_scopes << "user_" + x; all_scopes << "friends_" + x }
+    all_scopes << "read_friendlists"
+    # all_scopes << "read_stream"
+    all_scopes << "offline_access"
+    all_scopes << "email"
+    all_scopes
+   
+  end
+
   def self.pull(access_token)
-  logger.info('TOKEN: ' + access_token)
+    logger.info('TOKEN: ' + access_token)
     logger.info('FB_PULL START: ' + DateTime.now.to_s)
     q = "SELECT eid,uid, rsvp_status from event_member where uid = 688967986"
 
     @user = MiniFB.get(access_token, 'me')
-logger.info(@user.name)
+    logger.info(@user.name)
     sql =<<-SQL
        DELETE FROM fb_user_events where fb_user_id in (select fb_user_id from fb_users where fb_user_source_id = #{@user.id})
     SQL
@@ -140,7 +171,7 @@ fb_user_source_id)
         #{fb_user_source_id})
 
       SQL
-       r = ActiveRecord::Base.connection.execute sql
+      r = ActiveRecord::Base.connection.execute sql
     end
     logger.info('FB_PULL  INSERTED AND CREATED FRIENDS ' + DateTime.now.to_s)
 
@@ -156,7 +187,7 @@ fb_user_source_id)
     q="select uid, eid, rsvp_status from event_member where uid in ("+ s5.chomp(',') + ") and rsvp_status in  ('attending','unsure')"
     @events5 = MiniFB.fql(access_token, q)
 
-     @events1 = @events1 == nil || @events1.length==0 ?   Array.new : @events1.class!=Array ? @events1.data : @events1
+    @events1 = @events1 == nil || @events1.length==0 ?   Array.new : @events1.class!=Array ? @events1.data : @events1
     @events2 = @events2 == nil || @events2.length==0 ?  Array.new : @events2.class!=Array ? @events2.data : @events2
     @events3 = @events3 == nil || @events3.length==0 ?  Array.new : @events3.class!=Array ? @events3.data : @events3
     @events4 = @events4 == nil || @events4.length==0 ?  Array.new : @events4.class!=Array ? @events4.data : @events4
@@ -272,10 +303,10 @@ fb_user_source_id)
 
         @lis.each do |page|
           if page.name != nil
-          sql =<<-SQL
+            sql =<<-SQL
                 update fb_user_likes set like_name = '#{page.name.gsub(/\\/, '\&\&').gsub(/'/, "''")}' where like_id = #{page.page_id}
-          SQL
-          r = ActiveRecord::Base.connection.execute sql
+            SQL
+            r = ActiveRecord::Base.connection.execute sql
           end
         end
 

@@ -4,15 +4,15 @@ class FacebookController < ApplicationController
       @oauth_url = MiniFB.oauth_url(FB_APP_ID, CALLBACK_URL+"?path=account", # redirect url
       :scope=>MiniFB.scopes.join(",")+",offline_access,email", :display=>"popup")
     cookies[:path] = "account"
-    render  :layout=>false
+    render :layout=>false
   end
 
   def callback
     logger.info('XXXXXXXXXXXXXXXXXXXXXXXXX')
     #need to decide where to redirect to
-    #if user  does not exist then go to link with dest so can redirect to original page.
+    #if user does not exist then go to link with dest so can redirect to original page.
     #if user exists then go to page button was pressedon
-   
+
     if params[:code].present?
       logger.info('fb_test')
       p params['code']
@@ -32,7 +32,7 @@ class FacebookController < ApplicationController
     redirect_to "/"+cookies[:path]
     else
       logger.debug('redirecting to link_page')
-       redirect_to  "/account/link" and return
+       redirect_to "/account/link" and return
     end
   end
 

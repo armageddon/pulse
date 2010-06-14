@@ -180,7 +180,7 @@ class UsersController < ApplicationController
 
   def link
     logger.debug('LINKLINKLINK')
-    logger.debug(facebook_session.user.id)
+  
     user = User.find_by_fb_user_id(facebook_session.user.id)
     if(user!=nil)
       login_from_fb

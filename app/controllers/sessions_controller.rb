@@ -1,22 +1,22 @@
 class SessionsController < ApplicationController
   layout nil
   before_filter :load_events , :except => [:destroy]
-
+require 'mini_fb'
   def load_events
-    @updates = TimelineEvent.paginate( :page=>1, :conditions=>"icon_file_name is not  null and event_type <> 'newuser'",:joins=>"INNER JOIN users on users.id = timeline_events.actor_id",:per_page => 5, :order => 'created_at DESC')
+    @updates = TimelineEvent.paginate( :page=>1, :conditions=>"icon_file_name is not null and event_type <> 'newuser'",:joins=>"INNER JOIN users on users.id = timeline_events.actor_id",:per_page => 5, :order => 'created_at DESC')
   end
 
   def new
     cookies[:path] = "account"
     @oauth_url = MiniFB.oauth_url(FB_APP_ID, # your Facebook App ID (NOT API_KEY)
       CALLBACK_URL, # redirect url
-      :scope=>MiniFB.scopes.join(",")+",offline_access", :display=>"popup")
+      :scope=>FbGrapher.scopes.join(","), :display=>"popup")
 
-    @dest =   params[:dest] if params[:dest].present?
-    @uname =   params[:uname] if params[:uname].present?
+    @dest = params[:dest] if params[:dest].present?
+    @uname = params[:uname] if params[:uname].present?
     if logged_in?
       redirect_to '/account/edit/#notifications' and return if params[:dest].present? && params[:dest] =='unsubscribe'
-      redirect_to '/account/messages'  and return if params[:dest].present? && params[:dest] =='message'
+      redirect_to '/account/messages' and return if params[:dest].present? && params[:dest] =='message'
       redirect_to '/add_photo' and return if params[:dest].present? && params[:dest] =='addphoto'
       redirect_to '/new_step3' and return if params[:dest].present? && params[:dest] =='add_activities'
       redirect_to '/profiles/'+params[:uname] and return if params[:dest].present? && params[:uname].present? && params[:dest] =='profile'
@@ -54,7 +54,7 @@ class SessionsController < ApplicationController
       note_failed_signin
       clear_fb_cookies!
       clear_facebook_session_information
-      @login       = params[:login]
+      @login = params[:login]
       @remember_me = params[:remember_me]
       # render :template => "users/splash", :layout => false
       redirect_to '/'
@@ -82,7 +82,7 @@ class SessionsController < ApplicationController
       handle_remember_cookie! new_cookie_flag
      @user = MiniFB.get(cookies[:access_token], 'me')
       logger.debug('USERID:' +@user.id )
-      
+
 
       self.current_user.access_token = cookies[:access_token]
       self.current_user.fb_user_id = @user.id
@@ -93,7 +93,7 @@ class SessionsController < ApplicationController
       redirect_to root_path
     else
       note_failed_signin
-      @login       = params[:login]
+      @login = params[:login]
       @remember_me = params[:remember_me]
       # render :template => "users/splash", :layout => false
       redirect_to '/'
@@ -115,21 +115,21 @@ class SessionsController < ApplicationController
     if @partner_object==nil
       @partner_object = Place.find(:first,:conditions=>{:auth_code => params[:code], :admin_user_id => nil }) if params[:code] != nil
     end
-    
+
     if @partner_object == nil
       # render :text => 'The login code you provided does not match one in our system. Please try again'
       logger.debug('no such')
-      redirect_to  :controller=>'sessions' , :action=>'partner'
+      redirect_to :controller=>'sessions' , :action=>'partner'
     else
       @users = @partner_object.users.paginate(:all,:group => :user_id, :page => params[:page], :per_page => 6)
       @user_place_activities = @partner_object.user_place_activities.paginate(:order=>'created_at DESC',:page=>1,:per_page=>10)
       #todo user switch here
       if @partner_object.class==Place
         redirect_to '/places/partner?id='+@partner_object.id.to_s+'&code='+params[:code]
-      
+
       else
         redirect_to '/activities/partner?id='+@partner_object.id.to_s+'&code='+params[:code]
-      
+
       end
     end
   end
@@ -143,8 +143,8 @@ class SessionsController < ApplicationController
       render :template => 'sessions/partner'
     end
   end
- 
- 
+
+
 
   protected
   # Track failed login attempts
@@ -153,3 +153,4 @@ class SessionsController < ApplicationController
     logger.warn "Failed login for '#{params[:login]}' from #{request.remote_ip} at #{Time.now.utc}"
   end
 end
+
