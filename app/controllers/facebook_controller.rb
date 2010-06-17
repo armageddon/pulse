@@ -25,7 +25,7 @@ class FacebookController < ApplicationController
     begin
     @user = MiniFB.get(cookies[:access_token], 'me')
     rescue
-       redirect_to "/"+cookies[:path].to_s
+       redirect_to "/"+cookies[:path].to_s and return
     end
 
     
