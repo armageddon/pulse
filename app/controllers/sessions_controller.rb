@@ -10,7 +10,7 @@ require 'mini_fb'
     cookies[:path] = "account"
     @oauth_url = MiniFB.oauth_url(FB_APP_ID, # your Facebook App ID (NOT API_KEY)
       CALLBACK_URL, # redirect url
-      :scope=>FbGrapher.scopes.join(","), :display=>"popup")
+      {:scope=>FbGrapher.scopes.join(","), :display=>"popup"})
 
     @dest = params[:dest] if params[:dest].present?
     @uname = params[:uname] if params[:uname].present?

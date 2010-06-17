@@ -8,6 +8,8 @@ class FacebookController < ApplicationController
   end
 
   def callback
+    MiniFB.enable_logging
+
     logger.info('XXXXXXXXXXXXXXXXXXXXXXXXX')
     #need to decide where to redirect to
     #if user does not exist then go to link with dest so can redirect to original page.
