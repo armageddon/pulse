@@ -21,8 +21,12 @@ class FacebookController < ApplicationController
       @access_token = access_token_hash["access_token"]
       logger.info(@access_token)
       cookies[:access_token] = @access_token
-    end
-    begin
+    
+  else
+    logger.info('NO CODE PARAMS PRESENT')
+    logger.info('ACCESS TOKEN'  + @access_token.to_s)
+  end
+  begin
     @user = MiniFB.get(cookies[:access_token], 'me')
     rescue
        redirect_to "/"+cookies[:path].to_s and return
