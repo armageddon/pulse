@@ -28,7 +28,7 @@ class FacebookController < ApplicationController
        redirect_to "/"+cookies[:path].to_s
     end
 
-    logger.info('USERID:' +@user.id )
+    
     user = User.find_by_fb_user_id(@user.id)
     if user != nil
     self.current_user = User.find_by_fb_user_id(@user.id)
