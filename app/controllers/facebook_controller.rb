@@ -1,7 +1,7 @@
 class FacebookController < ApplicationController
   require 'mini_fb'
   def index
-      @oauth_url = MiniFB.oauth_url(FB_APP_ID, CALLBACK_URL+"?path=account", # redirect url
+    @oauth_url = MiniFB.oauth_url(FB_APP_ID, CALLBACK_URL+"?path=account", # redirect url
       :scope=>MiniFB.scopes.join(",")+",offline_access,email", :display=>"popup")
     cookies[:path] = "account"
     render :layout=>false
@@ -24,28 +24,26 @@ class FacebookController < ApplicationController
       logger.info(@access_token)
       cookies[:access_token] = @access_token
     
-  else
-    logger.info('NO CODE PARAMS PRESENT')
-    logger.info('ACCESS TOKEN'  + @access_token.to_s)
-  end
-  begin
-    @user = MiniFB.get(cookies[:access_token], 'me')
-    rescue
-       redirect_to "/"+cookies[:path].to_s and return
-    end
+   
+      logger.info('NO CODE PARAMS PRESENT')
+      logger.info('ACCESS TOKEN'  + @access_token.to_s)
 
-    
-    user = User.find_by_fb_user_id(@user.id)
-    if user != nil
-    self.current_user = User.find_by_fb_user_id(@user.id)
-    self.current_user.access_token = @access_token
-    self.current_user.save
-    redirect_to "/"+cookies[:path]
-    else
-      logger.debug('redirecting to link_page')
-       redirect_to "/account/link" and return
+      begin
+        @user = MiniFB.get(cookies[:access_token], 'me')
+      rescue
+        redirect_to "/"+cookies[:path].to_s and return
+      end
+      user = User.find_by_fb_user_id(@user.id)
+      if user != nil
+        self.current_user = User.find_by_fb_user_id(@user.id)
+        self.current_user.access_token = @access_token
+        self.current_user.save
+        redirect_to "/"+cookies[:path]
+      else
+        logger.debug('redirecting to link_page')
+        redirect_to "/account/link" and return
+      end
     end
   end
-
 
 end
