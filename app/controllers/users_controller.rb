@@ -230,6 +230,7 @@ class UsersController < ApplicationController
   def show
     redirect_to '/activities/partner' and return if current_user.status == 3 && current_user.partner_type ==2
     redirect_to '/places/partner' and return if current_user.status == 3 && current_user.partner_type ==1
+    logger.info('SHOW USER')
     @places = current_user.suggested_places
     @matches = current_user.matches(params[:page], 8)
     @updates = TimelineEvent.paginate(:all, :conditions => "icon_file_name is not null and users.status=1 and actor_id <> " + current_user.id.to_s,:joins=>"INNER JOIN users on users.id = timeline_events.actor_id", :page=>1, :per_page => 5, :order => 'created_at DESC')

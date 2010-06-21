@@ -6,12 +6,14 @@ require 'mini_fb'
     @updates = TimelineEvent.paginate( :page=>1, :conditions=>"icon_file_name is not null and event_type <> 'newuser'",:joins=>"INNER JOIN users on users.id = timeline_events.actor_id",:per_page => 5, :order => 'created_at DESC')
   end
 
+
   def new
+    logger.info('NEW SESSION')
     cookies[:path] = "account"
     @oauth_url = MiniFB.oauth_url(FB_APP_ID, # your Facebook App ID (NOT API_KEY)
       CALLBACK_URL, # redirect url
-      {:scope=>FbGrapher.scopes.join(","), :display=>"popup"})
-
+      {:scope=>MiniFB.scopes.join(","), :display=>"popup"})
+      logger.info("OAUTH URL" +@oauth_url.to_s )
     @dest = params[:dest] if params[:dest].present?
     @uname = params[:uname] if params[:uname].present?
     if logged_in?
@@ -28,10 +30,11 @@ require 'mini_fb'
   end
 
    def create
+     logger.info('CREATE SESSION')
      cookies[:path] = "account"
     @oauth_url = MiniFB.oauth_url(FB_APP_ID, # your Facebook App ID (NOT API_KEY)
       CALLBACK_URL, # redirect url
-      :scope=>MiniFB.scopes.join(",")+",offline_access", :display=>"popup")
+      {:scope=>MiniFB.scopes.join(","), :display=>"popup"})
     logout_keeping_session!
     logger.debug(params[:dest]) if params[:dest].present?
     user = User.authenticate(params[:login], params[:password])

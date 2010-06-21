@@ -64,6 +64,7 @@ else
   CALLBACK_URL = "http://localhost:3000/fb_test"
   FB_APP_ID = 297512602099
   FB_SECRET_KEY = "a30c002eeb58d601fa6c3c84de076301"
+  FB_APP_KEY = "6b47ec733b05df8cc3bcec60e2d5f7efgem"
 end
 
 ANYTHING_ACTIVITY_ID = 159;

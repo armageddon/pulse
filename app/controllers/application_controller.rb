@@ -7,8 +7,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
 
-  before_filter :set_facebook_session
-  helper_method :facebook_session
+ # before_filter :set_facebook_session
+ # helper_method :facebook_session
  include AuthenticatedSystem
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password

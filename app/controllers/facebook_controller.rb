@@ -14,36 +14,46 @@ class FacebookController < ApplicationController
     #need to decide where to redirect to
     #if user does not exist then go to link with dest so can redirect to original page.
     #if user exists then go to page button was pressedon
-
+logger.info(params)
     if params[:code].present?
       logger.info('fb_test')
       p params['code']
+      access_token_hash = {}
       access_token_hash = MiniFB.oauth_access_token(FB_APP_ID, CALLBACK_URL, FB_SECRET_KEY, params[:code])
       logger.info('XXXXXXXX' + access_token_hash["access_token"])
       @access_token = access_token_hash["access_token"]
       logger.info(@access_token)
-      cookies[:access_token] = @access_token
-    
-   
-      logger.info('NO CODE PARAMS PRESENT')
-      logger.info('ACCESS TOKEN'  + @access_token.to_s)
+     # cookies[:access_token] = @access_token
 
-      begin
-        @user = MiniFB.get(cookies[:access_token], 'me')
-      rescue
-        redirect_to "/"+cookies[:path].to_s and return
-      end
-      user = User.find_by_fb_user_id(@user.id)
-      if user != nil
-        self.current_user = User.find_by_fb_user_id(@user.id)
-        self.current_user.access_token = @access_token
-        self.current_user.save
-        redirect_to "/"+cookies[:path]
-      else
-        logger.debug('redirecting to link_page')
-        redirect_to "/account/link" and return
-      end
+    else
+      logger.info('NO CODE PARAMS PRESENT')
     end
+   
+    
+    logger.info('ACCESS TOKEN'  + @access_token.to_s)
+
+    begin
+      @user = MiniFB.get(@access_token, 'me')
+    rescue
+      logger.info('RESCUE')
+      
+      redirect_to "/" and return
+    end
+
+
+    user = User.find_by_fb_user_id(@user.id)
+    if user != nil
+      self.current_user = User.find_by_fb_user_id(@user.id)
+      self.current_user.access_token = @access_token
+      self.current_user.save
+      redirect_to "/"+cookies[:path] and return
+    else
+      logger.debug('redirecting to link_page')
+      redirect_to "/account/link" and return
+    end
+  
+    redirect_to "/account"
   end
+
 
 end
