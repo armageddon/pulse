@@ -46,7 +46,7 @@ logger.info(params)
       self.current_user = User.find_by_fb_user_id(@user.id)
       self.current_user.access_token = @access_token
       self.current_user.save
-      redirect_to "/"+cookies[:path] and return
+      redirect_to "/" and return
     else
       logger.debug('redirecting to link_page')
       redirect_to "/account/link" and return
