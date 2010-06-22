@@ -23,13 +23,13 @@ logger.info(params)
       logger.info('XXXXXXXX' + access_token_hash["access_token"])
       @access_token = access_token_hash["access_token"]
       logger.info(@access_token)
-     # cookies[:access_token] = @access_token
+      cookies[:access_token] = @access_token
 
     else
       logger.info('NO CODE PARAMS PRESENT')
     end
    
-    
+    cookies[:access_token] = @access_token
     logger.info('ACCESS TOKEN'  + @access_token.to_s)
 
     begin

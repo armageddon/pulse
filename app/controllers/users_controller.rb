@@ -66,11 +66,13 @@ class UsersController < ApplicationController
   end
 
   def facebook_session_expired
+    logger.debug('session expired')
     clear_fb_cookies!
     clear_facebook_session_information
   end
 
   def quick_reg
+    logger.debug(cookies[:access_token])
     @fbmuser = MiniFB.get(cookies[:access_token], 'me')
     fbuser = User.find(:first,:conditions=>'fb_user_id='+@fbmuser.id.to_s) unless @fbmuser == nil
     if fbuser != nil
@@ -180,10 +182,20 @@ class UsersController < ApplicationController
 
   def link
     logger.debug('LINKLINKLINK')
-  
-    user = User.find_by_fb_user_id(facebook_session.user.id)
+
+ MiniFB.enable_logging
+    begin
+       logger.info(cookies[:access_token])
+      @fb_user = MiniFB.get(cookies[:access_token], 'me')
+    rescue
+      logger.info('RESCUE')
+
+      #redirect_to "/" and return
+    end
+    user = User.find_by_fb_user_id(@fb_user.id) if @fb_user != nil
     if(user!=nil)
       login_from_fb
+
       redirect_to '/account/edit/#notifications' and return if params[:dest].present? && params[:dest] =='unsubscribe'
       redirect_to '/account/messages' and return if params[:dest].present? && params[:dest] =='message'
       redirect_to '/add_photo' and return if params[:dest].present? && params[:dest] =='addphoto'
