@@ -164,7 +164,7 @@
 
 
     $("#new_user").submit(function() {
-      alert('x');
+  
       var first_name = $('#user_first_name');
       var username = $('#user_username');
       var password = $('#user_password');
@@ -256,12 +256,12 @@
      //   postcode.next().text('Please enter a valid post code.');
      //   error = true;
      // }
- alert('pre error ')
+
       if(error==true)  {
         return false;
       }
 
-     alert('post error ')
+
       $.ajax({
         type: "POST",
         url: '/users/create',
