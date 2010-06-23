@@ -8,7 +8,15 @@ class UsersController < ApplicationController
   before_filter :check_user
   skip_before_filter :verify_authenticity_token, :only => [:admin_delete,:partner_new, :facebook_user_exists]
   rescue_from Facebooker::Session::SessionExpired, :with => :facebook_session_expired
+before_filter :auth_url
 
+  def auth_url
+    @oauth_url = MiniFB.oauth_url(FB_APP_ID, # your Facebook App ID (NOT API_KEY)
+      CALLBACK_URL, # redirect url
+      {:scope=>MiniFB.scopes.join(",")+',offline_access', :display=>"popup"})
+
+  end
+  
   def check_user
     # if current_user!=nil && current_user !=false && current_user.status==3
     #   logger.debug('partneruser - redirecting')
@@ -240,6 +248,11 @@ class UsersController < ApplicationController
   end
   
   def show
+
+    @oauth_url = MiniFB.oauth_url(FB_APP_ID, # your Facebook App ID (NOT API_KEY)
+      CALLBACK_URL, # redirect url
+      {:scope=>MiniFB.scopes.join(",")+',offline_access', :display=>"popup"})
+
     redirect_to '/activities/partner' and return if current_user.status == 3 && current_user.partner_type ==2
     redirect_to '/places/partner' and return if current_user.status == 3 && current_user.partner_type ==1
     logger.info('SHOW USER')

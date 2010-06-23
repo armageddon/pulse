@@ -1,6 +1,15 @@
 class SessionsController < ApplicationController
   layout nil
   before_filter :load_events , :except => [:destroy]
+  before_filter :auth_url
+
+  def auth_url
+    @oauth_url = MiniFB.oauth_url(FB_APP_ID, # your Facebook App ID (NOT API_KEY)
+      CALLBACK_URL, # redirect url
+      {:scope=>MiniFB.scopes.join(",")+',offline_access', :display=>"popup"})
+    
+  end
+
 require 'mini_fb'
   def load_events
     @updates = TimelineEvent.paginate( :page=>1, :conditions=>"icon_file_name is not null and event_type <> 'newuser'",:joins=>"INNER JOIN users on users.id = timeline_events.actor_id",:per_page => 5, :order => 'created_at DESC')
@@ -12,8 +21,8 @@ require 'mini_fb'
     cookies[:path] = "account"
     @oauth_url = MiniFB.oauth_url(FB_APP_ID, # your Facebook App ID (NOT API_KEY)
       CALLBACK_URL, # redirect url
-      {:scope=>MiniFB.scopes.join(","), :display=>"popup"})
-      logger.info("OAUTH URL" +@oauth_url.to_s )
+      {:scope=>MiniFB.scopes.join(",")+',offline_access', :display=>"popup"})
+ 
     @dest = params[:dest] if params[:dest].present?
     @uname = params[:uname] if params[:uname].present?
     if logged_in?

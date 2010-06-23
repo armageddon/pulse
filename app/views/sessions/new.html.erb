@@ -97,7 +97,9 @@
             </div>
             <div class="clear">&nbsp;</div>
             <div style="float:right; margin-bottom:5px">
-              <%= link_to image_tag("fbConnect.gif", :title => "Connect"), @oauth_url %>
+              <%= link_to image_tag("fbConnect.gif", :title => "Connect"), MiniFB.oauth_url(FB_APP_ID, # your Facebook App ID (NOT API_KEY)
+      CALLBACK_URL, # redirect url
+      {:scope=>MiniFB.scopes.join(",")+',offline_access', :display=>"popup"}) %>
               <%if   @dest  == nil%>
                 <% cookies[:path] =  '/account/edit/#notifications'  if params[:dest].present? && params[:dest] =='unsubscribe' %>
                 <% cookies[:path] =  '/account/messages'   if params[:dest].present? && params[:dest] =='message' %>
