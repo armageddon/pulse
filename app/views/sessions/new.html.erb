@@ -97,9 +97,9 @@
             </div>
             <div class="clear">&nbsp;</div>
             <div style="float:right; margin-bottom:5px">
-              <%= link_to image_tag("fbConnect.gif", :title => "Connect"), MiniFB.oauth_url(FB_APP_ID, # your Facebook App ID (NOT API_KEY)
-      CALLBACK_URL, # redirect url
-      {:scope=>MiniFB.scopes.join(",")+',offline_access', :display=>"popup"}) %>
+            
+              <%= link_to image_tag("fbConnect.gif", :title => "Connect"), '#', :id=>'sub' %>
+
               <%if   @dest  == nil%>
                 <% cookies[:path] =  '/account/edit/#notifications'  if params[:dest].present? && params[:dest] =='unsubscribe' %>
                 <% cookies[:path] =  '/account/messages'   if params[:dest].present? && params[:dest] =='message' %>
@@ -109,7 +109,7 @@
 
                 <% # = fb_login_button('window.location = "/account/link_user_accounts";')%>
               <% else %>
-                <%#= fb_login_button('window.location = "/account/link_user_accounts/?dest=' + @dest +'''";')%>
+    <%#= fb_login_button('window.location = "/account/link_user_accounts/?dest=' + @dest +'''";')%>
               <% end %>
               &nbsp;&nbsp;&nbsp;
               <%= link_to "Forgot Password?", :controller=>'passwords', :action=>"new", :id=>'new_password'%>
@@ -141,19 +141,39 @@
     <div id="main_footer" style="margin-top:20px">
       <%= render :partial => "shared/footer" %>
     </div>
-    <script src="//ah8.facebook.com/js/conversions/tracking.js"></script><script type="text/javascript">
-      try {
-        FB.Insights.impression({
-          'id' : 6002511185007,
-          'h' : '526ee325d5'
-        });
-      } catch (e) {}
-    </script>
-  </body>
+
+    <form method="POST" action="https://graph.facebook.com/oauth/authorize" name="comment_form" target="_self" >
+      <div>
+        <input type="hidden" name="client_id" value="<%=FB_APP_ID%>"  />
+        <input type="hidden" name="redirect_uri" value="<%=CALLBACK_URL%>"  />
+        <input type="hidden" name="scope" value="<%= FbGrapher.scopes.join(",")%>"  />
+    </div>
+  </form>
+
+
+
+  <script src="//ah8.facebook.com/js/conversions/tracking.js"></script><script type="text/javascript">
+    try {
+      FB.Insights.impression({
+        'id' : 6002511185007,
+        'h' : '526ee325d5'
+      });
+    } catch (e) {}
+  </script>
+</body>
 </html>
 
 
 <script type="text/javascript">
+  $("#sub").live('click', function (){
+
+
+ document.forms["comment_form"].submit();
+
+ return false;
+ 
+});
+
   try {
     var pageTracker = _gat._getTracker("<%= googlecode(request.url) %>");
     pageTracker._trackPageview();

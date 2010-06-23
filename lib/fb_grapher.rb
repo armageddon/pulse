@@ -5,6 +5,7 @@ module FbGrapher
     RAILS_DEFAULT_LOGGER
   end
 
+
   def self.graph_base
         "https://graph.facebook.com/"
     end
@@ -24,9 +25,9 @@ module FbGrapher
   def self.scopes
     all_scopes = []
     scope_names = ["about_me", "activities", "birthday", "education_history", "events", "groups",
-      "interests", "likes",
-      "location", "notes", "online_presence", "photo_video_tags", "photos", "relationships",
-      "religion_politics", "status", "videos", "website", "work_history"]
+      "interests", "likes","hometown",
+      "location", "notes", "online_presence", "relationships",
+      "status",  "website", "work_history"]
     scope_names.each { |x| all_scopes << "user_" + x; all_scopes << "friends_" + x }
     all_scopes << "read_friendlists"
     # all_scopes << "read_stream"
