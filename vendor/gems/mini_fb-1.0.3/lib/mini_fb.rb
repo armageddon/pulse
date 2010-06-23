@@ -314,6 +314,7 @@ module MiniFB
         oauth_url << "?client_id=#{app_id}"
         oauth_url << "&redirect_uri=#{URI.escape(redirect_uri)}"
         oauth_url << "&scope=#{options[:scope]}"+",offline_access" if options[:scope]
+        oauth_url << "&display=popup"
 
     end
 
