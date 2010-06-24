@@ -1,6 +1,11 @@
 class AddNewMatchingViews < ActiveRecord::Migration
   def self.up
      
+create_table "like_weighting", :force => true do |t|
+      t.string   "category"
+      t.integer   "number_of_likes"
+      t.integer "weighting"
+    end
 
     execute("create  view vlike_points as select `fb_user_likes`.`like_name` AS `like_name`,`w`.`category` AS `category`,`fb_user_likes`.`like_id` AS `like_id`,count(0) AS `count(*)`,(1 - (count(0) / 1500)) AS `points`,(((1 - (count(0) / 1500)) - 0.887) * 10) AS `((1 - (count(0) / 1500)) - 0.887)*10`,(`w`.`weighting` / 10) AS `weighting/10`,(((1 - (count(0) / 1500)) - 0.887) * `w`.`weighting`) AS `weight` from (`fb_user_likes` join `like_weighting` `w` on((`w`.`category` = `fb_user_likes`.`category`))) where (`w`.`weighting` > 0) group by `fb_user_likes`.`like_name`,`fb_user_likes`.`like_id` order by count(0) desc")
 
