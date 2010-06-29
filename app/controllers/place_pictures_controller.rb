@@ -1,6 +1,7 @@
 class PlacePicturesController < ApplicationController
   before_filter :login_required, :find_place
-  
+  #TODO: no place picture functionality enabled. Drop this file
+
   def index
     @pictures = @place.pictures
   end

@@ -137,7 +137,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :activities, :collection => { :autocomplete => :get } do |a|
     a.resources :pictures, :controller => "activity_pictures"
   end
-  map.fb_pull 'fb_pull', :controller=>'activities', :action => 'fb_pull'
+  
   map.test_new 'new_test', :controller=>'activities', :action => 'new_test'
   map.test_new 'fb_test', :controller=>'facebook', :action => 'callback'
   map.mail_test 'mail_test', :controller=>'activities', :action => 'mail_test'
@@ -157,6 +157,9 @@ ActionController::Routing::Routes.draw do |map|
   map.user_user_place_activities '/profile_user_place_activities', :controller=>'profiles', :action=>'user_place_activities'
   map.resources :profiles, :except => :show
   map.user "/profiles/:id", :controller => "profiles", :action => "show"
+
+  #facebook controller
+  map.fb_pull 'fb_pull', :controller=>'facebook', :action => 'fb_pull'
 
   #crm controller
   map.crm_admin '/crm/admin' , :controller=>'crm', :action=>'index'

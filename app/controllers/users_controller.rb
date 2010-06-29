@@ -168,6 +168,8 @@ before_filter :auth_url
       if(user!=nil)
         logger.info(params[:dest]) if params[:dest].present? 
         login_from_fb
+
+
         redirect_to '/account/edit/#notifications' and return if params[:dest].present? && params[:dest] =='unsubscribe'
         redirect_to '/add_photo' and return if params[:dest].present? && params[:dest] =='addphoto'
         redirect_to '/new_step3' and return if params[:dest].present? && params[:dest] =='add_activities'

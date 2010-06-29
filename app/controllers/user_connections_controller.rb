@@ -1,6 +1,6 @@
 class UserConnectionsController < ApplicationController
   before_filter :login_required
-
+#TODO: This is not in use - drop file
   def index
     @accepted_connections = current_user.connections.accepted
     @requested_connections = current_user.requested_connections.requested

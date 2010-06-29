@@ -12,7 +12,7 @@ class FacebookController < ApplicationController
     #need to decide where to redirect to
     #if user does not exist then go to link with dest so can redirect to original page.
     #if user exists then go to page button was pressedon
-logger.info(params)
+    logger.info(params)
     if params[:code].present?
       access_token_hash = {}
       access_token_hash = MiniFB.oauth_access_token(FB_APP_ID, CALLBACK_URL, FB_SECRET_KEY, params[:code])
@@ -45,5 +45,9 @@ logger.info(params)
     redirect_to "/account"
   end
 
+  #not used
+  def fb_pull
+    FbGrapher.pull(User.find_by_username("pierrearmageddon").access_token)
+  end
 
 end
