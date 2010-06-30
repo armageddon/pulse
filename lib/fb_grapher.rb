@@ -40,10 +40,12 @@ module FbGrapher
   def self.pull(access_token)
     logger.info('TOKEN: ' + access_token)
     logger.info('FB_PULL START: ' + DateTime.now.to_s)
+    puts 'FB_PULL START: ' + DateTime.now.to_s
     q = "SELECT eid,uid, rsvp_status from event_member where uid = 688967986"
 
     @user = MiniFB.get(access_token, 'me')
     logger.info(@user.name)
+    puts @user.name
     sql =<<-SQL
        DELETE FROM fb_user_events where fb_user_id in (select fb_user_id from fb_users where fb_user_source_id = #{@user.id})
     SQL
@@ -60,6 +62,7 @@ module FbGrapher
     @response_hash = MiniFB.get(access_token, @user.id, :type=>'friends')
     logger.info(p @response_hash)
     logger.info('FB_PULL GOT FRIENDS ' + DateTime.now.to_s)
+    puts 'FB_PULL GOT FRIENDS ' + DateTime.now.to_s
     # logger.debug(@response_hash.data.length)
     s1 = ""
     s2 = ""
@@ -74,6 +77,7 @@ module FbGrapher
       s5 +=d.id.to_s + ',' if d.id.to_i%5 == 4
     end
     logger.info('FB_PULL MODED FREINDS ' + DateTime.now.to_s)
+    puts 'FB_PULL MODED FREINDS ' + DateTime.now.to_s
     # logger.debug(s1.chomp(','))
 
     q="select uid, first_name, name, current_location, meeting_for, meeting_sex, religion, relationship_status, birthday_date, birthday , sex , hometown_location from user where uid in ("+ s1.chomp(',') + ") "
@@ -91,6 +95,7 @@ module FbGrapher
     q="select uid, first_name, name, current_location, meeting_for, meeting_sex, religion, relationship_status, birthday_date, birthday , sex , hometown_location from user where uid in ("+ s5.chomp(',') + ") "
     @users5 = MiniFB.fql(access_token, q)
     logger.info('FB_PULL  FRIENDS 5 ' + DateTime.now.to_s)
+     puts 'FB_PULL  FRIENDS 5 ' + DateTime.now.to_s
     @users1 = @users1 == nil || @users1.length==0 ?   Array.new : @users1.class!=Array ? @users1.data : @users1
     @users2 = @users2 == nil || @users2.length==0 ?  Array.new : @users2.class!=Array ? @users2.data : @users2
     @users3 =@users3 == nil || @users3.length==0 ?  Array.new : @users3.class!=Array ? @users3.data : @users3
@@ -176,6 +181,7 @@ fb_user_source_id)
     end
     logger.info('FB_PULL  INSERTED AND CREATED FRIENDS ' + DateTime.now.to_s)
 
+   puts 'FB_PULL  INSERTED AND CREATED FRIENDS ' + DateTime.now.to_s
     #EVENTS
     q="select uid, eid, rsvp_status  from event_member where uid in ("+ s1.chomp(',') + ") and rsvp_status in  ('attending','unsure')"
     @events1 = MiniFB.fql(access_token, q)
@@ -200,6 +206,7 @@ fb_user_source_id)
     @events = @events1|@events2|@events3|@events4|@events5
     # logger.debug(@events)
     logger.info('FB_PULL  EVENTS ALL 1 ' + DateTime.now.to_s)
+    puts 'FB_PULL  EVENTS ALL 1 ' + DateTime.now.to_s
     (0..@events.length-1).each do |e|
       sql =<<-SQL
        insert into fb_user_events (fb_user_id, event_id, rsvp_status) values (#{@events[e].uid},#{@events[e].eid},'#{@events[e].rsvp_status}')
@@ -207,6 +214,7 @@ fb_user_source_id)
       r = ActiveRecord::Base.connection.execute sql
     end
     logger.info('FB_PULL  INSERTED EVENTS ' + DateTime.now.to_s)
+    puts 'FB_PULL  INSERTED EVENTS ' + DateTime.now.to_s
     @event_mems = FbUserEvent.find(:all, :select=> "distinct event_id", :conditions=> "event_name is null")
     listring = ""
     i=0
@@ -260,6 +268,7 @@ fb_user_source_id)
       end
     end
     logger.info('FB_PULL  UPDATED EVENTS ' + DateTime.now.to_s)
+     puts 'FB_PULL  UPDATED EVENTS ' + DateTime.now.to_s
 
     q="select uid, page_id, type from page_fan where uid in ("+ s1.chomp(',') + ") "
     @user1 = MiniFB.fql(access_token, q)
@@ -281,6 +290,7 @@ fb_user_source_id)
 
     @user = @user1|@user2|@user3|@user4|@user5
     logger.info('FB_PULL  LIKES ' + DateTime.now.to_s)
+       puts 'FB_PULL  LIKES ' + DateTime.now.to_s
     (0..@user.length-1).each do |e|
       sql =<<-SQL
        insert into fb_user_likes (fb_user_id, like_id, category) values (#{@user[e].uid},#{@user[e].page_id},'#{@user[e][:type]}')
@@ -320,7 +330,7 @@ fb_user_source_id)
   end
 
 
-end
 
+end
 
 
