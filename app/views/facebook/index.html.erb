@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml">
-  <head></head>
+  <head>
+        <%= javascript_include_tag "jquery-1.3.2", 'application' %>
+    <%= javascript_include_tag :defaults%>
+  </head>
   <body>
 <div id="fb-root"></div>
 <script type="text/javascript">
@@ -27,7 +30,7 @@
   Please click the button below to give us access to some of your facebook data. We promise not to use this data for ANYTHING except a bit of analysis, and we won't publish anuthing to your wall or anything like that.
 
   <br />
-  <%= link_to image_tag("fbConnect.gif", :title => "Connect"), "@oauth_url "%>
+  <%= link_to image_tag("fbConnect.gif", :title => "Connect"), "#", :id=>'oauth'%>
   <br />
 
   Thanks a mill.
@@ -39,3 +42,23 @@
 </div>
   </body>
 </html>
+
+<script typ="text/javascript">
+  $(document).ready(function() {
+    alert('p');
+  
+  $('#oauth').live('click', function() {
+    alert('z');
+    FB.login(function(response) {
+  if (response.session) {
+   alert('x');
+  } else {
+    alert('y');
+  }
+});
+return false;
+
+
+  });
+  });
+</script>

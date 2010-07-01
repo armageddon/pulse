@@ -46,6 +46,9 @@ module FbGrapher
     @user = MiniFB.get(access_token, 'me')
     logger.info(@user.name)
     puts @user.name
+
+    hpuser = User.find_by_id(@user.id)
+    if hpuser.fb_pull==2
     sql =<<-SQL
        DELETE FROM fb_user_events where fb_user_id in (select fb_user_id from fb_users where fb_user_source_id = #{@user.id})
     SQL
@@ -58,10 +61,12 @@ module FbGrapher
        DELETE FROM fb_users where fb_user_source_id = #{@user.id};
     SQL
     r = ActiveRecord::Base.connection.execute sql
+    end
 
     @response_hash = MiniFB.get(access_token, @user.id, :type=>'friends')
     logger.info(p @response_hash)
     logger.info('FB_PULL GOT FRIENDS ' + DateTime.now.to_s)
+
     puts 'FB_PULL GOT FRIENDS ' + DateTime.now.to_s
     # logger.debug(@response_hash.data.length)
     s1 = ""
