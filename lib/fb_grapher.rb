@@ -47,8 +47,8 @@ module FbGrapher
     logger.info(@user.name)
     puts @user.name
 
-    hpuser = User.find_by_id(@user.id)
-    if hpuser.fb_pull==2
+    hpuser = User.find_by_fb_user_id(@user.id)
+    if hpuser != nil && hpuser.fb_pull==2
     sql =<<-SQL
        DELETE FROM fb_user_events where fb_user_id in (select fb_user_id from fb_users where fb_user_source_id = #{@user.id})
     SQL
