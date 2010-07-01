@@ -128,6 +128,7 @@ test\:profile=Run tests for profiledb:test:prepare / Profile the performance tes
 test\:recent=Run tests for recentdb:test:prepare / Test recent changes
 test\:uncommitted=Run tests for uncommitteddb:test:prepare / Test changes since last checkin (only Subversion and Git)
 test\:units=Run tests for unitsdb:test:prepare / Run the unit tests in test/unit
+test_log\:pull=
 testenv=
 thinking_sphinx\:app_env=
 thinking_sphinx\:configure=Generate the Sphinx configuration file using Thinking Sphinx's settings

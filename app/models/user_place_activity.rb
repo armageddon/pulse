@@ -14,33 +14,6 @@ class UserPlaceActivity < ActiveRecord::Base
   fires :addeduserplaceactivity, :on => :create, :actor => :user, :subject => :self
   #todo - when does create fire - on new or on save?
 
-  #after_create  :ping
-
-  def ping
-    begin
-      #check if activity or place has a partner
-      if self.place.admin_user_id != nil
-        url = self.place.url||'http://www.hellopulse.com/places/'+self.place.id.to_s
-      elsif self.activity.admin_user_id != nil
-        url = self.activity.url||'http://www.hellopulse.com/activities/'+self.activity.id.to_s
-      else
-        url = self.place.url||'http://www.hellopulse.com/places/'+self.place.id.to_s
-      end
-      
-      message = User.find(self.user_id).first_name + ' added ' + Activity.find(self.activity_id).name + ' at ' +Place.find(self.place_id).name+ ' : ' + self.description
-      tweet =  message[0,112]+'... '+ url
-       PingFM.user_post("status", tweet)
-      #todo : lazy load this
-      logger.info('message: ' + message +  'URL: ' + url)
-      pulse_fb_session = Facebooker::Session.create
-      pulse_fb_session.auth_token = "NH3XTZ" #ZMZ8SM"
-      pulse_fb_session.post("facebook.stream.publish", :action_links=> '[{ "text": "Check out HelloPulse!", "href": "'+url+'"}]', :message => message,  :uid=>279928867967)
-    rescue 
-      logger.error('Ping failed')
-    end
-  end
-
-
   def self.search_user_place_activities(params, current_user)
       
     search_criteria = SearchCriteria.new(params, current_user).conditions

@@ -79,7 +79,84 @@ class UserMessagesController < ApplicationController
     render :nothing => true
   end
 
- 
+ def mail_test
+
+    @host =  "http://www.hellopulse.com"
+    @user = current_user
+
+    case params[:type]
+    when 'activities'
+      @meet_her_url = "http://aeser.co.uk/g/button-meet-her.jpg"
+      @meet_him_url = "http://aeser.co.uk/g/button-meet-him.jpg"
+      @host =  "http://www.hellopulse.com"
+      @user = User.find(32)
+      @subject = "What’s shaking on HelloPulse?"
+      @gender = @user.sex_preference == 1 ? 'men' : 'women'
+      @crm_activitites = CrmData.crm_activitites(current_user,3)
+      @users = Array.new
+      @happenings = Array.new
+      @crm_activitites.each do |u|
+        @users << u
+        @happenings << u.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
+      end
+
+
+      render :template => 'user_mailer/activity_reminder' , :layout => false
+
+    when 'happenings'
+      @subject = "Here are the singles pulsing in London"
+      @user = current_user
+      @heading = "Great to have you on board. Check out your weekly matches!"
+      @meet_her_url = "http://aeser.co.uk/g/button-meet-her.jpg"
+      @meet_him_url = "http://aeser.co.uk/g/button-meet-him.jpg"
+      #todo: allow for men and women here#
+      #todo: ensure happening is the latest one
+      @gender = @user.sex_preference == 1 ? 'men' : 'women'
+      @users = Array.new
+      @happenings = Array.new
+      CrmData.crm_matches(current_user,5).each do |u|
+        @users << u
+        @happenings << u.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
+      end
+      render :template => 'user_mailer/daily_matches' , :layout => false
+
+    when 'welcome'
+      render :template => 'user_mailer/signup_notification' , :layout => false
+
+    when 'notifications'
+      @users = Array.new
+      @happenings = Array.new
+      @user = current_user
+      @crm_activitites = CrmData.crm_activitites(@user,3)
+      @meet_her_url = "http://aeser.co.uk/g/button-meet-her.jpg"
+      @meet_him_url = "http://aeser.co.uk/g/button-meet-him.jpg"
+      @friend=User.find(32)
+      @crm_activitites.each do |u|
+        @users << u
+        @happenings << u.user_place_activities.find(:last,:conditions=>"description is not null and description <> ''")
+      end
+
+      @subject = "What’s shaking on HelloPulse?"
+      @content_type =  "text/html"
+      render :template => 'user_mailer/notification' , :layout => false
+
+    when 'photos'
+      @subject = "No photo, No action"
+      @user = current_user
+      #todo: allow for men and women here
+      @gender = @user.sex_preference == 1 ? 'men' : 'women'
+      @crm_photos = CrmData.crm_photos(current_user,4)
+      @user1 = @crm_photos[0]
+      @user2  =  @crm_photos[1]
+      @user3 = @crm_photos[2]
+      @user4 = @crm_photos[3]
+      render :template => 'user_mailer/photo_reminder' , :layout => false
+    else
+
+    end
+
+  end
+
   private
   
   def set_other_user

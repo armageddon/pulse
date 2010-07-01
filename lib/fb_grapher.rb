@@ -326,7 +326,7 @@ fb_user_source_id)
     end
 
     logger.info('FB_PULL   UPDATED LIKES ' + DateTime.now.to_s)
-
+    logger.flush
   end
 
 

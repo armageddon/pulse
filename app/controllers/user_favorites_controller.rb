@@ -65,7 +65,6 @@ class UserFavoritesController < ApplicationController
   end
 
   def users
-
     @favorites = User.paginate(:joins=>"inner join user_favorites on user_favorites.friend_id = users.id", :conditions => "user_favorites.user_id = " + current_user.id.to_s,:page=>params[:page],:per_page=>6)
       logger.debug('FAVORITES: ' + @favorites.length.to_s)
     respond_to do |format|
@@ -75,14 +74,13 @@ class UserFavoritesController < ApplicationController
   end
 
   def friends
-        logger.debug('cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc')
     @friends = User.paginate(:joins=>"inner join user_favorites on user_favorites.user_id = users.id", :conditions => "user_favorites.friend_id = " + current_user.id.to_s,:page=>params[:page],:per_page=>9)
-    logger.debug(@friends.length)
     respond_to do |format|
       format.html { render }
       format.js { render :partial => "user_favorites/user_favorited", :locals => { :friends => @friends } }
     end
   end
+
   def user_place_activities
     @user_place_activities = current_user.user_place_activities.paginate(:all, :order=>'created_at DESC',:page=>params[:page], :per_page=>10)
     respond_to do |format|

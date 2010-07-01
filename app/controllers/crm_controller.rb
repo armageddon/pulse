@@ -40,6 +40,8 @@ class CrmController < ApplicationController
     end  
   end
 
+  #TODO: use initialiser for MailerMessage
+  #TOTO: send back relevant code (success/failure) - not done
   def match
     if current_user.admin
       u = User.find(params[:id])
@@ -52,7 +54,7 @@ class CrmController < ApplicationController
       m.type = 3
       m.mail_text = 'txt'
       m.save
-      render :text => 's'
+      render :text => 'done'
     end
   end
 
@@ -70,7 +72,7 @@ class CrmController < ApplicationController
       m.type = 1
       m.mail_text = 'txt'
       m.save
-      render :text => 's'
+      render :text => 'done'
     end
   end
  
@@ -88,7 +90,7 @@ class CrmController < ApplicationController
       m.type = 2
       m.mail_text = 'txt'
       m.save
-      render :text => 's'
+      render :text => 'done'
     end
   end
 end
