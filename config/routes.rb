@@ -5,7 +5,10 @@ ActionController::Routing::Routes.draw do |map|
 
   #facebook controller
   map.resources :facebook
-
+  map.facebook_tab 'facebook/tab',  :controller => 'facebook', :action=>'facebook_tab'
+  map.facebook_stats '/facebook_stats',  :controller => 'facebook', :action=>'facebook_stats'
+    map.post_to_newsfeed '/facebook_post_to_newsfeed',  :controller => 'facebook', :action=>'post_to_newsfeed'
+  map.visitor '/visitor', :controller => 'facebook', :action=>'new_visitor'
   #maps controller
   map.map '/map',  :controller => 'maps', :action => 'index'
   map.big_map '/big_map' , :controller => 'maps', :action => 'map'

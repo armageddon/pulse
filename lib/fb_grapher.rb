@@ -33,6 +33,7 @@ module FbGrapher
     # all_scopes << "read_stream"
     all_scopes << "offline_access"
     all_scopes << "email"
+    all_scopes << "manage_pages"
     all_scopes
    
   end

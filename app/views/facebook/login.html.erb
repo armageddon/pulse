@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<style>
+  .submit_act{
+    padding:2px!important;
+    background-color:#bf1212!important;
+    border:2px solid #9f1111!important;
+    color:#fff!important;
+    height:25px;
+    /*margin-bottom:20px;*/
+    font-size:14px;
+    font-weight:500!important;
+    font-family:arial!important;
+    background-image:none;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    top: -2px;
+    margin-right: 5px;
+}
+</style>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml">
+  <head>
+    <%= javascript_include_tag "jquery-1.3.2", 'application' %>
+    <%= javascript_include_tag :defaults%>
+  </head>
+  <body>
+    <div id="fb-root"></div>
+    <script type="text/javascript">
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId  : 297512602099,
+          status : true, // check login status
+          cookie : true, // enable cookies to allow the server to access the session
+          xfbml  : true  // parse XFBML
+        });
+      };
+
+      (function() {
+        var e = document.createElement('script');
+        e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+        e.async = true;
+        document.getElementById('fb-root').appendChild(e);
+      }());
+    </script>
+    <div class="hp_main" style="font-family:arial;font-size:16px">
+      <div class="hp_header">
+        <div style="float:left;width:70px">
+          <%= image_tag "logo_smaller.png", :width=>70 %>
+        </div>
+        <div style="margin-left:30px;margin-top:15px;float:left;width:300px">
+          <div style="height:70px;width:300px;font-size:24px;font-family:'arial';vertical-align:middle">Welcome <%=@first_name %></div>
+        </div>
+      </div>
+      <div style="clear: both;"></div>
+      <div class="hp_main">
+        <div >
+          Hey <%= @first_name %><br />
+          <br />
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr,  sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. <br />
+        </div>
+        <br />
+        <%= submit_button "join",:class=>'submit_act', :id=>'oauth'%>
+        <br />
+      </div>
+    </div>
+  </body>
+</html>
+
+<script type="text/javascript"  charset="utf-8">
+  $(document).ready(function() {
+
+    FB.getLoginStatus(function(response) {
+      if (response.session) {
+        alert(response);
+      } else {
+        alert('no user session available, someone you dont know');
+      }
+    });
+
+ $('#oauth').live('click', function() {
+
+      alert('x');
+
+      //var body = 'Reading Connect JS documentation'
+      //FB.getLoginStatus(function(response) {
+      //  if (response.session) {
+      //    alert(response);
+      //  } else {
+      //    alert('no user session available, someone you dont know');
+      ///  }
+      //});
+      FB.login(function(response) {
+        if (response.session) {
+          $.ajax({
+            type: "PUT",
+            url: '/visitor',
+            success: function(p) {
+              window.location = window.location.href
+            },
+            error: function(p) {
+              alert('an error occured');
+            }
+          });
+          if (response.perms) {
+            alert(response.perms);
+          } else {
+            // user is logged in, but did not grant any permissions
+          }
+        } else {
+          // user is not logged in
+        }
+      }, {perms:'publish_stream,manage_pages,offline_access'});
+return false;
+      
+
+    });
+
+
+    function ret(s)
+    {
+      alert (s);
+    }
+
+    function getFans() {
+      alert('getfans');
+      FB.api(
+      {
+        method : 'fql.query',
+        query : 'SELECT uid FROM page_fan WHERE page_id=279928867967'
+      },
+      function(response) {
+        alert('response');
+        var permission = response[0];
+        alert(permission.length);
+        for(var i = 0;i<permission.length;i++)
+        {
+          alert(permission[i]);
+        }
+
+
+      });
+    }
+
+    function getUserPermissions(returnValueFunc) {
+      alert("dd");
+      window.location = '/facebook';
+      return false;
+      FB.api(
+      {
+        method : 'fql.query',
+        query : 'SELECT email FROM permissions WHERE uid=' + FB.getSession().uid
+      },
+      function(response) {
+
+        var permission = response[0];
+        alert(permission.length);
+        for(var i = 0;i<permission.length;i++)
+        {
+          alert(permission[i]);
+        }
+
+        alert(permission.email);
+        alert(permission.email);
+        alert(permission.email);
+        alert(permission.offline_access);
+        alert(permission.username);
+      });
+
+    }
+
+    $('#postfb').live('click', function() {
+
+
+
+
+
+      //var body = 'Reading New Graph api & Javascript Base FBConnect Tutorial';
+      //    FB.api('/136097313080866/feed', 'post', { message: body, uid:136097313080866 }, function(response) {
+      //     if (!response || response.error) {
+      //       alert('Error occured');
+      //     } else {
+      //       alert('Post ID: ' + response.id);
+      //    }
+      //  });
+
+
+    });
+
+   
+  });
+</script>

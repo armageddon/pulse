@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100613195133) do
+ActiveRecord::Schema.define(:version => 20100706175751) do
 
   create_table "activities", :force => true do |t|
     t.string   "name"
@@ -315,10 +315,10 @@ ActiveRecord::Schema.define(:version => 20100613195133) do
 
   add_index "ldc", ["id"], :name => "idx_ldc_id"
 
-  create_table "like_weighting", :id => false, :force => true do |t|
+  create_table "like_weighting", :force => true do |t|
     t.string  "category"
-    t.integer "number_of_likes", :limit => 8, :default => 0, :null => false
-    t.integer "weighting",                    :default => 0, :null => false
+    t.integer "number_of_likes"
+    t.integer "weighting"
   end
 
   create_table "locations", :force => true do |t|
@@ -343,6 +343,15 @@ ActiveRecord::Schema.define(:version => 20100613195133) do
     t.datetime "updated_at"
     t.integer  "message_type",            :default => 0
     t.integer  "thread_original_mail_id"
+  end
+
+  create_table "pages", :force => true do |t|
+    t.integer  "page_id",          :limit => 8
+    t.string   "access_token"
+    t.integer  "administrator_id", :limit => 8
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "place_activities", :force => true do |t|
@@ -638,6 +647,15 @@ ActiveRecord::Schema.define(:version => 20100613195133) do
     t.string  "object_detail", :limit => 0,                               :default => "",  :null => false
     t.decimal "weight",                     :precision => 2, :scale => 1, :default => 0.0, :null => false
     t.integer "cnt",                                                      :default => 0,   :null => false
+  end
+
+  create_table "visitors", :force => true do |t|
+    t.integer  "fb_user_id",   :limit => 8
+    t.string   "access_token"
+    t.string   "auth_code"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "admin"
   end
 
   create_table "vlike_points", :id => false, :force => true do |t|
