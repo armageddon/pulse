@@ -87,7 +87,7 @@ split_char = '='
     MiniFB.enable_logging
     pages = Page.find(:all)
     visitor = Visitor.find(:last)
-    logger.debug(pages.length)
+    logger.info(pages.length)
     @pages = []
     pages.find(:all).each do |p|
 
@@ -95,10 +95,11 @@ split_char = '='
       #logger.debug(MiniFB.rest(p.access_token,'pages.getinfo',{:key=>FB_APP_KEY,:page_id=>p.page_id,:fields=>'name'}))
         # @pages << MiniFB.get(p.access_token, p.fb_user_id, :type=>'friends')
         #@pages << MiniFB.get(p.access_token.to_s, p.page_id)
-
-         @pages << MiniFB.get(Page.find(:first).access_token, Page.find(:first).page_id).fan_count
-         @pages << MiniFB.get(Page.find(2).access_token, Page.find(2).page_id).fan_count
-         @pages << MiniFB.get(Page.find(:last).access_token, Page.find(:last).page_id).fan_count
+        @access_token = p.access_token
+        @page_id = p.page_id
+         @pages << MiniFB.get(@access_token, @page_id).fan_count
+   #      @pages << MiniFB.get(Page.find(2).access_token, Page.find(2).page_id).fan_count
+      #   @pages << MiniFB.get(Page.find(:last).access_token, Page.find(:last).page_id).fan_count
       #q="select name,  from page where page_id  =" + p.page_id.to_s
 
    # @pages << MiniFB.fql(visitor.access_token, q)

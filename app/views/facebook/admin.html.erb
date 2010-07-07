@@ -75,16 +75,17 @@
   $(document).ready(function() {
 
 $('#post_to_fb').live('click', function() {
-
+alert($('#post_text').value);
 $.ajax({
             type: "POST",
 
             url: '/facebook_post_to_newsfeed',
+            data: {"text" : $('#post_text').value},
             success: function(p) {
               alert(p);
             },
             error: function(p) {
-              alert('an error occured');
+              alert('an error occured' + p);
             }
           });
 });
