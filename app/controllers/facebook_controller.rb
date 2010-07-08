@@ -1,6 +1,6 @@
 class FacebookController < ApplicationController
   require 'mini_fb'
-
+ skip_before_filter :verify_authenticity_token, :only => [:post_from_m]
   def get_pages
     begin
       @response_hash = MiniFB.get(@access_token, @uid, :type=>'accounts')
