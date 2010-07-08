@@ -63,7 +63,7 @@
             <%end%>
           <%end%>
         <br />
-        <%= text_field_tag 'post_text' %>
+        <%= text_field_tag 'post_text' ,'', :id=>'post_text'%>
         <%= submit_button "post",:class=>'submit_act', :id=>'post_to_fb'%>
         <br />
       </div>
@@ -75,12 +75,12 @@
   $(document).ready(function() {
 
 $('#post_to_fb').live('click', function() {
-alert($('#post_text').value);
+alert($('#post_text').val());
 $.ajax({
             type: "POST",
 
             url: '/facebook_post_to_newsfeed',
-            data: {"text" : $('#post_text').value},
+            data: {"text" : $('#post_text').val()},
             success: function(p) {
               alert(p);
             },

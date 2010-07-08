@@ -113,16 +113,25 @@ render :text => @pages
   end
 
   def post_to_newsfeed
+    logger.debug(params)
     pages = Page.find(:all)
     logger.debug('POST TO NEWSFEED')
     pages.each do |p|
+      logger.debug(p.page_id)
       @access_token = p.access_token
     @uid = p.page_id
-    ret = MiniFB.post(@access_token, @uid, :type=>'feed',  :message=>"message")
+    ret = MiniFB.post(@access_token, @uid, :type=>'feed',  :message=>params[:text])
     end
     
     render :text => ret
     #MiniFB.post(@access_token,  )
+  end
+
+  def post_from_m
+    page = Page.find(5)
+      @access_token = page.access_token
+    @uid = page.page_id
+    ret = MiniFB.post(@access_token, @uid, :type=>'feed',  :message=>DateTime.now.to_s)
   end
 
 
