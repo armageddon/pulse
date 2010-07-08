@@ -131,8 +131,9 @@ render :text => @pages
     page = Page.find(5)
       @access_token = page.access_token
     @uid = page.page_id
-    ret = MiniFB.post(@access_token, @uid, :type=>'feed',  :message=>DateTime.now.to_s)
-    render :text => ret
+    logger.debug(params)
+    #ret = MiniFB.post(@access_token, @uid, :type=>'feed',  :message=>DateTime.now.to_s)
+    render :text => 'ret'
   end
 
 
