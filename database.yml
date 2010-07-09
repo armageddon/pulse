@@ -1,0 +1,17 @@
+test:
+  adapter: mysql
+  database: pulse_test
+  username: root
+  password: pulse36
+ 
+development:
+  adapter: mysql
+  database: pulse_development
+  username: root
+  password: pulse36
+
+production:
+  adapter: mysql
+  database: pulse_production
+  username: root
+  password: pulse36

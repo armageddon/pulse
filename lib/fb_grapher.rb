@@ -250,7 +250,7 @@ fb_user_source_id)
           longitude = evnt.venue[:longitude] if evnt[:venue].present? && evnt[:venue][:longitude].present?
           state = evnt.venue[:state].gsub(/\\/, '\&\&').gsub(/'/, "''") if evnt[:venue].present? && evnt[:venue][:state].present?
           street = evnt.venue[:street].gsub(/\\/, '\&\&').gsub(/'/, "''") if evnt[:venue].present? && evnt[:venue][:street].present?
-          location = evnt.location.gsub(/\\/, '\&\&').gsub(/'/, "''")
+          location = evnt.location.gsub(/\\/, '\&\&').gsub(/'/, "''")  if evnt[:venue].present? && evnt.location != nil
 
 
           sql =<<-SQL
