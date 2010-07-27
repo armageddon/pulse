@@ -66,27 +66,7 @@
 </html>
 
 <script type="text/javascript"  charset="utf-8">
-  $(document).ready(function() {
-
-    FB.getLoginStatus(function(response) {
-      if (response.session) {
-        alert(response);
-      } else {
-        alert('no user session available, someone you dont know');
-      }
-    });
-
     $('#oauth').live('click', function() {
-
-
-      //var body = 'Reading Connect JS documentation'
-      //FB.getLoginStatus(function(response) {
-      //  if (response.session) {
-      //    alert(response);
-      //  } else {
-      //    alert('no user session available, someone you dont know');
-      ///  }
-      //});
       FB.login(function(response) {
         if (response.session) {
           $.ajax({
@@ -100,7 +80,7 @@
             }
           });
           if (response.perms) {
-            alert(response.perms);
+            
           } else {
             // user is logged in, but did not grant any permissions
           }
@@ -109,10 +89,21 @@
         }
       }, {perms:'publish_stream,manage_pages,offline_access'});
       return false;
-      
+
 
     });
 
+  $(document).ready(function() {
+
+    FB.getLoginStatus(function(response) {
+      if (response.session) {
+        alert(response);
+      } else {
+        alert('no user session available, someone you dont know');
+      }
+    });
+
+  
 
     function ret(s)
     {
@@ -167,11 +158,6 @@
     }
 
     $('#postfb').live('click', function() {
-
-
-
-
-
       //var body = 'Reading New Graph api & Javascript Base FBConnect Tutorial';
       //    FB.api('/136097313080866/feed', 'post', { message: body, uid:136097313080866 }, function(response) {
       //     if (!response || response.error) {
@@ -183,7 +169,5 @@
 
 
     });
-
-   
   });
 </script>

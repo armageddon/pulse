@@ -100,6 +100,7 @@ class FacebookController < ApplicationController
         select distinct user_id2 as userid, user_name2 as name  from relation_summary where (user_id1 = #{@fb_user.id.to_s}) and common_count > 5 union select distinct  user_id1 as userid, user_name1 as name  from relation_summary where (user_id2 = #{@fb_user.id.to_s}) and common_count > 5
       SQL
       r = ActiveRecord::Base.connection.execute sql
+      if r.all_hashes.length>0
       r.all_hashes.each do |h|
         @user_ids << h['userid']
         @user_names << h['name']
@@ -109,6 +110,10 @@ class FacebookController < ApplicationController
       SQL
       r = ActiveRecord::Base.connection.execute sql1
       @likes = r.all_hashes
+      else
+        @likes = Array.new
+      end
+
       logger.debug(@likes)
       render :template => 'facebook/admin',:layout=>false
     elsif @hp_user != nil
