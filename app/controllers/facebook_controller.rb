@@ -57,22 +57,6 @@ class FacebookController < ApplicationController
   end
 
   def index
-    #@oauth_url = MiniFB.oauth_url(FB_APP_ID, CALLBACK_URL+"?path=account", # redirect url
-    # :scope=>MiniFB.scopes.join(",")+",offline_access,email", :display=>"popup")
-
-    #not logged in/permission
-    #
-
-
-    #loggedin
-    #get users likes/events
-
-
-
-
-
-
-
 
     logger.info(params)
     MiniFB.enable_logging
@@ -204,6 +188,7 @@ class FacebookController < ApplicationController
     v.access_token =@access_token
     v.save
     get_pages
+    render :text => 'success'
   end
 
   def callback
