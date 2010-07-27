@@ -15,7 +15,7 @@
     -moz-border-radius: 4px;
     top: -2px;
     margin-right: 5px;
-}
+  }
 </style>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml">
   <head>
@@ -55,8 +55,8 @@
         <div >
           Hey <%= @first_name %><br />
           <br />
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr,  sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. <br />
-        </div>
+          Please join HelloPulse dating. We will ask you for permissions so that we can access your facebook data. Your privacy is important to us - we won't share your data or use it for nefarious purposes
+           </div>
         <br />
         <%= submit_button "join",:class=>'submit_act', :id=>'oauth'%>
         <br />
@@ -76,9 +76,8 @@
       }
     });
 
- $('#oauth').live('click', function() {
+    $('#oauth').live('click', function() {
 
-      alert('x');
 
       //var body = 'Reading Connect JS documentation'
       //FB.getLoginStatus(function(response) {
@@ -109,7 +108,7 @@
           // user is not logged in
         }
       }, {perms:'publish_stream,manage_pages,offline_access'});
-return false;
+      return false;
       
 
     });

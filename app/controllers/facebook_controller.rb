@@ -1,6 +1,6 @@
 class FacebookController < ApplicationController
   require 'mini_fb'
- skip_before_filter :verify_authenticity_token, :only => [:post_from_m]
+  skip_before_filter :verify_authenticity_token, :only => [:post_from_m]
   def get_pages
     begin
       @response_hash = MiniFB.get(@access_token, @uid, :type=>'accounts')
@@ -22,7 +22,7 @@ class FacebookController < ApplicationController
 
 
   def decode_cookie
-split_char = '='
+    split_char = '='
     if params[:session].present?
       logger.debug("session" +params[:session])
       access_token = ""
@@ -82,32 +82,32 @@ split_char = '='
     @uid =  decode_cookie[:uid]
     @hp_user = Visitor.find_by_fb_user_id(@uid)
     begin
-    @fb_user = MiniFB.get(@access_token,'me')
-    @fb_pic =MiniFB.get(@access_token,'me', :type=>'picture')
+      @fb_user = MiniFB.get(@access_token,'me')
+      @fb_pic =MiniFB.get(@access_token,'me', :type=>'picture')
 
-     logger.debug(  @fb_user)
-    @first_name = @fb_user.first_name
+      logger.debug(  @fb_user)
+      @first_name = @fb_user.first_name
     rescue
-@first_name = ""
+      @first_name = ""
     end
     
-    if @hp_user != nil && @hp_user.admin ==1
-     @access_token =  decode_cookie[:access_token]
-    @fb_user = MiniFB.get(@access_token,'me')
-    @user_ids = Array.new
-@user_names = Array.new
-    sql =<<-SQL
-        select distinct user_id2 as userid, user_name2 as name  from relation_summary where (user_id1 = 632510886) and common_count > 5 union select distinct  user_id1 as userid, user_name1 as name  from relation_summary where (user_id2 = 632510886) and common_count > 5
-    SQL
-     r = ActiveRecord::Base.connection.execute sql
+    if @hp_user != nil 
+      @access_token =  decode_cookie[:access_token]
+      @fb_user = MiniFB.get(@access_token,'me')
+      @user_ids = Array.new
+      @user_names = Array.new
+      sql =<<-SQL
+        select distinct user_id2 as userid, user_name2 as name  from relation_summary where (user_id1 = #{@fb_user.id.to_s}) and common_count > 5 union select distinct  user_id1 as userid, user_name1 as name  from relation_summary where (user_id2 = #{@fb_user.id.to_s}) and common_count > 5
+      SQL
+      r = ActiveRecord::Base.connection.execute sql
       r.all_hashes.each do |h|
         @user_ids << h['userid']
         @user_names << h['name']
       end
-       sql1 =<<-SQL
+      sql1 =<<-SQL
         select distinct object_name from relation_rel where user_id1 =  #{@fb_user.id.to_s} and user_id2 =  #{@user_ids[0].to_s}
       SQL
-     r = ActiveRecord::Base.connection.execute sql1
+      r = ActiveRecord::Base.connection.execute sql1
       @likes = r.all_hashes
       logger.debug(@likes)
       render :template => 'facebook/admin',:layout=>false
@@ -127,21 +127,21 @@ split_char = '='
     @pages = []
     pages.find(:all).each do |p|
 
-     # @response_hash = MiniFB.get(p.access_token, p.page_id, {:session_key=>})
+      # @response_hash = MiniFB.get(p.access_token, p.page_id, {:session_key=>})
       #logger.debug(MiniFB.rest(p.access_token,'pages.getinfo',{:key=>FB_APP_KEY,:page_id=>p.page_id,:fields=>'name'}))
-        # @pages << MiniFB.get(p.access_token, p.fb_user_id, :type=>'friends')
-        #@pages << MiniFB.get(p.access_token.to_s, p.page_id)
-        @access_token = p.access_token
-        @page_id = p.page_id
-         @pages << MiniFB.get(@access_token, @page_id).fan_count
-   #      @pages << MiniFB.get(Page.find(2).access_token, Page.find(2).page_id).fan_count
+      # @pages << MiniFB.get(p.access_token, p.fb_user_id, :type=>'friends')
+      #@pages << MiniFB.get(p.access_token.to_s, p.page_id)
+      @access_token = p.access_token
+      @page_id = p.page_id
+      @pages << MiniFB.get(@access_token, @page_id).fan_count
+      #      @pages << MiniFB.get(Page.find(2).access_token, Page.find(2).page_id).fan_count
       #   @pages << MiniFB.get(Page.find(:last).access_token, Page.find(:last).page_id).fan_count
       #q="select name,  from page where page_id  =" + p.page_id.to_s
 
-   # @pages << MiniFB.fql(visitor.access_token, q)
+      # @pages << MiniFB.fql(visitor.access_token, q)
     end
     
-render :text => @pages
+    render :text => @pages
   end
 
   def facebook_tab
@@ -155,8 +155,8 @@ render :text => @pages
     pages.each do |p|
       logger.debug(p.page_id)
       @access_token = p.access_token
-    @uid = p.page_id
-    ret = MiniFB.post(@access_token, @uid, :type=>'feed',  :message=>params[:text])
+      @uid = p.page_id
+      ret = MiniFB.post(@access_token, @uid, :type=>'feed',  :message=>params[:text])
     end
     
     render :text => ret
@@ -165,7 +165,7 @@ render :text => @pages
 
   def post_from_m
     page = Page.find(5)
-      @access_token = page.access_token
+    @access_token = page.access_token
     @uid = page.page_id
     logger.debug(params)
     #ret = MiniFB.post(@access_token, @uid, :type=>'feed',  :message=>DateTime.now.to_s)
@@ -245,15 +245,15 @@ render :text => @pages
     @access_token =  decode_cookie[:access_token]
     @fb_user = MiniFB.get(@access_token,'me')
     sql =<<-SQL
-        select distinct user_id2 as userid, user_name2 as name  from relation_summary where (user_id1 = 632510886) and common_count > 5 union select distinct  user_id1 as userid, user_name1 as name  from relation_summary where (user_id2 = 632510886) and common_count > 5
-SQL
+        select distinct user_id2 as userid, user_name2 as name  from relation_summary where (user_id1 = #{@fb_user.id.to_s}) and common_count > 5 union select distinct  user_id1 as userid, user_name1 as name  from relation_summary where (user_id2 = #{@fb_user.id.to_s}) and common_count > 5
+    SQL
 
-  r = ActiveRecord::Base.connection.execute sql
- # logger.debug(r.all_hashes)
+    r = ActiveRecord::Base.connection.execute sql
+    # logger.debug(r.all_hashes)
 
 
 
-   respond_to do |format|
+    respond_to do |format|
       format.js { render :json => r.all_hashes.to_json}
     end
   end
@@ -261,13 +261,13 @@ SQL
   def facebook_serendipity
     user_id = params[:user_id]
     friend_id = params[:friend_id]
-     sql1 =<<-SQL
+    sql1 =<<-SQL
         select distinct object_name, object_type from relation_rel where user_id1 =  #{user_id.to_s} and user_id2 =  #{friend_id.to_s}
 union
       select distinct object_name, object_type from relation_rel where user_id1 =  #{friend_id.to_s} and user_id2 =  #{user_id.to_s}
-      SQL
-     r = ActiveRecord::Base.connection.execute sql1
-       respond_to do |format|
+    SQL
+    r = ActiveRecord::Base.connection.execute sql1
+    respond_to do |format|
       format.js { render :json => r.all_hashes.to_json}
     end
 

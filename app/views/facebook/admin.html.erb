@@ -102,6 +102,66 @@
 
 
 
+    $('#ign').live('click', function() {
+      index += 1;
+      if(index<user_ids.length)
+      {
+        $('#indexer').html((index+1).toString());
+        $.ajax({
+          type: "GET",
+          dataType: "json",
+          url: '/facebook_serendipity',
+          data: {"user_id" : user_id,"friend_id" : user_ids[index] },
+          success: function(p) {
+
+            $('#friend_pic').html('<img width="70" src="http://graph.facebook.com/'+user_ids[index].toString()+ '/picture" />');
+            $('#friend_name').html(user_names[index]);
+            var events = "";
+            var locations = "";
+            var likes = "";
+            var s = "";
+            for(var i = 0; i<p.length; i++)
+            {
+              switch(p[i].object_type)
+              {
+                case 'EVT_EVT':
+                  events += p[i].object_name;
+                  events +=  '<br />';
+                  break;
+                case 'EVT_LOC':
+                  locations += p[i].object_name;
+                  locations +=  '<br />';
+                  break;
+                default:
+                  likes += p[i].object_name;
+                  likes +=  '<br />';
+                  break;
+              }
+            }
+            if (events.length>0)
+            {
+              s+= '<span style="font-weight:bold">You both attended:</span><br />'
+              s+=events + '<br />'
+            }
+            if (locations.length>0)
+            {
+              s+= '<span style="font-weight:bold">You both have been to:</span><br />'
+              s+=locations + '<br />'
+            }
+            if (likes.length>0)
+            {
+              s+= '<span style="font-weight:bold">You both like:</span><br />'
+              s+=likes + '<br />'
+            }
+            $('#seren').html(s);
+          },
+          error: function(p) {
+            alert('an error occured' + p);
+          }
+        });
+      }
+    });
+
     $('#addfav').live('click', function() {
       index += 1;
       if(index<user_ids.length)
