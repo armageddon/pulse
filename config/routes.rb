@@ -5,7 +5,8 @@ ActionController::Routing::Routes.draw do |map|
 map.facebook_post '/facebook_post', :controller => 'facebook', :action=>'post_from_m'
   #facebook controller
   map.resources :facebook
-
+  map.facebook_serendipity 'facebook_serendipity',  :controller => 'facebook', :action=>'facebook_serendipity'
+map.facebook_summary 'facebook_summary',   :controller => 'facebook', :action=>'facebook_summary'
   map.facebook_tab 'facebook/tab',  :controller => 'facebook', :action=>'facebook_tab'
   map.facebook_stats '/facebook_stats',  :controller => 'facebook', :action=>'facebook_stats'
     map.post_to_newsfeed '/facebook_post_to_newsfeed',  :controller => 'facebook', :action=>'post_to_newsfeed'

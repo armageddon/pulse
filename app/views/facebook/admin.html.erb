@@ -15,7 +15,7 @@
     -moz-border-radius: 4px;
     top: -2px;
     margin-right: 5px;
-}
+  }
 </style>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml">
   <head>
@@ -41,66 +41,129 @@
         document.getElementById('fb-root').appendChild(e);
       }());
     </script>
-    <div class="hp_main" style="font-family:arial;font-size:16px">
+    <div class="hp_main" style="height:500px;font-family:arial;font-size:16px;background-image:url(/images/clouds.png);">
       <div class="hp_header">
         <div style="float:left;width:70px">
-          <%= image_tag "logo_smaller.png", :width=>70 %>
+          <%= image_tag "logo_smaller.png", :width=>50 %>
         </div>
         <div style="margin-left:30px;margin-top:15px;float:left;width:300px">
-          <div style="height:70px;width:300px;font-size:24px;font-family:'arial';vertical-align:middle">Welcome <%=@fb_user.first_name %></div>
+          <div style="height:35px;width:300px;font-size:24px;font-family:'arial';vertical-align:middle">Welcome <%=@fb_user.first_name %></div>
         </div>
       </div>
       <div style="clear: both;"></div>
-      <div class="hp_main">
-        <div >
-          Hey <%= @fb_user.first_name %><br />
-          <br />
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat <br />
+      <div class="hp_main" style="width:600px;margin-left:100px">
+        <div style="float:left; margin:10px;background-color:white">
+          <%= image_tag 'http://graph.facebook.com/'+@fb_user.id.to_s+ '/picture' , :width=>70 %>
         </div>
-          <%if Page.find(:all) != nil%>
-            <%Page.find(:all).each do |p|%>
-              <%=p.name%><br/>
-            <%end%>
-          <%end%>
+        <div  style="float:left;">
+          <div style="clear:both"><%= image_tag "rightarrow.png", :width=>70 %></div>
+          <div style="clear:both"><%= image_tag "leftarrow.png", :width=>70 %></div>
+        </div>
+        <div style="width:600px">
+          <div style="margin-left:10px;float:left;background-color:white">
+            <div style="float:left;font-size:10px;">
+              <span style="font-weight:bold">Serendipity! You’ve crossed paths with <span id="friend_name"><%=@user_names[0]%></span> </span><br />
+
+
+              <div id="seren">
+                <% @likes.each do |l| %>
+                  <%= l['object_name'] %> <br />
+                <% end %>
+              </div>
+            </div>
+            <div id="friend_pic" style="float:left; margin:10px;background-color:white">
+              <%= image_tag 'http://graph.facebook.com/'+@user_ids[0].to_s+ '/picture' , :width=>70 %>
+            </div>
+
+          </div>
+          <div style="clear:both"></div>
+          <div style="float:right;margin-right:100px;margin-top:10px">
+            <span id="indexer">1</span> <%= ' of '  + @user_ids.length.to_s   %>
+            <%= submit_button "add",:class=>'submit_act', :id=>'addfav'%>
+            <%= submit_button "ignore",:class=>'submit_act', :id=>'ign'%>
+          </div>
+        </div>
+        <div>
+        </div>
         <br />
-        <%= text_field_tag 'post_text' ,'', :id=>'post_text'%>
-        <%= submit_button "post",:class=>'submit_act', :id=>'post_to_fb'%>
-        <br />
+        <div style="float:left;width:250px;height:100px;background-color:white;margin:10px;margin-top:30px"></div>
+
       </div>
     </div>
   </body>
 </html>
 
 <script typ="text/javascript">
+  var user_ids = <%= "['#{@user_ids.join('\',\'')}']" %>
+  var user_names = <%= "['#{@user_names.join('\',\'')}']" %>
+  var index = 0;
+  var user_id = <%=@fb_user.id%>
   $(document).ready(function() {
 
-$('#post_to_fb').live('click', function() {
-alert($('#post_text').val());
-$.ajax({
-            type: "POST",
 
-            url: '/facebook_post_to_newsfeed',
-            data: {"text" : $('#post_text').val()},
-            success: function(p) {
-              alert(p);
-            },
-            error: function(p) {
-              alert('an error occured' + p);
+
+    $('#addfav').live('click', function() {
+      index += 1;
+      if(index<user_ids.length)
+      {
+        $('#indexer').html((index+1).toString());
+        $.ajax({
+          type: "GET",
+          dataType: "json",
+          url: '/facebook_serendipity',
+          data: {"user_id" : user_id,"friend_id" : user_ids[index] },
+          success: function(p) {
+          
+            $('#friend_pic').html('<img width="70" src="http://graph.facebook.com/'+user_ids[index].toString()+ '/picture" />');
+            $('#friend_name').html(user_names[index]);
+            var events = "";
+            var locations = "";
+            var likes = "";
+            var s = "";
+            for(var i = 0; i<p.length; i++)
+            {
+              switch(p[i].object_type)
+              {
+                case 'EVT_EVT':
+                  events += p[i].object_name;
+                  events +=  '<br />';
+                  break;
+                case 'EVT_LOC':
+                  locations += p[i].object_name;
+                  locations +=  '<br />';
+                  break;
+                default:
+                  likes += p[i].object_name;
+                  likes +=  '<br />';
+                  break;
+              }
             }
-          });
-});
+            if (events.length>0)
+            {
+              s+= '<span style="font-weight:bold">You both attended:</span><br />'
+              s+=events + '<br />'
+            }
+            if (locations.length>0)
+            {
+              s+= '<span style="font-weight:bold">You both have been to:</span><br />'
+              s+=locations + '<br />'
+            }
+            if (likes.length>0)
+            {
+              s+= '<span style="font-weight:bold">You both like:</span><br />'
+              s+=likes + '<br />'
+            }
+            $('#seren').html(s);
+          },
+          error: function(p) {
+            alert('an error occured' + p);
+          }
+        });
+      }
+    });
 
 
- FB.getLoginStatus(function(response) {
-        if (response.session) {
-
-
-
-          alert(response);
-        } else {
-          alert('no user session available, someone you dont know');
-        }
-      });
+   
 
 
     function ret(s)
@@ -158,8 +221,8 @@ $.ajax({
 
     $('#oauth').live('click', function() {
 
-window.location = '/facebook';
-return false;
+      window.location = '/facebook';
+      return false;
       //getUserPermissions();
       getFans();
       FB.getLoginStatus(function(response) {

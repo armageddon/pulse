@@ -59,6 +59,21 @@ split_char = '='
   def index
     #@oauth_url = MiniFB.oauth_url(FB_APP_ID, CALLBACK_URL+"?path=account", # redirect url
     # :scope=>MiniFB.scopes.join(",")+",offline_access,email", :display=>"popup")
+
+    #not logged in/permission
+    #
+
+
+    #loggedin
+    #get users likes/events
+
+
+
+
+
+
+
+
     logger.info(params)
     MiniFB.enable_logging
     @uid = ""
@@ -68,12 +83,33 @@ split_char = '='
     @hp_user = Visitor.find_by_fb_user_id(@uid)
     begin
     @fb_user = MiniFB.get(@access_token,'me')
+    @fb_pic =MiniFB.get(@access_token,'me', :type=>'picture')
+
+     logger.debug(  @fb_user)
     @first_name = @fb_user.first_name
     rescue
 @first_name = ""
     end
     
-    if @hp_user != nil && @hp_user.admin ==1     
+    if @hp_user != nil && @hp_user.admin ==1
+     @access_token =  decode_cookie[:access_token]
+    @fb_user = MiniFB.get(@access_token,'me')
+    @user_ids = Array.new
+@user_names = Array.new
+    sql =<<-SQL
+        select distinct user_id2 as userid, user_name2 as name  from relation_summary where (user_id1 = 632510886) and common_count > 5 union select distinct  user_id1 as userid, user_name1 as name  from relation_summary where (user_id2 = 632510886) and common_count > 5
+    SQL
+     r = ActiveRecord::Base.connection.execute sql
+      r.all_hashes.each do |h|
+        @user_ids << h['userid']
+        @user_names << h['name']
+      end
+       sql1 =<<-SQL
+        select distinct object_name from relation_rel where user_id1 =  #{@fb_user.id.to_s} and user_id2 =  #{@user_ids[0].to_s}
+      SQL
+     r = ActiveRecord::Base.connection.execute sql1
+      @likes = r.all_hashes
+      logger.debug(@likes)
       render :template => 'facebook/admin',:layout=>false
     elsif @hp_user != nil
       render :template => 'facebook/partner',:layout=>false
@@ -205,4 +241,45 @@ render :text => @pages
     FbGrapher.pull(User.find_by_username("pierrearmageddon").access_token)
   end
 
+  def facebook_summary
+    @access_token =  decode_cookie[:access_token]
+    @fb_user = MiniFB.get(@access_token,'me')
+    sql =<<-SQL
+        select distinct user_id2 as userid, user_name2 as name  from relation_summary where (user_id1 = 632510886) and common_count > 5 union select distinct  user_id1 as userid, user_name1 as name  from relation_summary where (user_id2 = 632510886) and common_count > 5
+SQL
+
+  r = ActiveRecord::Base.connection.execute sql
+ # logger.debug(r.all_hashes)
+
+
+
+   respond_to do |format|
+      format.js { render :json => r.all_hashes.to_json}
+    end
+  end
+
+  def facebook_serendipity
+    user_id = params[:user_id]
+    friend_id = params[:friend_id]
+     sql1 =<<-SQL
+        select distinct object_name, object_type from relation_rel where user_id1 =  #{user_id.to_s} and user_id2 =  #{friend_id.to_s}
+union
+      select distinct object_name, object_type from relation_rel where user_id1 =  #{friend_id.to_s} and user_id2 =  #{user_id.to_s}
+      SQL
+     r = ActiveRecord::Base.connection.execute sql1
+       respond_to do |format|
+      format.js { render :json => r.all_hashes.to_json}
+    end
+
+
+  end
+  def common_events
+
+  end
+  def common_events
+
+  end
+  def common_locations
+
+  end
 end
