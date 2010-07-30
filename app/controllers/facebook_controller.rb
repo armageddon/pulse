@@ -68,14 +68,13 @@ class FacebookController < ApplicationController
     begin
       @fb_user = MiniFB.get(@access_token,'me')
       @fb_pic =MiniFB.get(@access_token,'me', :type=>'picture')
-
       logger.debug(  @fb_user)
       @first_name = @fb_user.first_name
     rescue
       @first_name = ""
     end
     
-    if @hp_user != nil 
+    if @hp_user != nil && @fb_user  != nil
       @access_token =  decode_cookie[:access_token]
       @fb_user = MiniFB.get(@access_token,'me')
       @user_ids = Array.new
