@@ -91,7 +91,7 @@ class FacebookController < ApplicationController
           @user_ids << h['userid']
           @user_names << h['name']
         end
-
+        if @user_ids.length>0
         sql1 =<<-SQL
         select distinct object_name from relation_rel where user_id1 =  #{@fb_user.id.to_s} and user_id2 =  #{@user_ids[0].to_s}
         SQL
