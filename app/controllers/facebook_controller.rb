@@ -185,7 +185,9 @@ class FacebookController < ApplicationController
         @access_token = item[1].chomp('"') if item[0].reverse.chomp('"').reverse == "access_token"
       end
     end
-    v = Visitor.new
+    v = Visitor.find_by_fb_user_id(@uid)
+
+    v = Visitor.new if v == nil
     v.fb_user_id = @uid
     v.access_token =@access_token
     v.save
