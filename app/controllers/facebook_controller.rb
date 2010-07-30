@@ -85,8 +85,7 @@ class FacebookController < ApplicationController
       SQL
       logger.info(sql)
       r = ActiveRecord::Base.connection.execute sql
-       logger.info(r.all_hashes)
-      if r.all_hashes.length>0
+
        
         r.all_hashes.each do |h|
           @user_ids << h['userid']
