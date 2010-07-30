@@ -103,7 +103,7 @@ class FacebookController < ApplicationController
       logger.debug(@likes)
       render :template => 'facebook/admin',:layout=>false
     elsif @hp_user != nil
-      render :template => 'facebook/partner',:layout=>false
+      render :template => 'facebook/login',:layout=>false
     else
       render :template => 'facebook/login',:layout=>false
     end
