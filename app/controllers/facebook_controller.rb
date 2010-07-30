@@ -83,17 +83,20 @@ class FacebookController < ApplicationController
       sql =<<-SQL
         select distinct user_id2 as userid, user_name2 as name  from relation_summary where (user_id1 = #{@fb_user.id.to_s}) and common_count > 5 union select distinct  user_id1 as userid, user_name1 as name  from relation_summary where (user_id2 = #{@fb_user.id.to_s}) and common_count > 5
       SQL
+      logger.info(sql)
       r = ActiveRecord::Base.connection.execute sql
       if r.all_hashes.length>0
-      r.all_hashes.each do |h|
-        @user_ids << h['userid']
-        @user_names << h['name']
-      end
-      sql1 =<<-SQL
+        logger.info(r.all_hashes)
+        r.all_hashes.each do |h|
+          @user_ids << h['userid']
+          @user_names << h['name']
+        end
+
+        sql1 =<<-SQL
         select distinct object_name from relation_rel where user_id1 =  #{@fb_user.id.to_s} and user_id2 =  #{@user_ids[0].to_s}
-      SQL
-      r = ActiveRecord::Base.connection.execute sql1
-      @likes = r.all_hashes
+        SQL
+        r = ActiveRecord::Base.connection.execute sql1
+        @likes = r.all_hashes
       else
         @likes = Array.new
       end
