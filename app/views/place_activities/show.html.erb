@@ -16,7 +16,7 @@
 
 <% content_for :message do %>
   <%if (!logged_in?)||(current_user.class!=User)%>
-    <h1> Join HelloPulse now to meet these great singles, and find where others are hanging out.  &nbsp;&nbsp; &nbsp;      <%= submit_button "Join Now", :id =>'join',  :class =>'submit_act'  %>  &nbsp; or &nbsp;     <span class="facebook-connect-button"> <%= fb_login_button('showUserReg()') %></span></h1>
+    <h1> Join HelloPulse now to meet these great singles, and find where others are hanging out.  &nbsp;&nbsp; &nbsp;      <%= submit_button "Join Now", :id =>'join',  :class =>'submit_act'  %>  &nbsp; or &nbsp;     <span class="facebook-connect-button">  <%= link_to image_tag("fbConnect.gif", :title => "Connect"), '#', :id=>'sub' %></span></h1>
   
   <%else%>
     <h1> Hello <%=current_user.first_name%> - check out this activity </h1>
@@ -41,11 +41,38 @@
 <div class="clear"></div>
 <%= render :partial => 'user_place_activity_collection' , :locals => {:collection => @user_place_activities}%>
 
+<%=request.request_uri%>
+  <form method="POST" action="https://graph.facebook.com/oauth/authorize" name="comment_form" target="_self" >
+      <div>
+        <input type="hidden" name="client_id" value="<%=FB_APP_ID%>"  />
+        <input type="hidden" name="redirect_uri" value="<%=CALLBACK_URL%>"  />
+        <input type="hidden" name="scope" value="<%= FbGrapher.scopes.join(",")%>"  />
+   
+    </div>
+  </form>
+
 
 <script type="text/javascript">
 
 
+  $("#sub").live('click', function (){
+
+createCookie("dest",window.location,1)
+ document.forms["comment_form"].submit();
+
+ return false;
+
+});
+
 $(document).ready(function() {
+
+
+
+  try {
+    var pageTracker = _gat._getTracker("<%= googlecode(request.url) %>");
+    pageTracker._trackPageview();
+  } catch(err) {}
+
 
 
     $('#calendar').fullCalendar({

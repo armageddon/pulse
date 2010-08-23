@@ -196,10 +196,14 @@ class FacebookController < ApplicationController
   end
 
   def callback
+path = "/"
+      logger.debug(path)
     MiniFB.enable_logging
     logger.info(params)
     if params[:code].present?
       access_token_hash = {}
+
+  
       access_token_hash = MiniFB.oauth_access_token(FB_APP_ID, CALLBACK_URL, FB_SECRET_KEY, params[:code])
       @access_token = access_token_hash["access_token"]
       logger.info(@access_token)
@@ -221,7 +225,10 @@ class FacebookController < ApplicationController
       self.current_user = User.find_by_fb_user_id(@user.id)
       self.current_user.access_token = @access_token
       self.current_user.save
-      redirect_to "/" and return
+      path = cookies[:dest] if cookies[:dest].present?
+      cookies.delete :dest
+      logger.debug(path)
+      redirect_to path and return
     else
       logger.debug('redirecting to link_page')
       redirect_to "/account/link" and return
