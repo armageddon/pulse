@@ -14,7 +14,9 @@ map.facebook_summary 'facebook_summary',   :controller => 'facebook', :action=>'
   #maps controller
   map.map '/map',  :controller => 'maps', :action => 'index'
   map.big_map '/big_map' , :controller => 'maps', :action => 'map'
-  
+
+  map.resources :place_activity_events, :controller => 'place_activity_events'
+
   #search controller
   map.search_simple '/search/simple', :controller => 'search', :action => "simple"
   map.search_nav '/search/nav', :controller => 'search', :action => "nav"

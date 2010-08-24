@@ -1,0 +1,128 @@
+<%= stylesheet_link_tag %w(fullcalendar) %>
+<%= javascript_include_tag 	"fullcalendar"%>
+
+<%= fb_connect_javascript_tag %>
+<%= init_fb_connect "XFBML", :js=>:jquery%>
+
+<% content_for :c1 do %>
+  <div class="column_header">
+    <h2>Events</h2>
+  </div>
+  <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FLondon-United-Kingdom%2FFernandez-Leluu-Supper-Club%2F179535337673&amp;layout=standard&amp;show_faces=true&amp;width=200&amp;action=like&amp;colorscheme=light&amp;height=80" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:200px; height:80px;" allowTransparency="true"></iframe>
+  <br />
+  <%=@place_activity_event.info_html%>
+  <br />
+  
+
+<% end %>
+
+<% content_for :c3 do %>
+  <%= render :partial => "shared/map" %>
+
+<% end %>
+
+<% content_for :message do %>
+
+  <%= image_tag @place_activity_event.image_file , :width=>"556px"%>
+<% end %>
+
+
+
+<div class="column_header">
+  <h2><%= @activity.name + ' @ ' + @place.name%></h2>
+</div>
+
+<h3 style="font-size:16px;font-weight:bold"><%= @place_activity_event.header%></h3>
+<br />
+<%=  @place_activity_event.description %>
+<br />
+<br />
+<h3 style="font-size:16px;font-weight:bold;color:gray">When</h3>
+
+<%= render :partial => "place_activity_event", :collection => @events %>
+<br />
+<div style="clear:both"></div>
+
+<h3 style="font-size:16px;font-weight:bold;color:gray;float:left;margin-top:15px">What people are saying</h3>
+<div style="clear:both"></div>
+<%= render :partial => "user_place_activity_collection",  :locals => {:collection => @user_place_activities}%>
+
+<form method="POST" action="https://graph.facebook.com/oauth/authorize" name="comment_form" target="_self" >
+  <div>
+    <input type="hidden" name="client_id" value="<%=FB_APP_ID%>"  />
+    <input type="hidden" name="redirect_uri" value="<%=CALLBACK_URL%>"  />
+    <input type="hidden" name="scope" value="<%= FbGrapher.scopes.join(",")%>"  />
+
+  </div>
+</form>
+
+
+<script type="text/javascript">
+
+
+  $("#sub").live('click', function (){
+
+    createCookie("dest",window.location,1)
+    document.forms["comment_form"].submit();
+
+    return false;
+
+  });
+
+  $(document).ready(function() {
+
+
+
+    try {
+      var pageTracker = _gat._getTracker("<%= googlecode(request.url) %>");
+      pageTracker._trackPageview();
+    } catch(err) {}
+
+
+
+    $('#calendar').fullCalendar({
+      buttonText: {
+        today: ''
+      }
+
+
+
+
+
+      // put your options and callbacks here
+    })
+
+  });
+
+
+  $('#join').live('click',function(){
+    showUserReg();
+    return false;
+  });
+
+  function showUserReg()
+  {
+    var id = FB.Connect.get_loggedInUser();
+    $.ajax({
+      type : "GET",
+      url : "/facebook_user_exists",
+      data : {"fbid" : id},
+      success : function(p){
+        if(p=='true')
+        {
+          window.location.href=window.location.href;
+        }
+        else
+        {
+          $('#dialog').jqm({ajax:'/quick_reg',modal:true});
+          $("#dialog").jqmShow();
+        }
+      },
+      error : function(p){
+        alert('error')
+        return false;
+      }
+    });
+    return false;
+  }
+</script>

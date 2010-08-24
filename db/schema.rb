@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100706175751) do
+ActiveRecord::Schema.define(:version => 20100823220317) do
 
   create_table "activities", :force => true do |t|
     t.string   "name"
@@ -80,6 +80,9 @@ ActiveRecord::Schema.define(:version => 20100706175751) do
     t.string   "url"
     t.integer  "place_activity_id"
     t.string   "description"
+    t.integer  "tickets_dispensed"
+    t.integer  "tickets_bought"
+    t.float    "ticket_price"
   end
 
   create_table "favorites", :force => true do |t|
@@ -175,10 +178,9 @@ ActiveRecord::Schema.define(:version => 20100706175751) do
     t.datetime "end_time"
   end
 
-  add_index "fb_user_events", ["event_id"], :name => "index_fb_user_events_on_event_id"
-  add_index "fb_user_events", ["event_location"], :name => "index_fb_user_events_on_event_location"
-  add_index "fb_user_events", ["event_name"], :name => "index_fb_user_events_on_event_name"
-  add_index "fb_user_events", ["fb_user_id"], :name => "index_fb_user_events_on_fb_user_id"
+  add_index "fb_user_events", ["event_id"], :name => "fb_user_events_event_id"
+  add_index "fb_user_events", ["event_location"], :name => "fb_user_events_event_location"
+  add_index "fb_user_events", ["fb_user_id"], :name => "fb_user_events_fb_user_id"
 
   create_table "fb_user_events1", :id => false, :force => true do |t|
     t.integer  "id",                          :default => 0, :null => false
@@ -200,10 +202,9 @@ ActiveRecord::Schema.define(:version => 20100706175751) do
     t.string  "like_name"
   end
 
-  add_index "fb_user_likes", ["category"], :name => "index_fb_user_likes_on_category"
-  add_index "fb_user_likes", ["fb_user_id"], :name => "index_fb_user_likes_on_fb_user_id"
-  add_index "fb_user_likes", ["like_id"], :name => "index_fb_user_likes_on_like_id"
-  add_index "fb_user_likes", ["like_name"], :name => "index_fb_user_likes_on_like_name"
+  add_index "fb_user_likes", ["category"], :name => "fb_user_likes_category"
+  add_index "fb_user_likes", ["fb_user_id"], :name => "fb_user_likes_fb_user_id"
+  add_index "fb_user_likes", ["like_name"], :name => "fb_user_likes_name"
 
   create_table "fb_user_likes1", :id => false, :force => true do |t|
     t.integer "id",                      :default => 0, :null => false
@@ -260,8 +261,10 @@ ActiveRecord::Schema.define(:version => 20100706175751) do
     t.string   "htl_zip"
   end
 
-  add_index "fb_users", ["fb_user_id"], :name => "index_fb_users_on_fb_user_id"
-  add_index "fb_users", ["gender"], :name => "index_fb_users_on_gender"
+  add_index "fb_users", ["fb_user_source_id"], :name => "idx_source"
+  add_index "fb_users", ["gender"], :name => "idx_fb_users_gender"
+  add_index "fb_users", ["name"], :name => "idx_fb_users_name"
+  add_index "fb_users", ["relationship"], :name => "idx_fb_users_relationship"
 
   create_table "fb_users1", :id => false, :force => true do |t|
     t.integer  "id",                             :default => 0, :null => false
@@ -360,6 +363,16 @@ ActiveRecord::Schema.define(:version => 20100706175751) do
     t.string  "url"
   end
 
+  create_table "place_activity_events", :force => true do |t|
+    t.integer  "place_activity_id", :limit => 8
+    t.string   "image_file"
+    t.string   "header"
+    t.string   "description",       :limit => 1000
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "info_html",         :limit => 1000
+  end
+
   create_table "place_categories", :force => true do |t|
     t.string "description"
   end
@@ -406,6 +419,82 @@ ActiveRecord::Schema.define(:version => 20100706175751) do
 
   add_index "places", ["import_id"], :name => "idx_import_id"
   add_index "places", ["name"], :name => "index_places_on_name"
+
+  create_table "relation_events_all", :id => false, :force => true do |t|
+    t.integer "user_id",        :limit => 8
+    t.integer "user_source_id", :limit => 8
+    t.string  "user_name",      :limit => 200
+    t.integer "user_gender",    :limit => 1
+    t.integer "user_rel",       :limit => 2
+    t.integer "event_id",       :limit => 8
+    t.string  "event_name",     :limit => 200
+    t.float   "event_weight"
+    t.string  "event_category", :limit => 200
+    t.string  "event_location", :limit => 500
+  end
+
+  add_index "relation_events_all", ["event_id"], :name => "idx_relation_events_all_id"
+  add_index "relation_events_all", ["event_location"], :name => "idx_relation_events_all_location"
+  add_index "relation_events_all", ["event_name"], :name => "idx_relation_events_all_event_name"
+  add_index "relation_events_all", ["user_id"], :name => "idx_relation_events_all_user_id"
+  add_index "relation_events_all", ["user_source_id"], :name => "idx_relation_events_all_source_user_id"
+
+  create_table "relation_likes", :id => false, :force => true do |t|
+    t.integer "user_id",        :limit => 8
+    t.integer "user_source_id", :limit => 8
+    t.string  "user_name",      :limit => 200
+    t.integer "user_gender",    :limit => 1
+    t.integer "user_rel",       :limit => 2
+    t.integer "like_id",        :limit => 8
+    t.string  "like_name",      :limit => 200
+    t.float   "like_weight"
+    t.string  "like_category",  :limit => 200
+  end
+
+  add_index "relation_likes", ["like_id"], :name => "idx_relation_like_id"
+  add_index "relation_likes", ["user_id"], :name => "idx_relation_likes_user_id"
+  add_index "relation_likes", ["user_source_id"], :name => "idx_relation_source_user_id"
+
+  create_table "relation_rel", :id => false, :force => true do |t|
+    t.integer "user_id1",        :limit => 8
+    t.integer "user_source_id1", :limit => 8
+    t.string  "user_name1",      :limit => 200
+    t.integer "user_id2",        :limit => 8
+    t.integer "user_source_id2", :limit => 8
+    t.string  "user_name2",      :limit => 200
+    t.integer "object_id",       :limit => 8
+    t.string  "object_name",     :limit => 200
+    t.string  "object_type",     :limit => 500
+    t.float   "object_weight"
+  end
+
+  add_index "relation_rel", ["object_id"], :name => "idx_relation_rel_like_id"
+  add_index "relation_rel", ["user_id1"], :name => "idx_relation_rel_user_id1"
+  add_index "relation_rel", ["user_id2"], :name => "idx_relation_rel_user_id2"
+  add_index "relation_rel", ["user_source_id1"], :name => "idx_relation_rel_user_source_id1"
+  add_index "relation_rel", ["user_source_id2"], :name => "idx_relation_rel_user_source_id2"
+
+  create_table "relation_summary", :id => false, :force => true do |t|
+    t.integer "user_id1",        :limit => 8
+    t.integer "user_source_id1", :limit => 8
+    t.string  "user_name1",      :limit => 200
+    t.integer "user_id2",        :limit => 8
+    t.integer "user_source_id2", :limit => 8
+    t.string  "user_name2",      :limit => 200
+    t.integer "common_count"
+    t.float   "weight"
+  end
+
+  create_table "relation_users", :id => false, :force => true do |t|
+    t.integer "user_id",      :limit => 8
+    t.string  "name",         :limit => 200
+    t.string  "gender",       :limit => 50
+    t.string  "relationship", :limit => 200
+    t.integer "source_id",    :limit => 8
+  end
+
+  add_index "relation_users", ["source_id"], :name => "idx_relation_users_user_source_id"
+  add_index "relation_users", ["user_id"], :name => "idx_relation_users_user_id"
 
   create_table "simple_captcha_data", :force => true do |t|
     t.string   "key",        :limit => 40

@@ -1,0 +1,57 @@
+<div class="column_header">
+    <h2>Details</h2>
+</div>
+<div id="profile_image">
+  <% if @activity.icon.url!='/images/default.png' %>
+    <%= image_tag(@activity.icon.url(:large), :class=>"profile_image") %>
+  <%else%>
+    <%= image_tag(@place.icon.url(:profile), :class=>"profile_image") %>
+  <%end%>
+</div>
+
+
+<br>
+<div id="address"> 
+  <%= @place.address %><br>
+  <%= @place.city %>, <%= @place.zip %><br>
+  <% if @place.website.present? %>
+    <%= link_to "website", @place.website %>
+  <% end %>
+</div>
+
+<ul id="do_things">
+  <li><%= link_to "SEARCH", :controller=>'search', :action=>"search_criteria", :id=>'find_people_link' , :t => "people" %></li>
+  
+  <li><%= link_to "EDIT MY INFO", edit_account_path %></li>
+
+  <li><%= link_to "INVITE A FRIEND", '/invite', :class => "invitea" %>
+
+</ul>
+<br/>
+<%= link_to "ADD TO MY FAVOURITES", '#', 'data-href' => "/user_place_activities/free?add_type=neither&activity_id="+@activity.id.to_s+"&place_id="+@place.id.to_s, :id => "add_place_activity", :class => "add_to_favorites submit"   if current_user!=nil && current_user && current_user.partner_type == nil  %>
+<br/>
+<br/>
+<% if @place.id != ANYWHERE_PLACE_ID %>
+  Check out <%= link_to @place.name, @place %> <br/>
+<% end %>
+<% if @activity.id != ANYTHING_ACTIVITY_ID %>
+  Check out <%= link_to @activity.name, @activity %>
+<% end %>
+
+<div id="manage_place"></div>
+
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function() {
+    $("#remove_place").click(function(event) {
+      var target = $(this).attr('href');
+      $.ajax({
+        type: "POST",
+        url: target,
+        success: function() { $("#remove_place").hide() && $("#add_place").show() },
+        data: { "_method": "delete"}
+      });
+      return false;
+    });
+  });
+</script>
+
