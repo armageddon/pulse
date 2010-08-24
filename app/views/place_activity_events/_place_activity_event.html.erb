@@ -1,13 +1,17 @@
+
 <div style="clear:both"></div>
 <div style="float:left">
   <span style="font-size:14px;font-weight:bold">
-  <%=Date::DAYNAMES[object.start.wday]%>&nbsp;<%=Date::MONTHNAMES[object.start.month]%>&nbsp;<%=object.start.day%>&nbsp;<%=object.start.year%>&nbsp;<%=object.start.hour%>
-</span>
+    <%=Date::DAYNAMES[object.start.wday]%>&nbsp;<%=Date::MONTHNAMES[object.start.month]%>&nbsp;<%=object.start.day%>&nbsp;<%=object.start.year%>&nbsp;<%=object.start.hour%>
+  </span>
   &nbsp;(<%=object.tickets_dispensed - object.tickets_bought%> of <%=object.tickets_dispensed%> tickets left)
 
- 
+
 </div>
 <div style="float-right">
-   <%= submit_button "book now",:id=>'book', :class=>"submit_act", :style=>"float:right"%>
+
+  <%= link_to "book now", '/payments?event_id='+object.id.to_s, :id=>'book', :class=>"submit_act", :style=>"float:right;height:18px", :event_id=>object.id%>
+ 
 </div>
 <div style="clear:both"></div>
+

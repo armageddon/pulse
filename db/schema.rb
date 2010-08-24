@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100823220317) do
+ActiveRecord::Schema.define(:version => 20100824132246) do
 
   create_table "activities", :force => true do |t|
     t.string   "name"
@@ -45,6 +45,8 @@ ActiveRecord::Schema.define(:version => 20100823220317) do
     t.integer  "attendee_response"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "tickets"
+    t.string   "ticket_ref"
   end
 
   create_table "categories", :force => true do |t|
@@ -499,6 +501,17 @@ ActiveRecord::Schema.define(:version => 20100823220317) do
   create_table "simple_captcha_data", :force => true do |t|
     t.string   "key",        :limit => 40
     t.string   "value",      :limit => 6
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "tickets", :force => true do |t|
+    t.integer  "event_id",      :limit => 8
+    t.integer  "user_id"
+    t.string   "pp_ref"
+    t.string   "quantity"
+    t.float    "price"
+    t.integer  "ticket_status"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

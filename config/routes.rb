@@ -1,15 +1,19 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :test3s
 
+  map.checkout '/payments/checkout', :controller => 'payments' , :action => 'checkout'
+  map.checkout '/payments/confirm', :controller => 'payments' , :action => 'confirm'
+  map.resources :payments, :controller=>'payments'
+
   map.messages_admin '/messages/admin', :controller => 'user_messages' , :action => 'admin'
-map.facebook_post '/facebook_post', :controller => 'facebook', :action=>'post_from_m'
+  map.facebook_post '/facebook_post', :controller => 'facebook', :action=>'post_from_m'
   #facebook controller
   map.resources :facebook
   map.facebook_serendipity 'facebook_serendipity',  :controller => 'facebook', :action=>'facebook_serendipity'
-map.facebook_summary 'facebook_summary',   :controller => 'facebook', :action=>'facebook_summary'
+  map.facebook_summary 'facebook_summary',   :controller => 'facebook', :action=>'facebook_summary'
   map.facebook_tab 'facebook/tab',  :controller => 'facebook', :action=>'facebook_tab'
   map.facebook_stats '/facebook_stats',  :controller => 'facebook', :action=>'facebook_stats'
-    map.post_to_newsfeed '/facebook_post_to_newsfeed',  :controller => 'facebook', :action=>'post_to_newsfeed'
+  map.post_to_newsfeed '/facebook_post_to_newsfeed',  :controller => 'facebook', :action=>'post_to_newsfeed'
   map.visitor '/visitor', :controller => 'facebook', :action=>'new_visitor'
   #maps controller
   map.map '/map',  :controller => 'maps', :action => 'index'
