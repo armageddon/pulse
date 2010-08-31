@@ -27,7 +27,7 @@
   <div class="clear"></div>
   <div style="font-size:16px;font-weight:bold;float:left;margin-bottom:7px"><%= @event.start.strftime("%A %d %B %Y %I:%M %p") %></div>
   <div class="clear"></div>
-  <% if @tickets!= nil  %>
+  <% if @tickets!= nil && @tickets.length>0  %>
   <span style="font-weight:bold">You have tickets to this event:</span>
       <% @tickets.each do |f| %>
         <div style="float:left;font-size:10px"> <%=f.description%></div><div class="clear"></div>
