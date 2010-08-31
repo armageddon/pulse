@@ -33,7 +33,7 @@ before_filter :login_required
     event = Event.find(params[:event_id])
     if quantity.to_i !=0
       quantity.to_i  == 1 ? s = '' : s = 's'
-      q = quantity.ti_i
+      q = quantity.to_i
       description = '%.0f' % q + ' ticket' +s + ' (M:'+quantity_male.to_s+'/F:'+quantity_female.to_s+') to ' + PlaceActivityEvent.find_by_place_activity_id(event.place_activity_id).header + ' on ' + event.start.strftime("%A %d %B %Y %I:%M %p") +'  Price £:'+  '%.2f' % (price.to_i/100)
 
     else
