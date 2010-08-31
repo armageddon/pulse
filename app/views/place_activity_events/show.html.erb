@@ -53,9 +53,11 @@ or  <%= link_to image_tag("fbConnect.gif", :title => "Connect"), '#', :id=>'sub'
 <br />
 <div style="clear:both"></div>
 
+<% if  @user_place_activities.length > 0%>
 <h3 style="font-size:16px;font-weight:bold;color:gray;float:left;margin-top:15px">What people are saying</h3>
 <div style="clear:both"></div>
 <%= render :partial => "user_place_activity_collection",  :locals => {:collection => @user_place_activities}%>
+<% end %>
 
 <form method="POST" action="https://graph.facebook.com/oauth/authorize" name="comment_form" target="_self" >
   <div>

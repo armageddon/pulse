@@ -7,7 +7,7 @@ class PlaceActivityEventsController< ApplicationController
      @place = @place_activity.place
      @activity = @place_activity.activity
      @users = @place_activity.users.paginate(:all,:group => :user_id, :page => params[:page], :per_page => 6)
-     @user_place_activities = @place_activity.user_place_activities.paginate( :order=>'created_at DESC',:page=>1,:per_page=>15)
+     @user_place_activities = @place_activity.user_place_activities.paginate( :conditions=>' LENGTH(description) > 0',:order=>'created_at DESC',:page=>1,:per_page=>15)
      @user_place_activity_comments = @place_activity.user_place_activities.paginate(:conditions=>' LENGTH(description) > 0', :page=>1,:per_page=>15)
      @place_activity_event = PlaceActivityEvent.find_by_place_activity_id(params[:id])
      @events=Event.find(:all, :conditions=>'place_activity_id = ' + params[:id].to_s)
