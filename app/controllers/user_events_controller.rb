@@ -74,11 +74,21 @@ class UserEventsController < ApplicationController
 
   def user_events
     #for populating calendar
-    events = Event.find(:all)
     es=Array.new
-    events.each do |e|
+    if params[:type].present? && params[:id].present?
+      events = Event.find(:all, :conditions=>'place_activity_id = ' + params[:id].to_s)
+      events.each do |e|
+      es << {:url => '/user_events/'+ e.id.to_s,:title=>' ' , :start=> e.start}
+    end
+    else
+       events = Event.find(:all)
+       events.each do |e|
       es << {:url => '/user_events/'+ e.id.to_s,:title=>PlaceActivity.find(e.place_activity_id).activity.name + ' at ' +PlaceActivity.find(e.place_activity_id).place.name , :start=> e.start}
     end
+    end
+   
+    
+    
     respond_to do |format|
       format.js { render :json => es}
     end
@@ -164,17 +174,14 @@ class UserEventsController < ApplicationController
         sum(case attendee_response when 3 then 1 else 0 end) as not_attending
         from attendees
         where event_id = #{event_id}
-  SQL
+        SQL
      r = ActiveRecord::Base.connection.execute sql
 
      ret=Array.new
     r.all_hashes.each do |h|
        ret << {:not_responded=>h['not_responded'], :attending=> h['attending'] , :maybe=> h['maybe'] , :not_attending=> h['not_attending'] }
      end
-    
 
-
-   
     users.each do |u|
       ret << {:name=>u.first_name, :icon=>u.icon.url(:thumb) , :id=>u.id}
     end
