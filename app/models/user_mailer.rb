@@ -35,7 +35,15 @@ class UserMailer < ActionMailer::Base
 
   end
 
-
+def ticket_notification(user, ticket)
+  logger.debug('TICKET NOTIFICATION')
+    setup_email(user)
+    @subject    += 'Congratulations'
+    @body[:url]  = "http://hellopulse.com/activate/#{user.activation_code}"
+    @ticket= ticket
+    @content_type =  "text/html"
+  end
+  
   def signup_notification(user)
     setup_email(user)
     @subject    += 'Welcome to HelloPulse'

@@ -82,11 +82,11 @@ before_filter :auth_url
   def quick_reg
     logger.debug(cookies[:access_token])
     @fbmuser = MiniFB.get(cookies[:access_token], 'me')
-    fbuser = User.find(:first,:conditions=>'fb_user_id='+@fbmuser.id.to_s) unless @fbmuser == nil
-    if fbuser != nil
-      login_from_fb
-      redirect_to '/' and return
-    else
+    #fbuser = User.find(:first,:conditions=>'fb_user_id='+@fbmuser.id.to_s) unless @fbmuser == nil
+    #if fbuser != nil
+     # current_user = fbuser
+     # redirect_to '/' and return
+   # else
       @fbmuser.first_name  unless @fbmuser == nil# || facebook_session.expired?
       @user = User.new
       begin
@@ -106,7 +106,7 @@ before_filter :auth_url
       respond_to do |format|
         format.js { render :partial => "/users/quick_reg", :locals => {:user => @user}}
       end
-    end
+   # end
   end
 
   def quick_reg_old

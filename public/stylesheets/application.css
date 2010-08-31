@@ -1568,9 +1568,9 @@ a.caldisabled {
 
 #event_attendees
 {
-   height:320px;
+   height:120px;
    overflow:auto;
-   border:1px solid;
+   
 }
 .get_attendees
 {

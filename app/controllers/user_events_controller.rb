@@ -66,6 +66,10 @@ class UserEventsController < ApplicationController
 
   def show
     @event = Event.find(params[:id])
+    @tickets = Ticket.find(:all, :conditions=>"event_id = "+@event.id.to_s + " and user_id =" + current_user.id.to_s)
+    @has_ticket = @tickets==nil ? 0 : 1
+    @place_activity_event = PlaceActivityEvent.find_by_place_activity_id(@event.place_activity_id.to_s)
+    @has_place_activity_event = @place_activity_event ==nil ? 0 : 1
   end
 
   def user_events

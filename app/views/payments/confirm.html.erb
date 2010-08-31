@@ -1,21 +1,34 @@
-<% content_for :c1 do %>
-&nbsp;
+<% content_for :message do %>
+  <%= image_tag @place_activity_event.image_file , :width=>"556px"%>
 <% end %>
-<h1>Please Confirm Your Payment Details</h1>
-
-<%=@description %>
-
-<table>
-	<tr><td>Name</td><td><%= @address['name'] %></td></tr>
-	<tr><td>Company</td><td><%= @address['company'] %></td></tr>
-	<tr><td>Address 1</td><td><%= @address['address1'] %></td></tr>
-	<tr><td>Address 2</td><td><%= @address['address2'] %></td></tr>
-	<tr><td>City</td><td><%= @address['city'] %></td></tr>
-	<tr><td>State</td><td><%= @address['state'] %></td></tr>
-	<tr><td>Country</td><td><%= @address['country'] %></td></tr>
-	<tr><td>Zip</td><td><%= @address['zip'] %></td></tr>
+<% content_for :c1 do %>
+  <div class="column_header">
+    <h2>Events</h2>
+  </div>
+  <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FLondon-United-Kingdom%2FFernandez-Leluu-Supper-Club%2F179535337673&amp;layout=standard&amp;show_faces=true&amp;width=200&amp;action=like&amp;colorscheme=light&amp;height=80" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:200px; height:80px;" allowTransparency="true"></iframe>
+  <br />
+  <%=@place_activity_event.info_html%>
+  <br />
+<% end %>
+   <div class="column_header">
+    <h2>Confirmation</h2>
+  </div>
+<h2>Please Confirm Your Payment Details</h2>
+<br />
+<span style="font-size:12px;font-weight:bold"><%=@description %></span>
+<br />
+<br />
+<table style="margin-top:10px">
+  <tr><td>Name</td><td><%= @address['name'] %></td></tr>
+  <tr><td>Company</td><td><%= @address['company'] %></td></tr>
+  <tr><td>Address 1</td><td><%= @address['address1'] %></td></tr>
+  <tr><td>Address 2</td><td><%= @address['address2'] %></td></tr>
+  <tr><td>City</td><td><%= @address['city'] %></td></tr>
+  <tr><td>State</td><td><%= @address['state'] %></td></tr>
+  <tr><td>Country</td><td><%= @address['country'] %></td></tr>
+  <tr><td>Zip</td><td><%= @address['zip'] %></td></tr>
 </table>
-
+<br />
 <% form_tag :action => 'complete', :token => params[:token], :payer_id => params[:PayerID] do %>
-	<%= submit_tag 'Complete Payment' %>
+  <%= submit_button 'Complete Payment', :class=>'submit_act' %>
 <% end %>

@@ -1,14 +1,19 @@
 
 module FbGrapher
   require 'mini_fb'
+  require 'rubygems'
+
+  require 'cassandra'
+  include SimpleUUID
+
   def self.logger
     RAILS_DEFAULT_LOGGER
   end
 
 
   def self.graph_base
-        "https://graph.facebook.com/"
-    end
+    "https://graph.facebook.com/"
+  end
 
   def self.oauth_url(app_id, redirect_uri, options={})
     logger.debug('OWN OUTH URL GEN')
@@ -18,7 +23,7 @@ module FbGrapher
     # oauth_url << "&scope=#{options[:scope]}" if options[:scope]
     oauth_url << ("&" + options.each.map { |k, v| "%s=%s" % [k, v] }.join('&')) unless options.empty?
     oauth_url << '&display=popup'
-     oauth_url << '&type=client_cred'
+    oauth_url << '&type=client_cred'
     oauth_url
   end
 
@@ -50,18 +55,18 @@ module FbGrapher
 
     hpuser = User.find_by_fb_user_id(@user.id)
     if hpuser != nil && hpuser.fb_pull==2
-    sql =<<-SQL
+      sql =<<-SQL
        DELETE FROM fb_user_events where fb_user_id in (select fb_user_id from fb_users where fb_user_source_id = #{@user.id})
-    SQL
-    r = ActiveRecord::Base.connection.execute sql
-    sql =<<-SQL
+      SQL
+      r = ActiveRecord::Base.connection.execute sql
+      sql =<<-SQL
          DELETE FROM fb_user_likes where fb_user_id in (select fb_user_id from fb_users where fb_user_source_id = #{@user.id})
-    SQL
-    r = ActiveRecord::Base.connection.execute sql
-    sql =<<-SQL
+      SQL
+      r = ActiveRecord::Base.connection.execute sql
+      sql =<<-SQL
        DELETE FROM fb_users where fb_user_source_id = #{@user.id};
-    SQL
-    r = ActiveRecord::Base.connection.execute sql
+      SQL
+      r = ActiveRecord::Base.connection.execute sql
     end
 
     @response_hash = MiniFB.get(access_token, @user.id, :type=>'friends')
@@ -101,7 +106,7 @@ module FbGrapher
     q="select uid, first_name, name, current_location, meeting_for, meeting_sex, religion, relationship_status, birthday_date, birthday , sex , hometown_location from user where uid in ("+ s5.chomp(',') + ") "
     @users5 = MiniFB.fql(access_token, q)
     logger.info('FB_PULL  FRIENDS 5 ' + DateTime.now.to_s)
-     puts 'FB_PULL  FRIENDS 5 ' + DateTime.now.to_s
+    puts 'FB_PULL  FRIENDS 5 ' + DateTime.now.to_s
     @users1 = @users1 == nil || @users1.length==0 ?   Array.new : @users1.class!=Array ? @users1.data : @users1
     @users2 = @users2 == nil || @users2.length==0 ?  Array.new : @users2.class!=Array ? @users2.data : @users2
     @users3 =@users3 == nil || @users3.length==0 ?  Array.new : @users3.class!=Array ? @users3.data : @users3
@@ -186,8 +191,45 @@ fb_user_source_id)
       r = ActiveRecord::Base.connection.execute sql
     end
     logger.info('FB_PULL  INSERTED AND CREATED FRIENDS ' + DateTime.now.to_s)
+    puts 'FB_PULL  INSERTED AND CREATED FRIENDS ' + DateTime.now.to_s
+    twitter = Cassandra.new('Twitter')
+    (0..@users.length-1).each do |e|
 
-   puts 'FB_PULL  INSERTED AND CREATED FRIENDS ' + DateTime.now.to_s
+      usr = @users[e]
+      # logger.debug(usr)
+      htl_id = 0
+      cl_id = 0
+      fb_user_id = usr.uid
+      name = usr.name.gsub(/\\/, '\&\&').gsub(/'/, "''")
+      gender = usr.sex
+      relationship = usr.relationship_status.gsub(/\\/, '\&\&').gsub(/'/, "''") if usr.relationship_status!= nil
+      birthday = usr.birthday_date
+      first_name = usr.first_name.gsub(/\\/, '\&\&').gsub(/'/, "''") if usr.first_name nil
+      religion = usr.religion.gsub(/\\/, '\&\&').gsub(/'/, "''") if usr.religion != nil
+      meeting_for = p usr.meeting_for
+      meeting_sex = usr.meeting_sex if usr.meeting_sex != nil
+      fb_user_source_id = @user.id
+      cl_country = usr[:current_location][:country].gsub(/\\/, '\&\&').gsub(/'/, "''") if usr[:current_location].present? &&usr[:current_location][:country].present?
+      cl_city = usr[:current_location][:city].gsub(/\\/, '\&\&').gsub(/'/, "''") if usr[:current_location].present? &&usr[:current_location][:city].present?
+      cl_state  = usr[:current_location][:state].gsub(/\\/, '\&\&').gsub(/'/, "''") if usr[:current_location].present? &&usr[:current_location][:state].present?
+      cl_id = usr[:current_location][:id] if usr[:current_location].present? &&usr[:current_location][:id].present?
+      cl_zip = usr[:current_location][:zip].gsub(/\\/, '\&\&').gsub(/'/, "''") if usr[:current_location].present? &&usr[:current_location][:zip].present?
+      htl_country   = usr[:hometown_location][:country].gsub(/\\/, '\&\&').gsub(/'/, "''") if usr[:hometown_location].present? &&usr[:hometown_location][:country].present?
+      htl_city= usr[:hometown_location][:city].gsub(/\\/, '\&\&').gsub(/'/, "''") if usr[:hometown_location].present? &&usr[:hometown_location][:city].present?
+      htl_state = usr[:hometown_location][:state].gsub(/\\/, '\&\&').gsub(/'/, "''") if usr[:hometown_location].present? &&usr[:hometown_location][:state].present?
+      htl_id= usr[:hometown_location][:id] if usr[:hometown_location].present? &&usr[:hometown_location][:id].present?
+      htl_zip= usr[:hometown_location][:zip].gsub(/\\/, '\&\&').gsub(/'/, "''") if usr[:hometown_location].present? &&usr[:hometown_location][:zip].present?
+
+      
+      user = {'screen_name' => name}
+      twitter.insert(:Users, fb_user_id.to_s, user)
+
+
+
+
+    end
+
+    puts 'FB_PULL  INSERTED AND CREATED FRIENDS CASS ' + DateTime.now.to_s
     #EVENTS
     q="select uid, eid, rsvp_status  from event_member where uid in ("+ s1.chomp(',') + ") and rsvp_status in  ('attending','unsure')"
     @events1 = MiniFB.fql(access_token, q)
@@ -219,7 +261,14 @@ fb_user_source_id)
       SQL
       r = ActiveRecord::Base.connection.execute sql
     end
-    logger.info('FB_PULL  INSERTED EVENTS ' + DateTime.now.to_s)
+
+
+    puts 'FB_PULL  INSERTED EVENTS ' + DateTime.now.to_s
+    (0..@events.length-1).each do |e|
+       user = {'screen_name' => @events[e].eid}
+      twitter.insert(:Users, @events[e].eid.to_s, user)
+    end
+    logger.info('FB_PULL  INSERTED EVENTS cass ' + DateTime.now.to_s)
     puts 'FB_PULL  INSERTED EVENTS ' + DateTime.now.to_s
     @event_mems = FbUserEvent.find(:all, :select=> "distinct event_id", :conditions=> "event_name is null")
     listring = ""
@@ -274,7 +323,7 @@ fb_user_source_id)
       end
     end
     logger.info('FB_PULL  UPDATED EVENTS ' + DateTime.now.to_s)
-     puts 'FB_PULL  UPDATED EVENTS ' + DateTime.now.to_s
+    puts 'FB_PULL  UPDATED EVENTS ' + DateTime.now.to_s
 
     q="select uid, page_id, type from page_fan where uid in ("+ s1.chomp(',') + ") "
     @user1 = MiniFB.fql(access_token, q)
@@ -296,7 +345,7 @@ fb_user_source_id)
 
     @user = @user1|@user2|@user3|@user4|@user5
     logger.info('FB_PULL  LIKES ' + DateTime.now.to_s)
-       puts 'FB_PULL  LIKES ' + DateTime.now.to_s
+    puts 'FB_PULL  LIKES ' + DateTime.now.to_s
     (0..@user.length-1).each do |e|
       sql =<<-SQL
        insert into fb_user_likes (fb_user_id, like_id, category) values (#{@user[e].uid},#{@user[e].page_id},'#{@user[e][:type]}')

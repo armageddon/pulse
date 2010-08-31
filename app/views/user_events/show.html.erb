@@ -3,9 +3,9 @@
   <%= image_tag "fnl.png" , :width=>"556px"%>
 <% end %>
 <% content_for :c1 do %>
-<div class="column_header">
-  <h2>Events</h2>
-</div>
+  <div class="column_header">
+    <h2>Events</h2>
+  </div>
   <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FLondon-United-Kingdom%2FFernandez-Leluu-Supper-Club%2F179535337673&amp;layout=standard&amp;show_faces=true&amp;width=200&amp;action=like&amp;colorscheme=light&amp;height=80" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:200px; height:80px;" allowTransparency="true"></iframe>
 
 <% end %>
@@ -13,59 +13,70 @@
 <div class="column_header">
   <h2>Events</h2>
 </div>
-<div style="float:left;font-size:14px">
+<div style="float:left;font-size:14px;margin-bottom:7px">
   <%=link_to @event.place_activity.activity.name, @event.place_activity.activity%>
-at
- <%=link_to @event.place_activity.place.name, @event.place_activity.place%>
+  at
+  <%=link_to @event.place_activity.place.name, @event.place_activity.place%>
 </div>
 <div class="clear"></div>
-<div style="float:left;width:360px;height:100px">
-<%=@event.description%>
-</div>
-<div style="float:left;width:170px;margin-left:26px">
-  <%=render :partial =>'/user_events/rsvp', :locals=>{:event=>@event}%>
-</div>
-<div class="clear"></div>
-<br />
-<%= hidden_field_tag 'event_id',@event.id %>
-<h3>Attendees</h3>
-<div id ="yes" class="get_attendees" style="float:left">
-  Coming
-</div>
-<div id ="may" class="get_attendees" style="float:left">
-  Might come
-</div>
-<div id ="no" class="get_attendees" style="float:left">
-  Nope
-</div>
-<div id ="not" class="get_attendees" style="float:left">
-  Not responded
-</div>
 
-<div class="clear"></div>
-<div id="event_attendees">
+<% if  @has_place_activity_event ==1 %>
+  <div style="font-size:16px;font-weight:bold;float:left"><%= @place_activity_event.header %></div>
+  <div class="clear"></div>
+  <div style="float:left;margin-bottom:7px"><%= @place_activity_event.description %></div>
+  <div class="clear"></div>
+  <div style="font-size:16px;font-weight:bold;float:left;margin-bottom:7px"><%= @event.start.strftime("%A %d %B %Y %I:%M %p") %></div>
+  <div class="clear"></div>
+  <% if @tickets!= nil  %>
+  <span style="font-weight:bold">You have tickets to this event:</span>
+      <% @tickets.each do |f| %>
+        <div style="float:left;font-size:10px"> <%=f.description%></div><div class="clear"></div>
+      <%end%>
+    <%end%>
+        <%= link_to "buy tickets", '/payments?event_id='+@event.id.to_s, :id=>'book', :class=>"submit_act", :style=>"float:right;height:18px", :event_id=>@event.id%>
+
+  <% else %>
+    <div style="float:left;"><%=@event.description%></div>
+    <div style="float:left;width:170px;margin-left:26px;margin-bottom:7px">
+      <%=render :partial =>'/user_events/rsvp', :locals=>{:event=>@event}%>
+    </div>
+    <div class="clear"></div>
 
 
-</div>
 
-<script type="text/javascript" charset="utf-8">
+  <% end %>
 
-  $(document).ready(function() {
-    $('.get_attendees').live('click',function(){
-      switch(this.id)
-      {
-        case 'yes':
-          show_attendees(1);
-          break;
-        case 'may':
-          show_attendees(2);
-           break;
-        case 'no':
-          show_attendees(3);
-          break;
-        case 'not':
-          show_attendees(0);
-          break;
+
+  <div class="clear"></div>
+  <br />
+  <%= hidden_field_tag 'event_id',@event.id %>
+  <h3>These people are attending the event</h3>
+  
+
+  <div class="clear"></div>
+  <div id="event_attendees">
+
+
+  </div>
+
+  <script type="text/javascript" charset="utf-8">
+
+    $(document).ready(function() {
+      $('.get_attendees').live('click',function(){
+        switch(this.id)
+        {
+          case 'yes':
+            show_attendees(1);
+            break;
+          case 'may':
+            show_attendees(2);
+            break;
+          case 'no':
+            show_attendees(3);
+            break;
+          case 'not':
+            show_attendees(0);
+            break;
         }
       });
 
@@ -75,21 +86,21 @@ at
     function show_attendees(response_id)
     {
       $.ajax({
-          type: 'POST',
-          dataType: 'json',
-          url: '/events/attendees',
-          data: {
-            "event_id" : $('#event_id').val(),
-            "type" : response_id
-          },
-          success: function(p) {
-            populate_users(p)
-          },
-          error: function()
-          {
-            alert('error');
-          }
-        });
+        type: 'POST',
+        dataType: 'json',
+        url: '/events/attendees',
+        data: {
+          "event_id" : $('#event_id').val(),
+          "type" : response_id
+        },
+        success: function(p) {
+          populate_users(p)
+        },
+        error: function()
+        {
+          alert('error');
+        }
+      });
     }
     function populate_users(p)
     {
@@ -107,16 +118,14 @@ at
     function create_user(u)
     {
       var s = '';
-      s = '<div class= "invite_person"  id="user_'+u.id.toString()+'">';
+      s = '<div  style="float:left" id="user_'+u.id.toString()+'">';
       s += '<div style="text-align:center;">';
-      s += '<img align="center" alt="Thumb_dsc09007" height="75px" src="' + u.icon+'" style="margin-top:3px;margin-bottom:3px;" width="75px" />';
+      s += '<img align="center" alt="Thumb_dsc09007" height="35px" src="' + u.icon+'" style="margin-top:3px;margin-bottom:3px;" width="35px"tooltip="sd" />';
       s += '</div>';
-      s += '<div class="clear"></div>';
-      s += '<div style="margin-bottom:4px;">';
-      s += u.name;
-      s += '</div>';
+   
+
       s += '</div>';
       return s;
     }
-</script>
+  </script>
 

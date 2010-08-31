@@ -22,8 +22,18 @@
 <% end %>
 
 <% content_for :message do %>
-
+  <div style="float:left">
   <%= image_tag @place_activity_event.image_file , :width=>"556px"%>
+  </div>
+  <div style="float:left;margin-left:20px ; width:164px">
+    <%  if !logged_in?%>
+  <div style="font-size:14px;margin-bottom:3px">New to HelloPulse?</div>
+   
+    <%= submit_button "Join Now", :id =>'join',  :class =>'submit_act'  %>
+or  <%= link_to image_tag("fbConnect.gif", :title => "Connect"), '#', :id=>'sub' %>
+    <% end  %>
+  </div>
+  <div style="clear:both"></div>
 <% end %>
 
 
@@ -61,12 +71,9 @@
 
 
   $("#sub").live('click', function (){
-
     createCookie("dest",window.location,1)
     document.forms["comment_form"].submit();
-
     return false;
-
   });
 
   $(document).ready(function() {
@@ -78,24 +85,17 @@
       pageTracker._trackPageview();
     } catch(err) {}
 
-
-
     $('#calendar').fullCalendar({
       buttonText: {
         today: ''
       }
-
-
-
-
-
       // put your options and callbacks here
     })
-
   });
 
 
   $('#join').live('click',function(){
+
     showUserReg();
     return false;
   });
@@ -108,15 +108,16 @@
       url : "/facebook_user_exists",
       data : {"fbid" : id},
       success : function(p){
-        if(p=='true')
-        {
-          window.location.href=window.location.href;
-        }
-        else
-        {
+       // if(p=='true')
+       // {
+       //   window.location.href=window.location.href;
+        //}
+        //else
+        //{
           $('#dialog').jqm({ajax:'/quick_reg',modal:true});
           $("#dialog").jqmShow();
-        }
+          
+       // }
       },
       error : function(p){
         alert('error')

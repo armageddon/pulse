@@ -1,5 +1,5 @@
 <% content_for :message do %>
-  <%= image_tag @place_activity_event.image_file , :width=>"556px"%>
+  &nbsp;
 <% end %>
 <% content_for :c1 do %>
   <div class="column_header">
@@ -7,13 +7,10 @@
   </div>
   <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FLondon-United-Kingdom%2FFernandez-Leluu-Supper-Club%2F179535337673&amp;layout=standard&amp;show_faces=true&amp;width=200&amp;action=like&amp;colorscheme=light&amp;height=80" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:200px; height:80px;" allowTransparency="true"></iframe>
   <br />
-  <%=@place_activity_event.info_html%>
+  
   <br />
 <% end %>
-   <div class="column_header">
-    <h2>Done</h2>
-  </div>
-  
-<p>Thank you for your purchase</p>
-
-
+    <div class="column_header">
+    <h2>Error</h2>
+  </div>An error has occured with your payment. Please try again later. Our engineers have been notified of the problem
+<%=@message%>

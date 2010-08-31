@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100824132246) do
+ActiveRecord::Schema.define(:version => 20100827071017) do
 
   create_table "activities", :force => true do |t|
     t.string   "name"
@@ -85,6 +85,10 @@ ActiveRecord::Schema.define(:version => 20100824132246) do
     t.integer  "tickets_dispensed"
     t.integer  "tickets_bought"
     t.float    "ticket_price"
+    t.integer  "tickets_dispensed_female"
+    t.integer  "tickets_dispensed_male"
+    t.integer  "tickets_bought_female"
+    t.integer  "tickets_bought_male"
   end
 
   create_table "favorites", :force => true do |t|
@@ -506,7 +510,7 @@ ActiveRecord::Schema.define(:version => 20100824132246) do
   end
 
   create_table "tickets", :force => true do |t|
-    t.integer  "event_id",      :limit => 8
+    t.integer  "event_id",        :limit => 8
     t.integer  "user_id"
     t.string   "pp_ref"
     t.string   "quantity"
@@ -514,6 +518,9 @@ ActiveRecord::Schema.define(:version => 20100824132246) do
     t.integer  "ticket_status"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "quantity_male"
+    t.integer  "quantity_female"
+    t.string   "description"
   end
 
   create_table "timeline_events", :force => true do |t|

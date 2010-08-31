@@ -2,18 +2,31 @@
   <%= image_tag @place_activity_event.image_file , :width=>"556px"%>
 <% end %>
 <% content_for :c1 do %>
-&nbsp;
+  <div class="column_header">
+    <h2>Events</h2>
+  </div>
+  <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FLondon-United-Kingdom%2FFernandez-Leluu-Supper-Club%2F179535337673&amp;layout=standard&amp;show_faces=true&amp;width=200&amp;action=like&amp;colorscheme=light&amp;height=80" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:200px; height:80px;" allowTransparency="true"></iframe>
+  <br />
+  <%=@place_activity_event.info_html%>
+  <br />
 <% end %>
-<input type="hidden" id="price_total_hidden" value="<%=@event.ticket_price%>"/>
+<input type="hidden" id="price_total_hidden" value="0"/>
 <div class="column_header">
   <h2>Ticket Purchase</h2>
 </div>
-Quantity <%= std_drop_down('quant', 1, {:id => 'quant',:width => '60px'},[['1','1'],[2,2],[3,3],[4,4],[5,5]], '1') %> at £<%=@event.ticket_price/100 %>  <br />
+<div style="display:<%= @event.tickets_dispensed == 0 ? 'none' : ''%>">
+Quantity <%= std_drop_down('quant', 0, {:id => 'quant',:width => '60px'},[[0,0],['1','1'],[2,2],[3,3],[4,4],[5,5]], '0') %> at £<%='%.2f' % (@event.ticket_price/100) %>   (<%=@event.tickets_dispensed- @event.tickets_bought%> remaining) <br />
+</div>
+<div style="display:<%= @event.tickets_dispensed_male == 0 ? 'none' : ''%>">
+Boys <%= std_drop_down('quant_male', 0, {:id => 'quant_male',:width => '60px'},[[0,0],['1','1'],[2,2],[3,3],[4,4],[5,5]], '0') %> at £<%= '%.2f' % (@event.ticket_price/100) %>   (<%=@event.tickets_dispensed_male - @event.tickets_bought_male%> remaining) <br />
+</div>
+<div style="display:<%= @event.tickets_dispensed_female == 0 ? 'none' : ''%>">
+Girls <%= std_drop_down('quant_female', 0, {:id => 'quant_female',:width => '60px'},[[0,0],['1','1'],[2,2],[3,3],[4,4],[5,5]], '0') %> at £<%='%.2f' % (@event.ticket_price/100) %>  (<%=@event.tickets_dispensed_female - @event.tickets_bought_female%> remaining)  <br />
+</div>
 <span style="font-size:14px;font-weight:bold"><%=  @place_activity_event.header %></span>
 on   <span style="font-size:14px;font-weight:bold"><br/>
-  <%=Date::DAYNAMES[@event.start.wday]%>&nbsp;<%=Date::MONTHNAMES[@event.start.month]%>&nbsp;<%=@event.start.day%>&nbsp;<%=@event.start.year%>&nbsp;<%=@event.start.hour%>
-</span><br/>
-<p>Your order total is <span id="price"> £<%=@event.ticket_price/100 %> </span></p>
+<%=@event.start.strftime("%A %d %B %Y %I:%M %p")%></span><br/>
+<p>Your order total is <span id="price"> £0.00 </span></p>
 <p>
   <%= image_tag 'https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif', :id=>'paypal' %>
 </p>
@@ -22,16 +35,18 @@ on   <span style="font-size:14px;font-weight:bold"><br/>
   var p = <%=@event.ticket_price%>;
 
   $('#paypal').live('click',function(){
-    var pstr =$('#quant').val()*p/100 ;
-    window.location = '/payments/checkout?price='+pstr+'&quantity='+$('#quant').val()+'&event_id='+<%=@event.id%>
+    var pstr =(parseInt($('#quant_male').val())+parseInt($('#quant_female').val())+parseInt($('#quant').val()))*p ;
+ 
+    window.location = '/payments/checkout?price='+pstr+'&quantity_male='+$('#quant_male').val()+'&quantity_female='+$('#quant_female').val()+'&quantity='+$('#quant').val()+'&event_id='+<%=@event.id%>
   });
 
   $(".std_dd").live('change', function (){
-var pstr =$('#quant').val()*p/100 ;
 
-$('#price').html('£'+pstr+'.00');
-$('price_total_hidden').val(pstr);
- return false;
+    var pstr =(parseInt($('#quant_male').val())+parseInt($('#quant_female').val())+parseInt($('#quant').val()))*p ;
 
-});
+    $('#price').html('£'+pstr/100 + '.00');
+    $('price_total_hidden').val(pstr);
+    return false;
+
+  });
 </script>

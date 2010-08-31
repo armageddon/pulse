@@ -40,6 +40,7 @@ doc\:clobber_plugins=Remove plugin documentation
 doc\:clobber_rails=Remove rdoc products
 doc\:guides=Generate Rails guides
 doc\:plugins=Generate documentation for all installed plugins
+doc\:plugins\:active_merchant=Generate documentation for the active_merchant plugin
 doc\:plugins\:facebooker=Generate documentation for the facebooker plugin
 doc\:plugins\:graticule=Generate documentation for the graticule plugin
 doc\:plugins\:hominid=Generate documentation for the hominid plugin

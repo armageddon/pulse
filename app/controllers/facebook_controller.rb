@@ -86,11 +86,11 @@ class FacebookController < ApplicationController
       r = ActiveRecord::Base.connection.execute sql
 
        
-        r.all_hashes.each do |h|
-          @user_ids << h['userid']
-          @user_names << h['name']
-        end
-        if @user_ids.length>0
+      r.all_hashes.each do |h|
+        @user_ids << h['userid']
+        @user_names << h['name']
+      end
+      if @user_ids.length>0
         sql1 =<<-SQL
         select distinct object_name from relation_rel where user_id1 =  #{@fb_user.id.to_s} and user_id2 =  #{@user_ids[0].to_s}
         SQL
@@ -196,14 +196,12 @@ class FacebookController < ApplicationController
   end
 
   def callback
-path = "/"
-      logger.debug(path)
+    path = "/"
+    logger.debug(path)
     MiniFB.enable_logging
     logger.info(params)
     if params[:code].present?
       access_token_hash = {}
-
-  
       access_token_hash = MiniFB.oauth_access_token(FB_APP_ID, CALLBACK_URL, FB_SECRET_KEY, params[:code])
       @access_token = access_token_hash["access_token"]
       logger.info(@access_token)
