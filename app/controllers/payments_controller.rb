@@ -127,9 +127,9 @@ before_filter :login_required
   private
   def gateway
     @gateway ||= PaypalExpressGateway.new(
-      :login => 'pierre_1282639251_biz_api1.googlemail.com',
-      :password => '1282639256',
-      :signature => 'Aj1iXwwm1VUc.4leRZdDIhiGSa7lA1qqqstt9nj.sshmsEF2dnNpSW3j'
+      :login => PP_LOGIN,
+      :password => PP_PASSWORD,
+      :signature => PP_SIGNATURE
     )
   end
 end

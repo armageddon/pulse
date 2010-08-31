@@ -55,11 +55,17 @@ else
 end
 
 if Rails.env == "production"
+  PP_LOGIN = 'pierredane_api1.hotmail.com'
+    PP_PASSWORD = '3BWW2ATHC5AARGPK'
+    PP_SIGNATURE = 'AQA5eaD1ZZJ3sYkwFPz1qegiNooEA1In2s43Es4gJZ3FulyXxMn6IUSt'
   HELLOPULSE_USER_ID = 209
   CALLBACK_URL = "http://hellopulse.com/fb_test"
   FB_APP_ID = 328522741457
   FB_SECRET_KEY = "0d0a2e7e1cd0bf9c9688e518f6aeb358"
 else
+  PP_LOGIN = 'pierre_1282639251_biz_api1.googlemail.com'
+    PP_PASSWORD = '1282639256'
+    PP_SIGNATURE =  'Aj1iXwwm1VUc.4leRZdDIhiGSa7lA1qqqstt9nj.sshmsEF2dnNpSW3j'
   HELLOPULSE_USER_ID = 32
   CALLBACK_URL = "http://localhost:3000/fb_test"
   FB_APP_ID = 297512602099
