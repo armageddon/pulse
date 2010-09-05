@@ -44,15 +44,22 @@ or  <%= link_to image_tag("fbConnect.gif", :title => "Connect"), '#', :id=>'sub'
 
 <h3 style="font-size:16px;font-weight:bold"><%= @place_activity_event.header%></h3>
 <br />
+<h3 style="font-size:16px;font-weight:bold;color:gray">What</h3>
 <%=  @place_activity_event.description %>
 <br />
 <br />
 <h3 style="font-size:16px;font-weight:bold;color:gray">When</h3>
 
 <%= render :partial => "place_activity_event", :collection => @events %>
-<br />
 <div style="clear:both"></div>
-
+<div style="float:left">
+<div style="float:left"><h3 style="font-size:14px;font-weight:bold;color:gray;margin-top:0px">About <%=@place.name %> </h3></div>
+<div style="clear:both"></div>
+<div style="float:left"><span margin-top:5px>Uyen met Simon at the end of  2008 when Simon gate crashed to her dinner party. It is apt that they met in the kitchen and over a dinner party. Both are the founders of Fernandez & Leluu Supper Club in East London, cooking up 8 course meals for people every now and again. </span></div>
+<div style="clear:both"></div>
+<div style="float:left"><span>Read more about <a href="http://www.fernandezandleluu.co.uk/" > Fernandez and Leluu....</a></span></div>
+</div>
+<div style="clear:both"></div>
 <% if  @user_place_activities.length > 0%>
 <h3 style="font-size:16px;font-weight:bold;color:gray;float:left;margin-top:15px">What people are saying</h3>
 <div style="clear:both"></div>
@@ -79,6 +86,7 @@ or  <%= link_to image_tag("fbConnect.gif", :title => "Connect"), '#', :id=>'sub'
   });
 
   $(document).ready(function() {
+
 
 
 

@@ -4,13 +4,16 @@
     <span style="font-size:14px;font-weight:bold">
       <%= link_to object.start.strftime("%A %d %B %Y %I:%M %p"),'/user_events/'+object.id.to_s %>
     </span>
+    &nbsp;&nbsp;
+  <%= link_to "See who's going", '/user_events/'+object.id.to_s, :id=>'book', :class=>"", :style=>"float:right;height:18px", :event_id=>object.id%>
+  
     <br />
     <%  if object.tickets_dispensed != 0%>
       &nbsp;(<%=object.tickets_dispensed - object.tickets_bought%> of <%=object.tickets_dispensed%> tickets left)
       <br />
     <% end %>
  <%  if object.tickets_dispensed_male != 0%>
-    Boys: &nbsp;(<%=object.tickets_dispensed_male - object.tickets_bought_male%> of <%=object.tickets_dispensed_male%> tickets left)
+    Guys: &nbsp;(<%=object.tickets_dispensed_male - object.tickets_bought_male%> of <%=object.tickets_dispensed_male%> tickets left)
     <br />
     <% end %>
      <%  if object.tickets_dispensed_female != 0%>
@@ -18,6 +21,7 @@
 <% end %>
 
   </div>
+ 
   <div style="float-right">
 
     <%= link_to "book now", '/payments?event_id='+object.id.to_s, :id=>'book', :class=>"submit_act", :style=>"float:right;height:18px", :event_id=>object.id%>
