@@ -129,7 +129,8 @@ before_filter :login_required
     @gateway ||= PaypalExpressGateway.new(
       :login => PP_LOGIN,
       :password => PP_PASSWORD,
-      :signature => PP_SIGNATURE
+      :signature => PP_SIGNATURE,
+      :currency => 'GBP'
     )
   end
 end
