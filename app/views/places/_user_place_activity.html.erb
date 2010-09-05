@@ -8,7 +8,7 @@
   </div>
   <div class="a_why">
     <% if object.activity.id != ANYTHING_ACTIVITY_ID %>
-      <%=link_to object.activity.name, object.activity, :class=> join_class %><br/>
+      <%=link_to object.activity.name, '/place_activities/'+object.place_activity_id.to_s, :class=> join_class %><br/>
     <% else %>
       <%=   object.activity.name %><br/>
     <% end %>
